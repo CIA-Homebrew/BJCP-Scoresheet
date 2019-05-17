@@ -1,0 +1,12 @@
+extends layout
+
+extends layout
+
+block content
+    h1 Test new scoresheet
+    .container
+        form(method='POST' action='/scoresheet/new')
+            div.form-group
+                label(for='testbox') TestField:
+                input#pw2.form-control(type='text' name='Testbox')
+            button.btn.btn-primary(type='submit') TestPost

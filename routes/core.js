@@ -1,6 +1,7 @@
 let express = require('express');
 let router = express.Router();
 let auth = require("../controllers/AuthController.js");
+let scoresheet = require('../controllers/ScoresheetController.js')
 
 // restrict index for logged in user only
 router.get('/', auth.home);
@@ -19,5 +20,19 @@ router.post('/login', auth.doLogin);
 
 // route for logout action
 router.get('/logout', auth.logout);
+
+//* SCORESHEET FUNCTIONS *//
+
+//route for scoresheet list load
+router.get('/scoresheet/load', scoresheet.loadScoresheetList);
+
+//route for new scoresheet load
+router.get('/scoresheet/new', scoresheet.newScoresheet);
+
+//route for new scoresheet post
+router.post('/scoresheet/new', scoresheet.doNewScoresheet); 
+
+//route for scoresheet individual load
+router.get('/scoresheet/:scoresheetId', scoresheet.loadScoresheet);
 
 module.exports = router;
