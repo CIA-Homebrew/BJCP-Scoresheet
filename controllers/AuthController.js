@@ -22,6 +22,7 @@ userController.doRegister = function(req, res) {
 		}
 
 		passport.authenticate('local')(req, res, function () {
+			req.flash('success', 'Registration Successful')
 			res.redirect('/');
 		});
 	});
@@ -38,6 +39,7 @@ userController.doLogin = function(req, res) {
 		failureRedirect: '/login'
 	})(req, res, function() {
 		// Login is good, set the user data and go back home
+		req.flash('success', 'Login Successful')
 		res.redirect('/');
 	});
 };
@@ -45,6 +47,7 @@ userController.doLogin = function(req, res) {
 // logout
 userController.logout = function(req, res) {
 	req.logout();
+	req.flash('success', 'Successfully Logged Out');
 	res.redirect('/');
 };
 

@@ -5,6 +5,7 @@ let cookieParser = require('cookie-parser');
 let expressSession = require('express-session');
 let logger = require('morgan');
 let stylus = require('stylus');
+let flash = require('connect-flash');
 
 let mongoose = require('mongoose');
 mongoose.Promise = global.Promise;
@@ -45,6 +46,12 @@ let User = require('./models/User');
 passport.use(new LocalStrategy(User.authenticate()));
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
+
+app.use(require('connect-flash')());
+app.use(function (req, res, next) {
+	res.locals.messages = require('express-messages')(req, res);
+	next();
+  });
 
 app.use('/', coreRouter);
 
