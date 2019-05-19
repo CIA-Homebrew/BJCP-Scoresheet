@@ -39,6 +39,7 @@ userController.doRegister = function(req, res) {
 	User.register(newUser, passwd)
 		.then(function(newUser) {
 			//console.log('New User Created!', newUser);
+			req.flash('success', 'Registration Successful');
 			res.redirect('/');
 		})
 		.catch(function(err) {
@@ -57,9 +58,9 @@ userController.doRegister = function(req, res) {
 			}
 
 			// Push the errors to the flash handler
-			req.flash('messages', _err);
+			req.flash('error', _err);
 
-			return res.render('register', { fData: newUser, error: _err });
+			return res.render('register', { fData: newUser });
 		});
 };
 
@@ -74,6 +75,7 @@ userController.doLogin = function(req, res) {
 		failureRedirect: '/login'
 	})(req, res, function() {
 		// Login is good, set the user data and go back home
+		req.flash('success', 'Login Successful');
 		res.redirect('/');
 	});
 };

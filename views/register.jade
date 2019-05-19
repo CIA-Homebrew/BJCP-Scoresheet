@@ -4,13 +4,6 @@ block content
 	.container
 		form.form-signin(role='form', action="/register", method="post", style='max-width: 300px;')
 			h2.form-signin-heading Sign Up here
-
-			if typeof(error) !== "undefined" && error.length > 0
-				p.text-danger
-					<strong>Error(s)!</strong>
-					each val in error
-						p.text-danger=val
-
 			input.form-control(type='text', name="forename", placeholder='First Name', value=(typeof fData === "undefined" ? "" : fData.forename))
 			input.form-control(type='text', name="surname", placeholder='Last Name', value=(typeof fData === "undefined" ? "" : fData.surname))
 			input.form-control(type='text', name="username", placeholder='Email Address', value=(typeof fData === "undefined" ? "" : fData.username))
