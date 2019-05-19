@@ -32,10 +32,13 @@ scoresheetController.newScoresheet = function(req, res) {
 
 //New Scoresheet Post
 scoresheetController.doNewScoresheet = function(req, res) {
-    // console.log(req.body);
+    console.log('got here')
+    console.log(req)
     if (req.user){
+        console.log(req.body)
         res.render('submitScoresheet');
     } else {
+        req.flash('danger', 'Please Login')
         res.redirect('/')
     }
 }
