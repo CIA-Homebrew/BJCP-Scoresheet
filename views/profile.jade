@@ -1,0 +1,30 @@
+extends layout
+
+block content
+	.container
+		form.form-signin(role='form', action="/profile/save", method="post", style='max-width: 300px;')
+			h2.form-profile-heading Edit Profile
+			if typeof(error) !== "undefined" && error.length > 0
+				p.text-danger
+					<strong>Error(s)!</strong>
+					each val in error
+						p.text-danger=val
+
+			input.form-control(type='text', name="forename", placeholder='First Name', value=(typeof user === "undefined" ? "" : user.forename))
+			input.form-control(type='text', name="surname", placeholder='Last Name', value=(typeof user === "undefined" ? "" : user.surname))
+			sub.text-primary (Old and new email address required to change)
+			input.form-control(type='text', name="username", placeholder='Email Address', value=(typeof user === "undefined" ? "" : user.username))
+			input.form-control(type='text', name="new_username", placeholder='New Email Address')
+			sub.text-primary (Password required for any changes to your profile)
+			input.form-control(type='password', name="current_password", placeholder='Current Password')
+			input.form-control(type='password', name="new_password", placeholder='New Password')
+			input.form-control(type='password', name="new_passwordC", placeholder='Confirm Password')
+			sub.text-info (The following is optional but REQUIRED if judging)
+			input.form-control(type='text', name="bjcp_id", placeholder='BJCP ID', value=(typeof user === "undefined" ? "" : user.bjcp_id))
+			input.form-control(type='text', name="bjcp_rank", placeholder='BJCP Rank', value=(typeof user === "undefined" ? "" : user.bjcp_rank))
+			input.form-control(type='text', name="cicerone_rank", placeholder='Cicerone Rank', value=(typeof user === "undefined" ? "" : user.cicerone_rank))
+			input.form-control(type='text', name="pro_brewer_brewery", placeholder='Pro Brewer - Brewery', value=(typeof user === "undefined" ? "" : user.pro_brewer_brewery))
+			input.form-control(type='text', name="industry_description", placeholder='Industry Description', value=(typeof user === "undefined" ? "" : user.industry_description))
+			input.form-control(type='text', name="judging_years", placeholder='Judging Years', value=(typeof user === "undefined" ? "" : user.judging_years))
+
+			button.btn.btn-lg.btn-primary.btn-block(type='submit') Save Profile
