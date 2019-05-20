@@ -6,3 +6,52 @@ body {
     max-width: 750px;
   }
 }
+/* bootstrap hack: fix content width inside hidden tabs */
+.tab-content > .tab-pane:not(.active),
+.pill-content > .pill-pane:not(.active) {
+  display: block;
+  height: 0;
+  overflow-y: hidden;
+}
+/* bootstrap hack end */
+.list-group-item {
+  user-select: none;
+}
+.list-group input[type="checkbox"] {
+  display: none;
+}
+.list-group input[type="checkbox"] + .list-group-item {
+  cursor: pointer;
+}
+.list-group input[type="checkbox"] + .list-group-item:before {
+  content: "\2713";
+  color: transparent;
+  font-weight: bold;
+  margin-right: 1em;
+}
+.list-group input[type="checkbox"]:checked + .list-group-item {
+  background-color: #0275d8;
+  color: #fff;
+}
+.list-group input[type="checkbox"]:checked + .list-group-item:before {
+  color: inherit;
+}
+.list-group input[type="radio"] {
+  display: none;
+}
+.list-group input[type="radio"] + .list-group-item {
+  cursor: pointer;
+}
+.list-group input[type="radio"] + .list-group-item:before {
+  content: "\2022";
+  color: transparent;
+  font-weight: bold;
+  margin-right: 1em;
+}
+.list-group input[type="radio"]:checked + .list-group-item {
+  background-color: #0275d8;
+  color: #fff;
+}
+.list-group input[type="radio"]:checked + .list-group-item:before {
+  color: inherit;
+}
