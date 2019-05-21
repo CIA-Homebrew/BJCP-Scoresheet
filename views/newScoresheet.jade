@@ -17,7 +17,9 @@ block content
                                     .card-header.px-0.py-0
                                         p.small.mb-0.text-center Mini BOS
                                     .card-body.text-dark.px-0.py-1.text-center
-                                        button.btn.btn-outline-success.btn-sm(data-toggle="button" aria-pressed="false" autocomplete="off" id='mini_boss_advanced' name='mini_boss_advanced') Advance
+                                        .btn-group-toggle(data-toggle='buttons')
+                                            label.btn.btn-outline-success.btn-sm Advance
+                                                input(type='checkbox' autocomplete="off" id='mini_boss_advanced' name='mini_boss_advanced')
                                 .card.border-dark.mb-3.mx-1
                                     .card-header.px-0.py-0 
                                         p.small.mb-0.text-center Consensus
@@ -25,7 +27,7 @@ block content
                                         h4.my-0 -
                                 .card.border-dark.mb-3.mx-1
                                     .card-header.px-0.py-0 
-                                        p.small.mb-0.text-center Score
+                                        p.small.mb-0.text-center Total Score
                                     .card-body.text-dark.px-0.py-1.text-center 
                                         h4(class='my-0' id='judge_total') 0
 
@@ -207,7 +209,7 @@ block content
                                                 textarea.form-control(rows='5' type='text' id='appearance_other_comment' name='appearance_other_comment' placeholder='Comments')
                                         .col.col-md-auto.d-flex.align-items-center.pl-4
                                             .card.border-dark(style='width:100px')
-                                                .card-header.py-1
+                                                .card-header.py-1.px-0
                                                     p.small.mb-0.text-center Appearance Score
                                                 .card-body.text-dark.px-0.py-0.text-center 
                                                     input.form-control.form-control-lg.text-center.mb-0(type='number' id='appearance_score' name='appearance_score' value='0' min='0' max='3' onchange='recalculate_score()')
@@ -292,7 +294,7 @@ block content
                                                 textarea.form-control(rows='5' type='text' id='flavor_other_comment' name='flavor_other_comment' placeholder='Comments')
                                         .col.col-md-auto.d-flex.align-items-center.pl-4
                                             .card.border-dark(style='width:100px')
-                                                .card-header.py-1
+                                                .card-header.py-1.px-0
                                                     p.small.mb-0.text-center Flavor Score
                                                 .card-body.text-dark.px-0.py-0.text-center 
                                                     input.form-control.form-control-lg.text-center.mb-0(type='number' id='flavor_score' name='flavor_score' value='0' min='0' max='20' onchange='recalculate_score()')
@@ -345,7 +347,7 @@ block content
                                                 textarea.form-control(rows='5' type='text' id='mouthfeel_other_comment' name='mouthfeel_other_comment' placeholder='Comments')
                                         .col.col-md-auto.d-flex.align-items-center.pl-4
                                             .card.border-dark(style='width:100px')
-                                                .card-header.py-1
+                                                .card-header.py-1.px-0
                                                     p.small.mb-0.text-center Mouthfeel Score
                                                 .card-body.text-dark.px-0.py-0.text-center 
                                                     input.form-control.form-control-lg.text-center.mb-0(type='number' id='mouthfeel_score' name='mouthfeel_score' value='0' min='0' max='10' onchange='recalculate_score()')
@@ -421,7 +423,7 @@ block content
                                                 textarea.form-control(rows='5' type='text' id='feedback_comment' name='feedback_comment' placeholder='Comments')
                                         .col.col-md-auto.d-flex.align-items-center.pl-4
                                             .card.border-dark(style='width:100px')
-                                                .card-header.py-1
+                                                .card-header.py-1.px-0
                                                     p.small.mb-0.text-center Summary Score
                                                 .card-body.text-dark.px-0.py-0.text-center 
                                                     input.form-control.form-control-lg.text-center.mb-0(type='number' id='overall_score' name='overall_score' value='0' min='0' max='5' onchange='recalculate_score()')
