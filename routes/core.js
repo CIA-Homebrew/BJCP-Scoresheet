@@ -35,6 +35,12 @@ router.get('/scoresheet/new', scoresheet.newScoresheet);
 //route for new scoresheet post
 router.post('/scoresheet/new', scoresheet.doNewScoresheet);
 
+//route for change scoresheet post
+router.post('/scoresheet/change', scoresheet.doChangeScoresheet);
+
+//route for check scoresheet post
+router.post('/scoresheet/check', scoresheet.doCheckScoresheet);
+
 //route for scoresheet individual load
 router.get('/scoresheet/:scoresheetId', scoresheet.loadScoresheet);
 

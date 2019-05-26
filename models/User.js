@@ -21,11 +21,23 @@ let UserSchema = new Schema({
 	},
 	forename: {
 		type: String,
-		require: [true, "First name is missing or invalid."]
+		require: [true, "First name is missing or invalid."],
+		validate: {
+			validator: function(v) {
+				return v.trim() !== "";
+			},
+			message: props => "A first name is required."
+		}
 	},
 	surname: {
 		type: String,
-		require: [true, "Last name is missing or invalid."]
+		require: [true, "Last name is missing or invalid."],
+		validate: {
+			validator: function(v) {
+				return v.trim() !== "";
+			},
+			message: props => "A last name is required."
+		}
 	},
 	bjcp_id: {
 		type: String,

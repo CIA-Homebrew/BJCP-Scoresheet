@@ -2,15 +2,36 @@ let mongoose = require('mongoose');
 let Schema = mongoose.Schema;
 
 let ScoresheetSchema = new Schema({
-	category: String,
-	sub: String,
-	subcategory: String,
+	category: {
+		type: String,
+		_validator: [true, "empty"]
+	},
+	sub: {
+		type: String,
+		_validator: [true, "empty"]
+	},
+	subcategory: {
+		type: String,
+		_validator: [true, "empty"]
+	},
 	special_ingredients: String,
-	entry_number: String,
-	flight_position: String,
-	flight_total: String,
+	entry_number: {
+		type: String,
+		_validator: [true, "empty"]
+	},
+	flight_position: {
+		type: Number,
+		_validator: [true, "empty"]
+	},
+	flight_total: {
+		type: Number,
+		_validator: [true, "empty"]
+	},
 	mini_boss_advanced: Boolean,
-	place: String,
+	place: {
+		type: Number,
+		_validator: [true, "empty"]
+	},
 	consensus_score: String,
 	bottle_inspection_check: Boolean,
 	bottle_inspection_comment: String,
@@ -93,6 +114,8 @@ let ScoresheetSchema = new Schema({
 	overall_wonderful: String,
 	feedback_comment: String,
 	judge_total: String
-}, { collection: 'aha-scoresheets' }); // We use a generic 'user' in the program but store as judges
+}, { collection: 'aha-scoresheets' });
+
+
 
 module.exports = mongoose.model('Scoresheet', ScoresheetSchema);

@@ -6,6 +6,30 @@ let _fields = ["username", "forename", "surname", "password"];
 
 let userController = {};
 
+function errorProcessor(err, req) {
+	// Sort out our custom error messages
+	//let _err = [];
+	_fields.forEach(function(v) {
+		if (err.errors && typeof err.errors[v] !== "undefined") {
+			req.flash("error", err.errors[v].message);
+		}
+	});
+
+	// Specific and default error catcher
+	switch (err.name) {
+		case "UserExistsError":
+		case "MissingPasswordError":
+			req.flash("error", err.message);
+			break;
+		// Don't use a default it doubles for the custom error messages
+		default:
+			//_err.push(err.message);
+			break;
+	}
+
+	//return _err;
+}
+
 // Restrict access to root page
 userController.home = function(req, res) {
 	res.render('index', { user : req.user });
@@ -38,27 +62,12 @@ userController.doRegister = function(req, res) {
 
 	User.register(newUser, passwd)
 		.then(function(newUser) {
-			//console.log('New User Created!', newUser);
 			req.flash('success', 'Registration Successful');
 			res.redirect('/');
 		})
 		.catch(function(err) {
-			//console.error(err);
-			// Sort out our error messages
-			let _err = [];
-			_fields.forEach(function(v) {
-				if (err.errors && typeof err.errors[v] !== "undefined") {
-					_err.push(err.errors[v].message);
-				}
-			});
-
-			// The password error is unique catch it
-			if (err.name === "MissingPasswordError") {
-				_err.push(err.message);
-			}
-
-			// Push the errors to the flash handler
-			req.flash('error', _err);
+			// Push the processed errors to the flash handler
+			errorProcessor(err, req);
 
 			return res.render('register', { fData: newUser });
 		});
