@@ -11,21 +11,11 @@ scoresheetController.generateObject = function(newObj, data) {
 
 // Load Scoresheet List
 scoresheetController.loadScoresheetList = function(req, res) {
-	if (!req.user) {
-		req.flash('danger', 'Please Login');
-		return res.redirect('/');
-	}
-
 	res.render('loadScoresheetList', { user : req.user });
 };
 
 // Load Individual Scoresheet
 scoresheetController.loadScoresheet = function(req, res) {
-	if (!req.user) {
-		req.flash('danger', 'Please Login');
-		return res.redirect('/');
-	}
-
 	res.render('loadScoresheet', {
 		sendData:req.params,
 		user: req.user
@@ -34,12 +24,6 @@ scoresheetController.loadScoresheet = function(req, res) {
 
 // New Scoresheet Render
 scoresheetController.newScoresheet = function(req, res) {
-	/**
-	 if (!req.user) {
-		req.flash('danger', 'Please Login');
-		return res.redirect('/');
-	}
-	 **/
 
 	res.render('newScoresheet', {user: req.user});
 };
@@ -57,13 +41,6 @@ scoresheetController.doNewScoresheet = function(req, res) {
 
 // Change Scoresheet Post - This is an AJAX call
 scoresheetController.doChangeScoresheet = function(req, res) {
-	/**
-	if (!req.user) {
-		req.flash('danger', 'Please Login');
-		return res.redirect('/');
-	}
-	**/
-
 	// Store the submitted data
 	let data = req.body;
 
@@ -91,13 +68,6 @@ scoresheetController.doChangeScoresheet = function(req, res) {
 
 // Check if Scoresheet exists Post - This is an AJAX call
 scoresheetController.doCheckScoresheet = function(req, res) {
-	/**
-	 if (!req.user) {
-		req.flash('danger', 'Please Login');
-		return res.redirect('/');
-	}
-	 **/
-
 	// Store the submitted data
 	let data = req.body;
 

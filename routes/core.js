@@ -1,47 +1,58 @@
 let express = require('express');
 let router = express.Router();
-let auth = require("../controllers/AuthController.js");
-let scoresheet = require('../controllers/ScoresheetController.js')
 
-// restrict index for logged in user only
-router.get('/', auth.home);
+//* CONTROLLERS *//
+let authController = require("../controllers/AuthController");
+let scoresheetController = require('../controllers/ScoresheetController');
+let adminController = require('../controllers/AdminController');
+
+//* MIDDELWARE *//
+let authMiddle = require("../middleware/auth");
+
+//* CORE SITE FUNCTIONS *//
+
+// route to index/home
+router.get('/', authController.home);
 
 // route to register page
-router.get('/register', auth.register);
+router.get('/register', authController.register);
 
 // route for register action
-router.post('/register', auth.doRegister);
+router.post('/register', authController.doRegister);
 
 // route to login page
-router.get('/login', auth.login);
+router.get('/login', authController.login);
 
 // route for login action
-router.post('/login', auth.doLogin);
+router.post('/login', authController.doLogin);
 
 // route for logout action
-router.get('/logout', auth.logout);
+router.get('/logout', authController.logout);
 
 // route for user profile edit
-router.get('/profile/edit', auth.editProfile);
+router.get('/profile/edit', authMiddle.isAuthenticated, authController.editProfile);
 
 //* SCORESHEET FUNCTIONS *//
 
 //route for scoresheet list load
-router.get('/scoresheet/load', scoresheet.loadScoresheetList);
+router.get('/scoresheet/load', authMiddle.isAuthenticated, scoresheetController.loadScoresheetList);
 
 //route for new scoresheet load
-router.get('/scoresheet/new', scoresheet.newScoresheet);
+router.get('/scoresheet/new', authMiddle.isAuthenticated, scoresheetController.newScoresheet);
 
 //route for new scoresheet post
-router.post('/scoresheet/new', scoresheet.doNewScoresheet);
+router.post('/scoresheet/new', authMiddle.isAuthenticated, scoresheetController.doNewScoresheet);
 
 //route for change scoresheet post
-router.post('/scoresheet/change', scoresheet.doChangeScoresheet);
+router.post('/scoresheet/change', authMiddle.isAuthenticated, scoresheetController.doChangeScoresheet);
 
 //route for check scoresheet post
-router.post('/scoresheet/check', scoresheet.doCheckScoresheet);
+router.post('/scoresheet/check', authMiddle.isAuthenticated, scoresheetController.doCheckScoresheet);
 
 //route for scoresheet individual load
-router.get('/scoresheet/:scoresheetId', scoresheet.loadScoresheet);
+router.get('/scoresheet/:scoresheetId', authMiddle.isAuthenticated, scoresheetController.loadScoresheet);
+
+//* ADMIN FUNCTIONS *//
+router.get('/admin', authMiddle.isAdmin, adminController.controlPanel);
 
 module.exports = router;
