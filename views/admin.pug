@@ -1,0 +1,26 @@
+extends layout
+
+block content
+	.container
+		div.card
+			div.card-header
+				.row
+
+				ul(class = 'nav nav-tabs card-header-tabs' id='admin-list' role='tablist')
+					li(class='nav-item')
+						a(class='nav-link active px-2' data-toggle="tab" href='#system' role="tab" aria-controls="system" aria-selected="true" ) System
+					li(class='nav-item')
+						a(class='nav-link px-2' data-toggle="tab" href='#judging' role="tab" aria-controls="judging" aria-selected="false") Judging
+					li(class='nav-item')
+						a(class='nav-link px-2' data-toggle="tab" href='#users' role="tab" aria-controls="users" aria-selected="false" ) Users
+			div.card-body
+				div.tab-content
+					div(class='tab-pane active' id='system' role='tabpanel' aria-labelledby='system-tab') Coming Soon!
+
+					div(class='tab-pane' id='judging' role='tabpanel' aria-labelledby='judging-tab')
+						ul
+						if (sheets)
+							each sheet in sheets.docs
+								li #{sheet.entry_number} - #{sheet.category} - #{sheet.subscategory}
+
+					div(class='tab-pane' id='users' role='tabpanel' aria-labelledby='users-tab') Test3

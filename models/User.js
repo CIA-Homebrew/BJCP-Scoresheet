@@ -1,4 +1,5 @@
 let mongoose = require('mongoose');
+let mongoosePaginate = require("mongoose-paginate");
 let Schema = mongoose.Schema;
 let passportLocalMongoose = require('passport-local-mongoose');
 require('mongoose-type-email');
@@ -71,5 +72,6 @@ let UserSchema = new Schema({
 }, { collection: 'aha-judges' }); // We use a generic 'user' in the program but store as judges
 
 UserSchema.plugin(passportLocalMongoose);
+UserSchema.plugin(mongoosePaginate);
 
 module.exports = mongoose.model('User', UserSchema);

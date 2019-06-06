@@ -1,4 +1,5 @@
 let mongoose = require('mongoose');
+let mongoosePaginate = require("mongoose-paginate");
 let Schema = mongoose.Schema;
 
 let ScoresheetSchema = new Schema({
@@ -116,6 +117,6 @@ let ScoresheetSchema = new Schema({
 	judge_total: String
 }, { collection: 'aha-scoresheets' });
 
-
+ScoresheetSchema.plugin(mongoosePaginate);
 
 module.exports = mongoose.model('Scoresheet', ScoresheetSchema);
