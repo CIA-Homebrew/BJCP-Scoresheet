@@ -115,7 +115,10 @@ let ScoresheetSchema = new Schema({
 	overall_wonderful: String,
 	feedback_comment: String,
 	judge_total: String
-}, { collection: 'aha-scoresheets' });
+}, { 
+	timestamps: true, 			// Enable createdat and updatedat timestamp fields
+	collection: 'aha-scoresheets' 
+});
 
 ScoresheetSchema.plugin(mongoosePaginate);
 

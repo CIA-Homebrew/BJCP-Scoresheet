@@ -1,11 +1,6 @@
 body {
   background-color: #eee;
 }
-@media (min-width: 992px) {
-  body {
-    max-width: 750px;
-  }
-}
 /* bootstrap hack: fix content width inside hidden tabs */
 .tab-content > .tab-pane:not(.active),
 .pill-content > .pill-pane:not(.active) {

@@ -1,6 +1,7 @@
 let mongoose = require("mongoose");
 let passport = require("passport");
 let User = require("../models/User");
+let appConstnats = require("../helpers/appConstants");
 
 let _fields = ["username", "forename", "surname", "password"];
 
@@ -32,12 +33,17 @@ function errorProcessor(err, req) {
 
 // Restrict access to root page
 userController.home = function(req, res) {
-	res.render('index', { user : req.user });
+	res.render('index', {
+		user : req.user,
+		title : appConstnats.APP_NAME + " - Home"
+	});
 };
 
 // Go to registration page
 userController.register = function(req, res) {
-	res.render('register');
+	res.render('register', {
+		title : appConstnats.APP_NAME + " - Register"
+	});
 };
 
 // Post registration
@@ -69,13 +75,18 @@ userController.doRegister = function(req, res) {
 			// Push the processed errors to the flash handler
 			errorProcessor(err, req);
 
-			return res.render('register', { fData: newUser });
+			return res.render('register', {
+				fData: newUser,
+				title : appConstnats.APP_NAME + " - Register"
+			});
 		});
 };
 
 // Go to login page
 userController.login = function(req, res) {
-	res.render('login');
+	res.render('login', {
+		title : appConstnats.APP_NAME + " - Login"
+	});
 };
 
 // Post login
@@ -97,15 +108,14 @@ userController.logout = function(req, res) {
 
 // Go to profile edit page
 userController.editProfile = function(req, res) {
-	if (!req.user) res.redirect("/");
-
-	res.render('profile', { user : req.user });
+	res.render('profile', {
+		user : req.user,
+		title : appConstnats.APP_NAME + " - Edit Profile"
+	});
 };
 
 // Post profile edit page
 userController.saveProfile = function(req, res) {
-	if (!req.user) res.redirect("/");
-
 	// Password match
 	let passwd = null;
 

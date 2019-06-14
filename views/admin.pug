@@ -1,26 +1,62 @@
 extends layout
 
 block content
-	.container
-		div.card
-			div.card-header
-				.row
+    .container
+        div.card
+            div.card-header
+                .row
 
-				ul(class = 'nav nav-tabs card-header-tabs' id='admin-list' role='tablist')
-					li(class='nav-item')
-						a(class='nav-link active px-2' data-toggle="tab" href='#system' role="tab" aria-controls="system" aria-selected="true" ) System
-					li(class='nav-item')
-						a(class='nav-link px-2' data-toggle="tab" href='#judging' role="tab" aria-controls="judging" aria-selected="false") Judging
-					li(class='nav-item')
-						a(class='nav-link px-2' data-toggle="tab" href='#users' role="tab" aria-controls="users" aria-selected="false" ) Users
-			div.card-body
-				div.tab-content
-					div(class='tab-pane active' id='system' role='tabpanel' aria-labelledby='system-tab') Coming Soon!
+                ul(class = 'nav nav-tabs card-header-tabs' id='admin-list' role='tablist')
+                    li(class='nav-item')
+                        a(class='nav-link px-2' data-toggle="tab" href='#system' role="tab" aria-controls="system" aria-selected="true" ) System
+                    li(class='nav-item')
+                        a(class='nav-link px-2 active' data-toggle="tab" href='#judging' role="tab" aria-controls="judging" aria-selected="false") Judging
+                    li(class='nav-item')
+                        a(class='nav-link px-2' data-toggle="tab" href='#judges' role="tab" aria-controls="judges" aria-selected="false" ) Judges
+            div.card-body
+                div.tab-content
+                    div(class='tab-pane' id='system' role='tabpanel' aria-labelledby='system-tab') Coming Soon!
 
-					div(class='tab-pane' id='judging' role='tabpanel' aria-labelledby='judging-tab')
-						ul
-						if (sheets)
-							each sheet in sheets.docs
-								li #{sheet.entry_number} - #{sheet.category} - #{sheet.subscategory}
+                    div(class='tab-pane active' id='judging' role='tabpane2' aria-labelledby='judging-tab')
+                        div.container-fluid
+                            table.comp_entry_list.table.table-striped.table-bordered.table-hover.table-responsive-md
+                                <!--caption List of entries-->
+                                thead.thead-dark
+                                    tr
+                                        th(scope='col') Entry #
+                                        th(scope='col') Category
+                                        th(scope='col') Sub-Category
+                                tbody
+                                    if (sheets)
+                                        each sheet in sheets
+                                            if (sheet.entry_number)
+                                                tr
+                                                    th(scope='row') #{sheet.entry_number}
+                                                    td #{sheet.category}
+                                                    td #{sheet.subscategory}
 
-					div(class='tab-pane' id='users' role='tabpanel' aria-labelledby='users-tab') Test3
+                    div(class='tab-pane' id='judges' role='tabpane3' aria-labelledby='judges-tab') Test3
+                        .container-fluid
+                            table.comp_judges_list.table.table-striped.table-bordered.table-hover.table-responsive-md
+                                <!--caption List of entries-->
+                                thead.thead-dark
+                                    tr
+                                        th(scope='col') Username
+                                        th(scope='col') First Name
+                                        th(scope='col') Last Name
+                                        th(scope='col') BJCP ID
+                                tbody
+                                    if (judges)
+                                        each judge in judges
+                                            tr
+                                                th #{judge.username}
+                                                th #{judge.forename}
+                                                th #{judge.surname}
+                                                th #{judge.bjcp_id}
+
+    script(src='https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js')
+    script(src='https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap4.min.js')
+    script(src='/javascripts/admin.js')
+
+    link(rel='stylesheet', href='https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/css/bootstrap.css')
+    link(rel='stylesheet', href='https://cdn.datatables.net/1.10.19/css/dataTables.bootstrap4.min.css')
