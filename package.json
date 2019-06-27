@@ -12,16 +12,16 @@
     "express": "~4.16.0",
     "express-flash": "0.0.2",
     "express-messages": "^1.0.1",
-    "express-session": "^1.16.1",
+    "express-session": "^1.16.2",
     "http-errors": "~1.6.2",
-    "mongoose": "^5.5.9",
+    "mongoose": "^5.6.1",
     "mongoose-paginate": "^5.0.3",
     "mongoose-type-email": "^1.0.11",
     "morgan": "~1.9.0",
     "passport": "^0.4.0",
     "passport-local": "^1.0.0",
     "passport-local-mongoose": "^5.0.1",
-    "pug": "^2.0.3",
+    "pug": "^2.0.4",
     "stylus": "0.54.5"
   }
 }

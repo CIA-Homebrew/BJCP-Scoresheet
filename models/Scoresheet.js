@@ -2,41 +2,65 @@ let mongoose = require('mongoose');
 let mongoosePaginate = require("mongoose-paginate");
 let Schema = mongoose.Schema;
 
+let validators = {
+	/**
+	 * stringEmpty will trim and test if the string is not empty
+	 * @param s
+	 * @returns {boolean}
+	 */
+	stringEmpty : function(s) {
+		// Make sure there is no white space
+		s = s.trim();
+		// Make sure it's not empty
+		if (s === "") {
+			return false;
+		}
+		// It's a good value
+		return true;
+	}
+};
+
 let ScoresheetSchema = new Schema({
 	category: {
 		type: String,
-		_validator: [true, "empty"]
+		validate: validators.stringEmpty
 	},
 	sub: {
 		type: String,
-		_validator: [true, "empty"]
+		validate: validators.stringEmpty
 	},
 	subcategory: {
 		type: String,
-		_validator: [true, "empty"]
+		validate: validators.stringEmpty
 	},
 	special_ingredients: String,
 	entry_number: {
 		type: String,
-		_validator: [true, "empty"]
+		validate: validators.stringEmpty
 	},
 	flight_position: {
 		type: Number,
-		_validator: [true, "empty"]
+		validate: validators.stringEmpty
 	},
 	flight_total: {
 		type: Number,
-		_validator: [true, "empty"]
+		validate: validators.stringEmpty
 	},
-	mini_boss_advanced: Boolean,
-	place: {
-		type: Number,
-		_validator: [true, "empty"]
+	mini_boss_advanced: {
+		type: Boolean,
+		default: false
 	},
+	place: Number, /** This property doesn't look used in the sheet???? **/
 	consensus_score: String,
-	bottle_inspection_check: Boolean,
+	bottle_inspection_check: {
+		type: Boolean,
+		default: false
+	},
 	bottle_inspection_comment: String,
-	aroma_score: String,
+	aroma_score: {
+		type: Number,
+		default: 0
+	},
 	aroma_malt: String,
 	aroma_malt_inappropriate: Boolean,
 	aroma_malt_comment: String,

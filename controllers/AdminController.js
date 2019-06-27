@@ -29,7 +29,10 @@ adminController.controlPanel = function(req, res) {
 		})
 		/** Promise chain error function **/
 		.then(undefined, function(err){
-			//Handle error
+			res.render("admin", {
+				user : req.user,
+				title : appConstnats.APP_NAME + " - Admin Home"
+			});
 		});
 };
 

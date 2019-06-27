@@ -15,3 +15,4 @@ npm -v 6.9
 #Future Versions Wishlist (not guaranteed!)
 - Make system portable and non internet capable
 - Make portable system sync back process to central database (online or from cache)
+- Multi lingual support (start with english and spanish)

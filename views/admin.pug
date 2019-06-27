@@ -1,11 +1,13 @@
 extends layout
 
 block content
-    .container
+    .container.d-block.d-md-none
+        //- This only shows if the users window is too small, we have a requirement of a minimum of >= 768px -//
+        div(class="alert alert-danger alert-dismissable fade show" role='alert')
+            | This admin panel is only functional at a resolution equal to or greater then 768px. Please resize your browser or reconnect using a tablet or personal computer with the appropriate resolution.
+    .container.d-none.d-md-block
         div.card
             div.card-header
-                .row
-
                 ul(class = 'nav nav-tabs card-header-tabs' id='admin-list' role='tablist')
                     li(class='nav-item')
                         a(class='nav-link px-2' data-toggle="tab" href='#system' role="tab" aria-controls="system" aria-selected="true" ) System
@@ -19,13 +21,12 @@ block content
 
                     div(class='tab-pane active' id='judging' role='tabpane2' aria-labelledby='judging-tab')
                         div.container-fluid
-                            table.comp_entry_list.table.table-striped.table-bordered.table-hover.table-responsive-md
-                                <!--caption List of entries-->
+                            table.comp_entry_list.table.table-sm.table-striped.table-bordered.table-hover
                                 thead.thead-dark
                                     tr
                                         th(scope='col') Entry #
-                                        th(scope='col') Category
-                                        th(scope='col') Sub-Category
+                                        th(scope='col') Cat
+                                        th(scope='col') Sub-Cat
                                 tbody
                                     if (sheets)
                                         each sheet in sheets
@@ -35,24 +36,21 @@ block content
                                                     td #{sheet.category}
                                                     td #{sheet.subscategory}
 
-                    div(class='tab-pane' id='judges' role='tabpane3' aria-labelledby='judges-tab') Test3
+                    div(class='tab-pane' id='judges' role='tabpane3' aria-labelledby='judges-tab')
                         .container-fluid
-                            table.comp_judges_list.table.table-striped.table-bordered.table-hover.table-responsive-md
-                                <!--caption List of entries-->
+                            table.comp_judges_list.table.table-sm.table-striped.table-bordered.table-hover
                                 thead.thead-dark
                                     tr
                                         th(scope='col') Username
                                         th(scope='col') First Name
                                         th(scope='col') Last Name
-                                        th(scope='col') BJCP ID
                                 tbody
                                     if (judges)
                                         each judge in judges
                                             tr
-                                                th #{judge.username}
-                                                th #{judge.forename}
-                                                th #{judge.surname}
-                                                th #{judge.bjcp_id}
+                                                td #{judge.username}
+                                                td #{judge.forename}
+                                                td #{judge.surname}
 
     script(src='https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js')
     script(src='https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap4.min.js')
