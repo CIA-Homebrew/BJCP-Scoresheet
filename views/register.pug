@@ -11,8 +11,21 @@ block content
 			input.form-control(type='password', name="passwordC", placeholder='Confirm Password')
 			sub (The following is optional but REQUIRED if judging)
 			input.form-control(type='text', name="bjcp_id", placeholder='BJCP ID', value=(typeof fData === "undefined" ? "" : fData.bjcp_id))
-			input.form-control(type='text', name="bjcp_rank", placeholder='BJCP Rank', value=(typeof fData === "undefined" ? "" : fData.bjcp_rank))
-			input.form-control(type='text', name="cicerone_rank", placeholder='Cicerone Rank', value=(typeof fData === "undefined" ? "" : fData.cicerone_rank))
+			select.form-control(type='text', name="bjcp_rank", placeholder='BJCP Rank', value=(typeof fData === "undefined" ? "N/A" : fData.bjcp_rank))
+				option(value='N/A' selected=true) N/A
+				option(value='Recognized') BJCP Recognized
+				option(value='Certified') BJCP Certified
+				option(value='National') BJCP National
+				option(value='Master') BJCP Master
+				option(value='GrandMaster') BJCP Grand Master
+				option(value='Apprentice') BJCP Apprentice
+				option(value='Affiliated') BJCP Affiliated
+			select.form-control(type='text', name="cicerone_rank", placeholder='Cicerone Rank', value=(typeof fData === "undefined" ? "N/A" : fData.cicerone_rank))
+				option(value='N/A' selected=true) N/A
+				option(value='level1') Level 1 - Certified Beer Server
+				option(value='level2') Level 2 - Certified Cicerone
+				option(value='level3') Level 3 - Advanced Cicerone
+				option(value='level4') Level 4 - Master Cicerone
 			input.form-control(type='text', name="pro_brewer_brewery", placeholder='Pro Brewer - Brewery', value=(typeof fData === "undefined" ? "" : fData.pro_brewer_brewery))
 			input.form-control(type='text', name="industry_description", placeholder='Industry Description', value=(typeof fData === "undefined" ? "" : fData.industry_description))
 			input.form-control(type='text', name="judging_years", placeholder='Judging Years', value=(typeof fData === "undefined" ? "" : fData.judging_years))

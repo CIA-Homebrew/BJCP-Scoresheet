@@ -32,6 +32,9 @@ router.get('/logout', authController.logout);
 // route for user profile edit
 router.get('/profile/edit', authMiddle.isAuthenticated, authController.editProfile);
 
+//route for user profile edit post
+router.post('/profile/save', authController.saveProfile);
+
 //* SCORESHEET FUNCTIONS *//
 
 //route for scoresheet list load

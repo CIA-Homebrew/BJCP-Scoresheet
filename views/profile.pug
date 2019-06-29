@@ -21,8 +21,23 @@ block content
 			input.form-control(type='password', name="new_passwordC", placeholder='Confirm Password')
 			sub.text-info (The following is optional but REQUIRED if judging)
 			input.form-control(type='text', name="bjcp_id", placeholder='BJCP ID', value=(typeof user === "undefined" ? "" : user.bjcp_id))
-			input.form-control(type='text', name="bjcp_rank", placeholder='BJCP Rank', value=(typeof user === "undefined" ? "" : user.bjcp_rank))
-			input.form-control(type='text', name="cicerone_rank", placeholder='Cicerone Rank', value=(typeof user === "undefined" ? "" : user.cicerone_rank))
+			select.form-control(name="bjcp_rank", selected=(typeof user === "undefined" ? 'N/A' : user.bjcp_rank))
+				option(value='N/A' selected=true) N/A
+				option(value='Recognized' selected=user.bjcp_rank == 'Recognized') BJCP Recognized
+				option(value='Certified' selected=user.bjcp_rank == 'Certified') BJCP Certified
+				option(value='National' selected=user.bjcp_rank == 'National') BJCP National
+				option(value='Master' selected=user.bjcp_rank == 'Master') BJCP Master
+				option(value='GrandMaster' selected=user.bjcp_rank == 'GrandMaster') BJCP Grand Master
+				option(value='Apprentice' selected=user.bjcp_rank == 'Apprentice') BJCP Apprentice
+				option(value='Affiliated' selected=user.bjcp_rank == 'Affiliated') BJCP Affiliated
+			select.form-control(name="cicerone_rank", selected=(typeof user === "undefined" ? 'N/A' : user.cicerone_rank))
+				option(value='N/A' selected=true) N/A
+				option(value='level1' selected=user.cicerone_rank == 'level1') Level 1 - Certified Beer Server
+				option(value='level2' selected=user.cicerone_rank == 'level2') Level 2 - Certified Cicerone
+				option(value='level3' selected=user.cicerone_rank == 'level3') Level 3 - Advanced Cicerone
+				option(value='level4' selected=user.cicerone_rank == 'level4') Level 4 - Master Cicerone
+			//- input.form-control(type='text', name="bjcp_rank", placeholder='BJCP Rank', value=(typeof user === "undefined" ? "" : user.bjcp_rank))
+			//- input.form-control(type='text', name="cicerone_rank", placeholder='Cicerone Rank', value=(typeof user === "undefined" ? "" : user.cicerone_rank))
 			input.form-control(type='text', name="pro_brewer_brewery", placeholder='Pro Brewer - Brewery', value=(typeof user === "undefined" ? "" : user.pro_brewer_brewery))
 			input.form-control(type='text', name="industry_description", placeholder='Industry Description', value=(typeof user === "undefined" ? "" : user.industry_description))
 			input.form-control(type='text', name="judging_years", placeholder='Judging Years', value=(typeof user === "undefined" ? "" : user.judging_years))

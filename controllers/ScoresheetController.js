@@ -12,10 +12,14 @@ scoresheetController.generateObject = function(newObj, data) {
 
 // Load Scoresheet List
 scoresheetController.loadScoresheetList = function(req, res) {
-	res.render('loadScoresheetList', {
-		user : req.user,
-		title : appConstnats.APP_NAME + " - List Scoresheet"
-	});
+	Scoresheet.find({ author : req.user._id}, function(err, userScoresheets) {
+		console.log(userScoresheets)
+		res.render('loadScoresheetList', {
+			user : req.user,
+			scoresheets : userScoresheets,
+			title : appConstnats.APP_NAME + " - List Scoresheet"
+		});
+	})
 };
 
 // Load Individual Scoresheet
@@ -37,11 +41,30 @@ scoresheetController.newScoresheet = function(req, res) {
 
 // New Scoresheet Post
 scoresheetController.doNewScoresheet = function(req, res) {
-	console.log(req.body);
-	res.render('submitScoresheet', {
-		user: req.user,
-		title : appConstnats.APP_NAME + " - Scoresheet Submitted"
-	});
+	// Here we check to see if the _id field already exists. If not, user has not populated anything
+	if (!req.body.fingerprint) {
+		req.flash('error', 'Please populate scoresheet before submitting')
+		res.redirect('/scoresheet/new')
+	}
+	
+	Scoresheet.findOneAndUpdate(
+		{_id:req.body.fingerprint}, //We assume the _id exists (should get caught earlier if not)
+		req.body,
+		{upsert:true, new:true, runValidators: false, useFindAndModify: false},
+		function(err, sheet) {
+			if (err) {
+				console.log(err)
+			} else {
+				req.flash('success', 'Scoresheet Submitted');
+				res.redirect('/');
+			}
+		}
+	)
+
+	// res.render('submitScoresheet', {
+	// 	user: req.user,
+	// 	title : appConstnats.APP_NAME + " - Scoresheet Submitted"
+	// });
 };
 
 // Change Scoresheet Post - This is an AJAX call

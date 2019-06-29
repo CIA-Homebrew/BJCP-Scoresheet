@@ -21,6 +21,14 @@ let validators = {
 };
 
 let ScoresheetSchema = new Schema({
+	author: {
+		type: String, //Temporary way to link scoresheet with author. Author field is user._id
+	},
+	session_date: {
+		type: Date,
+		default: Date.now
+	},
+	session_location: String,
 	category: {
 		type: String,
 		validate: validators.stringEmpty
@@ -138,7 +146,14 @@ let ScoresheetSchema = new Schema({
 	overall_flawless: String,
 	overall_wonderful: String,
 	feedback_comment: String,
-	judge_total: String
+	judge_total: String,
+
+	//Set to true after confirming submit scoresheet
+	scoresheet_submitted: {
+		type: Boolean,
+		default: false
+	}
+
 }, { 
 	timestamps: true, 			// Enable createdat and updatedat timestamp fields
 	collection: 'aha-scoresheets' 
