@@ -5,7 +5,7 @@ block content
         //- Hidden form ID for backend usage
         input(type='text' id='author' name='author' value=user._id hidden=true)
         input(type='text' id='fingerprint' name='fingerprint' hidden=true)
-        input(type='checkbox' value='false' id='scoresheet_submitted' name='scoresheet_submitted' hidden=true)
+        input(type='checkbox' checked=false value='1' id='scoresheet_submitted' name='scoresheet_submitted' hidden=true)
         .container
             div.card
                 div.card-header
@@ -482,7 +482,7 @@ block content
                     .modal-body Are you sure you want to submit this scoresheet?
                     .modal-footer
                         button(type="button" class="btn btn-secondary" data-dismiss='modal') Cancel
-                        button(type='submit' class='btn btn-primary' onsubmit='confirm_submit();') Submit
+                        button(type='button' class='btn btn-primary' onclick='confirm_submit();') Submit
 
     script.
         $("[data-toggle=popover]").popover();
@@ -681,6 +681,7 @@ block content
         //- Change 'scoresheet_submitted' input to true after submit confirmed
         function confirm_submit() {
             document.getElementById('scoresheet_submitted').checked = true;
+            document.getElementById('newScoresheet').submit();
         }
 
         $(document).ready(function() {
