@@ -7,12 +7,14 @@ let _fields = ["username", "forename", "surname", "password"];
 
 let userController = {};
 
+let hasError = false;
+
 function errorProcessor(err, req) {
 	// Sort out our custom error messages
-	//let _err = [];
 	_fields.forEach(function(v) {
 		if (err.errors && typeof err.errors[v] !== "undefined") {
 			req.flash("error", err.errors[v].message);
+			hasError = true;
 		}
 	});
 
@@ -20,15 +22,15 @@ function errorProcessor(err, req) {
 	switch (err.name) {
 		case "UserExistsError":
 		case "MissingPasswordError":
+		case "CustomError":
 			req.flash("error", err.message);
+			hasError = true;
 			break;
 		// Don't use a default it doubles for the custom error messages
 		default:
 			//_err.push(err.message);
 			break;
 	}
-
-	//return _err;
 }
 
 // Restrict access to root page
@@ -116,33 +118,82 @@ userController.editProfile = function(req, res) {
 
 // Post profile edit page
 userController.saveProfile = function(req, res) {
-	// Password match
-	let passwd = null;
+	// Login is good, now just make sure we have a good user object to modify
+	User.findById(req.user.id, function (err, user) {
+		// Something went wrong...
+		if (err || !user) {
+			// Push the processed errors to the flash handler
+			errorProcessor(err, req);
+			// Render our profile page again to show errors
+			return res.render('profile', {
+				fData: user,
+				title : appConstnats.APP_NAME + " - Edit Profile"
+			});
+		}
 
-	// If the user provided both "new" password and confirm password we are changing the password
-	if (req.body.new_password.length > 0 && req.body.new_passwordC.length > 0 && req.body.new_password === req.body.new_passwordC) {
-		passwd = req.body.new_password;
-	}
+		// Make sure the provided existing username/email matches what we have in the DB if we have a new address populated
+		if (req.body.new_username.trim() !== "") {
+			if (req.body.username === user.username[0]) {
+				user.username = req.body.new_username;
+			} else {
+				errorProcessor({name:"CustomError", message: 'Email address does not match existing.'}, req);
+			}
+		}
 
-	let newUser = new User({
-		username : req.body.username,
-		forename: req.body.forename,
-		surname: req.body.surname,
-		password: passwd,
-		bjcp_id: req.body.bjcp_id,
-		bjcp_rank: req.body.bjcp_rank,
-		cicerone_rank: req.body.cicerone_rank,
-		pro_brewer_brewery: req.body.pro_brewer_brewery,
-		industry_description: req.body.industry_description,
-		judging_years: req.body.judging_years
-	});
+		user.forename = req.body.forename;
+		user.surname = req.body.surname;
+		user.bjcp_id = req.body.bjcp_id;
+		user.bjcp_rank = req.body.bjcp_rank;
+		user.cicerone_rank = req.body.cicerone_rank;
+		user.pro_brewer_brewery = req.body.pro_brewer_brewery;
+		user.industry_description = req.body.industry_description;
+		user.judging_years = req.body.judging_years;
 
-	// We only update the data if the user provides the correct password.
-	passport.authenticate('local', {
-		failureRedirect: '/login'
-	})(req, res, function() {
-		// Login is good, set the user data and go back home
-		res.redirect('/');
+		if (hasError) {
+			// Render our profile page again to show errors
+			console.log("ping2");
+			return res.render('profile', {
+				user: user,
+				title : appConstnats.APP_NAME + " - Edit Profile"
+			});
+		}
+
+		// If the user provided both "new" password and confirm password we are changing the password
+		if (req.body.new_password.length > 0 && req.body.new_passwordC.length > 0 && req.body.current_password.length > 0) {
+			if (req.body.new_password === req.body.new_passwordC) {
+				/**
+				 * FIX THIS!
+				user.changePassword(req.body.password, req.body.new_password, function(err) {
+					if (err) {
+						console.log("ping1");
+						// Push the processed errors to the flash handler
+						errorProcessor(err, req);
+					}
+				});
+				 **/
+			} else {
+				errorProcessor({name:"CustomError", message: 'Passwords do not match.'}, req);
+			}
+		}
+
+		// don't forget to save!
+		user.save(function (err) {
+			// Something went wrong...
+			if (err) {
+				// Push the processed errors to the flash handler
+				errorProcessor(err, req);
+				// Render our profile page again to show errors
+				return res.render('profile', {
+					user: user,
+					title : appConstnats.APP_NAME + " - Edit Profile"
+				});
+			}
+		});
+
+		// Finally show the profile edit page again.
+		console.log("end");
+		req.flash("success", 'Profile edit successful!');
+		res.redirect('/profile/edit');
 	});
 };
 

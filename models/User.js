@@ -16,10 +16,11 @@ let UserSchema = new Schema({
 			message: props => "Invalid email address provided."
 		}
 	},
+	/**
 	password: {
 		type: String,
 		require: [true, "Password is missing."]
-	},
+	},**/
 	forename: {
 		type: String,
 		require: [true, "First name is missing or invalid."],
