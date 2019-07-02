@@ -26,7 +26,7 @@ block content
 										if (sheet.scoresheet_submitted)
 											tr
 												th(scope='row' ) 
-													a.pr-3(href='http://www.google.com' target='_blank')
+													a.pr-3(href='../images/pdfDownloadIcon.png' download)
 														img(src='../images/pdfDownloadIcon.png' style='height:24px;width:24px')
 													a(href='') #{sheet.entry_number}
 												td #{sheet.category}#{sheet.sub}
@@ -52,7 +52,7 @@ block content
 												th(scope='row') 
 													a.pr-3(href='')
 														img(src='../images/deleteIcon.png' style='height:24px;width:24px')
-													a(href='' style='display:inline;') #{sheet.entry_number}
+													a(href='/scoresheet/'+sheet._id style='display:inline;') #{sheet.entry_number}
 												td 
 													a(href='') #{sheet.category}#{sheet.sub}
 												td 

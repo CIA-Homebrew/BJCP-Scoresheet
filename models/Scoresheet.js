@@ -70,83 +70,203 @@ let ScoresheetSchema = new Schema({
 		default: 0
 	},
 	aroma_malt: String,
-	aroma_malt_inappropriate: Boolean,
+	aroma_malt_inappropriate: {
+		type: Boolean,
+		default: false
+	},
 	aroma_malt_comment: String,
 	aroma_hops: String,
-	aroma_hops_inappropriate: Boolean,
+	aroma_hops_inappropriate: {
+		type: Boolean,
+		default: false
+	},
 	aroma_hops_comment: String,
 	aroma_fermentation: String,
-	aroma_fermentation_inappropriate: Boolean,
+	aroma_fermentation_inappropriate: {
+		type: Boolean,
+		default: false
+	},
 	aroma_fermentation_comment: String,
 	aroma_other_comment: String,
-	appearance_score: String,
+	appearance_score: {
+		type: Number,
+		default: 0
+	},
 	appearance_color: String,
-	appearance_color_inappropriate: Boolean,
+	appearance_color_inappropriate: {
+		type: Boolean,
+		default: false
+	},
 	appearance_color_other: String,
 	appearance_clarity: String,
-	appearance_clarity_inappropriate: Boolean,
+	appearance_clarity_inappropriate: {
+		type: Boolean,
+		default: false
+	},
 	appearance_head: String,
-	appearance_head_inappropriate: Boolean,
+	appearance_head_inappropriate: {
+		type: Boolean,
+		default: false
+	},
 	appearance_head_other: String,
 	appearance_retention: String,
-	appearance_retention_inappropriate: Boolean,
+	appearance_retention_inappropriate: {
+		type: Boolean,
+		default: false
+	},
 	appearance_other_comment: String,
 	appearance_texture_comment: String,
-	descriptor_acetaldehyde: Boolean,
-	descriptor_alcoholic: Boolean,
-	descriptor_astringent: Boolean,
-	descriptor_diacetyl: Boolean,
-	descriptor_dms: Boolean,
-	descriptor_estery: Boolean,
-	descriptor_grassy: Boolean,
-	descriptor_lightstruck: Boolean,
-	descriptor_metallic: Boolean,
-	descriptor_musty: Boolean,
-	descriptor_oxidized: Boolean,
-	descriptor_phenolic: Boolean,
-	descriptor_solvent: Boolean,
-	descriptor_sour: Boolean,
-	descriptor_sulfur: Boolean,
-	descriptor_vegetal: Boolean,
-	descriptor_yeasty: Boolean,
-	flavor_score: String,
+	descriptor_acetaldehyde: {
+		type: Boolean,
+		default: false
+	},
+	descriptor_alcoholic: {
+		type: Boolean,
+		default: false
+	},
+	descriptor_astringent: {
+		type: Boolean,
+		default: false
+	},
+	descriptor_diacetyl: {
+		type: Boolean,
+		default: false
+	},
+	descriptor_dms: {
+		type: Boolean,
+		default: false
+	},
+	descriptor_estery: {
+		type: Boolean,
+		default: false
+	},
+	descriptor_grassy: {
+		type: Boolean,
+		default: false
+	},
+	descriptor_lightstruck: {
+		type: Boolean,
+		default: false
+	},
+	descriptor_metallic: {
+		type: Boolean,
+		default: false
+	},
+	descriptor_musty: {
+		type: Boolean,
+		default: false
+	},
+	descriptor_oxidized: {
+		type: Boolean,
+		default: false
+	},
+	descriptor_phenolic: {
+		type: Boolean,
+		default: false
+	},
+	descriptor_solvent: {
+		type: Boolean,
+		default: false
+	},
+	descriptor_sour: {
+		type: Boolean,
+		default: false
+	},
+	descriptor_sulfur: {
+		type: Boolean,
+		default: false
+	},
+	descriptor_vegetal: {
+		type: Boolean,
+		default: false
+	},
+	descriptor_yeasty: {
+		type: Boolean,
+		default: false
+	},
+	flavor_score: {
+		type: Number,
+		default: 0
+	},
 	flavor_malt: String,
-	flavor_malt_inappropriate: Boolean,
+	flavor_malt_inappropriate: {
+		type: Boolean,
+		default: false
+	},
 	flavor_malt_comment: String,
 	flavor_hops: String,
-	flavor_hops_inappropriate: Boolean,
+	flavor_hops_inappropriate: {
+		type: Boolean,
+		default: false
+	},
 	flavor_hops_comment: String,
 	flavor_bitterness: String,
-	flavor_bitterness_inappropriate: Boolean,
+	flavor_bitterness_inappropriate: {
+		type: Boolean,
+		default: false
+	},
 	flavor_bitterness_comment: String,
 	flavor_fermentation: String,
-	flavor_fermentation_inappropriate: Boolean,
+	flavor_fermentation_inappropriate: {
+		type: Boolean,
+		default: false
+	},
 	flavor_fermentation_comment: String,
 	flavor_balance: String,
-	flavor_balance_inappropriate: Boolean,
+	flavor_balance_inappropriate: {
+		type: Boolean,
+		default: false
+	},
 	flavor_balance_comment: String,
 	flavor_finish_aftertaste: String,
-	flavor_finish_aftertaste_inappropriate: Boolean,
+	flavor_finish_aftertaste_inappropriate: {
+		type: Boolean,
+		default: false
+	},
 	flavor_finish_aftertaste_comment: String,
 	flavor_other_comment: String,
-	mouthfeel_score: String,
+	mouthfeel_score: {
+		type: Number,
+		default: 0
+	},
 	mouthfeel_body: String,
-	mouthfeel_body_inappropriate: Boolean,
+	mouthfeel_body_inappropriate: {
+		type: Boolean,
+		default: false
+	},
 	mouthfeel_carbonation: String,
-	mouthfeel_carbonation_inappropriate: Boolean,
+	mouthfeel_carbonation_inappropriate: {
+		type: Boolean,
+		default: false
+	},
 	mouthfeel_warmth: String,
-	mouthfeel_warmth_inappropriate: Boolean,
+	mouthfeel_warmth_inappropriate: {
+		type: Boolean,
+		default: false
+	},
 	mouthfeel_creaminess: String,
-	mouthfeel_creaminess_inappropriate: Boolean,
+	mouthfeel_creaminess_inappropriate: {
+		type: Boolean,
+		default: false
+	},
 	mouthfeel_astringency: String,
-	mouthfeel_astringency_inappropriate: Boolean,
+	mouthfeel_astringency_inappropriate: {
+		type: Boolean,
+		default: false
+	},
 	mouthfeel_other_comment: String,
-	overall_score: String,
+	overall_score: {
+		type: Number,
+		default: 0
+	},
 	overall_class_example: String,
 	overall_flawless: String,
 	overall_wonderful: String,
 	feedback_comment: String,
-	judge_total: String,
+	judge_total: {
+		type: Number,
+		default: 0
+	},
 
 	//Set to true after confirming submit scoresheet
 	scoresheet_submitted: {

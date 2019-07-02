@@ -13,7 +13,6 @@ scoresheetController.generateObject = function(newObj, data) {
 // Load Scoresheet List
 scoresheetController.loadScoresheetList = function(req, res) {
 	Scoresheet.find({ author : req.user._id}, function(err, userScoresheets) {
-		console.log(userScoresheets)
 		res.render('loadScoresheetList', {
 			user : req.user,
 			scoresheets : userScoresheets,
@@ -24,11 +23,27 @@ scoresheetController.loadScoresheetList = function(req, res) {
 
 // Load Individual Scoresheet
 scoresheetController.loadScoresheet = function(req, res) {
-	res.render('loadScoresheet', {
-		sendData:req.params,
-		user: req.user,
-		title : appConstnats.APP_NAME + " - Load Scoresheet"
-	});
+	console.log(req.params.scoresheetId)
+	Scoresheet.findById(
+		req.params.scoresheetId, function(err, scoresheet) {
+			console.log(scoresheet)
+			if (err) {
+				console.log(err)
+			} else {
+				res.render('newScoresheet', {
+					user: req.user,
+					scoresheet : scoresheet,
+					title : appConstnats.APP_NAME + " - Load Scoresheet"
+				})
+			}	
+		}
+	)
+
+	// res.render('loadScoresheet', {
+	// 	scoresheet:req.params,
+	// 	user: req.user,
+	// 	title : appConstnats.APP_NAME + " - Load Scoresheet"
+	// });
 };
 
 // New Scoresheet Render
@@ -60,11 +75,6 @@ scoresheetController.doNewScoresheet = function(req, res) {
 			}
 		}
 	)
-
-	// res.render('submitScoresheet', {
-	// 	user: req.user,
-	// 	title : appConstnats.APP_NAME + " - Scoresheet Submitted"
-	// });
 };
 
 // Change Scoresheet Post - This is an AJAX call
