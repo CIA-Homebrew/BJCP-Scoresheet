@@ -40,6 +40,9 @@ router.post('/profile/edit', authMiddle.isAuthenticated, authController.saveProf
 //route for scoresheet list load
 router.get('/scoresheet/load', authMiddle.isAuthenticated, scoresheetController.loadScoresheetList);
 
+//route for PDF Generate
+router.get('/scoresheet/pdf/:scoresheetId', authMiddle.isAuthenticated, scoresheetController.generatePDF);
+
 //route for new scoresheet load
 router.get('/scoresheet/new', authMiddle.isAuthenticated, scoresheetController.newScoresheet);
 

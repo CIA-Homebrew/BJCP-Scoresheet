@@ -13,6 +13,7 @@
     "express-flash": "0.0.2",
     "express-messages": "^1.0.1",
     "express-session": "^1.16.2",
+    "fs": "0.0.1-security",
     "http-errors": "^1.6.2",
     "mongoose": "^5.6.1",
     "mongoose-paginate": "^5.0.3",
@@ -21,6 +22,8 @@
     "passport": "^0.4.0",
     "passport-local": "^1.0.0",
     "passport-local-mongoose": "^5.0.1",
+    "path": "^0.12.7",
+    "pdffiller": "0.0.11",
     "pug": "^2.0.4",
     "stylus": "0.54.5"
   }

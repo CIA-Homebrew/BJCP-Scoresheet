@@ -26,7 +26,7 @@ block content
 										if (sheet.scoresheet_submitted)
 											tr
 												th(scope='row' ) 
-													a.pr-3(href='../images/pdfDownloadIcon.png' download)
+													a.pr-3(href='/scoresheet/pdf/'+sheet._id download)
 														img(src='../images/pdfDownloadIcon.png' style='height:24px;width:24px')
 													a(href='') #{sheet.entry_number}
 												td #{sheet.category}#{sheet.sub}

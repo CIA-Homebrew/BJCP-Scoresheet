@@ -1,5 +1,8 @@
 let mongoose = require("mongoose");
 let passport = require("passport");
+let pdffiller = require('pdffiller');
+let path = require('path');
+var fs = require('fs');
 let Scoresheet = require("../models/Scoresheet");
 let appConstnats = require("../helpers/appConstants");
 
@@ -130,5 +133,25 @@ scoresheetController.doCheckScoresheet = function(req, res) {
 		}
 	);
 };
+
+scoresheetController.generatePDF = function(req, res) {
+	let scoresheetId = req.params.scoresheetID;
+	let sourcePDF = path.join(__dirname,'../public/modified-scoresheet-2019.pdf');
+	let destinationPDF = path.join(__dirname,'../public/'+ req.url.split('/')[-1] +'.pdf')
+
+	fs.copyFile(sourcePDF, destinationPDF, (err) => {
+		if (err) throw err;
+		console.log('source.txt was copied to destination.txt');
+		res.sendFile(destinationPDF);
+	});
+
+	
+
+	res.on('finish', function() {
+		fs.unlinkSync(destinationPDF);
+	})
+
+	return 
+}
 
 module.exports = scoresheetController;
