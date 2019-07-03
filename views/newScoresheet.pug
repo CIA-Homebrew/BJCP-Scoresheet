@@ -11,8 +11,8 @@ block content
                 div.card-header
                     .row
                         .col-md
-                            h4.card-title BJCP Soresheet
-                            h6.card-subtitle.mb-2 Please fill this out
+                            h4.card-title BJCP Digital Soresheet
+                            sub.form-text.mb-2.text-subdued Please fill this form to the most comprehensive degree possible.
                         .col-md
                             .card-deck
                                 .card.border-dark.mb-3.mx-1
@@ -134,8 +134,8 @@ block content
                                     .form-row.py-1
                                         .form-group.col-3.col-form-label
                                             .form-check
-                                                input.form-check-input(type='checkbox'  id='bottle_inspection' name='bottle_inspection')
-                                                label.form-check-label(for='bottle_inspection') Bottle Acceptable
+                                                input.form-check-input(type='checkbox'  id='bottle_inspection_check' name='bottle_inspection_check')
+                                                label.form-check-label(for='bottle_inspection_check') Bottle Acceptable
                                         .form-group.col-9
                                             input.form-control(type='text' id='bottle_inspection_comment' name='bottle_inspection_comment' placeholder='Bottle Comments')
                             div(class='tab-pane' id='aroma' role='tabpanel' aria-labelledby='aroma-tab')
@@ -488,7 +488,7 @@ block content
         $("[data-toggle=popover]").popover();
 
         //- Aroma Sliders
-        var slider = new Slider("#aroma_malt", {
+        var aroma_malt = new Slider("#aroma_malt", {
             ticks: [0, 10, 50, 100],
             ticks_positions: [0, 10, 50, 100],
             //- ticks_labels: ['None','Low','Med','High'],
@@ -496,7 +496,7 @@ block content
             ticks_snap_bounds: 3,
             value: 0
         });
-        var slider = new Slider("#aroma_hops", {
+        var aroma_hops = new Slider("#aroma_hops", {
             ticks: [0, 10, 50, 100],
             ticks_positions: [0, 10, 50, 100],
             //- ticks_labels: ['None','Low','Med','High'],
@@ -504,7 +504,7 @@ block content
             ticks_snap_bounds: 3,
             value: 0
         });
-        var slider = new Slider("#aroma_fermentation", {
+        var aroma_fermentation = new Slider("#aroma_fermentation", {
             ticks: [0, 10, 50, 100],
             ticks_positions: [0, 10, 50, 100],
             //- ticks_labels: ['None','Low','Med','High'],
@@ -514,7 +514,7 @@ block content
         });
 
         //- Appearance Sliders
-        var slider = new Slider("#appearance_color", {
+        var appearance_color = new Slider("#appearance_color", {
             ticks: [0, 20, 40, 60, 80, 100],
             ticks_positions: [0, 20, 40, 60, 80, 100],
             //- ticks_labels: ['None','Low','Med','High'],
@@ -522,7 +522,7 @@ block content
             ticks_snap_bounds: 3,
             value: 0
         });
-        var slider = new Slider("#appearance_clarity", {
+        var appearance_clarity = new Slider("#appearance_clarity", {
             ticks: [0, 50, 100],
             ticks_positions: [0, 50, 100],
             //- ticks_labels: ['None','Low','Med','High'],
@@ -530,7 +530,7 @@ block content
             ticks_snap_bounds: 3,
             value: 0
         });
-        var slider = new Slider("#appearance_head", {
+        var appearance_head = new Slider("#appearance_head", {
             ticks: [0, 25, 50, 75, 100],
             ticks_positions: [0, 25, 50, 75, 100],
             //- ticks_labels: ['None','Low','Med','High'],
@@ -538,7 +538,7 @@ block content
             ticks_snap_bounds: 3,
             value: 0
         });
-        var slider = new Slider("#appearance_retention", {
+        var appearance_retention = new Slider("#appearance_retention", {
             ticks: [0, 10, 50, 100],
             ticks_positions: [0, 10, 50, 100],
             //- ticks_labels: ['None','Low','Med','High'],
@@ -548,7 +548,7 @@ block content
         });
 
         //- Flavor Sliders
-        var slider = new Slider("#flavor_malt", {
+        var flavor_malt = new Slider("#flavor_malt", {
             ticks: [0, 10, 50, 100],
             ticks_positions: [0, 10, 50, 100],
             //- ticks_labels: ['None','Low','Med','High'],
@@ -556,7 +556,7 @@ block content
             ticks_snap_bounds: 3,
             value: 0
         });
-        var slider = new Slider("#flavor_hops", {
+        var flavor_hops = new Slider("#flavor_hops", {
             ticks: [0, 10, 50, 100],
             ticks_positions: [0, 10, 50, 100],
             //- ticks_labels: ['None','Low','Med','High'],
@@ -564,7 +564,7 @@ block content
             ticks_snap_bounds: 3,
             value: 0
         });
-        var slider = new Slider("#flavor_bitterness", {
+        var flavor_bitterness = new Slider("#flavor_bitterness", {
             ticks: [0, 10, 50, 100],
             ticks_positions: [0, 10, 50, 100],
             //- ticks_labels: ['None','Low','Med','High'],
@@ -572,7 +572,7 @@ block content
             ticks_snap_bounds: 3,
             value: 0
         });
-        var slider = new Slider("#flavor_fermentation", {
+        var flavor_fermentation = new Slider("#flavor_fermentation", {
             ticks: [0, 10, 50, 100],
             ticks_positions: [0, 10, 50, 100],
             //- ticks_labels: ['None','Low','Med','High'],
@@ -580,7 +580,7 @@ block content
             ticks_snap_bounds: 3,
             value: 0
         });
-        var slider = new Slider("#flavor_balance", {
+        var flavor_balance = new Slider("#flavor_balance", {
             ticks: [0, 100],
             ticks_positions: [0, 100],
             //- ticks_labels: ['None','Low','Med','High'],
@@ -588,7 +588,7 @@ block content
             ticks_snap_bounds: 3,
             value: 0
         });
-        var slider = new Slider("#flavor_finish_aftertaste", {
+        var flavor_finish_aftertaste = new Slider("#flavor_finish_aftertaste", {
             ticks: [0, 100],
             ticks_positions: [0, 100],
             //- ticks_labels: ['None','Low','Med','High'],
@@ -598,7 +598,7 @@ block content
         });
 
         //- Mouthfeel Sliders
-        var slider = new Slider("#mouthfeel_body", {
+        var mouthfeel_body = new Slider("#mouthfeel_body", {
             ticks: [0, 10, 50, 100],
             ticks_positions: [0, 10, 50, 100],
             //- ticks_labels: ['None','Low','Med','High'],
@@ -606,7 +606,7 @@ block content
             ticks_snap_bounds: 3,
             value: 0
         });
-        var slider = new Slider("#mouthfeel_carbonation", {
+        var mouthfeel_carbonation = new Slider("#mouthfeel_carbonation", {
             ticks: [0, 10, 50, 100],
             ticks_positions: [0, 10, 50, 100],
             //- ticks_labels: ['None','Low','Med','High'],
@@ -614,7 +614,7 @@ block content
             ticks_snap_bounds: 3,
             value: 0
         });
-        var slider = new Slider("#mouthfeel_warmth", {
+        var mouthfeel_warmth = new Slider("#mouthfeel_warmth", {
             ticks: [0, 10, 50, 100],
             ticks_positions: [0, 10, 50, 100],
             //- ticks_labels: ['None','Low','Med','High'],
@@ -622,7 +622,7 @@ block content
             ticks_snap_bounds: 3,
             value: 0
         });
-        var slider = new Slider("#mouthfeel_creaminess", {
+        var mouthfeel_creaminess = new Slider("#mouthfeel_creaminess", {
             ticks: [0, 10, 50, 100],
             ticks_positions: [0, 10, 50, 100],
             //- ticks_labels: ['None','Low','Med','High'],
@@ -630,7 +630,7 @@ block content
             ticks_snap_bounds: 3,
             value: 0
         });
-        var slider = new Slider("#mouthfeel_astringency", {
+        var mouthfeel_astringency = new Slider("#mouthfeel_astringency", {
             ticks: [0, 10, 50, 100],
             ticks_positions: [0, 10, 50, 100],
             //- ticks_labels: ['None','Low','Med','High'],
@@ -640,7 +640,7 @@ block content
         });
 
         //- Summary Sliders
-        var slider = new Slider("#overall_class_example", {
+        var overall_class_example = new Slider("#overall_class_example", {
             ticks: [0, 100],
             ticks_positions: [0, 100],
             ticks_labels: ['Not to Style', 'Classic Example'],
@@ -648,7 +648,7 @@ block content
             ticks_snap_bounds: 3,
             value: 0
         });
-        var slider = new Slider("#overall_flawless", {
+        var overall_flawless = new Slider("#overall_flawless", {
             ticks: [0, 100],
             ticks_positions: [0, 100],
             ticks_labels: ['Significant Flaws', 'Flawless'],
@@ -656,7 +656,7 @@ block content
             ticks_snap_bounds: 3,
             value: 0
         });
-        var slider = new Slider("#overall_wonderful", {
+        var overall_wonderful = new Slider("#overall_wonderful", {
             ticks: [0, 100],
             ticks_positions: [0, 100],
             ticks_labels: ['Lifeless', 'Wonderful'],
@@ -666,7 +666,7 @@ block content
         });
 
         //- Update all sliders
-        slider.refresh();
+        //- slider.refresh();
 
         //- Recalculate total score
         function recalculate_score() {
@@ -681,12 +681,47 @@ block content
         //- Change 'scoresheet_submitted' input to true after submit confirmed
         function confirm_submit() {
             document.getElementById('scoresheet_submitted').checked = true;
+            document.getElementById('scoresheet_submitted').value = true;
             document.getElementById('newScoresheet').submit();
         }
 
         $(document).ready(function() {
+            //- Check to see if the scoresheet object was passed, and if so, pre-populate all fields
+            if ('#{fingerprint}') {
+                document.getElementById('fingerprint').value = '#{fingerprint}';
+                var scoresheet = JSON.parse('!{JSON.stringify(scoresheet)}');
+                for (scoresheetField in scoresheet) {
+                    var field = document.getElementById(scoresheetField);
+                    if (field) {
+                        if (scoresheet[scoresheetField] == true && field.type === 'checkbox') {
+                            field.checked = true;
+                            field.value = true;
+                        } else if (scoresheet[scoresheetField] == false && field.type ==='checkbox') {
+                            field.checked = false;
+                            field.value = false;
+                        } else if (field.id === 'session_date') {
+                            field.value = scoresheet[scoresheetField].slice(0,10);
+                        } else if (field.hasAttribute('data-slider-ticks')) {
+                            window[field.id].setValue(scoresheet[scoresheetField])
+                        } else {
+                            field.value = scoresheet[scoresheetField];
+                        }
+                    }
+                }
+                if (document.getElementById('category') && document.getElementById('sub')) {
+                    update_tooltips();
+                }
+
+                recalculate_score();
+            }
+
             //- On form load see if there is an existing sheet to populate data
-            var fp = $('form#newScoresheet input#fingerprint').val();
+            //- var fp = $('form#newScoresheet input#fingerprint').val();
+            if ('#{fingerprint}') {
+                var fp = '#{fingerprint}';
+            }
+            
+
             if (fp !== "" ) {
                 $.post('/scoresheet/check', {fingerprint: $('form#newScoresheet input#fingerprint').val()}, function (data) {
                     if (data) {
@@ -697,7 +732,6 @@ block content
 
             //- If we put this first, it works!! (Unlike the body wraps.)
             $('form#newScoresheet input:checkbox').on('change', function() {
-                console.log('GOT HEEERRREEE')
                 if ($(this).is(':checked')) {
                     $(this).attr('value', 'true');
                 } else {
@@ -708,6 +742,7 @@ block content
             //- On form change we save it back to the system
             var origForm = $('form#newScoresheet').serialize();
             $('form#newScoresheet :input').change(function () {
+                //- console.log(scoresheet)
                 var fData = $('form#newScoresheet').serialize();
                 if (origForm !== fData) {
                     //- We have changes to the form save them back
@@ -749,7 +784,6 @@ block content
                         for (sub_item in category.subcategory) {
                             var subcategory = category.subcategory[sub_item];
                             if (subcategory['id'] == sheet_category + sheet_subcategory) {
-                                console.log(subcategory);
                                 bjcp_name.value = subcategory.name;
                                 bjcp_aroma.setAttribute('data-content', subcategory.aroma);
                                 bjcp_appearance.setAttribute('data-content', subcategory.appearance);

@@ -33,6 +33,7 @@ scoresheetController.loadScoresheet = function(req, res) {
 				res.render('newScoresheet', {
 					user: req.user,
 					scoresheet : scoresheet,
+					fingerprint: req.params.scoresheetId,
 					title : appConstnats.APP_NAME + " - Load Scoresheet"
 				})
 			}	

@@ -3,63 +3,102 @@ extends layout
 block content
 	.container
 		form.form-signin(role='form', action="/profile/edit", method="post", style='max-width: 500px;')
-			h2.form-profile-heading Edit Profile
 			if typeof(error) !== "undefined" && error.length > 0
 				p.text-danger
 					<strong>Error(s)!</strong>
 					each val in error
 						p.text-danger=val
-
-			label(for='forename') First Name
-			input.form-control(type='text', name="forename", id="forename", placeholder='First Name', value=(typeof user === "undefined" ? "" : user.forename))
-
-			label(for='surname') Last Name
-			input.form-control(type='text', name="surname", id="surname", placeholder='Last Name', value=(typeof user === "undefined" ? "" : user.surname))
-
-			sub.text-primary (Old and new email address required to change)
-			br
-			label(for='username') Current Email Address
-			//- Passport stores username in an array to use the first element
-			input.form-control(type='text', name="username", id="username", placeholder='Email Address', value=(typeof user === "undefined" ? "" : user.username[0]))
-			label(for='new_username') New Email Address
-			input.form-control(type='text', name="new_username", id="new_username", placeholder='New Email Address')
-
-			sub.text-primary (All password fields required to change.)
-			br
-			label(for='current_password') Current Password
-			input.form-control(type='password', name="current_password", id="current_password", placeholder='Current Password')
-			//- sub.text-primary (Both fields required to change password )
-			label(for='new_password') New Password
-			input.form-control(type='password', name="new_password", id="new_password", placeholder='New Password')
-			label(for='new_passwordC') Confirm New Password
-			input.form-control(type='password', name="new_passwordC", id="new_passwordC", placeholder='Confirm Password')
-			sub.text-info (The following is optional but REQUIRED if judging)
-			label(for='bjcp_id') BJCP ID
-			input.form-control(type='text', name="bjcp_id", id="bjcp_id", placeholder='BJCP ID', value=(typeof user === "undefined" ? "" : user.bjcp_id))
-			label(for='bjcp_rank') BJCP Rank
-			select.form-control(name="bjcp_rank", id="bjcp_rank")
-				option(value='N/A' selected=true) N/A
-				option(value='Recognized' selected= user.bjcp_rank === 'Recognized') BJCP Recognized
-				option(value='Certified' selected= user.bjcp_rank === 'Certified') BJCP Certified
-				option(value='National' selected= user.bjcp_rank === 'National') BJCP National
-				option(value='Master' selected= user.bjcp_rank === 'Master') BJCP Master
-				option(value='GrandMaster' selected= user.bjcp_rank === 'GrandMaster') BJCP Grand Master
-				option(value='Apprentice' selected= user.bjcp_rank === 'Apprentice') BJCP Apprentice
-				option(value='Affiliated' selected= user.bjcp_rank === 'Affiliated') BJCP Affiliated
-			label(for='cicerone_rank') Cicerone Rank
-			select.form-control(name="cicerone_rank", id="cicerone_rank")
-				option(value='N/A' selected=true) N/A
-				option(value='level1' selected= user.cicerone_rank === 'level1') Level 1 - Certified Beer Server
-				option(value='level2' selected= user.cicerone_rank === 'level2') Level 2 - Certified Cicerone
-				option(value='level3' selected= user.cicerone_rank === 'level3') Level 3 - Advanced Cicerone
-				option(value='level4' selected= user.cicerone_rank === 'level4') Level 4 - Master Cicerone
-			//- input.form-control(type='text', name="bjcp_rank", placeholder='BJCP Rank', value=(typeof user === "undefined" ? "" : user.bjcp_rank))
-			//- input.form-control(type='text', name="cicerone_rank", placeholder='Cicerone Rank', value=(typeof user === "undefined" ? "" : user.cicerone_rank))
-			label(for='pro_brewer_brewery') Pro Brewer - Brewery
-			input.form-control(type='text', name="pro_brewer_brewery", id="pro_brewer_brewery", placeholder='Pro Brewer - Brewery', value=(typeof user === "undefined" ? "" : user.pro_brewer_brewery))
-			label(for='industry_description') Industry Description
-			input.form-control(type='text', name="industry_description", id="industry_description", placeholder='Industry Description', value=(typeof user === "undefined" ? "" : user.industry_description))
-			label(for='judging_years') Judging Years
-			input.form-control(type='number', name="judging_years", id="judging_years", placeholder='Judging Years', value=(typeof user === "undefined" ? "" : user.judging_years))
-			br
-			button.btn.btn-lg.btn-primary.btn-block(type='submit') Save Profile
+			//- .form-group
+			//- 	h2.form-profile-heading Edit Profile
+			.form-group
+				.form-row
+					h4 Name
+				.form-row
+					label.col-sm-4.col-form-label(for='forename') First Name
+					.col-sm-8
+						input.form-control(type='text', name="forename", id="forename", placeholder='First Name', value=(typeof user === "undefined" ? "" : user.forename))
+				.form-row
+					label.col-sm-4.col-form-label(for='surname') Last Name
+					.col-sm-8
+						input.form-control(type='text', name="surname", id="surname", placeholder='Last Name', value=(typeof user === "undefined" ? "" : user.surname))
+			.form-group
+				.form-row
+					.col-md-3
+						h4 Email
+					.col-md-9
+						sub.form-text.text-subdued.py-2.float-right (Old and new email address required to change)
+				.form-row
+					label.col-sm-4.col-form-label(for='username') Current Email
+					//- Passport stores username in an array to use the first element
+					.col-sm-8
+						input.form-control(type='text', name="username", id="username", placeholder='Email Address', value=(typeof user === "undefined" ? "" : user.username[0]))
+				.form-row
+					label.col-sm-4.col-form-label(for='new_username') New Email
+					.col-sm-8
+						input.form-control(type='text', name="new_username", id="new_username", placeholder='New Email Address')
+			.form-group
+				.form-row
+					.col-md-3
+						h4 Password
+					.col-md-9
+						sub.form-text.text-subdued.py-2.float-right (All password fields required to change.)
+				.form-row
+					label.col-sm-4.col-form-label(for='current_password') Current Password
+					.col-sm-8
+						input.form-control(type='password', name="current_password", id="current_password", placeholder='Current Password')
+					//- sub.text-primary (Both fields required to change password )
+				.form-row
+					label.col-sm-4.col-form-label(for='new_password') New Password
+					.col-sm-8
+						input.form-control(type='password', name="new_password", id="new_password", placeholder='New Password')
+				.form-row
+					label.col-sm-4.col-form-label(for='new_passwordC') Confirm Password
+					.col-sm-8
+						input.form-control(type='password', name="new_passwordC", id="new_passwordC", placeholder='Confirm Password')
+			.form-group
+				.form-row
+					.col-md-6
+						h4 Judging Qualifications
+					.col-md-6
+						sub.form-text.text-subdued.py-2.float-right (Optional but REQUIRED if judging)
+				.form-row
+					label.col-sm-4.col-form-label(for='bjcp_id') BJCP ID
+					.col-sm-8
+						input.form-control(type='text', name="bjcp_id", id="bjcp_id", placeholder='BJCP ID', value=(typeof user === "undefined" ? "" : user.bjcp_id))
+				.form-row
+					label.col-sm-4.col-form-label(for='bjcp_rank') BJCP Rank
+					.col-sm-8
+						select.form-control(name="bjcp_rank", id="bjcp_rank")
+							option(value='N/A' selected=true) N/A
+							option(value='Recognized' selected= user.bjcp_rank === 'Recognized') BJCP Recognized
+							option(value='Certified' selected= user.bjcp_rank === 'Certified') BJCP Certified
+							option(value='National' selected= user.bjcp_rank === 'National') BJCP National
+							option(value='Master' selected= user.bjcp_rank === 'Master') BJCP Master
+							option(value='GrandMaster' selected= user.bjcp_rank === 'GrandMaster') BJCP Grand Master
+							option(value='Apprentice' selected= user.bjcp_rank === 'Apprentice') BJCP Apprentice
+							option(value='Affiliated' selected= user.bjcp_rank === 'Affiliated') BJCP Affiliated
+				.form-row
+					label.col-sm-4.col-form-label(for='cicerone_rank') Cicerone Rank
+					.col-sm-8
+						select.form-control(name="cicerone_rank", id="cicerone_rank")
+							option(value='N/A' selected=true) N/A
+							option(value='level1' selected= user.cicerone_rank === 'level1') Level 1 - Certified Beer Server
+							option(value='level2' selected= user.cicerone_rank === 'level2') Level 2 - Certified Cicerone
+							option(value='level3' selected= user.cicerone_rank === 'level3') Level 3 - Advanced Cicerone
+							option(value='level4' selected= user.cicerone_rank === 'level4') Level 4 - Master Cicerone
+				//- input.form-control(type='text', name="bjcp_rank", placeholder='BJCP Rank', value=(typeof user === "undefined" ? "" : user.bjcp_rank))
+				//- input.form-control(type='text', name="cicerone_rank", placeholder='Cicerone Rank', value=(typeof user === "undefined" ? "" : user.cicerone_rank))
+				.form-row
+					label.col-sm-4.col-form-label(for='pro_brewer_brewery') Pro Brewer
+					.col-sm-8
+						input.form-control(type='text', name="pro_brewer_brewery", id="pro_brewer_brewery", placeholder='Brewery Name', value=(typeof user === "undefined" ? "" : user.pro_brewer_brewery))
+				.form-row
+					label.col-sm-4.col-form-label(for='industry_description') Industry
+					.col-sm-8
+						input.form-control(type='text', name="industry_description", id="industry_description", placeholder='Industry Description', value=(typeof user === "undefined" ? "" : user.industry_description))
+				.form-row
+					label.col-sm-4.col-form-label(for='judging_years') Judging Years
+					.col-sm-8
+							input.form-control(type='number', name="judging_years", id="judging_years", placeholder='Judging Years', value=(typeof user === "undefined" ? "" : user.judging_years))
+			.form-group
+				button.btn.btn-lg.btn-primary.btn-block(type='submit') Save Profile

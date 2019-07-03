@@ -23,11 +23,6 @@ html
 						span.navbar-toggler-icon
 					#navbarTogglerDemo01.collapse.navbar-collapse
 						ul.navbar-nav.mr-auto.mt-2.mt-lg-0
-							if (!user)
-								li.nav-item
-									a.nav-link(href='/login') Login
-								li.nav-item
-									a.nav-link(href='/register') Register
 							if (user)
 								//-li.nav-item
 									a.nav-link.text-success Welcome #{user.forename}-//
@@ -37,12 +32,18 @@ html
 									a.nav-link(href='/scoresheet/load') Load Scoresheet
 								li.nav-item
 									a.nav-link(href='/profile/edit') Edit Profile
+						ul.navbar-nav.mr-auto.mt-2.mt-lg-0.float-right
 							if (user && user.user_level)
 								li.nav-item
 									a.nav-link(href='/admin') Admin Panel
 							if (user)
-								li.nav-item
+								li.nav-item.allign-right
 									a.nav-link(href='/logout') Logout
+							if (!user)
+								li.nav-item
+									a.nav-link(href='/login') Login
+								li.nav-item
+									a.nav-link(href='/register') Register
 			div.container
 				!= messages('message', locals)
 				if errors
