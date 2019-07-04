@@ -15,7 +15,7 @@ scoresheetController.generateObject = function(newObj, data) {
 
 // Load Scoresheet List
 scoresheetController.loadScoresheetList = function(req, res) {
-	Scoresheet.find({ author : req.user._id}, function(err, userScoresheets) {
+	Scoresheet.find({ author : req.user._id }, function(err, userScoresheets) {
 		res.render('loadScoresheetList', {
 			user : req.user,
 			scoresheets : userScoresheets,
@@ -26,10 +26,10 @@ scoresheetController.loadScoresheetList = function(req, res) {
 
 // Load Individual Scoresheet
 scoresheetController.loadScoresheet = function(req, res) {
-	console.log(req.params.scoresheetId)
+	console.log(req.params.scoresheetId);
 	Scoresheet.findById(
 		req.params.scoresheetId, function(err, scoresheet) {
-			console.log(scoresheet)
+			console.log(scoresheet);
 			if (err) {
 				console.log(err)
 			} else {
@@ -52,8 +52,10 @@ scoresheetController.loadScoresheet = function(req, res) {
 
 // New Scoresheet Render
 scoresheetController.newScoresheet = function(req, res) {
+	let date = new Date(Date.now());
 	res.render('newScoresheet', {
 		user: req.user,
+		sess_date: date.getFullYear() + '-' + ('0' + (date.getMonth()+1)).slice(-2) + '-' + ('0' + date.getDate()).slice(-2),
 		title : appConstnats.APP_NAME + " - New Scoresheet"
 	});
 };
@@ -99,7 +101,8 @@ scoresheetController.doChangeScoresheet = function(req, res) {
 		{upsert: true, new:true, runValidators: false, useFindAndModify: false},
 		function(err, sheet) {
 			if (err) {
-				console.log(err);
+				//console.log(err);
+				res.send({update: false, fingerprint: null, error: err});
 			} else {
 				// We have a sheet already send the ID back to the form so it's aware
 				res.send({update: true, fingerprint: sheet._id});
@@ -134,6 +137,29 @@ scoresheetController.doCheckScoresheet = function(req, res) {
 	);
 };
 
+// Check if the data sent is valid in the required manners
+// return value: true if the validation passed ; false if it failed
+scoresheetController.doValidateScoresheet = function(req, res) {
+	// Store the submitted data
+	let data = req.body;
+
+	// Check if the entry number is used already or available
+	Scoresheet.findOne(
+		{entry_number: data.entry_number},	// findOne by entry_number
+		function(err, sheet) {
+			if (!sheet) {
+				return res.send({entry_number: true});
+			} else {
+				if (sheet.length <= 0) {
+					return res.send({entry_number: true});
+				}
+			}
+
+			return res.send({entry_number: false});
+		}
+	);
+};
+
 scoresheetController.generatePDF = function(req, res) {
 	let scoresheetId = req.params.scoresheetID;
 	let sourcePDF = path.join(__dirname,'../public/modified-scoresheet-2019.pdf');
@@ -149,7 +175,7 @@ scoresheetController.generatePDF = function(req, res) {
 
 	res.on('finish', function() {
 		fs.unlinkSync(destinationPDF);
-	})
+	});
 
 	return 
 }

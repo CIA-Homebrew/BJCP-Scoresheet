@@ -55,6 +55,9 @@ router.post('/scoresheet/change', authMiddle.isAuthenticated, scoresheetControll
 //route for check scoresheet post
 router.post('/scoresheet/check', authMiddle.isAuthenticated, scoresheetController.doCheckScoresheet);
 
+//route for validate scoresheet post
+router.post('/scoresheet/validate', authMiddle.isAuthenticated, scoresheetController.doValidateScoresheet);
+
 //route for scoresheet individual load
 router.get('/scoresheet/:scoresheetId', authMiddle.isAuthenticated, scoresheetController.loadScoresheet);
 

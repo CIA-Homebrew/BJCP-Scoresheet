@@ -10,11 +10,13 @@ let userController = {};
 let hasError = false;
 
 function errorProcessor(err, req) {
+	// Error trigger
+	hasError = true;
+
 	// Sort out our custom error messages
 	_fields.forEach(function(v) {
 		if (err.errors && typeof err.errors[v] !== "undefined") {
 			req.flash("error", err.errors[v].message);
-			hasError = true;
 		}
 	});
 
@@ -24,11 +26,14 @@ function errorProcessor(err, req) {
 		case "MissingPasswordError":
 		case "CustomError":
 			req.flash("error", err.message);
-			hasError = true;
+			break;
+		case "IncorrectPasswordError":
+			// Customize this message
+			req.flash("error", "Password provided is not correct");
 			break;
 		// Don't use a default it doubles for the custom error messages
 		default:
-			//_err.push(err.message);
+			req.flash("error", err.message);
 			break;
 	}
 }
@@ -149,51 +154,68 @@ userController.saveProfile = function(req, res) {
 		user.industry_description = req.body.industry_description;
 		user.judging_years = req.body.judging_years;
 
+		// If the user provided both "new" password and confirm password we are changing the password
+		if (req.body.new_password.length > 0 && req.body.new_passwordC.length > 0 && req.body.current_password.length > 0) {
+			if (req.body.new_password !== req.body.new_passwordC) {
+				errorProcessor({name:"CustomError", message: 'Passwords do not match.'}, req);
+			}
+		}
+
+		// At this point if there are any errors they need to be shown and fixed BEFORE trying to save
 		if (hasError) {
+			// Reset the trigger
+			hasError = false;
 			// Render our profile page again to show errors
-			console.log("ping2");
 			return res.render('profile', {
 				user: user,
 				title : appConstnats.APP_NAME + " - Edit Profile"
 			});
 		}
 
-		// If the user provided both "new" password and confirm password we are changing the password
-		if (req.body.new_password.length > 0 && req.body.new_passwordC.length > 0 && req.body.current_password.length > 0) {
-			if (req.body.new_password === req.body.new_passwordC) {
-				/**
-				 * FIX THIS!
-				user.changePassword(req.body.password, req.body.new_password, function(err) {
-					if (err) {
-						console.log("ping1");
-						// Push the processed errors to the flash handler
-						errorProcessor(err, req);
-					}
-				});
-				 **/
-			} else {
-				errorProcessor({name:"CustomError", message: 'Passwords do not match.'}, req);
-			}
-		}
-
-		// don't forget to save!
-		user.save(function (err) {
-			// Something went wrong...
-			if (err) {
-				// Push the processed errors to the flash handler
-				errorProcessor(err, req);
-				// Render our profile page again to show errors
+		/** We use a promise chain for this portion because of the firing order of the change password function **/
+		user.changePassword(req.body.current_password, req.body.new_password)
+			/** our changePassword promise was sucessful **/
+			.then(function(result){
+				// Finally show the profile edit page again.
+				req.flash("success", 'Profile edit successful!');
 				return res.render('profile', {
 					user: user,
 					title : appConstnats.APP_NAME + " - Edit Profile"
 				});
-			}
-		});
+			})
+			/** Promise chain error function **/
+			.then(undefined, function(err){
+				// If we get an error from the changePassword promise make sure we were trying to change the password to begin with
+				if (req.body.new_password.length > 0 && req.body.new_passwordC.length > 0 && req.body.current_password.length > 0) {
+					// Password change fired errors go back and fix them
+					errorProcessor(err, req);
+					return res.render("profile", {
+						user : user,
+						title : appConstnats.APP_NAME + " - Edit Profile"
+					});
+				} else {
+					// Try and just do a plain save of the user profile
+					// Default save of the user without password change
+					user.save(function (err) {
+						// Something went wrong...
+						if (err) {
+							// Push the processed errors to the flash handler
+							errorProcessor(err, req);
+							return res.render("profile", {
+								user : user,
+								title : appConstnats.APP_NAME + " - Edit Profile"
+							});
+						}
 
-		// Finally show the profile edit page again.
-		console.log("end");
-		req.flash("success", 'Profile edit successful!');
-		res.redirect('/profile/edit');
+						// Finally show the profile edit page again.
+						req.flash("success", 'Profile edit successful!');
+						return res.render('profile', {
+							user: user,
+							title : appConstnats.APP_NAME + " - Edit Profile"
+						});
+					});
+				}
+			});
 	});
 };
 

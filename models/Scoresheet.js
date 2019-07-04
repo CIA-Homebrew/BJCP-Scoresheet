@@ -9,6 +9,8 @@ let validators = {
 	 * @returns {boolean}
 	 */
 	stringEmpty : function(s) {
+		// Make sure this is even a value
+		if (!s) return false;
 		// Make sure there is no white space
 		s = s.trim();
 		// Make sure it's not empty
@@ -28,38 +30,64 @@ let ScoresheetSchema = new Schema({
 		type: Date,
 		default: Date.now
 	},
-	session_location: String,
+	session_location: {
+		type: String,
+		validate: {
+			validator: validators.stringEmpty,
+			message: "The session location is required."
+		}
+	},
 	category: {
 		type: String,
-		validate: validators.stringEmpty
+		validate: {
+			validator: validators.stringEmpty,
+			message: "The category is required."
+		}
 	},
 	sub: {
 		type: String,
-		validate: validators.stringEmpty
+		validate: {
+			validator: validators.stringEmpty,
+			message: "The sub is required."
+		}
 	},
 	subcategory: {
 		type: String,
-		validate: validators.stringEmpty
+		validate: {
+			validator: validators.stringEmpty,
+			message: "The sub-category is required."
+		}
 	},
 	special_ingredients: String,
 	entry_number: {
 		type: String,
-		validate: validators.stringEmpty
+		validate: {
+			validator: validators.stringEmpty,
+			message: "The entry number is required."
+		},
+		index: true,
+		unique: true
 	},
 	flight_position: {
 		type: Number,
-		validate: validators.stringEmpty
+		validate: {
+			validator: validators.stringEmpty,
+			message: "The flight position is required."
+		}
 	},
 	flight_total: {
 		type: Number,
-		validate: validators.stringEmpty
+		validate: {
+			validator: validators.stringEmpty,
+			message: "The flight total is required."
+		}
 	},
 	mini_boss_advanced: {
 		type: Boolean,
 		default: false
 	},
 	place: Number, /** This property doesn't look used in the sheet???? **/
-	consensus_score: String,
+	consensus_score: Number,
 	bottle_inspection_check: {
 		type: Boolean,
 		default: false

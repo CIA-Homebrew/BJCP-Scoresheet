@@ -23,14 +23,14 @@ block content
                                             label.btn.btn-outline-success.btn-sm Advance
                                                 input(type='checkbox'  autocomplete="off" id='mini_boss_advanced' name='mini_boss_advanced')
                                 .card.border-dark.mb-3.mx-1
-                                    .card-header.px-0.py-0 
+                                    .card-header.px-0.py-0
                                         p.small.mb-0.text-center Consensus
-                                    .card-body.text-dark.px-0.py-1.text-center 
+                                    .card-body.text-dark.px-0.py-1.text-center
                                         h4.my-0 -
                                 .card.border-dark.mb-3.mx-1
-                                    .card-header.px-0.py-0 
+                                    .card-header.px-0.py-0
                                         p.small.mb-0.text-center Total Score
-                                    .card-body.text-dark.px-0.py-1.text-center 
+                                    .card-body.text-dark.px-0.py-1.text-center
                                         h4(class='my-0' id='judge_total') 0
 
 
@@ -73,14 +73,14 @@ block content
                                         .form-group.col-sm-2.col-form-label Session Date
                                             label(for='session_date')
                                         .form-group.col-sm-4
-                                            input.form-control(type='date' id='session_date' name='session_date' default)
+                                            input.form-control(type='date' id='session_date' name='session_date' value=sess_date)
                                         .form-group.col-sm-2.col-form-label Session Location
                                             label(for='session_location')
                                         .form-group.col-sm-4
                                             input.form-control(type='text' id='session_location' name='session_location')
 
 
-                                        
+
 
                                 .form-group
                                     h4 Beer Information
@@ -88,7 +88,8 @@ block content
                                         .form-group.col-sm-2.col-form-label
                                             label(for='entry_number') Entry Number
                                         .form-group.col-sm-4
-                                            input.form-control(type='text' id='entry_number' placeholder='Entry Number' name='entry_number')
+                                            input.form-control.is-invalid(type='text' id='entry_number' placeholder='Entry Number' name='entry_number')
+                                            div.invalid-feedback Missing or duplicate value.
                                         .form-group.col-sm-3.col-form-label.text-center.pl-4
                                             label(for='flight_position') Flight Position
                                         .form-group.col-sm-1.pr-0
@@ -188,9 +189,9 @@ block content
                                             .card.border-dark(style='width:100px')
                                                 .card-header.py-1
                                                     p.small.mb-0.text-center Aroma Score
-                                                .card-body.text-dark.px-0.py-0.text-center 
+                                                .card-body.text-dark.px-0.py-0.text-center
                                                     input.form-control.form-control-lg.text-center.mb-0(type='number' id='aroma_score' name='aroma_score' value='0' min='0' max='12' onchange='recalculate_score()')
-                                                    p.small.d-flex.align-items-end.flex-row-reverse.my-0.pb-0 /12       
+                                                    p.small.d-flex.align-items-end.flex-row-reverse.my-0.pb-0 /12
                             div(class='tab-pane' id='appearance' role='tabpanel' aria-labelledby='appearance-tab')
                                 .form-group
                                     .row
@@ -249,9 +250,9 @@ block content
                                             .card.border-dark(style='width:100px')
                                                 .card-header.py-1.px-0
                                                     p.small.mb-0.text-center Appearance Score
-                                                .card-body.text-dark.px-0.py-0.text-center 
+                                                .card-body.text-dark.px-0.py-0.text-center
                                                     input.form-control.form-control-lg.text-center.mb-0(type='number' id='appearance_score' name='appearance_score' value='0' min='0' max='3' onchange='recalculate_score()')
-                                                    p.small.d-flex.align-items-end.flex-row-reverse.my-0.pb-0 /3 
+                                                    p.small.d-flex.align-items-end.flex-row-reverse.my-0.pb-0 /3
                             div(class='tab-pane' id='flavor' role='tabpanel' aria-labelledby='flavor-tab')
                                 .form-group
                                     .row
@@ -338,9 +339,9 @@ block content
                                             .card.border-dark(style='width:100px')
                                                 .card-header.py-1.px-0
                                                     p.small.mb-0.text-center Flavor Score
-                                                .card-body.text-dark.px-0.py-0.text-center 
+                                                .card-body.text-dark.px-0.py-0.text-center
                                                     input.form-control.form-control-lg.text-center.mb-0(type='number' id='flavor_score' name='flavor_score' value='0' min='0' max='20' onchange='recalculate_score()')
-                                                    p.small.d-flex.align-items-end.flex-row-reverse.my-0.pb-0 /20       
+                                                    p.small.d-flex.align-items-end.flex-row-reverse.my-0.pb-0 /20
                             div(class='tab-pane' id='mouthfeel' role='tabpanel' aria-labelledby='mouthfeel-tab')
                                 .form-group.px-5
                                     .row
@@ -395,9 +396,9 @@ block content
                                             .card.border-dark(style='width:100px')
                                                 .card-header.py-1.px-0
                                                     p.small.mb-0.text-center Mouthfeel Score
-                                                .card-body.text-dark.px-0.py-0.text-center 
+                                                .card-body.text-dark.px-0.py-0.text-center
                                                     input.form-control.form-control-lg.text-center.mb-0(type='number' id='mouthfeel_score' name='mouthfeel_score' value='0' min='0' max='10' onchange='recalculate_score()')
-                                                    p.small.d-flex.align-items-end.flex-row-reverse.my-0.pb-0 /10       
+                                                    p.small.d-flex.align-items-end.flex-row-reverse.my-0.pb-0 /10
                             div(class='tab-pane' id='descriptors' role='tabpanel' aria-labelledby='descriptors-tab')
                                 .list-group
                                     input(type='checkbox'  id='descriptor_acetaldehyde' name='descriptor_acetaldehyde')
@@ -471,11 +472,11 @@ block content
                                             .card.border-dark(style='width:100px')
                                                 .card-header.py-1.px-0
                                                     p.small.mb-0.text-center Summary Score
-                                                .card-body.text-dark.px-0.py-0.text-center 
+                                                .card-body.text-dark.px-0.py-0.text-center
                                                     input.form-control.form-control-lg.text-center.mb-0(type='number' id='overall_score' name='overall_score' value='0' min='0' max='5' onchange='recalculate_score()')
                                                     p.small.d-flex.align-items-end.flex-row-reverse.my-0.pb-0 /5
 
-        .modal.fade(id='confirm-submit' tabindex='-1' role="dialog" aria-labelledby="myModalLabel" aria-hidden="true")  
+        .modal.fade(id='confirm-submit' tabindex='-1' role="dialog" aria-labelledby="myModalLabel" aria-hidden="true")
             .modal-dialog
                 .modal-content
                     .modal-header Confirm Scoresheet Submission
@@ -720,7 +721,7 @@ block content
             if ('#{fingerprint}') {
                 var fp = '#{fingerprint}';
             }
-            
+
 
             if (fp !== "" ) {
                 $.post('/scoresheet/check', {fingerprint: $('form#newScoresheet input#fingerprint').val()}, function (data) {
@@ -742,19 +743,50 @@ block content
             //- On form change we save it back to the system
             var origForm = $('form#newScoresheet').serialize();
             $('form#newScoresheet :input').change(function () {
+            	console.log("fire form change");
                 //- console.log(scoresheet)
                 var fData = $('form#newScoresheet').serialize();
                 if (origForm !== fData) {
                     //- We have changes to the form save them back
                     $.post('/scoresheet/change', fData, function (data) {
-                        $('form#newScoresheet input#fingerprint').val(data.fingerprint);
+                        if (data.update) {
+                            $('form#newScoresheet input#fingerprint').val(data.fingerprint);
+                        }
                     });
                     //- Reset the base data comparison
                     origForm = fData;
                 }
             });
 
-            
+            //- Universal data validator handler
+            function validatorHandler(_this) {
+                //- Make sure we don't have a duplicate
+                $.ajax({
+                    url: '/scoresheet/validate',
+                    method: 'POST',
+                    dataType: 'JSON',
+                    data: {
+                        entry_number: $('input#entry_number').val()
+                    }
+                })
+                    .done(function(data) {
+                        if ($(_this).val().trim() !== '' && data.entry_number) {
+                            $(_this).removeClass('is-invalid');
+                            $(_this).addClass('is-valid');
+                        } else {
+                            $(_this).removeClass('is-valid');
+                            $(_this).addClass('is-invalid');
+                        }
+                    })
+                    .fail(function(err) {
+                        $(_this).addClass('is-invalid');
+                    });
+            }
+
+            //- Data validator on change
+            $('.is-invalid').keyup(function() {
+                validatorHandler(this);
+            });
         });
 
         //- Function to update stylistic tooltips on each page based on the BJCP selection notes.
@@ -796,7 +828,7 @@ block content
                                 //- bjcp_examples.setAttribute('data-content', subcategory.examples);
                             }
                         }
-                        
+
                     }
 
                 }
