@@ -1,5 +1,5 @@
 body {
-  background-color: #eee;
+  background-color: #eee !important;
 }
 /* bootstrap hack: fix content width inside hidden tabs */
 .tab-content > .tab-pane:not(.active),
