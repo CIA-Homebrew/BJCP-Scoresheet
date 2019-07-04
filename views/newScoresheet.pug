@@ -88,7 +88,7 @@ block content
                                         .form-group.col-sm-2.col-form-label
                                             label(for='entry_number') Entry Number
                                         .form-group.col-sm-4
-                                            input.form-control.is-invalid(type='text' id='entry_number' placeholder='Entry Number' name='entry_number')
+                                            input.form-control.is-invalid.vCheck(type='text' id='entry_number' placeholder='Entry Number' name='entry_number')
                                             div.invalid-feedback Missing or duplicate value.
                                         .form-group.col-sm-3.col-form-label.text-center.pl-4
                                             label(for='flight_position') Flight Position
@@ -686,7 +686,39 @@ block content
             document.getElementById('newScoresheet').submit();
         }
 
+        //- Universal data validator handler
+        function validatorHandler(_this) {
+            //- Make sure we don't issues
+            $.ajax({
+                url: '/scoresheet/validate',
+                method: 'POST',
+                dataType: 'JSON',
+                data: {
+                    entry_number: $('input#entry_number').val(),
+                    fingerprint: $('input#fingerprint').val()
+                }
+            })
+            //- This is a bit too specific right now need to generalize later for a universal function feel
+                .done(function (data) {
+                    if ($(_this).val().trim() !== '' && data.entry_number) {
+                        $(_this).removeClass('is-invalid');
+                        $(_this).addClass('is-valid');
+                    } else {
+                        $(_this).removeClass('is-valid');
+                        $(_this).addClass('is-invalid');
+                    }
+                })
+                .fail(function (err) {
+                    $(_this).addClass('is-invalid');
+                });
+        }
+
         $(document).ready(function() {
+            //- Data validator on event
+            $('input.vCheck').on('keyup change', function() {
+                validatorHandler(this)
+            });
+
             //- Check to see if the scoresheet object was passed, and if so, pre-populate all fields
             if ('#{fingerprint}') {
                 document.getElementById('fingerprint').value = '#{fingerprint}';
@@ -707,6 +739,8 @@ block content
                         } else {
                             field.value = scoresheet[scoresheetField];
                         }
+                        //- trigger the change event to kick off validation if needed
+                        $('#' + scoresheetField).change();
                     }
                 }
                 if (document.getElementById('category') && document.getElementById('sub')) {
@@ -743,7 +777,7 @@ block content
             //- On form change we save it back to the system
             var origForm = $('form#newScoresheet').serialize();
             $('form#newScoresheet :input').change(function () {
-            	console.log("fire form change");
+                console.log("fire form change");
                 //- console.log(scoresheet)
                 var fData = $('form#newScoresheet').serialize();
                 if (origForm !== fData) {
@@ -756,36 +790,6 @@ block content
                     //- Reset the base data comparison
                     origForm = fData;
                 }
-            });
-
-            //- Universal data validator handler
-            function validatorHandler(_this) {
-                //- Make sure we don't have a duplicate
-                $.ajax({
-                    url: '/scoresheet/validate',
-                    method: 'POST',
-                    dataType: 'JSON',
-                    data: {
-                        entry_number: $('input#entry_number').val()
-                    }
-                })
-                    .done(function(data) {
-                        if ($(_this).val().trim() !== '' && data.entry_number) {
-                            $(_this).removeClass('is-invalid');
-                            $(_this).addClass('is-valid');
-                        } else {
-                            $(_this).removeClass('is-valid');
-                            $(_this).addClass('is-invalid');
-                        }
-                    })
-                    .fail(function(err) {
-                        $(_this).addClass('is-invalid');
-                    });
-            }
-
-            //- Data validator on change
-            $('.is-invalid').keyup(function() {
-                validatorHandler(this);
             });
         });
 

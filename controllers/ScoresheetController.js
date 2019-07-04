@@ -153,6 +153,11 @@ scoresheetController.doValidateScoresheet = function(req, res) {
 				if (sheet.length <= 0) {
 					return res.send({entry_number: true});
 				}
+
+				// If we have a fingerprint sent and it matches the entry number we allow a duplicate
+				if (data.fingerprint === sheet._id.toString() && data.entry_number === sheet.entry_number) {
+					return res.send({entry_number: true});
+				}
 			}
 
 			return res.send({entry_number: false});
