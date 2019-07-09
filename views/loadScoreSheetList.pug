@@ -26,8 +26,9 @@ block content
 										if (sheet.scoresheet_submitted)
 											tr
 												th(scope='row' ) 
-													a.pr-3(href='/scoresheet/pdf/'+sheet._id download)
-														img(src='../images/pdfDownloadIcon.png' style='height:24px;width:24px')
+													//- a.pr-3(href='/scoresheet/pdf/'+sheet._id download)
+													//- 	img(src='../images/pdfDownloadIcon.png' style='height:24px;width:24px')
+													input(type='image' id='download_'+sheet._id src='../images/pdfDownloadIcon.png' alt='Download' style='height:24px;width:32px;padding-right:8px;' onclick=`downloadPDF('${sheet._id}', '${sheet.entry_number}')`) 
 													a(href='') #{sheet.entry_number}
 												td #{sheet.category}#{sheet.sub}
 												td #{sheet.subcategory}
@@ -52,7 +53,8 @@ block content
 												th(scope='row') 
 													a.pr-3(href='')
 														img(src='../images/deleteIcon.png' style='height:24px;width:24px')
-													a(href='/scoresheet/'+sheet._id style='display:inline;') #{sheet.entry_number}
+													a(href='#' style='display:inline;' onclick=`loadScoresheet('${sheet._id}')`) #{sheet.entry_number}
+													//- a(href='/scoresheet/'+sheet._id style='display:inline;') #{sheet.entry_number}
 												td 
 													a(href='') #{sheet.category}#{sheet.sub}
 												td 
@@ -68,3 +70,29 @@ block content
 
 	link(rel='stylesheet', href='https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/css/bootstrap.css')
 	link(rel='stylesheet', href='https://cdn.datatables.net/1.10.19/css/dataTables.bootstrap4.min.css')
+
+	script.
+		function downloadPDF(scoresheetId, scoresheetEntryNumber) {
+			var a = document.createElement('a');
+			a.href = '/scoresheet/pdf/'+scoresheetId;
+			a.setAttribute('download', scoresheetEntryNumber);
+			a.click();
+			console.log(a)
+			return false;
+		}
+
+		function loadScoresheet(scoresheetId) {
+			var form = document.createElement('form');
+			form.method = 'post';
+			form.action = '/scoresheet/edit' ;
+			var hiddenField = document.createElement('input');
+			hiddenField.type = 'hidden';
+			hiddenField.name = 'scoresheetId';
+			hiddenField.value = scoresheetId;
+			form.appendChild(hiddenField);
+			document.body.appendChild(form);
+			console.log(form);
+			form.submit();
+			return false;
+			
+		}

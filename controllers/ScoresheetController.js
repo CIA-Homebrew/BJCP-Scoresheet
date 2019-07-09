@@ -26,17 +26,15 @@ scoresheetController.loadScoresheetList = function(req, res) {
 
 // Load Individual Scoresheet
 scoresheetController.loadScoresheet = function(req, res) {
-	console.log(req.params.scoresheetId);
 	Scoresheet.findById(
-		req.params.scoresheetId, function(err, scoresheet) {
-			console.log(scoresheet);
+		req.body.scoresheetId, function(err, scoresheet) {
 			if (err) {
 				console.log(err)
 			} else {
 				res.render('newScoresheet', {
 					user: req.user,
 					scoresheet : scoresheet,
-					fingerprint: req.params.scoresheetId,
+					fingerprint: req.body.scoresheetId,
 					title : appConstnats.APP_NAME + " - Load Scoresheet"
 				})
 			}	

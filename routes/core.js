@@ -59,7 +59,7 @@ router.post('/scoresheet/check', authMiddle.isAuthenticated, scoresheetControlle
 router.post('/scoresheet/validate', authMiddle.isAuthenticated, scoresheetController.doValidateScoresheet);
 
 //route for scoresheet individual load
-router.get('/scoresheet/:scoresheetId', authMiddle.isAuthenticated, scoresheetController.loadScoresheet);
+router.post('/scoresheet/edit/', authMiddle.isAuthenticated, scoresheetController.loadScoresheet);
 
 //* ADMIN FUNCTIONS *//
 router.get('/admin', authMiddle.isAdmin, adminController.controlPanel);
