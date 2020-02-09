@@ -1,6 +1,9 @@
 # AHA-Scoresheet
 
+[![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 [![Join the chat at https://gitter.im/AHA-Scoresheet/community](https://badges.gitter.im/AHA-Scoresheet/community.svg)](https://gitter.im/AHA-Scoresheet/community?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+[![GitHub last commit](https://img.shields.io/github/last-commit/CIA-Homebrew/AHA-Scoresheet.svg)](https://github.com/CIA-Homebrew/AHA-Scoresheet)
+[![Dependencies](https://img.shields.io/david/CIA-Homebrew/AHA-Scoresheet.svg)](https://github.com/TotallyInformation/node-red-contrib-uibuilder)
 
 Digital form of AHA score sheet for beer judging. 
 
