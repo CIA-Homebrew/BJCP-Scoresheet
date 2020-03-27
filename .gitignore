@@ -1,3 +1,5 @@
 .idea
 node_modules/
 .vscode/
+.skele
+*.sqlite3
