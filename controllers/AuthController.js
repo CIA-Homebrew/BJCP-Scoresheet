@@ -1,9 +1,8 @@
-let mongoose = require("mongoose");
-let passport = require("passport");
-let User = require("../models/User");
+let passport = require("../helpers/seq.passport");
+let User = require("../models").User;
 let appConstnats = require("../helpers/appConstants");
 
-let _fields = ["username", "forename", "surname", "password"];
+let _fields = ["username", "firstname", "lastname", "password"];
 
 let userController = {};
 
@@ -61,10 +60,10 @@ userController.doRegister = function(req, res) {
 		passwd = req.body.password;
 	}
 
-	let newUser = new User({
-		username : req.body.username,
-		forename: req.body.forename,
-		surname: req.body.surname,
+	let newUser = User.build({
+		email : req.body.email,
+		firstname: req.body.firstname,
+		lastname: req.body.lastname,
 		bjcp_id: req.body.bjcp_id,
 		bjcp_rank: req.body.bjcp_rank,
 		cicerone_rank: req.body.cicerone_rank,
@@ -73,12 +72,23 @@ userController.doRegister = function(req, res) {
 		judging_years: req.body.judging_years
 	});
 
-	User.register(newUser, passwd)
-		.then(function(newUser) {
+	User.create({
+		email : req.body.email,
+		password: passwd,
+		firstname: req.body.firstname,
+		lastname: req.body.lastname,
+		bjcp_id: req.body.bjcp_id,
+		bjcp_rank: req.body.bjcp_rank,
+		cicerone_rank: req.body.cicerone_rank,
+		pro_brewer_brewery: req.body.pro_brewer_brewery,
+		industry_description: req.body.industry_description,
+		judging_years: req.body.judging_years
+	})
+		.then(function() {
 			req.flash('success', 'Registration Successful');
 			res.redirect('/');
 		})
-		.catch(function(err) {
+		.catch((err) => {
 			// Push the processed errors to the flash handler
 			errorProcessor(err, req);
 
@@ -98,7 +108,7 @@ userController.login = function(req, res) {
 
 // Post login
 userController.doLogin = function(req, res) {
-	passport.authenticate('local', {
+	passport.authenticate('passport-sequelize', {
 		failureRedirect: '/login'
 	})(req, res, function() {
 		// Login is good, set the user data and go back home

@@ -1,78 +1,66 @@
-let mongoose = require('mongoose');
-let mongoosePaginate = require("mongoose-paginate");
-let Schema = mongoose.Schema;
-let passportLocalMongoose = require('passport-local-mongoose');
-require('mongoose-type-email');
+'use strict';
 
-let UserSchema = new Schema({
-	username: {
-		type: [mongoose.SchemaTypes.Email, ""],
-		require: [true, "Email address is missing."],
-		unique: true,
-		validate: {
-			validator: function(v) {
-				return /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(v);
-			},
-			message: props => "Invalid email address provided."
-		}
-	},
-	/**
-	password: {
-		type: String,
-		require: [true, "Password is missing."]
-	},**/
-	forename: {
-		type: String,
-		require: [true, "First name is missing or invalid."],
-		validate: {
-			validator: function(v) {
-				return v.trim() !== "";
-			},
-			message: props => "A first name is required."
-		}
-	},
-	surname: {
-		type: String,
-		require: [true, "Last name is missing or invalid."],
-		validate: {
-			validator: function(v) {
-				return v.trim() !== "";
-			},
-			message: props => "A last name is required."
-		}
-	},
-	bjcp_id: {
-		type: String,
-		require: true
-	},
-	bjcp_rank: {
-		type: String,
-		require: false
-	},
-	cicerone_rank: {
-		type: String,
-		require: false
-	},
-	pro_brewer_brewery: {
-		type: String,
-		require: false
-	},
-	industry_description: {
-		type: String,
-		require: false
-	},
-	judging_years: {
-		type: String,
-		require: false
-	},
-	user_level: {
-		type: Number,
-		require: true,
-		default: 0 // 0 = judge/basic user; 1 = head judge; 2 = admin
-	}
-}, { collection: 'aha-judges' }); // We use a generic 'user' in the program but store as judges
+var bcrypt = require("bcryptjs");
 
-UserSchema.plugin(passportLocalMongoose);
-UserSchema.plugin(mongoosePaginate);
+module.exports = (sequelize, DataTypes) => {
+	const User = sequelize.define('User', {
+		id: {
+			type: DataTypes.UUID,
+			primaryKey: true,
+			defaultValue: DataTypes.UUIDV4,
+			allowNull: false,
+			autoIncrement: false,
+		},
+		firstname: {
+			type: DataTypes.STRING,
+			isEmpty: {
+				msg: "A first name is required."
+			}
+		},
+		lastname: {
+			type: DataTypes.STRING,
+			isEmpty: {
+				msg: "A last name is required."
+			}
+		},
+		email: {
+			type: DataTypes.STRING,
+			isEmail:  {
+				msg: "Invalid email address provided."
+			}
+		},
+		password: {
+			type: DataTypes.STRING,
+			allowNull: false
+		},
+		phone: DataTypes.STRING,
+		bjcp_id: DataTypes.STRING,
+		bjcp_rank: DataTypes.STRING,
+		cicerone_rank: DataTypes.STRING,
+		pro_brewer_brewery: DataTypes.STRING,
+		industry_description: DataTypes.STRING,
+		judging_years: DataTypes.STRING,
+		user_level: {
+			type: DataTypes.NUMBER,
+			require: true,
+			default: 0 // 0 = judge/basic user; 1 = head judge; 90 = admin
+		}
+	}, {
+		hooks: {
+			beforeCreate: (user, options) => {
+				user.password = bcrypt.hashSync(user.password, bcrypt.genSaltSync(10), null);
+			}
+		}
+	});
 
-module.exports = mongoose.model('User', UserSchema);
+	User.prototype.validatePassword = function(password) {
+		return bcrypt.compareSync(password, this.password);
+	};
+
+	User.associate = function (models) {
+		// associations can be defined here
+		//User.hasMany(models.Scoresheet);
+	};
+
+	return User;
+};

@@ -1,7 +1,6 @@
-let mongoose = require("mongoose");
-let passport = require("passport");
-let User = require("../models/User");
-let Scoresheet = require("../models/Scoresheet");
+let passport = require("../helpers/seq.passport");
+let User = require("../models").User;
+let Scoresheet = require("../models").Scoresheet;
 let appConstnats = require("../helpers/appConstants");
 
 let adminController = {};

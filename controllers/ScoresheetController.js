@@ -1,9 +1,8 @@
-let mongoose = require("mongoose");
-let passport = require("passport");
+let passport = require("../helpers/seq.passport");
 let pdffiller = require('pdffiller');
 let path = require('path');
-var fs = require('fs');
-let Scoresheet = require("../models/Scoresheet");
+let fs = require('fs');
+let Scoresheet = require("../models").Scoresheet;
 let appConstnats = require("../helpers/appConstants");
 
 let scoresheetController = {};
@@ -180,7 +179,7 @@ scoresheetController.generatePDF = function(req, res) {
 		fs.unlinkSync(destinationPDF);
 	});
 
-	return 
-}
+	return
+};
 
 module.exports = scoresheetController;
