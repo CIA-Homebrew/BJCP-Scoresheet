@@ -262,15 +262,6 @@ module.exports = {
 				type: Sequelize.BOOLEAN,
 				default: false
 			},
-			userId: {
-				type: Sequelize.UUID,
-				references: {
-					model: 'Users',
-					key: 'id'
-				},
-				onUpdate: 'CASCADE',
-				onDelete: 'SET NULL',
-			},
 			createdAt: {
 				allowNull: false,
 				type: Sequelize.DATE
@@ -279,6 +270,28 @@ module.exports = {
 				allowNull: false,
 				type: Sequelize.DATE
 			},
+			userId: {
+				type: Sequelize.UUID,
+				allowNull: true
+			},
+			judge_id: {
+				type: Sequelize.STRING,
+				allowNull: true
+			},
+			judge_name: {
+				type: Sequelize.STRING,
+				allowNull: true
+			},
+			judge_email: {
+				type: Sequelize.STRING,
+				allowNull: true
+			},
+			judge_bjcp_id: Sequelize.STRING,
+			judge_bjcp_rank: Sequelize.STRING,
+			judge_cicerone_rank: Sequelize.STRING,
+			judge_pro_brewer_brewery: Sequelize.STRING,
+			judge_industry_description: Sequelize.STRING,
+			judge_judging_years: Sequelize.STRING,
 		});
 	},
 

@@ -4,7 +4,7 @@ block content
     form(role='form' action='/scoresheet/new', method='post', id="newScoresheet")
         //- Hidden form ID for backend usage
         input(type='text' id='author' name='author' value=user._id hidden=true)
-        input(type='text' id='fingerprint' name='fingerprint' hidden=true)
+        input(type='text' id='id' name='id' hidden=true)
         input(type='checkbox' checked=false value='1' id='scoresheet_submitted' name='scoresheet_submitted' hidden=true)
         .container
             div.card
@@ -60,7 +60,7 @@ block content
                                         .form-group.col-sm-2.col-form-label Judge
                                             label(for='judge_name')
                                         .form-group.col-sm-4
-                                            input.form-control(type='text' id='judge_name' value=user.forename+' '+user.surname readonly)
+                                            input.form-control(type='text' id='judge_name' value=user.firstname+' '+user.lastname readonly)
                                         .form-group.col-sm-1.col-form-label BJCP ID
                                             label(for='bjcp_id')
                                         .form-group.col-sm-2
@@ -695,7 +695,7 @@ block content
                 dataType: 'JSON',
                 data: {
                     entry_number: $('input#entry_number').val(),
-                    fingerprint: $('input#fingerprint').val()
+                    id: $('input#id').val()
                 }
             })
             //- This is a bit too specific right now need to generalize later for a universal function feel
@@ -720,8 +720,8 @@ block content
             });
 
             //- Check to see if the scoresheet object was passed, and if so, pre-populate all fields
-            if ('#{fingerprint}') {
-                document.getElementById('fingerprint').value = '#{fingerprint}';
+            if ('#{id}') {
+                document.getElementById('id').value = '#{id}';
                 var scoresheet = JSON.parse('!{JSON.stringify(scoresheet)}');
                 for (scoresheetField in scoresheet) {
                     var field = document.getElementById(scoresheetField);
@@ -751,14 +751,14 @@ block content
             }
 
             //- On form load see if there is an existing sheet to populate data
-            //- var fp = $('form#newScoresheet input#fingerprint').val();
-            if ('#{fingerprint}') {
-                var fp = '#{fingerprint}';
+            //- var fp = $('form#newScoresheet input#id').val();
+            if ('#{id}') {
+                var fp = '#{id}';
             }
 
 
             if (fp !== "" ) {
-                $.post('/scoresheet/check', {fingerprint: $('form#newScoresheet input#fingerprint').val()}, function (data) {
+                $.post('/scoresheet/check', {id: $('form#newScoresheet input#id').val()}, function (data) {
                     if (data) {
                         console.log(data);
                     }
@@ -784,7 +784,7 @@ block content
                     //- We have changes to the form save them back
                     $.post('/scoresheet/change', fData, function (data) {
                         if (data.update) {
-                            $('form#newScoresheet input#fingerprint').val(data.fingerprint);
+                            $('form#newScoresheet input#id').val(data.id);
                         }
                     });
                     //- Reset the base data comparison

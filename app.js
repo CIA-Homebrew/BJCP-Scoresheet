@@ -8,6 +8,7 @@ let stylus = require('stylus');
 let flash = require('connect-flash');
 let models = require('./models');
 let passport = require('passport');
+let debug = require('debug')('aha-scoresheet:app');
 
 let coreRouter = require('./routes/core');
 

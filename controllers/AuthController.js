@@ -1,6 +1,7 @@
 let passport = require("../helpers/seq.passport");
 let User = require("../models").User;
-let appConstnats = require("../helpers/appConstants");
+let appConstants = require("../helpers/appConstants");
+let debug = require('debug')('aha-scoresheet:authController');
 
 let _fields = ["username", "firstname", "lastname", "password"];
 
@@ -41,14 +42,14 @@ function errorProcessor(err, req) {
 userController.home = function(req, res) {
 	res.render('index', {
 		user : req.user,
-		title : appConstnats.APP_NAME + " - Home"
+		title : appConstants.APP_NAME + " - Home"
 	});
 };
 
 // Go to registration page
 userController.register = function(req, res) {
 	res.render('register', {
-		title : appConstnats.APP_NAME + " - Register"
+		title : appConstants.APP_NAME + " - Register"
 	});
 };
 
@@ -94,7 +95,7 @@ userController.doRegister = function(req, res) {
 
 			return res.render('register', {
 				fData: newUser,
-				title : appConstnats.APP_NAME + " - Register"
+				title : appConstants.APP_NAME + " - Register"
 			});
 		});
 };
@@ -102,14 +103,16 @@ userController.doRegister = function(req, res) {
 // Go to login page
 userController.login = function(req, res) {
 	res.render('login', {
-		title : appConstnats.APP_NAME + " - Login"
+		title : appConstants.APP_NAME + " - Login"
 	});
 };
 
 // Post login
 userController.doLogin = function(req, res) {
 	passport.authenticate('passport-sequelize', {
-		failureRedirect: '/login'
+		// Login is bad, try again!
+		failureRedirect: '/login',
+		failureFlash: 'Incorrect user information.'
 	})(req, res, function() {
 		// Login is good, set the user data and go back home
 		req.flash('success', 'Login Successful');
@@ -127,7 +130,7 @@ userController.logout = function(req, res) {
 userController.editProfile = function(req, res) {
 	res.render('profile', {
 		user : req.user,
-		title : appConstnats.APP_NAME + " - Edit Profile"
+		title : appConstants.APP_NAME + " - Edit Profile"
 	});
 };
 
@@ -142,7 +145,7 @@ userController.saveProfile = function(req, res) {
 			// Render our profile page again to show errors
 			return res.render('profile', {
 				fData: user,
-				title : appConstnats.APP_NAME + " - Edit Profile"
+				title : appConstants.APP_NAME + " - Edit Profile"
 			});
 		}
 
@@ -178,7 +181,7 @@ userController.saveProfile = function(req, res) {
 			// Render our profile page again to show errors
 			return res.render('profile', {
 				user: user,
-				title : appConstnats.APP_NAME + " - Edit Profile"
+				title : appConstants.APP_NAME + " - Edit Profile"
 			});
 		}
 
@@ -190,7 +193,7 @@ userController.saveProfile = function(req, res) {
 				req.flash("success", 'Profile edit successful!');
 				return res.render('profile', {
 					user: user,
-					title : appConstnats.APP_NAME + " - Edit Profile"
+					title : appConstants.APP_NAME + " - Edit Profile"
 				});
 			})
 			/** Promise chain error function **/
@@ -201,7 +204,7 @@ userController.saveProfile = function(req, res) {
 					errorProcessor(err, req);
 					return res.render("profile", {
 						user : user,
-						title : appConstnats.APP_NAME + " - Edit Profile"
+						title : appConstants.APP_NAME + " - Edit Profile"
 					});
 				} else {
 					// Try and just do a plain save of the user profile
@@ -213,7 +216,7 @@ userController.saveProfile = function(req, res) {
 							errorProcessor(err, req);
 							return res.render("profile", {
 								user : user,
-								title : appConstnats.APP_NAME + " - Edit Profile"
+								title : appConstants.APP_NAME + " - Edit Profile"
 							});
 						}
 
@@ -221,7 +224,7 @@ userController.saveProfile = function(req, res) {
 						req.flash("success", 'Profile edit successful!');
 						return res.render('profile', {
 							user: user,
-							title : appConstnats.APP_NAME + " - Edit Profile"
+							title : appConstants.APP_NAME + " - Edit Profile"
 						});
 					});
 				}

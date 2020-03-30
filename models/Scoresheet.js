@@ -27,6 +27,9 @@ module.exports = (sequelize, DataTypes) => {
 			defaultValue: DataTypes.UUIDV4,
 			allowNull: false,
 			autoIncrement: false,
+			isUUID: {
+				msg: 'Improperly formatter ID provided.'
+			}
 		},
 		session_date: {
 			type: DataTypes.DATE,
@@ -297,13 +300,54 @@ module.exports = (sequelize, DataTypes) => {
 			type: DataTypes.NUMBER,
 			default: 0
 		},
-
 		//Set to true after confirming submit scoresheet
 		scoresheet_submitted: {
 			type: DataTypes.BOOLEAN,
 			default: false
-		}
-	}, {});
+		},
+		userId: {
+			type: DataTypes.UUID,
+			allowNull: true,
+		},
+		judge_id: {
+			type: DataTypes.STRING,
+			allowNull: true
+		},
+		judge_name: {
+			type: DataTypes.STRING,
+			allowNull: true
+		},
+		judge_email: {
+			type: DataTypes.STRING,
+			allowNull: true
+		},
+		judge_bjcp_id: DataTypes.STRING,
+		judge_bjcp_rank: DataTypes.STRING,
+		judge_cicerone_rank: DataTypes.STRING,
+		judge_pro_brewer_brewery: DataTypes.STRING,
+		judge_industry_description: DataTypes.STRING,
+		judge_judging_years: DataTypes.STRING,
+	}, {
+	});
+
+	Scoresheet.createOrUpdate = function(options) {
+		return Scoresheet
+			.findOne(options)
+			.then((sheet) => {
+				if (!sheet) {
+					// If we don't have a sheet then build one but strip the ID to be safe
+					delete options.values.id;
+					sheet = Scoresheet.build(options.values);
+					return sheet.save(options);
+				} else {
+					// If we have a sheet just update the values and return it
+					return sheet.update(options.values, options)
+				}
+			})
+			.catch(err => {
+				return new Error(err);
+			});
+	};
 
 	Scoresheet.associate = function (models) {
 		// associations can be defined here
