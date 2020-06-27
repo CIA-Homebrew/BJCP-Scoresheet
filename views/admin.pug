@@ -12,14 +12,14 @@ block content
                     li(class='nav-item')
                         a(class='nav-link px-2' data-toggle="tab" href='#system' role="tab" aria-controls="system" aria-selected="true" ) System
                     li(class='nav-item')
-                        a(class='nav-link px-2 active' data-toggle="tab" href='#judging' role="tab" aria-controls="judging" aria-selected="false") Judging
+                        a(class='nav-link px-2 active' data-toggle="tab" href='#scoresheets' role="tab" aria-controls="scoresheets" aria-selected="false") Scoresheets
                     li(class='nav-item')
                         a(class='nav-link px-2' data-toggle="tab" href='#judges' role="tab" aria-controls="judges" aria-selected="false" ) Judges
             div.card-body
                 div.tab-content
                     div(class='tab-pane' id='system' role='tabpanel' aria-labelledby='system-tab') Coming Soon!
 
-                    div(class='tab-pane active' id='judging' role='tabpane2' aria-labelledby='judging-tab')
+                    div(class='tab-pane active' id='scoresheets' role='tabpane2' aria-labelledby='scoresheets-tab')
                         div.container-fluid
                             table.comp_entry_list.table.table-sm.table-striped.table-bordered.table-hover
                                 thead.thead-dark
@@ -27,6 +27,7 @@ block content
                                         th(scope='col') Entry #
                                         th(scope='col') Cat
                                         th(scope='col') Sub-Cat
+                                        th(scope='col') Mini BOS
                                 tbody
                                     if (sheets)
                                         each sheet in sheets
@@ -35,26 +36,27 @@ block content
                                                     th(scope='row') #{sheet.entry_number}
                                                     td #{sheet.category}#{sheet.sub}
                                                     td #{sheet.subcategory}
+                                                    td #{sheet.mini_boss_advanced}
 
                     div(class='tab-pane' id='judges' role='tabpane3' aria-labelledby='judges-tab')
                         .container-fluid
                             table.comp_judges_list.table.table-sm.table-striped.table-bordered.table-hover
                                 thead.thead-dark
                                     tr
-                                        th(scope='col') Username
+                                        th(scope='col') Email
                                         th(scope='col') First Name
                                         th(scope='col') Last Name
                                 tbody
                                     if (judges)
                                         each judge in judges
                                             tr
-                                                td #{judge.username}
-                                                td #{judge.forename}
-                                                td #{judge.surname}
+                                                td #{judge.email}
+                                                td #{judge.firstname}
+                                                td #{judge.lastname}
 
     script(src='https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js')
     script(src='https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap4.min.js')
-    script(src='/javascripts/my_datatables.js')
+    script(src='/javascripts/admin.js')
 
     link(rel='stylesheet', href='https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/css/bootstrap.css')
     link(rel='stylesheet', href='https://cdn.datatables.net/1.10.19/css/dataTables.bootstrap4.min.css')
