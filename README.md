@@ -12,6 +12,7 @@ node -v 10.15.3
 npm -v 6.9  
 
 #TO-DO
+- Need a favicon generated
 - Add capability to load existing scoresheet
 - Add Admin panel : System Settings
 - Add Admin panel : Scoresheet Management

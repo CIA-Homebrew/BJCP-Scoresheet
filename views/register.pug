@@ -4,9 +4,9 @@ block content
 	.container
 		form.form-signin(role='form', action="/register", method="post", style='max-width: 300px;')
 			h2.form-signin-heading Sign Up here
-			input.form-control(type='text', name="forename", placeholder='First Name', value=(typeof fData === "undefined" ? "" : fData.forename))
-			input.form-control(type='text', name="surname", placeholder='Last Name', value=(typeof fData === "undefined" ? "" : fData.surname))
-			input.form-control(type='text', name="username", placeholder='Email Address', value=(typeof fData === "undefined" ? "" : fData.username))
+			input.form-control(type='text', name="firstname", placeholder='First Name', value=(typeof fData === "undefined" ? "" : fData.firstname))
+			input.form-control(type='text', name="lastname", placeholder='Last Name', value=(typeof fData === "undefined" ? "" : fData.lastname))
+			input.form-control(type='text', name="email", placeholder='Email Address', value=(typeof fData === "undefined" ? "" : fData.email))
 			input.form-control(type='password', name="password", placeholder='Password')
 			input.form-control(type='password', name="passwordC", placeholder='Confirm Password')
 			sub (The following is optional but REQUIRED if judging)

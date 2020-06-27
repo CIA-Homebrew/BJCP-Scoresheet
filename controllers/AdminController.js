@@ -1,8 +1,8 @@
-let mongoose = require("mongoose");
-let passport = require("passport");
-let User = require("../models/User");
-let Scoresheet = require("../models/Scoresheet");
-let appConstnats = require("../helpers/appConstants");
+let passport = require("../helpers/seq.passport");
+let User = require("../models").User;
+let Scoresheet = require("../models").Scoresheet;
+let appConstants = require("../helpers/appConstants");
+let debug = require('debug')('aha-scoresheet:adminController');
 
 let adminController = {};
 
@@ -22,7 +22,7 @@ adminController.controlPanel = function(req, res) {
 		.then(function(result) {
 			res.render("admin", {
 				user : req.user,
-				title : appConstnats.APP_NAME + " - Admin Home",
+				title : appConstants.APP_NAME + " - Admin Home",
 				sheets : result[0],
 				judges : result[1]
 			});
@@ -31,7 +31,7 @@ adminController.controlPanel = function(req, res) {
 		.then(undefined, function(err){
 			res.render("admin", {
 				user : req.user,
-				title : appConstnats.APP_NAME + " - Admin Home"
+				title : appConstants.APP_NAME + " - Admin Home"
 			});
 		});
 };

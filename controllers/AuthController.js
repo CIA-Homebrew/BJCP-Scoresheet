@@ -1,9 +1,9 @@
-let mongoose = require("mongoose");
-let passport = require("passport");
-let User = require("../models/User");
-let appConstnats = require("../helpers/appConstants");
+let passport = require("../helpers/seq.passport");
+let User = require("../models").User;
+let appConstants = require("../helpers/appConstants");
+let debug = require('debug')('aha-scoresheet:authController');
 
-let _fields = ["username", "forename", "surname", "password"];
+let _fields = ["username", "firstname", "lastname", "password"];
 
 let userController = {};
 
@@ -42,14 +42,14 @@ function errorProcessor(err, req) {
 userController.home = function(req, res) {
 	res.render('index', {
 		user : req.user,
-		title : appConstnats.APP_NAME + " - Home"
+		title : appConstants.APP_NAME + " - Home"
 	});
 };
 
 // Go to registration page
 userController.register = function(req, res) {
 	res.render('register', {
-		title : appConstnats.APP_NAME + " - Register"
+		title : appConstants.APP_NAME + " - Register"
 	});
 };
 
@@ -61,10 +61,10 @@ userController.doRegister = function(req, res) {
 		passwd = req.body.password;
 	}
 
-	let newUser = new User({
-		username : req.body.username,
-		forename: req.body.forename,
-		surname: req.body.surname,
+	let newUser = User.build({
+		email : req.body.email,
+		firstname: req.body.firstname,
+		lastname: req.body.lastname,
 		bjcp_id: req.body.bjcp_id,
 		bjcp_rank: req.body.bjcp_rank,
 		cicerone_rank: req.body.cicerone_rank,
@@ -73,18 +73,29 @@ userController.doRegister = function(req, res) {
 		judging_years: req.body.judging_years
 	});
 
-	User.register(newUser, passwd)
-		.then(function(newUser) {
+	User.create({
+		email : req.body.email,
+		password: passwd,
+		firstname: req.body.firstname,
+		lastname: req.body.lastname,
+		bjcp_id: req.body.bjcp_id,
+		bjcp_rank: req.body.bjcp_rank,
+		cicerone_rank: req.body.cicerone_rank,
+		pro_brewer_brewery: req.body.pro_brewer_brewery,
+		industry_description: req.body.industry_description,
+		judging_years: req.body.judging_years
+	})
+		.then(function() {
 			req.flash('success', 'Registration Successful');
 			res.redirect('/');
 		})
-		.catch(function(err) {
+		.catch((err) => {
 			// Push the processed errors to the flash handler
 			errorProcessor(err, req);
 
 			return res.render('register', {
 				fData: newUser,
-				title : appConstnats.APP_NAME + " - Register"
+				title : appConstants.APP_NAME + " - Register"
 			});
 		});
 };
@@ -92,14 +103,16 @@ userController.doRegister = function(req, res) {
 // Go to login page
 userController.login = function(req, res) {
 	res.render('login', {
-		title : appConstnats.APP_NAME + " - Login"
+		title : appConstants.APP_NAME + " - Login"
 	});
 };
 
 // Post login
 userController.doLogin = function(req, res) {
-	passport.authenticate('local', {
-		failureRedirect: '/login'
+	passport.authenticate('passport-sequelize', {
+		// Login is bad, try again!
+		failureRedirect: '/login',
+		failureFlash: 'Incorrect user information.'
 	})(req, res, function() {
 		// Login is good, set the user data and go back home
 		req.flash('success', 'Login Successful');
@@ -117,7 +130,7 @@ userController.logout = function(req, res) {
 userController.editProfile = function(req, res) {
 	res.render('profile', {
 		user : req.user,
-		title : appConstnats.APP_NAME + " - Edit Profile"
+		title : appConstants.APP_NAME + " - Edit Profile"
 	});
 };
 
@@ -132,7 +145,7 @@ userController.saveProfile = function(req, res) {
 			// Render our profile page again to show errors
 			return res.render('profile', {
 				fData: user,
-				title : appConstnats.APP_NAME + " - Edit Profile"
+				title : appConstants.APP_NAME + " - Edit Profile"
 			});
 		}
 
@@ -168,7 +181,7 @@ userController.saveProfile = function(req, res) {
 			// Render our profile page again to show errors
 			return res.render('profile', {
 				user: user,
-				title : appConstnats.APP_NAME + " - Edit Profile"
+				title : appConstants.APP_NAME + " - Edit Profile"
 			});
 		}
 
@@ -180,7 +193,7 @@ userController.saveProfile = function(req, res) {
 				req.flash("success", 'Profile edit successful!');
 				return res.render('profile', {
 					user: user,
-					title : appConstnats.APP_NAME + " - Edit Profile"
+					title : appConstants.APP_NAME + " - Edit Profile"
 				});
 			})
 			/** Promise chain error function **/
@@ -191,7 +204,7 @@ userController.saveProfile = function(req, res) {
 					errorProcessor(err, req);
 					return res.render("profile", {
 						user : user,
-						title : appConstnats.APP_NAME + " - Edit Profile"
+						title : appConstants.APP_NAME + " - Edit Profile"
 					});
 				} else {
 					// Try and just do a plain save of the user profile
@@ -203,7 +216,7 @@ userController.saveProfile = function(req, res) {
 							errorProcessor(err, req);
 							return res.render("profile", {
 								user : user,
-								title : appConstnats.APP_NAME + " - Edit Profile"
+								title : appConstants.APP_NAME + " - Edit Profile"
 							});
 						}
 
@@ -211,7 +224,7 @@ userController.saveProfile = function(req, res) {
 						req.flash("success", 'Profile edit successful!');
 						return res.render('profile', {
 							user: user,
-							title : appConstnats.APP_NAME + " - Edit Profile"
+							title : appConstants.APP_NAME + " - Edit Profile"
 						});
 					});
 				}

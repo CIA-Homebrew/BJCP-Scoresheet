@@ -2,8 +2,9 @@ let appConstants = require("../helpers/appConstants");
 let authMiddleware = {};
 
 authMiddleware.isAuthenticated = function (req, res, next) {
-	if (req.user)
+	if (req.user) {
 		return next();
+	}
 
 	// If the user isn't logged in send them home
 	req.flash('danger', 'Please Login');
