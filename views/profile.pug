@@ -14,13 +14,13 @@ block content
 				.form-row
 					h4 Name
 				.form-row
-					label.col-sm-4.col-form-label(for='forename') First Name
+					label.col-sm-4.col-form-label(for='firstname') First Name
 					.col-sm-8
-						input.form-control(type='text', name="forename", id="forename", placeholder='First Name', value=(typeof user === "undefined" ? "" : user.forename))
+						input.form-control(type='text', name="firstname", id="firstname", placeholder='First Name', value=(typeof user === "undefined" ? "" : user.firstname))
 				.form-row
-					label.col-sm-4.col-form-label(for='surname') Last Name
+					label.col-sm-4.col-form-label(for='lastname') Last Name
 					.col-sm-8
-						input.form-control(type='text', name="surname", id="surname", placeholder='Last Name', value=(typeof user === "undefined" ? "" : user.surname))
+						input.form-control(type='text', name="lastname", id="lastname", placeholder='Last Name', value=(typeof user === "undefined" ? "" : user.lastname))
 			.form-group
 				.form-row
 					.col-md-3
@@ -31,7 +31,7 @@ block content
 					label.col-sm-4.col-form-label(for='username') Current Email
 					//- Passport stores username in an array to use the first element
 					.col-sm-8
-						input.form-control(type='text', name="username", id="username", placeholder='Email Address', value=(typeof user === "undefined" ? "" : user.username[0]))
+						input.form-control(type='text', name="username", id="username", placeholder='Email Address', value=(typeof user === "undefined" ? "" : user.email))
 				.form-row
 					label.col-sm-4.col-form-label(for='new_username') New Email
 					.col-sm-8

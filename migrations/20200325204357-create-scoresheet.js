@@ -272,6 +272,12 @@ module.exports = {
 			},
 			userId: {
 				type: Sequelize.UUID,
+				references: {
+					model: 'Users',
+					key: 'id'
+				},
+				onUpdate: 'CASCADE',
+				onDelete: 'SET NULL',
 				allowNull: true
 			},
 			judge_id: {

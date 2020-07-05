@@ -16,6 +16,8 @@ npm -v 6.9
 - Add capability to load existing scoresheet
 - Add Admin panel : System Settings
 - Add Admin panel : Scoresheet Management
+    - By organization
+    - By event
 - Add Admin panel : User Management
 - Add System Audit trail for change control of scoresheets and users
 

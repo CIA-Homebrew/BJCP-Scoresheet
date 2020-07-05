@@ -351,7 +351,7 @@ module.exports = (sequelize, DataTypes) => {
 
 	Scoresheet.associate = function (models) {
 		// associations can be defined here
-		//Scoresheet.belongsTo(models.User, {foreignKey: "id", as: "userId"});
+		Scoresheet.belongsTo(models.User, {foreignKey: "id", as: "userID"});
 	};
 
 	return Scoresheet;
