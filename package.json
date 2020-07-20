@@ -23,7 +23,7 @@
 		"passport-custom": "^1.1.1",
 		"path": "^0.12.7",
 		"pdffiller": "0.0.11",
-		"pug": "^2.0.4",
+		"pug": "^3.0.0",
 		"sequelize": "^6.3.3",
 		"sequelize-cli": "^6.2.0",
 		"sequelize-pg-utilities": "^1.5.0",
