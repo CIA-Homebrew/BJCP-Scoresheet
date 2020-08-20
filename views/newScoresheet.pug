@@ -719,10 +719,13 @@ block content
                 validatorHandler(this)
             });
 
+            var scoresheet = '#{scoresheet}' !== '' ? JSON.parse('!{JSON.stringify(scoresheet)}') : null;
+            
             //- Check to see if the scoresheet object was passed, and if so, pre-populate all fields
-            if ('#{id}') {
-                document.getElementById('id').value = '#{id}';
-                var scoresheet = JSON.parse('!{JSON.stringify(scoresheet)}');
+            if (scoresheet && scoresheet.id) {
+                document.getElementById('id').value = scoresheet.id;
+                var fp = scoresheet.id;
+
                 for (scoresheetField in scoresheet) {
                     var field = document.getElementById(scoresheetField);
                     if (field) {
@@ -750,17 +753,10 @@ block content
                 recalculate_score();
             }
 
-            //- On form load see if there is an existing sheet to populate data
-            //- var fp = $('form#newScoresheet input#id').val();
-            if ('#{id}') {
-                var fp = '#{id}';
-            }
-
-
             if (fp !== "" ) {
                 $.post('/scoresheet/check', {id: $('form#newScoresheet input#id').val()}, function (data) {
                     if (data) {
-                        console.log(data);
+                        //- console.log(data);
                     }
                 });
             }

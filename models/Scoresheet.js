@@ -303,7 +303,10 @@ module.exports = (sequelize, DataTypes) => {
 		//Set to true after confirming submit scoresheet
 		scoresheet_submitted: {
 			type: DataTypes.BOOLEAN,
-			default: false
+			default: false,
+			set(value) {
+				this.setDataValue('scoresheet_submitted', !!value)
+			}
 		},
 		userId: {
 			type: DataTypes.UUID,
