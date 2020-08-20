@@ -5,6 +5,7 @@ let fs = require('fs');
 let Scoresheet = require('../models').Scoresheet;
 let appConstants = require('../helpers/appConstants');
 let validator = require('validator');
+const { Sequelize } = require('../models');
 let debug = require('debug')('aha-scoresheet:scoresheetController');
 
 let scoresheetController = {};
@@ -23,7 +24,7 @@ scoresheetController.loadScoresheetList = function(req, res) {
 		.then(userScoresheets => {
 			res.render('loadScoresheetList', {
 				user : req.user,
-				scoresheets : userScoresheets,
+				scoresheets : userScoresheets.map(scoresheet => scoresheet.get({plain:true})),
 				title : appConstants.APP_NAME + " - List Scoresheet"
 			});
 		})
@@ -43,10 +44,11 @@ scoresheetController.loadScoresheet = function(req, res) {
 			id: req.body.scoresheetId
 		},
 	})
-		.then(scoresheet => {
+		.then(scoresheets => {
+			if (!scoresheets.length) throw new Error('No scoresheet found for given ID!')
 			res.render('newScoresheet', {
 				user: req.user,
-				scoresheet : scoresheet,
+				scoresheet : scoresheets[0].get({plain:true}),
 				fingerprint: req.body.scoresheetId,
 				title : appConstants.APP_NAME + " - Load Scoresheet"
 			})

@@ -49,11 +49,12 @@ block content
 								if (scoresheets)
 									each sheet in scoresheets
 										if (!sheet.scoresheet_submitted)
+											- console.log(sheet)
 											tr
 												th(scope='row') 
 													a.pr-3(href='')
 														img(src='../images/deleteIcon.png' style='height:24px;width:24px')
-													a(href='#' style='display:inline;' onclick=`loadScoresheet('${sheet._id}')`) #{sheet.entry_number}
+													a(href='#' style='display:inline;' onclick=`loadScoresheet('${sheet.id}')`) #{sheet.entry_number}
 													//- a(href='/scoresheet/'+sheet._id style='display:inline;') #{sheet.entry_number}
 												td 
 													a(href='') #{sheet.category}#{sheet.sub}
@@ -81,10 +82,10 @@ block content
 			return false;
 		}
 
-		function loadScoresheet(scoresheetId) {
+		function loadScoresheet(scoresheetId) {		
 			var form = document.createElement('form');
 			form.method = 'post';
-			form.action = '/scoresheet/edit' ;
+			form.action = '/scoresheet/edit/' ;
 			var hiddenField = document.createElement('input');
 			hiddenField.type = 'hidden';
 			hiddenField.name = 'scoresheetId';
@@ -94,5 +95,4 @@ block content
 			console.log(form);
 			form.submit();
 			return false;
-			
 		}
