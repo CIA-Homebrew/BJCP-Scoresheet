@@ -84,7 +84,9 @@ scoresheetController.doNewScoresheet = function(req, res) {
 		res.redirect('/scoresheet/new');
 	}
 
-	let ss = Scoresheet.build();
+	let ss = Scoresheet.build({
+		id: req.body.id
+	});
 
 	/**
 	 * There may be a cleaner way of doing this but just for sanity only map the known keys
@@ -96,23 +98,28 @@ scoresheetController.doNewScoresheet = function(req, res) {
 	// Associate this scoresheet to the user
 	ss.userId = req.user.id;
 
-	// Use createOrUpdate so that we either get a new sheet or update an existing
-	Scoresheet.createOrUpdate({
-		where : {
-			id: ss.id
-		},
-		validate: false,
-		values: ss
-	})
-		.then(sheet => {
+	// Upsert the record
+	Scoresheet.upsert(
+		ss.dataValues,
+		{
+			validate: false
+		}
+	)
+		.then((retData) => {
 			// associate the sheet to the user
 			//sheet.setUser(req.user.id);
 
+			// Returned Data
+			let sheet = retData[0];
+			let created = retData[1];
+
 			req.flash('success', 'Scoresheet Submitted');
-			res.redirect('/');
+			res.redirect('/scoresheet/load');
 		})
 		.catch(err => {
 			debug(err);
+			// Bad upserte send the error back to the AJAX caller
+			res.send({update: false, id: null, error: err});
 		});
 };
 
@@ -148,27 +155,21 @@ scoresheetController.doChangeScoresheet = function(req, res) {
 	// Associate this scoresheet to the user
 	ss.userId = req.user.id;
 
-	// Use createOrUpdate so that we either get a new sheet or update an existing
-	Scoresheet.createOrUpdate({
-		where : {
-			id: ss.id
-		},
-		validate: false,
-		values: ss
-	})
-		.then(sheet => {
-			// associate the sheet to the user
-			//sheet.setUser(req.user.id);
-			// Good insert/update now send the ID back to the AJAX caller
-			res.send({update: true, id: sheet.id});
+	// Upsert the record
+	Scoresheet.upsert(
+		ss.values,
+		{
+			where: {id: ss.values.id}
+		}
+	)
+		.then((sheet, created) => {
+			console.log(created);
 		})
 		.catch(err => {
 			debug(err);
-			// Bad insert/update send the error back to the AJAX caller
+			// Bad upserte send the error back to the AJAX caller
 			res.send({update: false, id: null, error: err});
 		});
-
-
 };
 
 /**
