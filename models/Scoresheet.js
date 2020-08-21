@@ -303,10 +303,11 @@ module.exports = (sequelize, DataTypes) => {
 		//Set to true after confirming submit scoresheet
 		scoresheet_submitted: {
 			type: DataTypes.BOOLEAN,
-			default: false,
+			default: false
+			/*,
 			set(value) {
 				this.setDataValue('scoresheet_submitted', !!value)
-			}
+			}*/
 		},
 		userId: {
 			type: DataTypes.UUID,
@@ -332,25 +333,6 @@ module.exports = (sequelize, DataTypes) => {
 		judge_judging_years: DataTypes.STRING,
 	}, {
 	});
-
-	Scoresheet.createOrUpdate = function(options) {
-		return Scoresheet
-			.findOne(options)
-			.then((sheet) => {
-				if (!sheet) {
-					// If we don't have a sheet then build one but strip the ID to be safe
-					delete options.values.id;
-					sheet = Scoresheet.build(options.values);
-					return sheet.save(options);
-				} else {
-					// If we have a sheet just update the values and return it
-					return sheet.update(options.values, options)
-				}
-			})
-			.catch(err => {
-				return new Error(err);
-			});
-	};
 
 	Scoresheet.associate = function (models) {
 		// associations can be defined here
