@@ -40,26 +40,23 @@ router.post('/profile/edit', authMiddle.isAuthenticated, authController.saveProf
 //route for scoresheet list load
 router.get('/scoresheet/load', authMiddle.isAuthenticated, scoresheetController.loadScoresheetList);
 
+//route for scoresheet individual or new load
+router.get('/scoresheet/edit/', authMiddle.isAuthenticated, scoresheetController.initScoresheet);
+
+//route for scoresheet individual post edit
+router.post('/scoresheet/edit/', authMiddle.isAuthenticated, scoresheetController.initScoresheet);
+
+// route for scoresheet ajax autosave
+router.post('/scoresheet/update/', authMiddle.isAuthenticated, scoresheetController.doScoresheetDataChange);
+
 //route for PDF Generate
 router.get('/scoresheet/pdf/:scoresheetId', authMiddle.isAuthenticated, scoresheetController.generatePDF);
-
-//route for new scoresheet load
-router.get('/scoresheet/new', authMiddle.isAuthenticated, scoresheetController.newScoresheet);
-
-//route for new scoresheet post
-router.post('/scoresheet/new', authMiddle.isAuthenticated, scoresheetController.doNewScoresheet);
-
-//route for change scoresheet post
-router.post('/scoresheet/change', authMiddle.isAuthenticated, scoresheetController.doChangeScoresheet);
 
 //route for check scoresheet post
 router.post('/scoresheet/check', authMiddle.isAuthenticated, scoresheetController.doCheckScoresheet);
 
 //route for validate scoresheet post
 router.post('/scoresheet/validate', authMiddle.isAuthenticated, scoresheetController.doValidateScoresheet);
-
-//route for scoresheet individual load
-router.post('/scoresheet/edit/', authMiddle.isAuthenticated, scoresheetController.loadScoresheet);
 
 //* ADMIN FUNCTIONS *//
 router.get('/admin', authMiddle.isAdmin, adminController.controlPanel);

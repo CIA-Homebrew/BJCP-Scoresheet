@@ -29,64 +29,72 @@ scoresheetController.loadScoresheetList = function(req, res) {
 			});
 		})
 		.catch(err => {
-			debug(err)
-		});
-};
-
-/**
- * Load Individual Scoresheet
- * @param req
- * @param res
- */
-scoresheetController.loadScoresheet = function(req, res) {
-	Scoresheet.findAll({
-		where: {
-			id: req.body.scoresheetId
-		},
-	})
-		.then(scoresheets => {
-			if (!scoresheets.length) throw new Error('No scoresheet found for given ID!')
-			res.render('newScoresheet', {
-				user: req.user,
-				scoresheet : scoresheets[0].get({plain:true}),
-				fingerprint: req.body.scoresheetId,
-				title : appConstants.APP_NAME + " - Load Scoresheet"
-			})
-		})
-		.catch(err => {
 			debug(err);
 		});
 };
 
 /**
- * New Scoresheet Render
+ * Initialize Scoresheet - either new or existing
  * @param req
  * @param res
  */
-scoresheetController.newScoresheet = function(req, res) {
-	let date = new Date(Date.now());
-	res.render('newScoresheet', {
-		user: req.user,
-		sess_date: date.getFullYear() + '-' + ('0' + (date.getMonth()+1)).slice(-2) + '-' + ('0' + date.getDate()).slice(-2),
-		title : appConstants.APP_NAME + " - New Scoresheet"
-	});
+scoresheetController.initScoresheet = function(req, res) {
+	// If we are provided with a scoresheet ID then load it
+	if (req.body.scoresheetId) {
+		Scoresheet.findAll({
+			where: {
+				id: req.body.scoresheetId
+			},
+		})
+			.then(scoresheets => {
+				if (!scoresheets.length) throw new Error('No scoresheet found for given ID!')
+				res.render('scoresheet', {
+					user: req.user,
+					scoresheet : scoresheets[0].get({plain:true}),
+					fingerprint: req.body.scoresheetId,
+					title : appConstants.APP_NAME + " - Load Scoresheet"
+				})
+			})
+			.catch(err => {
+				debug(err);
+			});
+	// If we do NOT have a scoresheet ID just give the user a clean sheet to start new
+	} else {
+		let date = new Date(Date.now());
+		res.render('scoresheet', {
+			user: req.user,
+			sess_date: date.getFullYear() + '-' + ('0' + (date.getMonth()+1)).slice(-2) + '-' + ('0' + date.getDate()).slice(-2),
+			title : appConstants.APP_NAME + " - New Scoresheet"
+		});
+	}
 };
 
 /**
- * New Scoresheet Post
+ * Do Scoresheet Data Post
  * @param req
  * @param res
  */
-scoresheetController.doNewScoresheet = function(req, res) {
-	// Here we check to see if the id field already exists. If not, user has not populated anything
-	if (!req.body.id) {
-		req.flash('error', 'Please populate scoresheet before submitting');
-		res.redirect('/scoresheet/new');
+scoresheetController.doScoresheetDataChange = function(req, res) {
+	// Make sure we don't allow a regular submit we ONLY take our AJAX calls
+	if (req.body._ajax !== "true") {
+		// Just send them back to the edit page
+		return res.redirect('/scoresheet/edit');
 	}
 
-	let ss = Scoresheet.build({
-		id: req.body.id
-	});
+	// strip the ajax property
+	delete req.body._ajax;
+
+	let ss;
+
+	// If the ID is empty or invalid then generate a new object with a new ID
+	if (req.body.id === "" || !validator.isUUID(req.body.id, 4)) {
+		ss = Scoresheet.build();
+	// If we have an ID build a new object using that existing ID
+	} else {
+		ss = Scoresheet.build({
+			id: req.body.id
+		});
+	}
 
 	/**
 	 * There may be a cleaner way of doing this but just for sanity only map the known keys
@@ -102,6 +110,7 @@ scoresheetController.doNewScoresheet = function(req, res) {
 	Scoresheet.upsert(
 		ss.dataValues,
 		{
+			where: {id: ss.dataValues.id},
 			validate: false
 		}
 	)
@@ -113,62 +122,14 @@ scoresheetController.doNewScoresheet = function(req, res) {
 			let sheet = retData[0];
 			let created = retData[1];
 
-			req.flash('success', 'Scoresheet Submitted');
-			res.redirect('/scoresheet/load');
+			//req.flash('success', 'Scoresheet Submitted');
+			//res.redirect('/scoresheet/load');
+			return res.send({update: true, id: sheet.id});
 		})
 		.catch(err => {
 			debug(err);
-			// Bad upserte send the error back to the AJAX caller
-			res.send({update: false, id: null, error: err});
-		});
-};
-
-/**
- * Change Scoresheet Post - This is an AJAX call
- * @param req
- * @param res
- * @return object
- */
-scoresheetController.doChangeScoresheet = function(req, res) {
-	// New Scoresheet object
-	let ss = {};
-
-	/**
-	 * Next few steps could be combined into a sinpler function but for clarity we will break them out
-	 */
-	// Store the data because we need it to be 'filtered'
-	let scoresheetBody = req.body;
-
-	// If the id iss not a UUID4 just don't use it and use a false id
-	if (!validator.isUUID(scoresheetBody.id, 4)) {
-		scoresheetBody['id'] = null;
-	}
-
-	/**
-	 * There may be a cleaner way of doing this but just for sanity only map the known keys
-	 */
-	Object.keys(Scoresheet.rawAttributes).map((key, index) => {
-		// Populate from the scoresheet body object
-		ss[key] = scoresheetBody[key];
-	});
-
-	// Associate this scoresheet to the user
-	ss.userId = req.user.id;
-
-	// Upsert the record
-	Scoresheet.upsert(
-		ss.values,
-		{
-			where: {id: ss.values.id}
-		}
-	)
-		.then((sheet, created) => {
-			console.log(created);
-		})
-		.catch(err => {
-			debug(err);
-			// Bad upserte send the error back to the AJAX caller
-			res.send({update: false, id: null, error: err});
+			// Bad upsert send the error back to the AJAX caller
+			return res.send({update: false, id: null, error: err});
 		});
 };
 
@@ -255,8 +216,6 @@ scoresheetController.generatePDF = function(req, res) {
 	res.on('finish', function() {
 		fs.unlinkSync(destinationPDF);
 	});
-
-	return
 };
 
 module.exports = scoresheetController;
