@@ -1,7 +1,7 @@
 extends layout
 
 block content
-	form(role='form' action='/scoresheet/edit', method='post', id="newScoresheet")
+	form(role='form' action='/scoresheet/update', method='post', id="newScoresheet")
 		//- Hidden form ID for backend usage
 		input(type='text' id='author' name='author' value=user._id hidden=true)
 		input(type='text' id='id' name='id' hidden=true)
@@ -792,6 +792,11 @@ block content
 				});
 			}
 
+			//- Prevent the form from doing a general submit
+			$('form#newScoresheet').submit(function(e) {
+				e.preventDefault();
+			});
+
 			//- If we put this first, it works!! (Unlike the body wraps.)
 			$('form#newScoresheet input:checkbox').on('change', function () {
 				if ($(this).is(':checked')) {
@@ -810,6 +815,7 @@ block content
 				if (origForm !== fData) {
 					//- We have changes to the form save them back
 					let fDataObject = $('form#newScoresheet').serializeObject();
+					fDataObject['_ajax'] = true;
 
 					$.post('/scoresheet/update', fDataObject, function (data) {
 						if (data.update) {

@@ -75,8 +75,17 @@ scoresheetController.initScoresheet = function(req, res) {
  * @param res
  */
 scoresheetController.doScoresheetDataChange = function(req, res) {
+	// Make sure we don't allow a regular submit we ONLY take our AJAX calls
+	if (req.body._ajax !== "true") {
+		// Just send them back to the edit page
+		return res.redirect('/scoresheet/edit');
+	}
+
+	// strip the ajax property
+	delete req.body._ajax;
+
 	let ss;
-	console.log(validator.isUUID(req.body.id, 4));
+
 	// If the ID is empty or invalid then generate a new object with a new ID
 	if (req.body.id === "" || !validator.isUUID(req.body.id, 4)) {
 		ss = Scoresheet.build();
