@@ -5,7 +5,7 @@ block content
 		//- Hidden form ID for backend usage
 		input(type='text' id='author' name='author' value=user._id hidden=true)
 		input(type='text' id='id' name='id' hidden=true)
-		input(type='checkbox' checked=false value='1' id='scoresheet_submitted' name='scoresheet_submitted' hidden=true)
+		input(type='text' value='1' id='scoresheet_submitted' name='scoresheet_submitted' hidden=true)
 		.container
 			div.card
 				div.card-header
@@ -681,9 +681,8 @@ block content
 
 		//- Change 'scoresheet_submitted' input to true after submit confirmed
 		function confirm_submit() {
-			document.getElementById('scoresheet_submitted').checked = true;
-			document.getElementById('scoresheet_submitted').value = true;
-			document.getElementById('newScoresheet').submit();
+			$('input#scoresheet_submitted').val('true').change();
+			window.location.replace('/scoresheet/load');
 		}
 
 		//- Universal data validator handler
@@ -805,7 +804,7 @@ block content
 			//- On form change we save it back to the system
 			var origForm = $('form#newScoresheet').serialize();
 			$('form#newScoresheet :input').change(function () {
-				//console.log("fire form change");
+				console.log($(this));
 				//- console.log(scoresheet)
 				var fData = $('form#newScoresheet').serialize();
 				if (origForm !== fData) {
