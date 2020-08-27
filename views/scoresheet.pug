@@ -804,7 +804,7 @@ block content
 			//- On form change we save it back to the system
 			var origForm = $('form#newScoresheet').serialize();
 			$('form#newScoresheet :input').change(function () {
-				console.log($(this));
+				//-console.log($(this));
 				//- console.log(scoresheet)
 				var fData = $('form#newScoresheet').serialize();
 				if (origForm !== fData) {
@@ -816,7 +816,7 @@ block content
 							//console.log(data);
 							$('form#newScoresheet input#id').val(data.id);
 						} else if (data.error) {
-							//console.log(data.error);
+							//-console.log(data.error);
 						}
 					});
 					//- Reset the base data comparison
