@@ -5,7 +5,7 @@ block content
 		//- Hidden form ID for backend usage
 		input(type='text' id='author' name='author' value=user._id hidden=true)
 		input(type='text' id='id' name='id' hidden=true)
-		input(type='text' value='1' id='scoresheet_submitted' name='scoresheet_submitted' hidden=true)
+		input(type='text' value='0' id='scoresheet_submitted' name='scoresheet_submitted' hidden=true)
 		.container
 			div.card
 				div.card-header
@@ -148,7 +148,7 @@ block content
 										a.badge.badge-light.badge-pill(id='bjcp_aroma' tabindex="0" role="button" data-toggle="popover" data-trigger="focus" title="BJCP Aroma Guidelines" data-content="Please Select a BJCP Category and Subcategory") Style Guidelines
 								.form-row.py-1
 									.form-group.col-sm-6.col-form-label.px-4
-										input(style='width:100%' id="aroma_malt" name='aroma_malt' type="text" data-slider-ticks="[0, 10, 50, 100]" data-slider-ticks-snap-bounds="30" data-slider-ticks-labels="['None','Low','Med','High']")
+										input(style='width:100%' id="aroma_malt" name='aroma_malt' type="text" class="data-slider" data-slider-ticks="[0, 10, 50, 100]" data-slider-ticks-snap-bounds="30" data-slider-ticks-labels="['None','Low','Med','High']")
 										//- button(type='button' class='btn btn-danger btn-small' data-toggle='button' aria-pressed='false' autocomplete='off') Inappropriate
 										//- .form-group.col-sm-3.col-form-label
 										.form-check.pt-4
@@ -160,7 +160,7 @@ block content
 								h4 Hops Aroma
 								.form-row.py-1
 									.form-group.col-sm-6.col-form-label.px-4
-										input(style='width:100%' id="aroma_hops" name='aroma_hops' type="text" data-slider-ticks="[0, 10, 50, 100]" data-slider-ticks-snap-bounds="30" data-slider-ticks-labels="['None','Low','Med','High']")
+										input(style='width:100%' id="aroma_hops" name='aroma_hops' type="text" class="data-slider" data-slider-ticks="[0, 10, 50, 100]" data-slider-ticks-snap-bounds="30" data-slider-ticks-labels="['None','Low','Med','High']")
 										//- button(type='button' class='btn btn-danger btn-small' data-toggle='button' aria-pressed='false' autocomplete='off') Inappropriate
 										//- .form-group.col-sm-3.col-form-label
 										.form-check.pt-4
@@ -172,7 +172,7 @@ block content
 								h4 Fermentation Aroma
 								.form-row.py-1
 									.form-group.col-sm-6.col-form-label.px-4
-										input(style='width:100%' id="aroma_fermentation" name='aroma_fermentation' type="text" data-slider-ticks="[0, 10, 50, 100]" data-slider-ticks-snap-bounds="30" data-slider-ticks-labels="['None','Low','Med','High']")
+										input(style='width:100%' id="aroma_fermentation" name='aroma_fermentation' type="text" class="data-slider" data-slider-ticks="[0, 10, 50, 100]" data-slider-ticks-snap-bounds="30" data-slider-ticks-labels="['None','Low','Med','High']")
 										//- button(type='button' class='btn btn-danger btn-small' data-toggle='button' aria-pressed='false' autocomplete='off') Inappropriate
 										//- .form-group.col-sm-3.col-form-label
 										.form-check.pt-4
@@ -201,7 +201,7 @@ block content
 										a.badge.badge-light.badge-pill(id='bjcp_appearance' tabindex="0" role="button" data-toggle="popover" data-trigger="focus" title="BJCP Appearance Guidelines" data-content="Please Select a BJCP Category and Subcategory") Style Guidelines
 								.form-row.py-1
 									.form-group.col-sm-6.col-form-label.px-4
-										input(style='width:100%' id="appearance_color" name='appearance_color' type="text" data-slider-ticks="[0, 10, 50, 100]" data-slider-ticks-snap-bounds="30" data-slider-ticks-labels="['None','Low','Med','High']")
+										input(style='width:100%' id="appearance_color" name='appearance_color' type="text" class="data-slider" data-slider-ticks="[0, 10, 50, 100]" data-slider-ticks-snap-bounds="30" data-slider-ticks-labels="['None','Low','Med','High']")
 										//- button(type='button' class='btn btn-danger btn-small' data-toggle='button' aria-pressed='false' autocomplete='off') Inappropriate
 										//- .form-group.col-sm-3.col-form-label
 										.form-check.pt-4
@@ -213,7 +213,7 @@ block content
 								h4 Clarity
 								.form-row.py-1
 									.form-group.col-sm-6.col-form-label.px-4
-										input(style='width:100%' id="appearance_clarity" name='appearance_clarity' type="text" data-slider-ticks="[0, 10, 50, 100]" data-slider-ticks-snap-bounds="30" data-slider-ticks-labels="['None','Low','Med','High']")
+										input(style='width:100%' id="appearance_clarity" name='appearance_clarity' type="text" class="data-slider" data-slider-ticks="[0, 10, 50, 100]" data-slider-ticks-snap-bounds="30" data-slider-ticks-labels="['None','Low','Med','High']")
 										//- button(type='button' class='btn btn-danger btn-small' data-toggle='button' aria-pressed='false' autocomplete='off') Inappropriate
 										//- .form-group.col-sm-3.col-form-label
 										.form-check.pt-4
@@ -226,14 +226,14 @@ block content
 								.form-row.py-1
 									.form-group.col-sm-6.col-form-label.px-4
 										h6 Color
-										input(style='width:100%' id="appearance_head" name='appearance_head' type="text" data-slider-ticks="[0, 10, 50, 100]" data-slider-ticks-snap-bounds="30" data-slider-ticks-labels="['None','Low','Med','High']")
+										input(style='width:100%' id="appearance_head" name='appearance_head' type="text" class="data-slider" data-slider-ticks="[0, 10, 50, 100]" data-slider-ticks-snap-bounds="30" data-slider-ticks-labels="['None','Low','Med','High']")
 										//- button(type='button' class='btn btn-danger btn-small' data-toggle='button' aria-pressed='false' autocomplete='off') Inappropriate
 										//- .form-group.col-sm-3.col-form-label
 										.form-check.pt-2.pb-4
 											input.form-check-input(type='checkbox'  id='appearance_head_inappropriate' name='appearance_head_inappropriate')
 											label.form-check-label(for='appearance_head_inappropriate') Inappropriate
 										h6 Retention
-										input(style='width:100%' id="appearance_retention" name='appearance_retention' type="text" data-slider-ticks="[0, 10, 50, 100]" data-slider-ticks-snap-bounds="30" data-slider-ticks-labels="['None','Low','Med','High']")
+										input(style='width:100%' id="appearance_retention" name='appearance_retention' type="text" class="data-slider" data-slider-ticks="[0, 10, 50, 100]" data-slider-ticks-snap-bounds="30" data-slider-ticks-labels="['None','Low','Med','High']")
 										//- button(type='button' class='btn btn-danger btn-small' data-toggle='button' aria-pressed='false' autocomplete='off') Inappropriate
 										//- .form-group.col-sm-3.col-form-label
 										.form-check.py-2
@@ -262,7 +262,7 @@ block content
 										a.badge.badge-light.badge-pill(id='bjcp_flavor' tabindex="0" role="button" data-toggle="popover" data-trigger="focus" title="BJCP Flavor Guidelines" data-content="Please Select a BJCP Category and Subcategory") Style Guidelines
 								.form-row.py-1
 									.form-group.col-sm-6.col-form-label.px-4
-										input(style='width:100%' id="flavor_malt" name='flavor_malt' type="text" data-slider-ticks="[0, 10, 50, 100]" data-slider-ticks-snap-bounds="30" data-slider-ticks-labels="['None','Low','Med','High']")
+										input(style='width:100%' id="flavor_malt" name='flavor_malt' type="text" class="data-slider" data-slider-ticks="[0, 10, 50, 100]" data-slider-ticks-snap-bounds="30" data-slider-ticks-labels="['None','Low','Med','High']")
 										//- button(type='button' class='btn btn-danger btn-small' data-toggle='button' aria-pressed='false' autocomplete='off') Inappropriate
 										//- .form-group.col-sm-3.col-form-label
 										.form-check.pt-4
@@ -274,7 +274,7 @@ block content
 								h4 Hop Flavor
 								.form-row.py-1
 									.form-group.col-sm-6.col-form-label.px-4
-										input(style='width:100%' id="flavor_hops" name='flavor_hops' type="text" data-slider-ticks="[0, 10, 50, 100]" data-slider-ticks-snap-bounds="30" data-slider-ticks-labels="['None','Low','Med','High']")
+										input(style='width:100%' id="flavor_hops" name='flavor_hops' type="text" class="data-slider" data-slider-ticks="[0, 10, 50, 100]" data-slider-ticks-snap-bounds="30" data-slider-ticks-labels="['None','Low','Med','High']")
 										//- button(type='button' class='btn btn-danger btn-small' data-toggle='button' aria-pressed='false' autocomplete='off') Inappropriate
 										//- .form-group.col-sm-3.col-form-label
 										.form-check.pt-4
@@ -286,7 +286,7 @@ block content
 								h4 Bitterness
 								.form-row.py-1
 									.form-group.col-sm-6.col-form-label.px-4
-										input(style='width:100%' id="flavor_bitterness" name='flavor_bitterness' type="text" data-slider-ticks="[0, 10, 50, 100]" data-slider-ticks-snap-bounds="30" data-slider-ticks-labels="['None','Low','Med','High']")
+										input(style='width:100%' id="flavor_bitterness" name='flavor_bitterness' type="text" class="data-slider" data-slider-ticks="[0, 10, 50, 100]" data-slider-ticks-snap-bounds="30" data-slider-ticks-labels="['None','Low','Med','High']")
 										//- button(type='button' class='btn btn-danger btn-small' data-toggle='button' aria-pressed='false' autocomplete='off') Inappropriate
 										//- .form-group.col-sm-3.col-form-label
 										.form-check.pt-4
@@ -298,7 +298,7 @@ block content
 								h4 Fermentation Flavors
 								.form-row.py-1
 									.form-group.col-sm-6.col-form-label.px-4
-										input(style='width:100%' id="flavor_fermentation" name='flavor_fermentation' type="text" data-slider-ticks="[0, 10, 50, 100]" data-slider-ticks-snap-bounds="30" data-slider-ticks-labels="['None','Low','Med','High']")
+										input(style='width:100%' id="flavor_fermentation" name='flavor_fermentation' type="text" class="data-slider" data-slider-ticks="[0, 10, 50, 100]" data-slider-ticks-snap-bounds="30" data-slider-ticks-labels="['None','Low','Med','High']")
 										//- button(type='button' class='btn btn-danger btn-small' data-toggle='button' aria-pressed='false' autocomplete='off') Inappropriate
 										//- .form-group.col-sm-3.col-form-label
 										.form-check.pt-4
@@ -310,7 +310,7 @@ block content
 								h4 Flavor Balance
 								.form-row.py-1
 									.form-group.col-sm-6.col-form-label.px-4
-										input(style='width:100%' id="flavor_balance" name='flavor_balance' type="text" data-slider-ticks="[0, 10, 50, 100]" data-slider-ticks-snap-bounds="30" data-slider-ticks-labels="['None','Low','Med','High']")
+										input(style='width:100%' id="flavor_balance" name='flavor_balance' type="text" class="data-slider" data-slider-ticks="[0, 10, 50, 100]" data-slider-ticks-snap-bounds="30" data-slider-ticks-labels="['None','Low','Med','High']")
 										//- button(type='button' class='btn btn-danger btn-small' data-toggle='button' aria-pressed='false' autocomplete='off') Inappropriate
 										//- .form-group.col-sm-3.col-form-label
 										.form-check.pt-4
@@ -322,7 +322,7 @@ block content
 								h4 Finish / Aftertaste
 								.form-row.py-1
 									.form-group.col-sm-6.col-form-label.px-4
-										input(style='width:100%' id="flavor_finish_aftertaste" name='flavor_finish_aftertaste' type="text" data-slider-ticks="[0, 10, 50, 100]" data-slider-ticks-snap-bounds="30" data-slider-ticks-labels="['None','Low','Med','High']")
+										input(style='width:100%' id="flavor_finish_aftertaste" name='flavor_finish_aftertaste' type="text" class="data-slider" data-slider-ticks="[0, 10, 50, 100]" data-slider-ticks-snap-bounds="30" data-slider-ticks-labels="['None','Low','Med','High']")
 										//- button(type='button' class='btn btn-danger btn-small' data-toggle='button' aria-pressed='false' autocomplete='off') Inappropriate
 										//- .form-group.col-sm-3.col-form-label
 										.form-check.pt-4
@@ -349,7 +349,7 @@ block content
 										h4 Body
 									.col-sm-3.text-right
 										a.badge.badge-light.badge-pill(id='bjcp_mouthfeel' tabindex="0" role="button" data-toggle="popover" data-trigger="focus" title="BJCP Mouthfeel Guidelines" data-content="Please Select a BJCP Category and Subcategory") Style Guidelines
-								input(style='width:100%' id="mouthfeel_body" name='mouthfeel_body' type="text" data-slider-ticks="[0, 10, 50, 100]" data-slider-ticks-snap-bounds="30" data-slider-ticks-labels="['None','Low','Med','High']")
+								input(style='width:100%' id="mouthfeel_body" name='mouthfeel_body' type="text" class="data-slider" data-slider-ticks="[0, 10, 50, 100]" data-slider-ticks-snap-bounds="30" data-slider-ticks-labels="['None','Low','Med','High']")
 								//- button(type='button' class='btn btn-danger btn-small' data-toggle='button' aria-pressed='false' autocomplete='off') Inappropriate
 								//- .form-group.col-sm-3.col-form-label
 								.form-check.pt-4
@@ -357,7 +357,7 @@ block content
 									label.form-check-label(for='mouthfeel_body_inappropriate') Inappropriate
 							.form-group.px-5
 								h4 Carbonation
-								input(style='width:100%' id="mouthfeel_carbonation" name='mouthfeel_carbonation' type="text" data-slider-ticks="[0, 10, 50, 100]" data-slider-ticks-snap-bounds="30" data-slider-ticks-labels="['None','Low','Med','High']")
+								input(style='width:100%' id="mouthfeel_carbonation" name='mouthfeel_carbonation' type="text" class="data-slider" data-slider-ticks="[0, 10, 50, 100]" data-slider-ticks-snap-bounds="30" data-slider-ticks-labels="['None','Low','Med','High']")
 								//- button(type='button' class='btn btn-danger btn-small' data-toggle='button' aria-pressed='false' autocomplete='off') Inappropriate
 								//- .form-group.col-sm-3.col-form-label
 								.form-check.pt-4
@@ -365,7 +365,7 @@ block content
 									label.form-check-label(for='mouthfeel_carbonation_inappropriate') Inappropriate
 							.form-group.px-5
 								h4 Warmth
-								input(style='width:100%' id="mouthfeel_warmth" name='mouthfeel_warmth' type="text" data-slider-ticks="[0, 10, 50, 100]" data-slider-ticks-snap-bounds="30" data-slider-ticks-labels="['None','Low','Med','High']")
+								input(style='width:100%' id="mouthfeel_warmth" name='mouthfeel_warmth' type="text" class="data-slider" data-slider-ticks="[0, 10, 50, 100]" data-slider-ticks-snap-bounds="30" data-slider-ticks-labels="['None','Low','Med','High']")
 								//- button(type='button' class='btn btn-danger btn-small' data-toggle='button' aria-pressed='false' autocomplete='off') Inappropriate
 								//- .form-group.col-sm-3.col-form-label
 								.form-check.pt-4
@@ -373,7 +373,7 @@ block content
 									label.form-check-label(for='mouthfeel_warmth_inappropriate') Inappropriate
 							.form-group.px-5
 								h4 Creaminess
-								input(style='width:100%' id="mouthfeel_creaminess" name='mouthfeel_creaminess' type="text" data-slider-ticks="[0, 10, 50, 100]" data-slider-ticks-snap-bounds="30" data-slider-ticks-labels="['None','Low','Med','High']")
+								input(style='width:100%' id="mouthfeel_creaminess" name='mouthfeel_creaminess' type="text" class="data-slider" data-slider-ticks="[0, 10, 50, 100]" data-slider-ticks-snap-bounds="30" data-slider-ticks-labels="['None','Low','Med','High']")
 								//- button(type='button' class='btn btn-danger btn-small' data-toggle='button' aria-pressed='false' autocomplete='off') Inappropriate
 								//- .form-group.col-sm-3.col-form-label
 								.form-check.pt-4
@@ -381,7 +381,7 @@ block content
 									label.form-check-label(for='mouthfeel_creaminess_inappropriate') Inappropriate
 							.form-group.px-5
 								h4 Astringency
-								input(style='width:100%' id="mouthfeel_astringency" name='mouthfeel_astringency' type="text" data-slider-ticks="[0, 10, 50, 100]" data-slider-ticks-snap-bounds="30" data-slider-ticks-labels="['None','Low','Med','High']")
+								input(style='width:100%' id="mouthfeel_astringency" name='mouthfeel_astringency' type="text" class="data-slider" data-slider-ticks="[0, 10, 50, 100]" data-slider-ticks-snap-bounds="30" data-slider-ticks-labels="['None','Low','Med','High']")
 								//- button(type='button' class='btn btn-danger btn-small' data-toggle='button' aria-pressed='false' autocomplete='off') Inappropriate
 								//- .form-group.col-sm-3.col-form-label
 								.form-check.pt-4
@@ -456,13 +456,13 @@ block content
 						div(class='tab-pane' id='summary' role='tabpanel' aria-labelledby='summary-tab')
 							.form-group.px-5
 								h4 Style Accuracy
-								input(style='width:100%' id="overall_class_example" name='overall_class_example' type="text" data-slider-ticks="[0, 10, 50, 100]" data-slider-ticks-snap-bounds="30" data-slider-ticks-labels="['None','Low','Med','High']")
+								input(style='width:100%' id="overall_class_example" name='overall_class_example' type="text" class="data-slider" data-slider-ticks="[0, 10, 50, 100]" data-slider-ticks-snap-bounds="30" data-slider-ticks-labels="['None','Low','Med','High']")
 							.form-group.px-5
 								h4 Execution
-								input(style='width:100%' id="overall_flawless" name='overall_flawless' type="text" data-slider-ticks="[0, 10, 50, 100]" data-slider-ticks-snap-bounds="30" data-slider-ticks-labels="['None','Low','Med','High']")
+								input(style='width:100%' id="overall_flawless" name='overall_flawless' type="text" class="data-slider" data-slider-ticks="[0, 10, 50, 100]" data-slider-ticks-snap-bounds="30" data-slider-ticks-labels="['None','Low','Med','High']")
 							.form-group.px-5
 								h4 Overall Opinion
-								input(style='width:100%' id="overall_wonderful" name='overall_wonderful' type="text" data-slider-ticks="[0, 10, 50, 100]" data-slider-ticks-snap-bounds="30" data-slider-ticks-labels="['None','Low','Med','High']")
+								input(style='width:100%' id="overall_wonderful" name='overall_wonderful' type="text" class="data-slider" data-slider-ticks="[0, 10, 50, 100]" data-slider-ticks-snap-bounds="30" data-slider-ticks-labels="['None','Low','Med','High']")
 							.form-group
 								.row
 									.col
@@ -752,6 +752,25 @@ block content
 
 			var scoresheet = '#{scoresheet}' !== '' ? JSON.parse('!{JSON.stringify(scoresheet)}') : null;
 
+			// post scoresheet as-is to db without submitting
+			function update_scoresheet() {
+				var fData = $('form#newScoresheet').serialize();
+				if (origForm !== fData) {
+					//- We have changes to the form save them back
+					let fDataObject = $('form#newScoresheet').serializeObject();
+					fDataObject['_ajax'] = true;
+
+					$.post('/scoresheet/update', fDataObject, function (data) {
+						if (data.update) {
+							$('form#newScoresheet input#id').val(data.id);
+						} else if (data.error) {
+						}
+					});
+					//- Reset the base data comparison
+					origForm = fData;
+				}
+			}
+
 			//- Check to see if the scoresheet object was passed, and if so, pre-populate all fields
 			if (scoresheet && scoresheet.id) {
 				document.getElementById('id').value = scoresheet.id;
@@ -807,29 +826,15 @@ block content
 			});
 
 			//- On form change we save it back to the system
+			//- This triggers on focusOut (i.e. when user clicks out)
 			var origForm = $('form#newScoresheet').serialize();
-			$('form#newScoresheet :input').change(function () {
-				//-console.log($(this));
-				//- console.log(scoresheet)
-				var fData = $('form#newScoresheet').serialize();
-				if (origForm !== fData) {
-					//- We have changes to the form save them back
-					let fDataObject = $('form#newScoresheet').serializeObject();
-					fDataObject['_ajax'] = true;
+			$('form#newScoresheet :input').focusout(update_scoresheet)
 
-					$.post('/scoresheet/update', fDataObject, function (data) {
-						if (data.update) {
-							//console.log(data);
-							$('form#newScoresheet input#id').val(data.id);
-						} else if (data.error) {
-							//-console.log(data.error);
-						}
-					});
-					//- Reset the base data comparison
-					origForm = fData;
-				}
-			});
+			// Since sliders don't trigger on focusout, we toggle those differently using mouseUp
+			$('.slider-handle, .slider-tick-label').mouseup(update_scoresheet)
 		});
+
+		
 
 		//- Function to update stylistic tooltips on each page based on the BJCP selection notes.
 		function update_tooltips() {
