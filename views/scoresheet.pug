@@ -480,7 +480,9 @@ block content
 			.modal-dialog
 				.modal-content
 					.modal-header Confirm Scoresheet Submission
-					.modal-body Are you sure you want to submit this scoresheet?
+					.modal-body 
+						p Are you sure you want to submit this scoresheet?
+						p <em>Once you submit your scoresheet, you may not change it</em>
 					.modal-footer
 						button(type="button" class="btn btn-secondary" data-dismiss='modal') Cancel
 						button(type='button' class='btn btn-primary' onclick='confirm_submit();') Submit
@@ -681,7 +683,7 @@ block content
 
 		//- Change 'scoresheet_submitted' input to true after submit confirmed
 		function confirm_submit() {
-			$('input#scoresheet_submitted').val('true').change();
+			$('input#scoresheet_submitted').val('1')
 			window.location.replace('/scoresheet/load');
 		}
 
