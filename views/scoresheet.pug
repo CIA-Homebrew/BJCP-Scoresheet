@@ -398,7 +398,7 @@ block content
 												p.small.mb-0.text-center Mouthfeel Score
 											.card-body.text-dark.px-0.py-0.text-center
 												input.form-control.form-control-lg.text-center.mb-0(type='number' id='mouthfeel_score' name='mouthfeel_score' value='0' min='0' max='5' onchange='recalculate_score()')
-												p.small.d-flex.align-items-end.flex-row-reverse.my-0.pb-0 /10
+												p.small.d-flex.align-items-end.flex-row-reverse.my-0.pb-0 /5
 						div(class='tab-pane' id='descriptors' role='tabpanel' aria-labelledby='descriptors-tab')
 							.list-group
 								input(type='checkbox'  id='descriptor_acetaldehyde' name='descriptor_acetaldehyde')
@@ -474,7 +474,7 @@ block content
 												p.small.mb-0.text-center Summary Score
 											.card-body.text-dark.px-0.py-0.text-center
 												input.form-control.form-control-lg.text-center.mb-0(type='number' id='overall_score' name='overall_score' value='0' min='0' max='10' onchange='recalculate_score()')
-												p.small.d-flex.align-items-end.flex-row-reverse.my-0.pb-0 /5
+												p.small.d-flex.align-items-end.flex-row-reverse.my-0.pb-0 /10
 
 		.modal.fade(id='confirm-submit-modal' tabindex='-1' role="dialog" aria-labelledby="confirmLabel" aria-hidden="true")
 			.modal-dialog
