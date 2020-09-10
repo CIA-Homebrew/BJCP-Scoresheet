@@ -25,8 +25,8 @@ block content
 								.card.border-dark.mb-3.mx-1
 									.card-header.px-0.py-0
 										p.small.mb-0.text-center Consensus
-									.card-body.text-dark.px-0.py-1.text-center
-										h4.my-0 -
+									.card-body.text-dark.my-0.px-0.py-0.text-center
+										input.form-control.form-control-lg.text-center.my-0.py-0.ml-auto.mr-auto.remove-internal-padding(type='number' id='consensus_score' name='consensus_score' value='0' min='0' max='50' style="width:50%;height:90%;line-height:90%;")
 								.card.border-dark.mb-3.mx-1
 									.card-header.px-0.py-0
 										p.small.mb-0.text-center Total Score
@@ -35,25 +35,25 @@ block content
 
 
 						.col-md-auto
-							button(type="button" class="btn btn-primary" name='btn' value='Submit' id='submitBtn' data-toggle="modal" data-target="#confirm-submit") Submit
+							button(type="button" class="btn btn-primary" name='btn' value='Submit' id='submitBtn' data-toggle="modal" onClick="submit_scoresheet();") Submit
 					ul(class = 'nav nav-tabs card-header-tabs' id='scoresheet-list' role='tablist')
 						li(class='nav-item')
-							a(class='nav-link active px-2' data-toggle="tab" href='#information' role="tab" aria-controls="information" aria-selected="true" ) Information
+							a(class='nav-link active px-2' id="information-tab" data-toggle="tab" href='#information' role="tab" aria-controls="information" aria-selected="true" ) Information
 						li(class='nav-item')
-							a(class='nav-link px-2' data-toggle="tab" href='#aroma' role="tab" aria-controls="aroma" aria-selected="false") Aroma
+							a(class='nav-link px-2' id="aroma-tab" data-toggle="tab" href='#aroma' role="tab" aria-controls="aroma" aria-selected="false") Aroma
 						li(class='nav-item')
-							a(class='nav-link px-2' data-toggle="tab" href='#appearance' role="tab" aria-controls="appearance" aria-selected="false" ) Appearance
+							a(class='nav-link px-2' id="appearance-tab" data-toggle="tab" href='#appearance' role="tab" aria-controls="appearance" aria-selected="false" ) Appearance
 						li(class='nav-item')
-							a(class='nav-link px-2' data-toggle="tab" href='#flavor' role="tab" aria-controls="flavor" aria-selected="false" ) Flavor
+							a(class='nav-link px-2' id="flavor-tab" data-toggle="tab" href='#flavor' role="tab" aria-controls="flavor" aria-selected="false" ) Flavor
 						li(class='nav-item')
-							a(class='nav-link px-2' data-toggle="tab" href='#mouthfeel' role="tab" aria-controls="mouthfeel" aria-selected="false" ) Mouthfeel
+							a(class='nav-link px-2' id="mouthfeel-tab" data-toggle="tab" href='#mouthfeel' role="tab" aria-controls="mouthfeel" aria-selected="false" ) Mouthfeel
 						li(class='nav-item')
-							a(class='nav-link px-2' data-toggle="tab" href='#descriptors' role="tab" aria-controls="descriptors" aria-selected="false" ) Descriptors
+							a(class='nav-link px-2' id="descriptors-tab" data-toggle="tab" href='#descriptors' role="tab" aria-controls="descriptors" aria-selected="false" ) Descriptors
 						li(class='nav-item')
-							a(class='nav-link px-2' data-toggle="tab" href='#summary' role="tab" aria-controls="summary" aria-selected="false" ) Summary
+							a(class='nav-link px-2' id="summary-tab" data-toggle="tab" href='#summary' role="tab" aria-controls="summary" aria-selected="false" ) Summary
 				div.card-body
 					div.tab-content
-						div(class = 'tab-pane active' id='information' role='tabpanel' name='information')
+						div(class = 'tab-pane active' id='information' role='tabpanel' name='information' aria-labelledby="information-tab")
 							.form-group
 								h4 Judge Information
 								.form-row.py-1
@@ -183,7 +183,7 @@ block content
 							.form-group
 								.row
 									.col
-										h4 Other Flavor Comments
+										h4 Summary Aroma Comments
 											textarea.form-control(rows='5' type='text' id='aroma_other_comment' name='aroma_other_comment' placeholder='Comments')
 									.col.col-md-auto.d-flex.align-items-center.pl-4
 										.card.border-dark(style='width:100px')
@@ -244,7 +244,7 @@ block content
 							.form-group
 								.row
 									.col
-										h4 Other Flavor Comments
+										h4 Summary Appearance Comments
 											textarea.form-control(rows='5' type='text' id='appearance_other_comment' name='appearance_other_comment' placeholder='Comments')
 									.col.col-md-auto.d-flex.align-items-center.pl-4
 										.card.border-dark(style='width:100px')
@@ -333,7 +333,7 @@ block content
 							.form-group
 								.row
 									.col
-										h4 Other Flavor Comments
+										h4 Summary Flavor Comments
 											textarea.form-control(rows='5' type='text' id='flavor_other_comment' name='flavor_other_comment' placeholder='Comments')
 									.col.col-md-auto.d-flex.align-items-center.pl-4
 										.card.border-dark(style='width:100px')
@@ -390,15 +390,15 @@ block content
 							.form-group
 								.row
 									.col
-										h4 Other Mouthfeel Comments
+										h4 Summary Mouthfeel Comments
 											textarea.form-control(rows='5' type='text' id='mouthfeel_other_comment' name='mouthfeel_other_comment' placeholder='Comments')
 									.col.col-md-auto.d-flex.align-items-center.pl-4
 										.card.border-dark(style='width:100px')
 											.card-header.py-1.px-0
 												p.small.mb-0.text-center Mouthfeel Score
 											.card-body.text-dark.px-0.py-0.text-center
-												input.form-control.form-control-lg.text-center.mb-0(type='number' id='mouthfeel_score' name='mouthfeel_score' value='0' min='0' max='10' onchange='recalculate_score()')
-												p.small.d-flex.align-items-end.flex-row-reverse.my-0.pb-0 /10
+												input.form-control.form-control-lg.text-center.mb-0(type='number' id='mouthfeel_score' name='mouthfeel_score' value='0' min='0' max='5' onchange='recalculate_score()')
+												p.small.d-flex.align-items-end.flex-row-reverse.my-0.pb-0 /5
 						div(class='tab-pane' id='descriptors' role='tabpanel' aria-labelledby='descriptors-tab')
 							.list-group
 								input(type='checkbox'  id='descriptor_acetaldehyde' name='descriptor_acetaldehyde')
@@ -473,19 +473,36 @@ block content
 											.card-header.py-1.px-0
 												p.small.mb-0.text-center Summary Score
 											.card-body.text-dark.px-0.py-0.text-center
-												input.form-control.form-control-lg.text-center.mb-0(type='number' id='overall_score' name='overall_score' value='0' min='0' max='5' onchange='recalculate_score()')
-												p.small.d-flex.align-items-end.flex-row-reverse.my-0.pb-0 /5
+												input.form-control.form-control-lg.text-center.mb-0(type='number' id='overall_score' name='overall_score' value='0' min='0' max='10' onchange='recalculate_score()')
+												p.small.d-flex.align-items-end.flex-row-reverse.my-0.pb-0 /10
 
-		.modal.fade(id='confirm-submit' tabindex='-1' role="dialog" aria-labelledby="myModalLabel" aria-hidden="true")
+		.modal.fade(id='confirm-submit-modal' tabindex='-1' role="dialog" aria-labelledby="confirmLabel" aria-hidden="true")
 			.modal-dialog
 				.modal-content
-					.modal-header Confirm Scoresheet Submission
+					.modal-header 
+						h5 Confirm Scoresheet Submission
 					.modal-body 
 						p Are you sure you want to submit this scoresheet?
-						p <em>Once you submit your scoresheet, you may not change it</em>
+							#scoresheet-section-score-warnings
+							#scoresheet-comments-warnings
+						p <strong>Once you submit your scoresheet, you may not edit it!</strong>
 					.modal-footer
 						button(type="button" class="btn btn-secondary" data-dismiss='modal') Cancel
 						button(type='button' class='btn btn-primary' onclick='confirm_submit();') Submit
+		.modal.fade(id='confirm-consensus-modal' tabindex='-1' role="dialog" aria-labelledby="consensusLabel" aria-hidden="true")
+			.modal-dialog
+				.modal-content
+					.modal-header 
+						h5 Confirm Consensus Score
+					.modal-body 
+						p You have added a consensus score to your scoresheet.
+						p <strong>Please confirm your consensus score matches other session judges' scores before submitting.</strong>
+						.form-check.pt-4
+							input.form-check-input(type='checkbox'  id='user_verify_consensus' name='user_verify_consensus')
+							label.form-check-label(for='user_verify_consensus') I confirm I have discussed and verified my consensus score with other session judges
+					.modal-footer
+						button(type="button" class="btn btn-secondary" data-dismiss='modal') Cancel
+						button(type='button' class='btn btn-primary' onclick='submit_scoresheet();') Continue
 
 	script.
 		$("[data-toggle=popover]").popover();
@@ -649,7 +666,7 @@ block content
 			ticks_labels: ['Not to Style', 'Classic Example'],
 			//- ticks_labels: ['<p style="transform: translateY(15px) rotate(270deg);transform-origin: center;">Classic\nExample</p>', '<p style="transform: translateY(14px) rotate(270deg);transform-origin: center;">Not to\nStyle</p>'],
 			ticks_snap_bounds: 3,
-			value: 0
+			value: 50
 		});
 		var overall_flawless = new Slider("#overall_flawless", {
 			ticks: [0, 100],
@@ -657,7 +674,7 @@ block content
 			ticks_labels: ['Significant Flaws', 'Flawless'],
 			//- ticks_labels: ['<p style="transform: translateY(15px) rotate(270deg);transform-origin: center;">Flawless</p>', '<p style="transform: translateY(18px) rotate(270deg);transform-origin: center;">Significant/nFlaws</p>'],
 			ticks_snap_bounds: 3,
-			value: 0
+			value: 50
 		});
 		var overall_wonderful = new Slider("#overall_wonderful", {
 			ticks: [0, 100],
@@ -665,7 +682,7 @@ block content
 			ticks_labels: ['Lifeless', 'Wonderful'],
 			//- ticks_labels: ['<p style="transform: translateY(16px) rotate(270deg);transform-origin: center;">Wonderful</p>', '<p style="transform: translateY(16px) rotate(270deg);transform-origin: center;">Lifeless</p>'],
 			ticks_snap_bounds: 3,
-			value: 0
+			value: 50
 		});
 
 		//- Update all sliders
@@ -681,15 +698,42 @@ block content
 			document.getElementById('judge_total').innerText = String(Number(aroma) + Number(appearance) + Number(flavor) + Number(mouthfeel) + Number(summary));
 		}
 
+		function submit_scoresheet() {
+			$("#confirm-consensus-modal").modal('hide')
+			$("#confirm-submit-modal").modal('hide')
+
+			const consensusScore = $('#consensus_score').val()
+			const consensusConfirmed = $('#user_verify_consensus').is(":checked")
+
+			// Check for validation errors. If any, focus back to the field.
+			const validation = $('.is-invalid')
+			if (validation.length) {
+				const firstTabWithValidationErrorsId = $(validation[0]).closest('.tab-pane').attr('id')
+				$('#' + firstTabWithValidationErrorsId + '-tab').tab('show')
+
+				validation[0].focus()
+				return
+			}
+
+			if (consensusScore > 0 && !consensusConfirmed) {
+				$("#confirm-consensus-modal").modal('show')
+			} else {
+				$("#confirm-submit-modal").modal('show')
+			}
+		}
+
 		//- Change 'scoresheet_submitted' input to true after submit confirmed
 		function confirm_submit() {
 			$('input#scoresheet_submitted').val('1')
+			update_scoresheet()
+			window.alert('Scoresheet submitted!')
 			window.location.replace('/scoresheet/load');
 		}
 
 		//- Universal data validator handler
 		function validatorHandler(_this) {
-			//- Make sure we don't issues
+			//- We do not need a Validation post call right now as we do not have a scoresheets table to verify against
+			/*
 			$.ajax({
 				url: '/scoresheet/validate',
 				method: 'POST',
@@ -712,39 +756,19 @@ block content
 				.fail(function (err) {
 					$(_this).addClass('is-invalid');
 				});
+			*/
+
+			// Simple validation to alert user to empty text fields
+			if ($(_this).val().trim() !== '') {
+				$(_this).removeClass('is-invalid');
+				$(_this).addClass('is-valid');
+			} else {
+				$(_this).removeClass('is-valid');
+				$(_this).addClass('is-invalid');
+			}
 		}
 
-		/*!
-		 * jQuery serializeObject - v0.2 - 1/20/2010
-		 * http://benalman.com/projects/jquery-misc-plugins/
-		 *
-		 * Copyright (c) 2010 "Cowboy" Ben Alman
-		 * Dual licensed under the MIT and GPL licenses.
-		 * http://benalman.com/about/license/
-		 */
-
-		// Whereas .serializeArray() serializes a form into an array, .serializeObject()
-		// serializes a form into an (arguably more useful) object.
-
-		(function ($, undefined) {
-			'$:nomunge'; // Used by YUI compressor.
-
-			$.fn.serializeObject = function () {
-				var obj = {};
-
-				$.each(this.serializeArray(), function (i, o) {
-					var n = o.name,
-						v = o.value;
-
-					obj[n] = obj[n] === undefined ? v
-						: $.isArray(obj[n]) ? obj[n].concat(v)
-							: [obj[n], v];
-				});
-
-				return obj;
-			};
-
-		})(jQuery);
+		let updateScoresheet = () => {}
 
 		$(document).ready(function () {
 			//- Data validator on event
@@ -755,13 +779,79 @@ block content
 			var scoresheet = '#{scoresheet}' !== '' ? JSON.parse('!{JSON.stringify(scoresheet)}') : null;
 
 			// post scoresheet as-is to db without submitting
-			function update_scoresheet() {
+			update_scoresheet = () => {
 				var fData = $('form#newScoresheet').serialize();
 				if (origForm !== fData) {
 					//- We have changes to the form save them back
 					let fDataObject = $('form#newScoresheet').serializeObject();
 					fDataObject['_ajax'] = true;
 
+					// Update inappropriate values in summary page
+					const currentFeedbackComment = $('#feedback_comment').val().split('—\n') //Note that this is a "em-space" to prevent confusion with user hyphens
+					let inappropriateComments = []
+					let zeroValueScoreSections = []
+					let noCommentSections = []
+
+					Object.keys(fDataObject).forEach(key => {
+						const keySplit = key.split('_')
+						const keyType = keySplit.pop()
+
+						if (keyType === 'inappropriate') {
+							inappropriateComments.push('inappropriate ' + keySplit.reverse().join(' '))
+						}
+
+						if (keyType === 'score' && fDataObject[key] == 0) {
+							zeroValueScoreSections.push(keySplit[0])
+						}
+
+						const ignoreEmptyKeys = ["bottle_inspection_comment", "special_ingredients_comment"]
+						if (keyType === 'comment' && !ignoreEmptyKeys.includes(key) && fDataObject[key] == '') {
+							if (keySplit[1] === "other") {
+								keySplit[1] = "summary"
+							}
+
+							noCommentSections.push(keySplit.reverse().join(' '))
+						}
+					})
+
+					if (inappropriateComments.length) {
+						// Update the slider for "To Style" based on number of inappropriate checks
+						const updatedValue = inappropriateComments.length <= 10 ? 50 - inappropriateComments.length*5 : 0
+						overall_class_example.setValue(updatedValue)
+
+						let stringInappropriateComments = inappropriateComments.join(', ').charAt(0).toUpperCase() + inappropriateComments.join(', ').slice(1)
+
+						if (currentFeedbackComment.length > 1) {
+							stringInappropriateComments = currentFeedbackComment[0] + '—\n' + stringInappropriateComments
+						} 
+						$('#feedback_comment').val(stringInappropriateComments)
+					}
+
+					if (zeroValueScoreSections.length) {
+						// Check for zero valued section scores and add them to submit confirmation modal
+						const html = `
+							The following sections have a zero (0) score:
+							<ul>
+								${zeroValueScoreSections.map(val => ("<li>" + val.charAt(0).toUpperCase() + val.slice(1) + "</li>")).join('')}
+							</ul>
+						`
+
+						$("#scoresheet-section-score-warnings").html(html)
+					}		
+					
+					if (noCommentSections.length) {
+						// Check for zero valued section scores and add them to submit confirmation modal
+						const html = `
+							The following sections have no comments:
+							<ul>
+								${noCommentSections.map(val => ("<li>" + val.charAt(0).toUpperCase() + val.slice(1) + "</li>")).join('')}
+							</ul>
+						`
+
+						$("#scoresheet-comments-warnings").html(html)
+					}
+
+					// Submit the updated scoresheet
 					$.post('/scoresheet/update', fDataObject, function (data) {
 						if (data.update) {
 							$('form#newScoresheet input#id').val(data.id);
@@ -832,6 +922,9 @@ block content
 			var origForm = $('form#newScoresheet').serialize();
 			$('form#newScoresheet :input').focusout(update_scoresheet)
 
+			//- This triggers when checkboxes are changed
+			$('form#newScoresheet :checkbox').change(update_scoresheet)
+
 			// Since sliders don't trigger on focusout, we toggle those differently using mouseUp
 			$('.slider-handle, .slider-tick-label').mouseup(update_scoresheet)
 		});
@@ -886,3 +979,35 @@ block content
 			xmlhttp.open("GET", "/bjcp2015.json", true);
 			xmlhttp.send();
 		}
+
+		/*!
+		 * jQuery serializeObject - v0.2 - 1/20/2010
+		 * http://benalman.com/projects/jquery-misc-plugins/
+		 *
+		 * Copyright (c) 2010 "Cowboy" Ben Alman
+		 * Dual licensed under the MIT and GPL licenses.
+		 * http://benalman.com/about/license/
+		 */
+
+		// Whereas .serializeArray() serializes a form into an array, .serializeObject()
+		// serializes a form into an (arguably more useful) object.
+
+		(function ($, undefined) {
+			'$:nomunge'; // Used by YUI compressor.
+
+			$.fn.serializeObject = function () {
+				var obj = {};
+
+				$.each(this.serializeArray(), function (i, o) {
+					var n = o.name,
+						v = o.value;
+
+					obj[n] = obj[n] === undefined ? v
+						: $.isArray(obj[n]) ? obj[n].concat(v)
+							: [obj[n], v];
+				});
+
+				return obj;
+			};
+
+		})(jQuery);
