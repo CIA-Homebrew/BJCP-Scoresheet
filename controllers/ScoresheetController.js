@@ -6,7 +6,10 @@ let Scoresheet = require('../models').Scoresheet;
 let appConstants = require('../helpers/appConstants');
 let validator = require('validator');
 const { Sequelize } = require('../models');
+const User = require('../models').User;
 let debug = require('debug')('aha-scoresheet:scoresheetController');
+const pug = require('pug')
+const pdf = require('html-pdf')
 
 let scoresheetController = {};
 
@@ -201,21 +204,43 @@ scoresheetController.doValidateScoresheet = function(req, res) {
 };
 
 scoresheetController.generatePDF = function(req, res) {
-	let scoresheetId = req.params.scoresheetID;
-	let sourcePDF = path.join(__dirname,'../public/modified-scoresheet-2019.pdf');
-	let destinationPDF = path.join(__dirname,'../public/'+ req.url.split('/')[-1] +'.pdf')
+	let scoresheetId = req.params.scoresheetId;
 
-	fs.copyFile(sourcePDF, destinationPDF, (err) => {
-		if (err) throw err;
-		console.log('source.txt was copied to destination.txt');
-		res.sendFile(destinationPDF);
-	});
+	Scoresheet.findOne({
+		where: {
+			id: scoresheetId
+		}
+	}).then(scoresheet => {
+		// Doing this because userId isn't a FK on Scoresheet and this is a really fugly workaround
+		return User.findOne({
+			where: {
+				id: scoresheet.userId
+			}
+		}).then(user => {
+			return [scoresheet.get({plain:true}), user.get({plain:true})]
+		})
+	}).then(([scoresheet, user]) => {
+		// Here we need to put in the base64 image string
+		const static_images = {
+			bjcp_logo: `file://${require.resolve('../public/images/CANE-ISLAND-ALERS-LOGO_d400.png')}`,
+			aha_logo: `file://${require.resolve('../public/images/CANE-ISLAND-ALERS-LOGO_d400.png')}`,
+			club_logo: `file://${require.resolve('../public/images/CANE-ISLAND-ALERS-LOGO_d400.png')}`,
+			comp_logo: `file://${require.resolve('../public/images/OpfermVI-hybrid_d400.png')}`
+		}
 
-	
+		const sheet = pug.renderFile('views/bjcp_modified.pug', {
+			scoresheet: scoresheet,
+			judge: user,
+			images: static_images
+		})
 
-	res.on('finish', function() {
-		fs.unlinkSync(destinationPDF);
-	});
+		fs.appendFile("outhtml.html", sheet, (err) => {})
+
+		pdf.create(sheet).toStream((err, stream) => {
+			stream.on('end', () => res.end());
+			stream.pipe(res)
+		})
+	})
 };
 
 module.exports = scoresheetController;

@@ -16,6 +16,7 @@
 		"express-flash": "0.0.2",
 		"express-messages": "^1.0.1",
 		"express-session": "^1.17.1",
+		"html-pdf": "^2.2.0",
 		"http-errors": "^1.8.0",
 		"morgan": "^1.10.0",
 		"mysql2": "^2.1.0",
