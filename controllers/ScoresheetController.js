@@ -1,15 +1,9 @@
-let passport = require('../helpers/seq.passport');
-let pdffiller = require('pdffiller');
-let path = require('path');
-let fs = require('fs');
 let Scoresheet = require('../models').Scoresheet;
 let appConstants = require('../helpers/appConstants');
 let validator = require('validator');
-const { Sequelize } = require('../models');
 const User = require('../models').User;
 let debug = require('debug')('aha-scoresheet:scoresheetController');
-const pug = require('pug')
-const pdf = require('html-pdf')
+const pdfService = require('../services/pdf.service')
 
 let scoresheetController = {};
 
@@ -219,26 +213,21 @@ scoresheetController.generatePDF = function(req, res) {
 		}).then(user => {
 			return [scoresheet.get({plain:true}), user.get({plain:true})]
 		})
-	}).then(([scoresheet, user]) => {
-		// Here we need to put in the base64 image string
-		const static_images = {
-			bjcp_logo: `file://${require.resolve('../public/images/CANE-ISLAND-ALERS-LOGO_d400.png')}`,
-			aha_logo: `file://${require.resolve('../public/images/CANE-ISLAND-ALERS-LOGO_d400.png')}`,
-			club_logo: `file://${require.resolve('../public/images/CANE-ISLAND-ALERS-LOGO_d400.png')}`,
-			comp_logo: `file://${require.resolve('../public/images/OpfermVI-hybrid_d400.png')}`
+	}).then(async ([scoresheet, user]) => {
+		// These need to be STATIC and not relative! They also MUST be png files.
+		const static_image_paths = {
+			bjcp_logo: 'public/images/CANE-ISLAND-ALERS-LOGO_d400.png',
+			aha_logo: 'public/images/CANE-ISLAND-ALERS-LOGO_d400.png',
+			club_logo: 'public/images/CANE-ISLAND-ALERS-LOGO_d400.png',
+			comp_logo: 'public/images/OpfermVI-hybrid_d400.png'
 		}
 
-		const sheet = pug.renderFile('views/bjcp_modified.pug', {
+		pdfService.generateScoresheet('views/bjcp_modified.pug', {
 			scoresheet: scoresheet,
 			judge: user,
-			images: static_images
-		})
-
-		fs.appendFile("outhtml.html", sheet, (err) => {})
-
-		pdf.create(sheet).toStream((err, stream) => {
-			stream.on('end', () => res.end());
-			stream.pipe(res)
+			images: static_image_paths
+		}).then(pdf => {
+			res.send(pdf)
 		})
 	})
 };
