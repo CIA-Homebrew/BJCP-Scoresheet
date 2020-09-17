@@ -32,7 +32,7 @@ body {
 .border_solid_1 { border: 1px solid black; }
 .border_solid_2 { border: 2px solid black; }
 .border_solid_4_gray { border: 4px solid #5a5a5a; }
-.border_bot_solid_1 { border-bottom: 1px solid black; }
+.border_bot_solid_1 { border-bottom: 1px solid black;}
 .row { }
 .display_iblock { display: inline-block; }
 .lheight_normal { line-height: normal; }
@@ -42,7 +42,7 @@ body {
 .ptop_15 { padding-top: 15px; }
 .pbot_5 { padding-bottom: 5px; }
 .ptop_5 { padding-top: 5px; }
-.col { display: inline-block; font-size: 92%; }
+.col { display: inline-block; font-size: 92%;}
 .col_width_100 { width: 100px; }
 .col_50 { width: 50%; }
 .col_40 { width: 40%; }

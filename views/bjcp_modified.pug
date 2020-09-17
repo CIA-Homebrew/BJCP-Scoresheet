@@ -42,38 +42,38 @@ head
         .col.col_25.text_right
           | Cicerone
         .col
-          span.border_solid_1 #{judge.cicerone_rank ? 'X' : ' '}
+          span.display_iblock.border_solid_1(style='width: 8px; height: 8px; background-color: white;') #{judge.cicerone_rank ? 'X' : ' '}
         .col.col_20.text_right
           | Rank
         .col.col_40
-          span.border_bot_solid_1.display_iblock.text_center.width_100 #{judge.cicerone_rank ? judge.cicerone_rank : ' '}
+          span.border_bot_solid_1.display_iblock.text_center.width_100 #{judge.cicerone_rank ? judge.cicerone_rank : ''}
       .row.pbot_5
         .col.col_25.text_right
           | Pro Brewer
         .col
-          span.border_solid_1 #{judge.pro_brewer_brewery ? 'X' : ' '}
+          span.display_iblock.border_solid_1(style='width: 8px; height: 8px; background-color: white;') #{judge.pro_brewer_brewery ? 'X' : ' '}
         .col.col_20.text_right
           | Brewery
         .col.col_40
-          span.border_bot_solid_1.display_iblock.text_center.width_100 #{judge.pro_brewer_brewery ? judge.pro_brewer_brewery : ' '}
+          span.border_bot_solid_1.display_iblock.text_center.width_100 #{judge.pro_brewer_brewery ? judge.pro_brewer_brewery : ''}
       .row.pbot_5
         .col.col_25.text_right
           | Industry
         .col
-          span.border_solid_1 #{judge.industry_description ? 'X' : ' '}
+          span.display_iblock.border_solid_1(style='width: 8px; height: 8px; background-color: white;') #{judge.industry_description ? 'X' : ' '}
         .col.col_20.text_right
           | Describe
         .col.col_40
-          span.border_bot_solid_1.display_iblock.text_center.width_100 #{judge.industry_description ? judge.industry_description : ' '}
+          span.border_bot_solid_1.display_iblock.text_center.width_100 #{judge.industry_description ? judge.industry_description : ''}
       .row.pbot_5
         .col.col_25.text_right
           | Judging
         .col
-          span.border_solid_1 #{judge.judging_years ? judge.judging_years : ' '}
+          span.display_iblock.border_solid_1(style='width: 8px; height: 8px; background-color: white;') #{judge.judging_years ? 'X' : ' '}
         .col.col_20.text_right
           | Years
         .col.col_40
-          span.border_bot_solid_1.display_iblock.text_center.width_100 #{judge.judging_years ? judge.judging_years : ' '}
+          span.border_bot_solid_1.display_iblock.text_center.width_100 #{judge.judging_years ? judge.judging_years : ''}
   .location_information.text_normal.lheight_large
     .row
       span Location
@@ -133,10 +133,11 @@ head
     .float_left
       span.border_solid_4_gray.display_iblock(style='height: 52px; width: 55px; margin-left: 14px; ') #{scoresheet.consensus_score ? scoresheet.consensus_score : scoresheet.judge.total}
     .float_right.text_center(style='width: 140px; height: 17px; background-color: #5a5a5a; color: white; padding-top: 6px; font-size: 12px; margin-right: 2.5px; ') #{scoresheet.consensus_score ? 'CONSENSUS SCORE' : 'JUDGE SCORE'}
-    .float_left.text_normal.mtop_5(style='margin-left: 35px;')
+    .float_left.text_normal.mtop_5(style='margin-left: 35px; margin-right: 5px')
       | Bottle Inspection
-      span.display_iblock.border_solid_2.text_bold(style='height: 5px; width: 5px; ') #{scoresheet.bottle_inspection_check ? 'X' : ' '}
-      span.text_bold OK
+      span.display_iblock.border_solid_2.text_bold(style='height: 8px; width: 8px; margin-left: 8px;') #{scoresheet.bottle_inspection_check ? 'X' : ' '}
+      span.text_bold(style="margin-right: 8px;") OK
+      span(style="margin-right: 3px;") Comments:
       span.border_bot_solid_1.display_iblock(style='width: 200px;') #{scoresheet.bottle_inspection_comment}
 #column_container.text_normal
   //
