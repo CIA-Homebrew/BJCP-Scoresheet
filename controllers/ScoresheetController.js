@@ -1,12 +1,9 @@
-let passport = require('../helpers/seq.passport');
-let pdffiller = require('pdffiller');
-let path = require('path');
-let fs = require('fs');
 let Scoresheet = require('../models').Scoresheet;
 let appConstants = require('../helpers/appConstants');
 let validator = require('validator');
-const { Sequelize } = require('../models');
+const User = require('../models').User;
 let debug = require('debug')('aha-scoresheet:scoresheetController');
+const pdfService = require('../services/pdf.service')
 
 let scoresheetController = {};
 
@@ -201,21 +198,38 @@ scoresheetController.doValidateScoresheet = function(req, res) {
 };
 
 scoresheetController.generatePDF = function(req, res) {
-	let scoresheetId = req.params.scoresheetID;
-	let sourcePDF = path.join(__dirname,'../public/modified-scoresheet-2019.pdf');
-	let destinationPDF = path.join(__dirname,'../public/'+ req.url.split('/')[-1] +'.pdf')
+	let scoresheetId = req.params.scoresheetId;
 
-	fs.copyFile(sourcePDF, destinationPDF, (err) => {
-		if (err) throw err;
-		console.log('source.txt was copied to destination.txt');
-		res.sendFile(destinationPDF);
-	});
+	Scoresheet.findOne({
+		where: {
+			id: scoresheetId
+		}
+	}).then(scoresheet => {
+		// Doing this because userId isn't a FK on Scoresheet and this is a really fugly workaround
+		return User.findOne({
+			where: {
+				id: scoresheet.userId
+			}
+		}).then(user => {
+			return [scoresheet.get({plain:true}), user.get({plain:true})]
+		})
+	}).then(async ([scoresheet, user]) => {
+		// These need to be STATIC and not relative! They also MUST be png files.
+		const static_image_paths = {
+			bjcp_logo: 'public/images/CANE-ISLAND-ALERS-LOGO_d400.png',
+			aha_logo: 'public/images/CANE-ISLAND-ALERS-LOGO_d400.png',
+			club_logo: 'public/images/CANE-ISLAND-ALERS-LOGO_d400.png',
+			comp_logo: 'public/images/OpfermVI-hybrid_d400.png'
+		}
 
-	
-
-	res.on('finish', function() {
-		fs.unlinkSync(destinationPDF);
-	});
+		pdfService.generateScoresheet('views/bjcp_modified.pug', {
+			scoresheet: scoresheet,
+			judge: user,
+			images: static_image_paths
+		}).then(pdf => {
+			res.send(pdf)
+		})
+	})
 };
 
 module.exports = scoresheetController;

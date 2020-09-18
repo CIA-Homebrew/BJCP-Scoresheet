@@ -17,6 +17,16 @@ block content
 							.card-deck
 								.card.border-dark.mb-3.mx-1
 									.card-header.px-0.py-0
+										p.small.mb-0.text-center Place
+									.card-body.text-dark.px-3.py-1.text-center
+										select.form-control(id="place" name="place")
+											option(value=null selected) Select...
+											option(value=0) Round Advance
+											option(value=1) 1st
+											option(value=2) 2nd
+											option(value=3) 3rd
+								.card.border-dark.mb-3.mx-1
+									.card-header.px-0.py-0
 										p.small.mb-0.text-center Mini BOS
 									.card-body.text-dark.px-0.py-1.text-center
 										.btn-group-toggle(data-toggle='buttons')
@@ -31,7 +41,7 @@ block content
 									.card-header.px-0.py-0
 										p.small.mb-0.text-center Total Score
 									.card-body.text-dark.px-0.py-1.text-center
-										h4(class='my-0' id='judge_total') 0
+										h4(class='my-0' id='judge_total' name="judge_total") 0
 
 
 						.col-md-auto
@@ -850,6 +860,9 @@ block content
 
 						$("#scoresheet-comments-warnings").html(html)
 					}
+
+					// Don't post data unless the entry number exists
+					if (fDataObject.entry_number === '') return
 
 					// Submit the updated scoresheet
 					$.post('/scoresheet/update', fDataObject, function (data) {

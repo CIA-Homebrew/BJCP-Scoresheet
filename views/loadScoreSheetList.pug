@@ -28,7 +28,7 @@ block content
 												th(scope='row' ) 
 													//- a.pr-3(href='/scoresheet/pdf/'+sheet._id download)
 													//- 	img(src='../images/pdfDownloadIcon.png' style='height:24px;width:24px')
-													input(type='image' id='download_'+sheet._id src='../images/pdfDownloadIcon.png' alt='Download' style='height:24px;width:32px;padding-right:8px;' onclick=`downloadPDF('${sheet._id}', '${sheet.entry_number}')`) 
+													input(type='image' id='download_'+sheet._id src='../images/pdfDownloadIcon.png' alt='Download' style='height:24px;width:32px;padding-right:8px;' onclick=`downloadPDF('${sheet.id}', '${sheet.entry_number}')`) 
 													a(href='') #{sheet.entry_number}
 												td #{sheet.category}#{sheet.sub}
 												td #{sheet.subcategory}
@@ -49,7 +49,6 @@ block content
 								if (scoresheets)
 									each sheet in scoresheets
 										if (!sheet.scoresheet_submitted)
-											- console.log(sheet)
 											tr
 												th(scope='row') 
 													a.pr-3(href='')
@@ -76,9 +75,8 @@ block content
 		function downloadPDF(scoresheetId, scoresheetEntryNumber) {
 			var a = document.createElement('a');
 			a.href = '/scoresheet/pdf/'+scoresheetId;
-			a.setAttribute('download', scoresheetEntryNumber);
+			a.setAttribute('download', scoresheetEntryNumber + '.pdf');
 			a.click();
-			console.log(a)
 			return false;
 		}
 
@@ -92,7 +90,6 @@ block content
 			hiddenField.value = scoresheetId;
 			form.appendChild(hiddenField);
 			document.body.appendChild(form);
-			console.log(form);
 			form.submit();
 			return false;
 		}
