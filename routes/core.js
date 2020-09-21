@@ -5,6 +5,7 @@ let router = express.Router();
 let authController = require("../controllers/AuthController");
 let scoresheetController = require('../controllers/ScoresheetController');
 let adminController = require('../controllers/AdminController');
+const flightController = require('../controllers/FlightController');
 
 //* MIDDELWARE *//
 let authMiddle = require("../middleware/auth");
@@ -60,5 +61,14 @@ router.post('/scoresheet/validate', authMiddle.isAuthenticated, scoresheetContro
 
 //* ADMIN FUNCTIONS *//
 router.get('/admin', authMiddle.isAdmin, adminController.controlPanel);
+
+//* FLIGHT FUNCTIONS *//
+router.post('/flight/add', authMiddle.isAuthenticated, flightController.addFlight)
+router.post('/flight/edit', authMiddle.isAdmin, flightController.editFlight)
+router.post('/flight/submit', authMiddle.isAuthenticated, flightController.submitFlight)
+router.post('/flight/getByName', authMiddle.isAuthenticated, flightController.getFlightByName)
+router.post('/flight/getById', authMiddle.isAuthenticated, flightController.getFlightById)
+router.post('/flight/delete', authMiddle.isAdmin, flightController.deleteFlight)
+
 
 module.exports = router;

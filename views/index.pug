@@ -1,9 +1,111 @@
 extends layout
 
 block content
-	.container
-		div.logo_holder.mx-auto.text-center
-			img.img-fluid.d-inline-block(src='/images/CANE-ISLAND-ALERS-LOGO_d400.png', alt='Logo', width='35%')
-			img.img-fluid.d-inline-block(src='/images/OpfermVI-hybrid_d400.png', alt='Logo', width='40%')
-		h1 Welcome!
-		p Welcome to the Cane Island Ailers AHA digital scoresheet app. Please use the menu above to navigate to your desired action.
+	unless user
+		.container
+			div.logo_holder.mx-auto.text-center
+				img.img-fluid.d-inline-block(src='/images/CANE-ISLAND-ALERS-LOGO_d400.png', alt='Logo', width='35%')
+				img.img-fluid.d-inline-block(src='/images/OpfermVI-hybrid_d400.png', alt='Logo', width='40%')
+			h1 Welcome!
+			p Welcome to the Cane Island Ailers AHA digital scoresheet app. Please use the menu above to navigate to your desired action.
+
+	else
+		.container
+			.card
+				.card-header
+					ul.nav.nav-tabs.card-header-tabs(id='scoresheet-list' role='tablist')
+						li.nav-item
+							a.nav-link.px-2.active(data-toggle='tab' href='#inProgress' aria-controls='inProgress' aria-selected='true') In Progress
+						li.nav-item
+							a.nav-link.px-2(data-toggle='tab' href='#completed' aria-controls='completed' aria-selected='false') Completed
+						
+				.card-body
+					.tab-content
+						.tab-pane.active(id='inProgress' role='tabpane2' aria-labelledby='inProgressTab')
+							button(type="button" class="btn btn-primary" onClick="showAddFlightModal()") Add New Flight
+						.tab-pane(id='completed' role='tabpane1' aria-labelledby='completedTab') 
+
+		.modal.fade(id='addFlightModal' tabindex='-1' role="dialog" aria-labelledby="addFlightModalLabel" aria-hidden="true")
+			.modal-dialog
+				.modal-content
+					.modal-header 
+						h5 Add New Flight
+					.modal-body
+						.form-group
+							label(for="flightName") Flight ID
+							input.form-control(type="text" id="flightName" placeholder="6 character flight ID found on the flight sheet")
+						.form-group
+							label(for="flightLocation") Judging Location
+							input.form-control(type="text" id="flightLocation" placeholder="Brewery, Local Homebrew Shop, Home, etc.")
+						.form-group
+							label(for="flightDate") Session Date
+							input.form-control(type="date" id="flightDate")
+					.modal-footer
+						button(type="button" class="btn btn-secondary" data-dismiss='modal') Cancel
+						button(type='button' class='btn btn-primary' onclick='addFlight()') Submit
+
+
+	script.
+		const showAddFlightModal = () => {
+			$('#addFlightModal').modal('show')
+		}
+
+		const addFlight = () => {
+			const flightName = $('#flightName').val()
+			const flightLocation = $('#flightLocation').val()
+			const flightDate = new Date($('#flightDate').val())
+
+			fetch('/flight/add', {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json'
+				},
+				body: JSON.stringify({
+					flightName : flightName,
+					flightLocation : flightLocation,
+					flightDate : flightDate
+				})
+			}).then(response => {
+				if (response.status === 200) {
+					const body = response.json()
+					// todo: dynamically add new flight to page
+
+					$('#addFlightModal').modal('hide')
+				} else {
+					$('#addFlightModal').modal('hide')
+					// todo: handle errors
+				}
+			})
+		}
+
+		const submitFlight = (flightId) => {
+			// To do: Submit flight here
+			fetch('/flight/add', {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json'
+				},
+				body: JSON.stringify({
+					flightId: fligthId
+				})
+			}).then(response => {
+				if (response.status === 200) {
+					const body = response.json()
+
+					// instead of dynamically moving the flight to the other tab, we will be lazy and just reload the page. 
+					// This action is infrequent enough it shouldn't break immersion *too* much.
+					location.reload()
+				} else {
+					// todo: handle errors
+				}
+			})
+		}
+
+		const addEntry = (flightId) => {
+			window.location.href(`/scoresheet/edit?flightId=${flightId}`)
+		}
+
+		$(document).ready(() => {
+			// on page load
+		})
+					

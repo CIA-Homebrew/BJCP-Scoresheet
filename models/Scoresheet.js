@@ -331,12 +331,17 @@ module.exports = (sequelize, DataTypes) => {
 		judge_pro_brewer_brewery: DataTypes.STRING,
 		judge_industry_description: DataTypes.STRING,
 		judge_judging_years: DataTypes.STRING,
+		flightKey: {
+			type: DataTypes.UUID,
+			allowNull: true,
+		},
 	}, {
 	});
 
 	Scoresheet.associate = function (models) {
 		// associations can be defined here
 		Scoresheet.belongsTo(models.User, {foreignKey: "id", as: "userID"});
+		Scoresheet.belongsTo(models.Flight, {foreignKey: "id", as: "flightID"});
 	};
 
 	return Scoresheet;

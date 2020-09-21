@@ -2,6 +2,8 @@ let Scoresheet = require('../models').Scoresheet;
 let appConstants = require('../helpers/appConstants');
 let validator = require('validator');
 const User = require('../models').User;
+const Flight = require('../models').Flight;
+
 let debug = require('debug')('aha-scoresheet:scoresheetController');
 const pdfService = require('../services/pdf.service')
 
@@ -17,17 +19,39 @@ scoresheetController.loadScoresheetList = function(req, res) {
 		where: {
 			userId : req.user.id
 		},
-	})
-		.then(userScoresheets => {
-			res.render('loadScoresheetList', {
-				user : req.user,
-				scoresheets : userScoresheets.map(scoresheet => scoresheet.get({plain:true})),
-				title : appConstants.APP_NAME + " - List Scoresheet"
-			});
+	}).then(userScoresheets => {
+		flights = {}
+		userScoresheets.forEach(scoresheet => {
+			flights[scoresheet.flightKey] = {}
 		})
-		.catch(err => {
-			debug(err);
+
+		return Flight.findAll({
+			where: {
+				id: Object.keys(flights)
+			}
+		}).then(userFlights => {
+			return [userScoresheets, userFlights]
+		})
+	})
+	.then(([userScoresheets, userFlights]) => {
+		const flightObject = {}
+		userFlights.forEach(flight => {
+			flightObject[flight.id] = {
+				...flight.get({plain:true}),
+				scoresheets: userScoresheets.filter(scoresheet => scoresheet.flightKey === flight.id).map(scoresheet => scoresheet.get({plain:true}))
+			}
+		})
+
+		res.render('loadScoresheetList', {
+			user : req.user,
+			scoresheets : userScoresheets.map(scoresheet => scoresheet.get({plain:true})),
+			flights: flightObject,
+			title : appConstants.APP_NAME + " - List Scoresheet"
 		});
+	})
+	.catch(err => {
+		debug(err);
+	});
 };
 
 /**
@@ -36,6 +60,8 @@ scoresheetController.loadScoresheetList = function(req, res) {
  * @param res
  */
 scoresheetController.initScoresheet = function(req, res) {
+	
+
 	// If we are provided with a scoresheet ID then load it
 	if (req.body.scoresheetId) {
 		Scoresheet.findAll({
@@ -55,8 +81,33 @@ scoresheetController.initScoresheet = function(req, res) {
 			.catch(err => {
 				debug(err);
 			});
-	// If we do NOT have a scoresheet ID just give the user a clean sheet to start new
+	
+	} else if (req.query.flightId) {
+		// If we have a flight ID, then create a scoresheet with flight ID prepopulated
+		const flightId = req.query.flightId
+		Flight.findOne({
+			where: {
+				id: flightId,
+				created_by: req.user.id
+			}
+		}).then(flight => {
+			if (flight) {
+				let date = new Date(Date.now());
+				res.render('scoresheet', {
+					user: req.user,
+					sess_date: date.getFullYear() + '-' + ('0' + (date.getMonth()+1)).slice(-2) + '-' + ('0' + date.getDate()).slice(-2),
+					title : appConstants.APP_NAME + " - New Scoresheet",
+					flightId : req.body.flightId
+				});
+			} else {
+				res.status(401)
+			}
+		}).catch(err => {
+			res.status(500)
+			console.log(err)
+		})
 	} else {
+		// If we do NOT have a scoresheet ID just give the user a clean sheet to start new
 		let date = new Date(Date.now());
 		res.render('scoresheet', {
 			user: req.user,
@@ -113,7 +164,6 @@ scoresheetController.doScoresheetDataChange = function(req, res) {
 	)
 		.then((retData) => {
 			// associate the sheet to the user
-			//sheet.setUser(req.user.id);
 
 			// Returned Data
 			let sheet = retData[0];
@@ -206,12 +256,19 @@ scoresheetController.generatePDF = function(req, res) {
 		}
 	}).then(scoresheet => {
 		// Doing this because userId isn't a FK on Scoresheet and this is a really fugly workaround
-		return User.findOne({
-			where: {
-				id: scoresheet.userId
-			}
-		}).then(user => {
-			return [scoresheet.get({plain:true}), user.get({plain:true})]
+		return Promise.all([
+			User.findOne({
+				where: {
+					id: scoresheet.userId
+				}
+			}),
+			Flight.findOne({
+				where: {
+					id: scoresheet.flightKey
+				}
+			}),
+		]).then(([user,flight]) => {
+			return [scoresheet.get({plain:true}), user.get({plain:true}), flight.get({plain:true})]
 		})
 	}).then(async ([scoresheet, user]) => {
 		// These need to be STATIC and not relative! They also MUST be png files.
