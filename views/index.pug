@@ -11,19 +11,85 @@ block content
 
 	else
 		.container
-			.card
-				.card-header
-					ul.nav.nav-tabs.card-header-tabs(id='scoresheet-list' role='tablist')
-						li.nav-item
-							a.nav-link.px-2.active(data-toggle='tab' href='#inProgress' aria-controls='inProgress' aria-selected='true') In Progress
-						li.nav-item
-							a.nav-link.px-2(data-toggle='tab' href='#completed' aria-controls='completed' aria-selected='false') Completed
-						
-				.card-body
-					.tab-content
-						.tab-pane.active(id='inProgress' role='tabpane2' aria-labelledby='inProgressTab')
-							button(type="button" class="btn btn-primary" onClick="showAddFlightModal()") Add New Flight
-						.tab-pane(id='completed' role='tabpane1' aria-labelledby='completedTab') 
+			ul.nav.nav-pills.mb-3(id='scoresheet-list' role='tablist')
+				li.nav-item(role="presentation")
+					a.nav-link.px-5.active(id="inProgressTab" data-toggle='pill' href='#inProgress' aria-controls='inProgress' aria-selected='true') In Progress
+				li.nav-item(role="presentation")
+					a.nav-link.px-5(id="completedTab" data-toggle='pill' href='#completed' aria-controls='completed' aria-selected='false') Completed
+			.tab-content
+				.tab-pane.fade.show.active(id='inProgress' role='tabpane2' aria-labelledby='inProgressTab')
+					.accordian(id="inProgressAccordian")
+						- var unsubmittedFlights = Object.values(flights).filter(flight => !flight.submitted)
+						each flight, index in unsubmittedFlights
+							- var isLastFlight = (unsubmittedFlights.length - 1) === index
+							.card
+								.card-header(id="header"+flight.id)
+									h1.mb-0
+										.d-flex.flex-row.justify-content-between(type="button" data-toggle="collapse" data-target="#collapse"+flight.id aria-expanded=isLastFlight ? "true" : "false" aria-controls="collapseOne" class=isLastFlight ? "collapsed" : "") 
+											h5 #{flight.flight_id}
+											h5 #{flight.location}
+											h5 #{new Date(flight.date).toLocaleString()}
+								div(id="collapse"+flight.id aria-labelledby="header"+flight.id data-parent="#inProgressAccordian" class=isLastFlight?"collapse show":"collapse")
+									.card-body
+										table.table.table-hover.table-borderless
+											thead
+												tr
+													th(scope="col") Entry Number
+													th(scope="col") Category
+													th(scope="col") Judge Score
+													th(scope="col") Consensus Score
+													th(scope="col") Place / Advance
+													th(scope="col") BOS Advance
+													th(scope="col")
+											tbody
+												each scoresheet in flight.scoresheets
+													tr
+														td(scope="row") #{scoresheet.entry_number}
+														td #{scoresheet.category + scoresheet.sub} #{scoresheet.subcategory}
+														td.text-center #{scoresheet.judge_total}
+														td.text-center #{scoresheet.consensus_score}
+														td.text-center #{scoresheet.place}
+														td.text-center #{scoresheet.mini_boss_advanced}
+														td.text-center
+															button.btn.btn-primary(onclick="editEntry('"+scoresheet.id+"')") Edit
+										.d-flex.flex-row
+											button.mt-3.mr-2(type="button" class="btn btn-primary" onClick="addEntry('"+flight.id+"')") Add Scoresheet
+											button.mt-3(type="button" class="btn btn-success" onClick="confirmSubmitFlight('"+flight.id+"')") Submit Flight
+					button.mt-3(type="button" class="btn btn-primary" onClick="showAddFlightModal()") Add New Flight
+				.tab-pane.fade(id='completed' role='tabpane1' aria-labelledby='completedTab')
+					- var submittedFlights = Object.values(flights).filter(flight => flight.submitted)
+					each flight, index in submittedFlights
+						- var isLastFlight = submittedFlights.length - 1 === index
+						.card
+							.card-header(id="header"+flight.id)
+								h1.mb-0
+									.d-flex.flex-row.justify-content-between(type="button" data-toggle="collapse" data-target="#collapse"+flight.id aria-expanded=isLastFlight ? "true" : "false" aria-controls="collapseOne" class=isLastFlight ? "collapsed" : "") 
+										h5 #{flight.flight_id}
+										h5 #{flight.location}
+										h5 #{new Date(flight.date).toLocaleString()}
+							div(id="collapse"+flight.id aria-labelledby="header"+flight.id data-parent="#inProgressAccordian" class=isLastFlight?"collapse show":"collapse")
+								.card-body
+									table.table.table-hover.table-borderless
+										thead
+											tr
+												th(scope="col") Entry Number
+												th(scope="col") Category
+												th(scope="col") Judge Score
+												th(scope="col") Consensus Score
+												th(scope="col") Place / Advance
+												th(scope="col") BOS Advance
+												th(scope="col")
+										tbody
+											each scoresheet in flight.scoresheets
+												tr
+													td(scope="row") #{scoresheet.entry_number}
+													td #{scoresheet.category + scoresheet.sub} #{scoresheet.subcategory}
+													td.text-center #{scoresheet.judge_total}
+													td.text-center #{scoresheet.consensus_score}
+													td.text-center #{scoresheet.place}
+													td.text-center #{scoresheet.mini_boss_advanced}
+													td.text-center
+														button.btn.btn-primary(onclick="editEntry('"+scoresheet.id+"')") PDF
 
 		.modal.fade(id='addFlightModal' tabindex='-1' role="dialog" aria-labelledby="addFlightModalLabel" aria-hidden="true")
 			.modal-dialog
@@ -43,6 +109,22 @@ block content
 					.modal-footer
 						button(type="button" class="btn btn-secondary" data-dismiss='modal') Cancel
 						button(type='button' class='btn btn-primary' onclick='addFlight()') Submit
+		.modal.fade(id='confirm-submit-flight-modal' tabindex='-1' role="dialog" aria-labelledby="confirmSubmitFlightLabel" aria-hidden="true")
+			.modal-dialog
+				.modal-content
+					.modal-header 
+						h5 Confirm Submit Flight
+					.modal-body 
+						p Please take a moment to review your scoresheets, placings, consensus scores, and best of show submissions.
+						p <strong>Once you click submit, you may no longer edit the flight or any of its scoresheets!</strong>
+						p Are you sure you want to complete this flight?
+						.form-check.pt-4
+							input.form-check-input(type='checkbox'  id='user_verify_flight_submit')
+							label.form-check-label(for='user_verify_flight_submit') I confirm I have discussed and verified my consensus score with other session judges
+					.modal-footer
+						input(id="flight-to-submit" value=null hidden)
+						button(type="button" class="btn btn-secondary" data-dismiss='modal' onclick="clearFlightToSubmit()") Cancel
+						button(type='button' class='btn btn-primary' onclick='submitFlight();') Submit Flight
 
 
 	script.
@@ -78,17 +160,35 @@ block content
 			})
 		}
 
-		const submitFlight = (flightId) => {
+		const confirmSubmitFlight = (flightId) => {
+			$('#flight-to-submit').val(flightId)
+			$('#confirm-submit-flight-modal').modal('show')
+		}
+
+		const clearFlightToSubmit = () => {
+			$('#flight-to-submit').val(null)
+			$('#user_verify_flight_submit').prop('checked', false)
+		}
+
+		const submitFlight = () => {
+			const userVerified = $('#user_verify_flight_submit').prop('checked')
+			if (!userVerified) return
+
+			const flightId = $('#flight-to-submit').val()
 			// To do: Submit flight here
-			fetch('/flight/add', {
+			fetch('/flight/submit', {
 				method: 'POST',
 				headers: {
 					'Content-Type': 'application/json'
 				},
 				body: JSON.stringify({
-					flightId: fligthId
+					flightId: flightId
 				})
 			}).then(response => {
+				$('#confirm-submit-flight-modal').modal('hide')
+				$('#flight-to-submit').val(null)
+				$('#user_verify_flight_submit').prop('checked', false)
+
 				if (response.status === 200) {
 					const body = response.json()
 
@@ -101,11 +201,17 @@ block content
 			})
 		}
 
-		const addEntry = (flightId) => {
-			window.location.href(`/scoresheet/edit?flightId=${flightId}`)
-		}
+		let addEntry = () => {} 
+		let editEntry = () => {}
 
 		$(document).ready(() => {
 			// on page load
+			addEntry = (flightId) => {
+				window.location.replace(`/scoresheet/edit?flightId=${flightId}`)
+			}
+
+			editEntry = (scoresheetId) => {
+				window.location.replace(`/scoresheet/edit?scoresheetId=${scoresheetId}`)
+			}
 		})
 					

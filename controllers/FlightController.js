@@ -79,7 +79,7 @@ flightController.editFlight = function(req, res) {
 flightController.submitFlight = function(req, res) {
     const flightId = req.body.flightId
 
-    Flight.upsert({submitted: true}, {
+    Flight.update({submitted: true}, {
         where: {
             id: flightId,
             created_by: req.user.id

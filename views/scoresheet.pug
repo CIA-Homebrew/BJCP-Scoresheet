@@ -706,7 +706,7 @@ block content
 			var flavor = document.getElementById('flavor_score').value
 			var mouthfeel = document.getElementById('mouthfeel_score').value
 			var summary = document.getElementById('overall_score').value
-			document.getElementById('judge_total').innerText = String(Number(aroma) + Number(appearance) + Number(flavor) + Number(mouthfeel) + Number(summary));
+			document.getElementById('judge_total').innerText = Number(aroma) + Number(appearance) + Number(flavor) + Number(mouthfeel) + Number(summary);
 		}
 
 		function submit_scoresheet() {
@@ -864,6 +864,9 @@ block content
 
 					// Don't post data unless the entry number exists
 					if (fDataObject.entry_number === '') return
+
+					// Update Judge Total to be a number
+					fDataObject.judge_total = Number($('#judge_total').text())
 
 					// Submit the updated scoresheet
 					$.post('/scoresheet/update', fDataObject, function (data) {

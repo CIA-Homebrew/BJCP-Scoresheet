@@ -59,14 +59,14 @@ scoresheetController.loadScoresheetList = function(req, res) {
  * @param req
  * @param res
  */
-scoresheetController.initScoresheet = function(req, res) {
-	
-
+scoresheetController.initScoresheet = function(req, res) {	
 	// If we are provided with a scoresheet ID then load it
-	if (req.body.scoresheetId) {
+	if (req.body.scoresheetId || req.query.scoresheetId) {
+		const scoresheetId = req.body.scoresheetId ? req.body.scoresheetId :  req.query.scoresheetId
+
 		Scoresheet.findAll({
 			where: {
-				id: req.body.scoresheetId
+				id: scoresheetId
 			},
 		})
 			.then(scoresheets => {
@@ -74,7 +74,7 @@ scoresheetController.initScoresheet = function(req, res) {
 				res.render('scoresheet', {
 					user: req.user,
 					scoresheet : scoresheets[0].get({plain:true}),
-					fingerprint: req.body.scoresheetId,
+					fingerprint: scoresheetId,
 					title : appConstants.APP_NAME + " - Load Scoresheet"
 				})
 			})
@@ -97,7 +97,7 @@ scoresheetController.initScoresheet = function(req, res) {
 					user: req.user,
 					sess_date: date.getFullYear() + '-' + ('0' + (date.getMonth()+1)).slice(-2) + '-' + ('0' + date.getDate()).slice(-2),
 					title : appConstants.APP_NAME + " - New Scoresheet",
-					flightId : req.body.flightId
+					flightId : req.query.flightId
 				});
 			} else {
 				res.status(401)
