@@ -1,7 +1,7 @@
 extends layout
 
 block content
-	.container
+	.container.mt-5(style="width: 30%; min-width: 250px;")
 		form.form-signin(role='form', action='/login', method='post')
 			h2.form-signin-heading Please sign in
 			label.sr-only(for='inputEmail')
