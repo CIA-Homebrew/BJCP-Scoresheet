@@ -131,7 +131,7 @@ head
       .text_bold.text_center
         | PLACE
     .float_left
-      span.border_solid_4_gray.display_iblock(style='height: 52px; width: 55px; margin-left: 14px; ') #{scoresheet.consensus_score ? scoresheet.consensus_score : scoresheet.judge.total}
+      span.border_solid_4_gray.display_iblock(style='height: 52px; width: 55px; margin-left: 14px; ') #{scoresheet.consensus_score ? scoresheet.consensus_score : scoresheet.judge_total}
     .float_right.text_center(style='width: 140px; height: 17px; background-color: #5a5a5a; color: white; padding-top: 6px; font-size: 12px; margin-right: 2.5px; ') #{scoresheet.consensus_score ? 'CONSENSUS SCORE' : 'JUDGE SCORE'}
     .float_left.text_normal.mtop_5(style='margin-left: 35px; margin-right: 5px')
       | Bottle Inspection

@@ -11,107 +11,112 @@ block content
 
 	else
 		.container
-			.d-flex.justify-content-between
-				h2.ml-3 My Flights
-				ul.nav.nav-pills.mb-2(id='scoresheet-list' role='tablist')
-					li.nav-item(role="presentation")
-						a.nav-link.px-5.active(id="inProgressTab" data-toggle='pill' href='#inProgress' aria-controls='inProgress' aria-selected='true') Show In Progress Flights
-					li.nav-item(role="presentation")
-						a.nav-link.px-5(id="completedTab" data-toggle='pill' href='#completed' aria-controls='completed' aria-selected='false') Show Completed Flights
-			.tab-content
-				.tab-pane.fade.show.active(id='inProgress' role='tabpane2' aria-labelledby='inProgressTab')
-					.accordian(id="inProgressAccordian")
-						- var unsubmittedFlights = Object.values(flights).filter(flight => !flight.submitted)
-						each flight, index in unsubmittedFlights
-							- var isLastFlight = (unsubmittedFlights.length - 1) === index
-							.card
-								.card-header(id="header"+flight.id style="background-color: rgba(124,122,120,0.35")
-									h1.mb-0
-										.d-flex.flex-row.justify-content-between.p-0.m-0(type="button" data-toggle="collapse" data-target="#collapse"+flight.id aria-expanded=isLastFlight ? "true" : "false" aria-controls="collapseOne" class=isLastFlight ? "collapsed" : "") 
-											h5.m-0.p-0 <strong>Flight ##{flight.flight_id}</strong> <small>&nbsp; &nbsp; &nbsp; #{new Date(flight.date).toLocaleDateString()} &nbsp; &nbsp; &nbsp; #{flight.location}</small>
-											h5.m-0.p-0 ▽
-								div(id="collapse"+flight.id aria-labelledby="header"+flight.id data-parent="#inProgressAccordian" class=isLastFlight?"collapse show":"collapse")
-									.card-body
-										table.table.table-hover.table-borderless
-											thead
-												tr
-													th(scope="col") Entry Number
-													th(scope="col") Category
-													th(scope="col") Judge Score
-													th(scope="col") Consensus Score
-													th(scope="col") Place / Advance
-													th(scope="col") BOS Advance
-													th(scope="col")
-											tbody
-												each scoresheet in flight.scoresheets
+			.card
+				.card-header
+					.d-flex.justify-content-between
+						h2.ml-3 My Flights
+						ul.nav.nav-pills(id='scoresheet-list' role='tablist')
+							li.nav-item(role="presentation")
+								a.nav-link.px-5.active(id="inProgressTab" data-toggle='pill' href='#inProgress' aria-controls='inProgress' aria-selected='true') Show In Progress Flights
+							li.nav-item(role="presentation")
+								a.nav-link.px-5(id="completedTab" data-toggle='pill' href='#completed' aria-controls='completed' aria-selected='false') Show Completed Flights
+				.card-body
+					.tab-content
+						.tab-pane.fade.show.active(id='inProgress' role='tabpane2' aria-labelledby='inProgressTab')
+							.accordian(id="inProgressAccordian")
+								- var unsubmittedFlights = Object.values(flights).filter(flight => !flight.submitted)
+								each flight, index in unsubmittedFlights
+									- var isLastFlight = (unsubmittedFlights.length - 1) === index
+									.card
+										.card-header(id="header"+flight.id style="background-color: rgba(124,122,120,0.35")
+											h1.mb-0
+												.d-flex.flex-row.justify-content-between.p-0.m-0(type="button" data-toggle="collapse" data-target="#collapse"+flight.id aria-expanded=isLastFlight ? "true" : "false" aria-controls="collapseOne" class=isLastFlight ? "collapsed" : "") 
+													h5.m-0.p-0 <strong>Flight ##{flight.flight_id}</strong> <small>&nbsp; &nbsp; &nbsp; #{new Date(flight.date).toLocaleDateString()} &nbsp; &nbsp; &nbsp; #{flight.location}</small>
+													h5.m-0.p-0 ▽
+										div(id="collapse"+flight.id aria-labelledby="header"+flight.id data-parent="#inProgressAccordian" class=isLastFlight?"collapse show":"collapse")
+											.card-body
+												table.table.table-hover.table-borderless
+													thead
+														tr
+															th(scope="col") Entry Number
+															th(scope="col") Category
+															th(scope="col") Judge Score
+															th(scope="col") Consensus Score
+															th(scope="col") Place / Advance
+															th(scope="col") BOS Advance
+															th(scope="col")
+													tbody
+														each scoresheet in flight.scoresheets
+															tr
+																td(scope="row") #{scoresheet.entry_number}
+																td #{scoresheet.category + scoresheet.sub} #{scoresheet.subcategory}
+																td.text-center
+																	input.form-control.text-center(type="number" value=scoresheet.judge_total disabled)
+																td.text-center
+																	input.form-control.text-center(type="number" value=scoresheet.consensus_score onchange="updateScoresheet('"+scoresheet.id+"', 'consensus_score', this.value)")
+																td.text-center
+																	select.form-control(onchange="updateScoresheet('"+scoresheet.id+"', 'place', this.value)")
+																		option Select...
+																		option(value=0 selected=scoresheet.place===0) Advance
+																		option(value=1 selected=scoresheet.place===1) 1st
+																		option(value=2 selected=scoresheet.place===2) 2nd
+																		option(value=3 selected=scoresheet.place===3) 3rd
+																td.text-center 
+																	.btn-group-toggle(data-toggle='buttons')
+																		label.btn.btn-outline-success(class=(Boolean(scoresheet.mini_boss_advanced) ? "active" : "") ) Advance
+																			input(type='checkbox'  autocomplete="off" id='mini_boss_advanced' name='mini_boss_advanced' checked=Boolean(scoresheet.mini_boss_advanced) onchange="updateScoresheet('"+scoresheet.id+"', 'mini_boss_advanced', this.checked)")
+																td.text-center
+																	button.btn.btn-primary(onclick="editEntry('"+scoresheet.id+"')") Edit
+												.d-flex.flex-row
+													button.mt-3.mr-2(type="button" class="btn btn-primary" onClick="addEntry('"+flight.id+"')") Add Scoresheet
+													button.mt-3(type="button" class="btn btn-success" onClick="confirmSubmitFlight('"+flight.id+"')") Submit Flight
+							button.mt-3(type="button" class="btn btn-primary" onClick="showAddFlightModal()") Add New Flight
+						.tab-pane.fade(id='completed' role='tabpane1' aria-labelledby='completedTab')
+							- var submittedFlights = Object.values(flights).filter(flight => flight.submitted)
+							each flight, index in submittedFlights
+								- var isLastFlight = submittedFlights.length - 1 === index
+								.card
+									.card-header(id="header"+flight.id style="background-color: rgba(124,122,120,0.35")
+										h1.mb-0
+											.d-flex.flex-row.justify-content-between(type="button" data-toggle="collapse" data-target="#collapse"+flight.id aria-expanded=isLastFlight ? "true" : "false" aria-controls="collapseOne" class=isLastFlight ? "collapsed" : "") 
+												h5.m-0.p-0 <strong>Flight #{flight.flight_id}</strong> <small> &nbsp; &nbsp; &nbsp; #{new Date(flight.date).toLocaleDateString()} &nbsp; &nbsp; &nbsp; #{flight.location}</small>
+												h5.m-0.p-0 ▽
+									div(id="collapse"+flight.id aria-labelledby="header"+flight.id data-parent="#inProgressAccordian" class=isLastFlight?"collapse show":"collapse")
+										.card-body
+											table.table.table-hover.table-borderless
+												thead
 													tr
-														td(scope="row") #{scoresheet.entry_number}
-														td #{scoresheet.category + scoresheet.sub} #{scoresheet.subcategory}
-														td.text-center
-															input.form-control.text-center(type="number" value=scoresheet.judge_total disabled)
-														td.text-center
-															input.form-control.text-center(type="number" value=scoresheet.consensus_score onchange="updateScoresheet('"+scoresheet.id+"', 'consensus_score', this.value)")
-														td.text-center
-															select.form-control(onchange="updateScoresheet('"+scoresheet.id+"', 'place', this.value)")
-																option Select...
-																option(value=0 selected=scoresheet.place===0) Advance
-																option(value=1 selected=scoresheet.place===1) 1st
-																option(value=2 selected=scoresheet.place===2) 2nd
-																option(value=3 selected=scoresheet.place===3) 3rd
-														td.text-center 
-															.btn-group-toggle(data-toggle='buttons')
-																label.btn.btn-outline-success(class=(Boolean(scoresheet.mini_boss_advanced) ? "active" : "") ) Advance
-																	input(type='checkbox'  autocomplete="off" id='mini_boss_advanced' name='mini_boss_advanced' checked=Boolean(scoresheet.mini_boss_advanced) onchange="updateScoresheet('"+scoresheet.id+"', 'mini_boss_advanced', this.checked)")
-														td.text-center
-															button.btn.btn-primary(onclick="editEntry('"+scoresheet.id+"')") Edit
-										.d-flex.flex-row
-											button.mt-3.mr-2(type="button" class="btn btn-primary" onClick="addEntry('"+flight.id+"')") Add Scoresheet
-											button.mt-3(type="button" class="btn btn-success" onClick="confirmSubmitFlight('"+flight.id+"')") Submit Flight
-					button.mt-3(type="button" class="btn btn-primary" onClick="showAddFlightModal()") Add New Flight
-				.tab-pane.fade(id='completed' role='tabpane1' aria-labelledby='completedTab')
-					- var submittedFlights = Object.values(flights).filter(flight => flight.submitted)
-					each flight, index in submittedFlights
-						- var isLastFlight = submittedFlights.length - 1 === index
-						.card
-							.card-header(id="header"+flight.id style="background-color: rgba(124,122,120,0.35")
-								h1.mb-0
-									.d-flex.flex-row.justify-content-between(type="button" data-toggle="collapse" data-target="#collapse"+flight.id aria-expanded=isLastFlight ? "true" : "false" aria-controls="collapseOne" class=isLastFlight ? "collapsed" : "") 
-										h5.m-0.p-0 <strong>Flight #{flight.flight_id}</strong> <small> &nbsp; &nbsp; &nbsp; #{new Date(flight.date).toLocaleDateString()} &nbsp; &nbsp; &nbsp; #{flight.location}</small>
-										h5.m-0.p-0 ▽
-							div(id="collapse"+flight.id aria-labelledby="header"+flight.id data-parent="#inProgressAccordian" class=isLastFlight?"collapse show":"collapse")
-								.card-body
-									table.table.table-hover.table-borderless
-										thead
-											tr
-												th(scope="col") Entry Number
-												th(scope="col") Category
-												th(scope="col") Judge Score
-												th(scope="col") Consensus Score
-												th(scope="col") Placed / Advanced
-												th(scope="col") BOS Advanced
-												th(scope="col")
-										tbody
-											each scoresheet in flight.scoresheets
-												tr
-													td(scope="row") #{scoresheet.entry_number}
-													td #{scoresheet.category + scoresheet.sub} #{scoresheet.subcategory}
-													td.text-center
-														input.form-control.text-center(type="number" value=scoresheet.judge_total disabled)
-													td.text-center
-														input.form-control.text-center(type="number" value=scoresheet.consensus_score disabled)
-													td.text-center
-														select.form-control(disabled)
-															option Select...
-															option(value=0 selected=scoresheet.place===0) Advance
-															option(value=1 selected=scoresheet.place===1) 1st
-															option(value=2 selected=scoresheet.place===2) 2nd
-															option(value=3 selected=scoresheet.place===3) 3rd
-													td.text-center 
-														.btn-group-toggle(data-toggle='buttons')
-															label.btn.btn-outline-success.no-hover(class=(Boolean(scoresheet.mini_boss_advanced) ? "active" : "")) Advance
-																input(type='checkbox'  autocomplete="off" id='mini_boss_advanced' name='mini_boss_advanced' checked=Boolean(scoresheet.mini_boss_advanced) disabled)
-													td.text-center
-														button.btn.btn-primary(onclick="downloadPdf('"+scoresheet.id+"', '"+scoresheet.entry_number+"')") PDF
+														th(scope="col") Entry Number
+														th(scope="col") Category
+														th(scope="col") Judge Score
+														th(scope="col") Consensus Score
+														th(scope="col") Placed / Advanced
+														th(scope="col") BOS Advanced
+														th(scope="col")
+												tbody
+													each scoresheet in flight.scoresheets
+														tr
+															td(scope="row") #{scoresheet.entry_number}
+															td #{scoresheet.category + scoresheet.sub} #{scoresheet.subcategory}
+															td.text-center
+																input.form-control.text-center(type="number" value=scoresheet.judge_total disabled)
+															td.text-center
+																input.form-control.text-center(type="number" value=scoresheet.consensus_score disabled)
+															td.text-center
+																select.form-control(disabled)
+																	option Select...
+																	option(value=0 selected=scoresheet.place===0) Advance
+																	option(value=1 selected=scoresheet.place===1) 1st
+																	option(value=2 selected=scoresheet.place===2) 2nd
+																	option(value=3 selected=scoresheet.place===3) 3rd
+															td.text-center 
+																.btn-group-toggle(data-toggle='buttons')
+																	label.btn.btn-outline-success.no-hover(class=(Boolean(scoresheet.mini_boss_advanced) ? "active" : "")) Advance
+																		input(type='checkbox'  autocomplete="off" id='mini_boss_advanced' name='mini_boss_advanced' checked=Boolean(scoresheet.mini_boss_advanced) disabled)
+															td.text-center
+																button.btn.btn-primary(onclick="downloadPdf('"+scoresheet.id+"', '"+scoresheet.entry_number+"')") PDF
+											.d-flex.flex-row
+												button.mt-3.mr-2(type="button" class="btn btn-primary" onClick="downloadAll(["+flight.scoresheets.map(scoresheet => `{id:'${scoresheet.id}',entry_number:'${scoresheet.entry_number}'}`).join(',')+"])") Download All
 
 		.modal.fade(id='addFlightModal' tabindex='-1' role="dialog" aria-labelledby="addFlightModalLabel" aria-hidden="true")
 			.modal-dialog
@@ -142,7 +147,7 @@ block content
 						p Are you sure you want to complete this flight?
 						.form-check.pt-4
 							input.form-check-input(type='checkbox'  id='user_verify_flight_submit')
-							label.form-check-label(for='user_verify_flight_submit') I confirm I have discussed and verified my consensus score with other session judges
+							label.form-check-label(for='user_verify_flight_submit') I confirm I have verified all flight information and am ready to submit
 					.modal-footer
 						input(id="flight-to-submit" value=null hidden)
 						button(type="button" class="btn btn-secondary" data-dismiss='modal' onclick="clearFlightToSubmit()") Cancel
@@ -264,6 +269,16 @@ block content
 				a.setAttribute('download', scoresheetEntryNumber + '.pdf');
 				a.click();
 				return false;
+			}
+
+			downloadAll = (scoresheetArray) => {
+				scoresheetArray.forEach(scoresheet => {
+					var a = document.createElement('a');
+					a.href = '/scoresheet/pdf/'+scoresheet.id;
+					a.setAttribute('download', scoresheet.entry_number + '.pdf');
+					a.click();
+					return false;
+				})
 			}
 		})
 					
