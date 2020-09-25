@@ -100,7 +100,7 @@ scoresheetController.initScoresheet = function(req, res) {
 					let date = new Date(flight.date);
 					res.render('scoresheet', {
 						user: req.user,
-						sess_date: date.getFullYear() + '-' + ('0' + (date.getMonth()+1)).slice(-2) + '-' + ('0' + date.getDate()).slice(-2),
+						sess_date: date.getUTCFullYear() + '-' + ('0' + (date.getUTCMonth()+1)).slice(-2) + '-' + ('0' + date.getUTCDate()).slice(-2),
 						title : appConstants.APP_NAME + " - New Scoresheet",
 						flightId : req.query.flightId,
 						session_location: flight.location,
@@ -120,7 +120,7 @@ scoresheetController.initScoresheet = function(req, res) {
 		let date = new Date(Date.now());
 		res.render('scoresheet', {
 			user: req.user,
-			sess_date: date.getFullYear() + '-' + ('0' + (date.getMonth()+1)).slice(-2) + '-' + ('0' + date.getDate()).slice(-2),
+			sess_date: date.getUTCFullYear() + '-' + ('0' + (date.getUTCMonth()+1)).slice(-2) + '-' + ('0' + date.getUTCDate()).slice(-2),
 			title : appConstants.APP_NAME + " - New Scoresheet"
 		});
 	}
