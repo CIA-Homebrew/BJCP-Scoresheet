@@ -51,3 +51,23 @@ body {
   color: inherit;
 }
 /* Admin page fixes */
+.panel-title {
+  position: relative;
+}
+  
+.panel-title::after {
+	content: "\f107";
+	color: #333;
+	top: -2px;
+	right: 0px;
+	position: absolute;
+    font-family: "FontAwesome"
+}
+
+.panel-title[aria-expanded="true"]::after {
+	content: "\f106";
+}
+
+.no-hover {
+  pointer-events: none;
+}

@@ -91,17 +91,26 @@ scoresheetController.initScoresheet = function(req, res) {
 				created_by: req.user.id
 			}
 		}).then(flight => {
-			if (flight) {
-				let date = new Date(Date.now());
-				res.render('scoresheet', {
-					user: req.user,
-					sess_date: date.getFullYear() + '-' + ('0' + (date.getMonth()+1)).slice(-2) + '-' + ('0' + date.getDate()).slice(-2),
-					title : appConstants.APP_NAME + " - New Scoresheet",
-					flightId : req.query.flightId
-				});
-			} else {
-				res.status(401)
-			}
+			Scoresheet.count({
+				where: {
+					flightKey: flight.id
+				}
+			}).then(numScoresheets => {
+				if (flight) {
+					let date = new Date(flight.date);
+					res.render('scoresheet', {
+						user: req.user,
+						sess_date: date.getFullYear() + '-' + ('0' + (date.getMonth()+1)).slice(-2) + '-' + ('0' + date.getDate()).slice(-2),
+						title : appConstants.APP_NAME + " - New Scoresheet",
+						flightId : req.query.flightId,
+						session_location: flight.location,
+						flight_total: numScoresheets+1,
+						flight_position: numScoresheets+1
+					});
+				} else {
+					res.status(401)
+				}
+			})
 		}).catch(err => {
 			res.status(500)
 			console.log(err)

@@ -29,10 +29,8 @@ block content
 									- var isLastFlight = (unsubmittedFlights.length - 1) === index
 									.card
 										.card-header(id="header"+flight.id style="background-color: rgba(124,122,120,0.35")
-											h1.mb-0
-												.d-flex.flex-row.justify-content-between.p-0.m-0(type="button" data-toggle="collapse" data-target="#collapse"+flight.id aria-expanded=isLastFlight ? "true" : "false" aria-controls="collapseOne" class=isLastFlight ? "collapsed" : "") 
-													h5.m-0.p-0 <strong>Flight ##{flight.flight_id}</strong> <small>&nbsp; &nbsp; &nbsp; #{new Date(flight.date).toLocaleDateString()} &nbsp; &nbsp; &nbsp; #{flight.location}</small>
-													h5.m-0.p-0 ▽
+											.d-flex.flex-row.justify-content-between.p-0.m-0.panel-title(type="button" data-toggle="collapse" data-target="#collapse"+flight.id aria-expanded=isLastFlight ? "true" : "false" aria-controls="collapseOne" class=isLastFlight ? "collapsed" : "") 
+												h5.m-0.p-0 <strong>Flight ##{flight.flight_id}</strong> <small>&nbsp; &nbsp; &nbsp; #{new Date(flight.date).toLocaleDateString()} &nbsp; &nbsp; &nbsp; #{flight.location}</small>
 										div(id="collapse"+flight.id aria-labelledby="header"+flight.id data-parent="#inProgressAccordian" class=isLastFlight?"collapse show":"collapse")
 											.card-body
 												table.table.table-hover.table-borderless
@@ -40,10 +38,10 @@ block content
 														tr
 															th(scope="col") Entry Number
 															th(scope="col") Category
-															th(scope="col") Judge Score
-															th(scope="col") Consensus Score
-															th(scope="col") Place / Advance
-															th(scope="col") BOS Advance
+															th.text-center(scope="col") Judge Score
+															th.text-center(scope="col") Consensus Score
+															th.text-center(scope="col") Place / Advance
+															th.text-center(scope="col") BOS Advance
 															th(scope="col")
 													tbody
 														each scoresheet in flight.scoresheets
@@ -56,7 +54,7 @@ block content
 																	input.form-control.text-center(type="number" value=scoresheet.consensus_score onchange="updateScoresheet('"+scoresheet.id+"', 'consensus_score', this.value)")
 																td.text-center
 																	select.form-control(onchange="updateScoresheet('"+scoresheet.id+"', 'place', this.value)")
-																		option Select...
+																		option -
 																		option(value=0 selected=scoresheet.place===0) Advance
 																		option(value=1 selected=scoresheet.place===1) 1st
 																		option(value=2 selected=scoresheet.place===2) 2nd
@@ -68,8 +66,8 @@ block content
 																td.text-center
 																	button.btn.btn-primary(onclick="editEntry('"+scoresheet.id+"')") Edit
 												.d-flex.flex-row
-													button.mt-3.mr-2(type="button" class="btn btn-primary" onClick="addEntry('"+flight.id+"')") Add Scoresheet
-													button.mt-3(type="button" class="btn btn-success" onClick="confirmSubmitFlight('"+flight.id+"')") Submit Flight
+													button.mt-3.mr-2.btn.btn-primary(type="button" onClick="addEntry('"+flight.id+"')") Add Scoresheet
+													button.mt-3.btn.btn-danger(type="button" onClick="confirmSubmitFlight('"+flight.id+"')") Submit Flight
 							button.mt-3(type="button" class="btn btn-primary" onClick="showAddFlightModal()") Add New Flight
 						.tab-pane.fade(id='completed' role='tabpane1' aria-labelledby='completedTab')
 							- var submittedFlights = Object.values(flights).filter(flight => flight.submitted)
@@ -77,10 +75,8 @@ block content
 								- var isLastFlight = submittedFlights.length - 1 === index
 								.card
 									.card-header(id="header"+flight.id style="background-color: rgba(124,122,120,0.35")
-										h1.mb-0
-											.d-flex.flex-row.justify-content-between(type="button" data-toggle="collapse" data-target="#collapse"+flight.id aria-expanded=isLastFlight ? "true" : "false" aria-controls="collapseOne" class=isLastFlight ? "collapsed" : "") 
-												h5.m-0.p-0 <strong>Flight #{flight.flight_id}</strong> <small> &nbsp; &nbsp; &nbsp; #{new Date(flight.date).toLocaleDateString()} &nbsp; &nbsp; &nbsp; #{flight.location}</small>
-												h5.m-0.p-0 ▽
+										.d-flex.flex-row.justify-content-between.panel-title(type="button" data-toggle="collapse" data-target="#collapse"+flight.id aria-expanded=isLastFlight ? "true" : "false" aria-controls="collapseOne" class=isLastFlight ? "collapsed" : "") 
+											h5.m-0.p-0 <strong>Flight #{flight.flight_id}</strong> <small> &nbsp; &nbsp; &nbsp; #{new Date(flight.date).toLocaleDateString()} &nbsp; &nbsp; &nbsp; #{flight.location}</small>
 									div(id="collapse"+flight.id aria-labelledby="header"+flight.id data-parent="#inProgressAccordian" class=isLastFlight?"collapse show":"collapse")
 										.card-body
 											table.table.table-hover.table-borderless
@@ -88,10 +84,10 @@ block content
 													tr
 														th(scope="col") Entry Number
 														th(scope="col") Category
-														th(scope="col") Judge Score
-														th(scope="col") Consensus Score
-														th(scope="col") Placed / Advanced
-														th(scope="col") BOS Advanced
+														th.text-center(scope="col") Judge Score
+														th.text-center(scope="col") Consensus Score
+														th.text-center(scope="col") Placed / Advanced
+														th.text-center(scope="col") BOS Advanced
 														th(scope="col")
 												tbody
 													each scoresheet in flight.scoresheets
@@ -104,7 +100,7 @@ block content
 																input.form-control.text-center(type="number" value=scoresheet.consensus_score disabled)
 															td.text-center
 																select.form-control(disabled)
-																	option Select...
+																	option -
 																	option(value=0 selected=scoresheet.place===0) Advance
 																	option(value=1 selected=scoresheet.place===1) 1st
 																	option(value=2 selected=scoresheet.place===2) 2nd
@@ -132,7 +128,9 @@ block content
 							input.form-control(type="text" id="flightLocation" placeholder="Brewery, Local Homebrew Shop, Home, etc.")
 						.form-group
 							label(for="flightDate") Session Date
-							input.form-control(type="date" id="flightDate")
+							- var date = new Date()
+							- var currentDate = date.getFullYear() + '-' + ('0' + (date.getMonth()+1)).slice(-2) + '-' + ('0' + date.getDate()).slice(-2)
+							input.form-control(type="date" id="flightDate" value=currentDate)
 					.modal-footer
 						button(type="button" class="btn btn-secondary" data-dismiss='modal') Cancel
 						button(type='button' class='btn btn-primary' onclick='addFlight()') Submit
@@ -177,9 +175,10 @@ block content
 			}).then(response => {
 				if (response.status === 200) {
 					const body = response.json()
-					// todo: dynamically add new flight to page
-
-					$('#addFlightModal').modal('hide')
+					// instead of dynamically moving the flight to the other tab, we will be lazy and just reload the page. 
+					// This action is infrequent enough it shouldn't break immersion *too* much.
+					location.reload()
+					
 				} else {
 					$('#addFlightModal').modal('hide')
 					// todo: handle errors
