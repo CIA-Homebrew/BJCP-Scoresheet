@@ -10607,13 +10607,15 @@ a.text-dark:hover, a.text-dark:focus {
 .nav-pills .nav-link {
   border: 1px solid transparent;
   color: #8E8C84;
+  margin-right: 2px;
 }
 
 .nav-pills .nav-link.active,
 .nav-pills .nav-link:hover,
 .nav-pills .nav-link:focus {
-  background-color: #F8F5F0;
-  border-color: #DFD7CA;
+  background-color: #325D88;
+  border-color: #325D88;
+  color: #FFFFFF
 }
 
 .nav-pills .nav-link.disabled,

@@ -1,7 +1,7 @@
 extends layout
 
 block content
-	.container
+	.container.d-flex.justify-content-center
 		form.form-signin(role='form', action="/register", method="post", style='max-width: 300px;')
 			h2.form-signin-heading Sign Up here
 			input.form-control(type='text', name="firstname", placeholder='First Name', value=(typeof fData === "undefined" ? "" : fData.firstname))

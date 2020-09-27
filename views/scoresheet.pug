@@ -6,6 +6,7 @@ block content
 		input(type='text' id='author' name='author' value=user._id hidden=true)
 		input(type='text' id='id' name='id' hidden=true)
 		input(type='text' value='0' id='scoresheet_submitted' name='scoresheet_submitted' hidden=true)
+		input(type='text' id="flightKey", name="flightKey", hidden=true, value=flightId)
 		.container
 			div.card
 				div.card-header
@@ -36,7 +37,7 @@ block content
 									.card-header.px-0.py-0
 										p.small.mb-0.text-center Consensus
 									.card-body.text-dark.my-0.px-0.py-0.text-center
-										input.form-control.form-control-lg.text-center.my-0.py-0.ml-auto.mr-auto.remove-internal-padding(type='number' id='consensus_score' name='consensus_score' value='0' min='0' max='50' style="width:50%;height:90%;line-height:90%;")
+										input.form-control.form-control-lg.text-center.my-0.p-0.ml-auto.mr-auto.remove-internal-padding(type='number' id='consensus_score' name='consensus_score' value='0' min='0' max='50' style="width:50%;height:90%;line-height:90%;")
 								.card.border-dark.mb-3.mx-1
 									.card-header.px-0.py-0
 										p.small.mb-0.text-center Total Score
@@ -44,8 +45,8 @@ block content
 										h4(class='my-0' id='judge_total' name="judge_total") 0
 
 
-						.col-md-auto
-							button(type="button" class="btn btn-primary" name='btn' value='Submit' id='submitBtn' data-toggle="modal" onClick="submit_scoresheet();") Submit
+						.col-md-auto.mt-auto.mb-auto
+							button(type="button" class="btn btn-primary" name='btn' value='Submit' id='submitBtn' data-toggle="modal" onClick="goHome()") Back to My Flights
 					ul(class = 'nav nav-tabs card-header-tabs' id='scoresheet-list' role='tablist')
 						li(class='nav-item')
 							a(class='nav-link active px-2' id="information-tab" data-toggle="tab" href='#information' role="tab" aria-controls="information" aria-selected="true" ) Information
@@ -87,10 +88,7 @@ block content
 									.form-group.col-sm-2.col-form-label Session Location
 										label(for='session_location')
 									.form-group.col-sm-4
-										input.form-control(type='text' id='session_location' name='session_location')
-
-
-
+										input.form-control(type='text' id='session_location' name='session_location' value=session_location)
 
 							.form-group
 								h4 Beer Information
@@ -103,20 +101,11 @@ block content
 									.form-group.col-sm-3.col-form-label.text-center.pl-4
 										label(for='flight_position') Flight Position
 									.form-group.col-sm-1.pr-0
-										input.form-control(type='number' id='flight_position' name='flight_position' min='0')
+										input.form-control(type='number' id='flight_position' name='flight_position' min='0' value=flight_position)
 									.form-group.col-sm-1.col-form-label.text-center
 										label(for='flight_total') of
 									.form-group.col-sm-1.pl-0
-										input.form-control(type='number' id='flight_total' name='flight_total')
-								//- .form-row.py-1
-								//-     .form-group.col-sm-2.col-form-label
-								//-         label(for='consensus_score') Consensus Score
-								//-     .form-group.col-sm-4
-								//-         input.form-control(type='number' id='consensus_score' name='consensus_score')
-								//-     .form-group.col-sm-3.col-form-label
-								//-         label(for='place') Place
-								//-     .form-group.col-sm-1
-								//-         input.form-control(type='number' id='place')
+										input.form-control(type='number' id='flight_total' name='flight_total' min='0' value=flight_total)
 							.form-group
 								.form-row.py-1
 									.form-group.col-sm-2.col-form-label
@@ -486,34 +475,6 @@ block content
 												input.form-control.form-control-lg.text-center.mb-0(type='number' id='overall_score' name='overall_score' value='0' min='0' max='10' onchange='recalculate_score()')
 												p.small.d-flex.align-items-end.flex-row-reverse.my-0.pb-0 /10
 
-		.modal.fade(id='confirm-submit-modal' tabindex='-1' role="dialog" aria-labelledby="confirmLabel" aria-hidden="true")
-			.modal-dialog
-				.modal-content
-					.modal-header 
-						h5 Confirm Scoresheet Submission
-					.modal-body 
-						p Are you sure you want to submit this scoresheet?
-							#scoresheet-section-score-warnings
-							#scoresheet-comments-warnings
-						p <strong>Once you submit your scoresheet, you may not edit it!</strong>
-					.modal-footer
-						button(type="button" class="btn btn-secondary" data-dismiss='modal') Cancel
-						button(type='button' class='btn btn-primary' onclick='confirm_submit();') Submit
-		.modal.fade(id='confirm-consensus-modal' tabindex='-1' role="dialog" aria-labelledby="consensusLabel" aria-hidden="true")
-			.modal-dialog
-				.modal-content
-					.modal-header 
-						h5 Confirm Consensus Score
-					.modal-body 
-						p You have added a consensus score to your scoresheet.
-						p <strong>Please confirm your consensus score matches other session judges' scores before submitting.</strong>
-						.form-check.pt-4
-							input.form-check-input(type='checkbox'  id='user_verify_consensus' name='user_verify_consensus')
-							label.form-check-label(for='user_verify_consensus') I confirm I have discussed and verified my consensus score with other session judges
-					.modal-footer
-						button(type="button" class="btn btn-secondary" data-dismiss='modal') Cancel
-						button(type='button' class='btn btn-primary' onclick='submit_scoresheet();') Continue
-
 	script.
 		$("[data-toggle=popover]").popover();
 
@@ -705,31 +666,7 @@ block content
 			var flavor = document.getElementById('flavor_score').value
 			var mouthfeel = document.getElementById('mouthfeel_score').value
 			var summary = document.getElementById('overall_score').value
-			document.getElementById('judge_total').innerText = String(Number(aroma) + Number(appearance) + Number(flavor) + Number(mouthfeel) + Number(summary));
-		}
-
-		function submit_scoresheet() {
-			$("#confirm-consensus-modal").modal('hide')
-			$("#confirm-submit-modal").modal('hide')
-
-			const consensusScore = $('#consensus_score').val()
-			const consensusConfirmed = $('#user_verify_consensus').is(":checked")
-
-			// Check for validation errors. If any, focus back to the field.
-			const validation = $('.is-invalid')
-			if (validation.length) {
-				const firstTabWithValidationErrorsId = $(validation[0]).closest('.tab-pane').attr('id')
-				$('#' + firstTabWithValidationErrorsId + '-tab').tab('show')
-
-				validation[0].focus()
-				return
-			}
-
-			if (consensusScore > 0 && !consensusConfirmed) {
-				$("#confirm-consensus-modal").modal('show')
-			} else {
-				$("#confirm-submit-modal").modal('show')
-			}
+			document.getElementById('judge_total').innerText = Number(aroma) + Number(appearance) + Number(flavor) + Number(mouthfeel) + Number(summary);
 		}
 
 		//- Change 'scoresheet_submitted' input to true after submit confirmed
@@ -778,7 +715,7 @@ block content
 			}
 		}
 
-		let updateScoresheet = () => {}
+		let goHome = () => {}
 
 		$(document).ready(function () {
 			//- Data validator on event
@@ -864,6 +801,9 @@ block content
 					// Don't post data unless the entry number exists
 					if (fDataObject.entry_number === '') return
 
+					// Update Judge Total to be a number
+					fDataObject.judge_total = Number($('#judge_total').text())
+
 					// Submit the updated scoresheet
 					$.post('/scoresheet/update', fDataObject, function (data) {
 						if (data.update) {
@@ -874,6 +814,12 @@ block content
 					//- Reset the base data comparison
 					origForm = fData;
 				}
+			}
+
+			// Save and quit
+			goHome = () => {
+				update_scoresheet()
+				window.location.replace('/')
 			}
 
 			//- Check to see if the scoresheet object was passed, and if so, pre-populate all fields

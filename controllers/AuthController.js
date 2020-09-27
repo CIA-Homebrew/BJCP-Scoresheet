@@ -2,6 +2,8 @@ let passport = require("../helpers/seq.passport");
 let User = require("../models").User;
 let appConstants = require("../helpers/appConstants");
 let debug = require('debug')('aha-scoresheet:authController');
+const Scoresheet = require("../models").Scoresheet;
+const Flight = require("../models").Flight;
 
 let _fields = ["username", "firstname", "lastname", "password"];
 
@@ -40,10 +42,46 @@ function errorProcessor(err, req) {
 
 // Restrict access to root page
 userController.home = function(req, res) {
-	res.render('index', {
-		user : req.user,
-		title : appConstants.APP_NAME + " - Home"
-	});
+	if (!req.user) {
+		res.render('index', {
+			user : req.user,
+			title : appConstants.APP_NAME + " - Home"
+		});
+		return
+	}
+
+	const scoresheetPromise = Scoresheet.findAll({
+		where: {
+			userId : req.user.id
+		},
+	})
+
+	const flightPromise = Flight.findAll({
+		where: {
+			created_by : req.user.id
+		},
+	})
+
+	Promise.all([scoresheetPromise, flightPromise]).then(([scoresheets, flights]) => {
+		const flightObject = {}
+
+		flights.forEach(flight => {
+			flightObject[flight.id] = {
+				...flight.get({plain:true}),
+				scoresheets : scoresheets.filter(scoresheet => scoresheet.flightKey === flight.id).map(scoresheet => scoresheet.get({plain:true}))
+			}
+		})
+
+		res.render('index', {
+			user: req.user,
+			title : appConstants.APP_NAME + " - Home",
+			flights: flightObject
+		})
+	}).catch(err => {
+		res.status(500)
+		debug(err)
+		console.log(err)
+	})
 };
 
 // Go to registration page
