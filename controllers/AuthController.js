@@ -1,6 +1,7 @@
 let passport = require("../helpers/seq.passport");
 let User = require("../models").User;
 let appConstants = require("../helpers/appConstants");
+const errorConstants = require("../helpers/errorConstants");
 let debug = require('debug')('aha-scoresheet:authController');
 const Scoresheet = require("../models").Scoresheet;
 const Flight = require("../models").Flight;
@@ -37,6 +38,23 @@ function errorProcessor(err, req) {
 		default:
 			req.flash("error", err.message);
 			break;
+	}
+}
+
+function jsonErrorProcessor(err, res) {
+	if (errorConstants[err]) {
+		res.status(400).json({
+			errors: [
+				{
+					code: err,
+					message: errorConstants[err]
+				}
+			]
+		})
+	} else {
+		debug(err)
+		console.log(err)
+		res.status(500)
 	}
 }
 
@@ -171,6 +189,69 @@ userController.editProfile = function(req, res) {
 		title : appConstants.APP_NAME + " - Edit Profile"
 	});
 };
+
+userController.updateEmail = function(req,res) {
+	const emailRegex = new RegExp(appConstants.EMAIL_REGEX)
+	const oldEmail = req.body.oldEmail
+	const newEmail = req.body.newEmail
+
+	User.findByPk(req.user.id).then(user => {
+		// validate new password meets minimum requirements
+		if (!emailRegex.test(newEmail)) {
+			return Promise.reject("EMAIL_FAIL_CRITERIA")
+		}
+
+		if (oldEmail !== user.email) {
+			return Promise.reject("INVALID_EMAIL")
+		}
+
+		return User.update({ email: newEmail }, {
+			where: {
+				id: user.id
+			}
+		})
+		
+	}).then(user => {
+		res.status(200).json(true)
+	}).catch(err => {
+		jsonErrorProcessor(err, res)
+	})
+}
+
+userController.updatePassword = function(req,res) {
+	const passwordRegex = new RegExp(appConstants.PASSWORD_REGEX)
+	const oldPassword = req.body.oldPassword
+	const newPassword = req.body.newPassword
+
+	User.findByPk(req.user.id).then(user => {
+		// validate new password meets minimum requirements
+		if (!passwordRegex.test(newPassword)) {
+			return Promise.reject("PASSWORD_FAIL_CRITERIA")
+		}
+
+		return user.validatePasswordAsync(oldPassword).then(validated => {
+			if (!validated) {
+				return Promise.reject("INVALID_PASSWORD")
+			} else {
+				return user
+			}
+		}).then(user => {
+			user.hashPassword(newPassword).then(newHashedPassword => {
+				return User.update({ password: newHashedPassword }, {
+					where: {
+						id: user.id
+					}
+				})
+			})
+		})
+	}).then((user) => {
+		console.log('Password Change Successful')
+		res.status(200).json(true)
+	}).catch(err => {
+		console.log(err)
+		jsonErrorProcessor(err, res)
+	})
+}
 
 // Post profile edit page
 userController.saveProfile = function(req, res) {
