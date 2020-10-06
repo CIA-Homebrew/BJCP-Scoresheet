@@ -177,6 +177,8 @@ block content
 						$('#confirmEmail').removeClass('is-invalid')
 					} else {
 						// Handle Errors Here for 400 / 500 status
+						window.alert('Error updating. Please try again.')
+						location.reload()
 					}
 				}).catch(err => {
 					window.alert('Error updating. Please try again.')
@@ -221,6 +223,8 @@ block content
 						$('#confirmPassword').removeClass('is-invalid')
 					} else {
 						// Handle Errors Here for 400 / 500 status
+						window.alert('Error updating. Please try again.')
+						location.reload()
 					}
 				}).catch(err => {
 					window.alert('Error updating. Please try again.')
@@ -248,6 +252,12 @@ block content
 					},
 					body: JSON.stringify(requestBody)
 				}).then(response => {
+					if (response.status === 200) {
+						window.alert('Profile updated succesfully')
+					} else {
+						window.alert('Error updating. Please try again.')
+						location.reload()
+					}
 					//- const responseBody = response.json()
 				}).catch(err => {
 					window.alert('Error updating. Please try again.')
