@@ -141,19 +141,27 @@ userController.doRegister = function(req, res) {
 		industry_description: req.body.industry_description,
 		judging_years: req.body.judging_years
 	})
-		.then(function() {
-			req.flash('success', 'Registration Successful');
-			res.redirect('/');
-		})
-		.catch((err) => {
-			// Push the processed errors to the flash handler
-			errorProcessor(err, req);
+	.then(function(user) {
+		delete user.password
 
-			return res.render('register', {
-				fData: newUser,
-				title : appConstants.APP_NAME + " - Register"
-			});
+		req.login(user, (err) => {
+			if (err) {
+				errorProcessor(err, req);
+			}
+
+			req.flash('success', 'Registration Successful!');
+			res.redirect('/')
+		})
+	})
+	.catch((err) => {
+		// Push the processed errors to the flash handler
+		errorProcessor(err, req);
+
+		return res.render('register', {
+			fData: newUser,
+			title : appConstants.APP_NAME + " - Register"
 		});
+	});
 };
 
 // Go to login page
