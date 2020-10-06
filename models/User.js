@@ -57,6 +57,14 @@ module.exports = (sequelize, DataTypes) => {
 		return bcrypt.compareSync(password, this.password);
 	};
 
+	User.prototype.validatePasswordAsync = function(password) {
+		return bcrypt.compare(password, this.password)
+	}
+
+	User.prototype.hashPassword = function(password) {
+		return bcrypt.hash(password, bcrypt.genSaltSync(10), null);
+	}
+
 	User.associate = function (models) {
 		// associations can be defined here
 		User.hasMany(models.Scoresheet, {as: 'scoresheets', foreignKey: 'UserID'});
