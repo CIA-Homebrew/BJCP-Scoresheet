@@ -258,12 +258,10 @@ userController.saveProfile = function(req,res) {
 	delete req.body.password
 	delete req.body.email
 
-	User.findByPk(req.user.id).then(user => {
-		return User.update( updatedParams , {
-			where: {
-				id: user.id
-			}
-		})
+	User.update( updatedParams , {
+		where: {
+			id: req.user.id
+		}
 	}).then((user) => {
 		console.log('Profile updated succesfully')
 		res.status(200).json(true)
