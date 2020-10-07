@@ -2,7 +2,5 @@
 node_modules/
 .vscode/
 .skele
-<<<<<<< Updated upstream
 *.sqlite3
-=======
->>>>>>> Stashed changes
+.env
