@@ -12,6 +12,9 @@ let debug = require('debug')('aha-scoresheet:app');
 
 let coreRouter = require('./routes/core');
 
+// Setup environmental variables
+require('dotenv').config()
+
 let app = express();
 
 // Sequelize middleware
