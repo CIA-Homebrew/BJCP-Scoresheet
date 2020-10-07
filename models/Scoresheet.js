@@ -309,7 +309,7 @@ module.exports = (sequelize, DataTypes) => {
 				this.setDataValue('scoresheet_submitted', !!value)
 			}*/
 		},
-		userId: {
+		user_id: {
 			type: DataTypes.UUID,
 			allowNull: true,
 		},
@@ -331,11 +331,13 @@ module.exports = (sequelize, DataTypes) => {
 		judge_pro_brewer_brewery: DataTypes.STRING,
 		judge_industry_description: DataTypes.STRING,
 		judge_judging_years: DataTypes.STRING,
-		flightKey: {
+		flight_key: {
 			type: DataTypes.UUID,
 			allowNull: true,
-		},
+		}
 	}, {
+		createdAt: 'created_at',
+		updatedAt: 'updated_at'
 	});
 
 	Scoresheet.associate = function (models) {

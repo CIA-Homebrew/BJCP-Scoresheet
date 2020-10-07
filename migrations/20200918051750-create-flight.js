@@ -19,18 +19,18 @@ module.exports = {
       date: {
         type: Sequelize.STRING
       },
-      createdAt: {
+      created_at: {
         allowNull: false,
         type: Sequelize.DATE
       },
-      updatedAt: {
+      updated_at: {
         allowNull: false,
         type: Sequelize.DATE
       }
     });
 
     await queryInterface.sequelize.transaction(t => {
-      queryInterface.addColumn('Scoresheets', 'flightKey', {
+      queryInterface.addColumn('Scoresheets', 'flight_key', {
         type: Sequelize.UUID,
 				references: {
 					model: {
@@ -48,7 +48,7 @@ module.exports = {
 
   down: async (queryInterface, Sequelize) => {
     await queryInterface.sequelize.transaction(t => {
-      queryInterface.removeColumn('Scoresheets', 'flightKey', {transaction: t})
+      queryInterface.removeColumn('Scoresheets', 'flight_key', {transaction: t})
     })
 
     await queryInterface.dropTable('Flights');

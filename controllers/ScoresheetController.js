@@ -17,12 +17,12 @@ let scoresheetController = {};
 scoresheetController.loadScoresheetList = function(req, res) {
 	Scoresheet.findAll({
 		where: {
-			userId : req.user.id
+			user_id : req.user.id
 		},
 	}).then(userScoresheets => {
 		flights = {}
 		userScoresheets.forEach(scoresheet => {
-			flights[scoresheet.flightKey] = {}
+			flights[scoresheet.flight_key] = {}
 		})
 
 		return Flight.findAll({
@@ -38,7 +38,7 @@ scoresheetController.loadScoresheetList = function(req, res) {
 		userFlights.forEach(flight => {
 			flightObject[flight.id] = {
 				...flight.get({plain:true}),
-				scoresheets: userScoresheets.filter(scoresheet => scoresheet.flightKey === flight.id).map(scoresheet => scoresheet.get({plain:true}))
+				scoresheets: userScoresheets.filter(scoresheet => scoresheet.flight_key === flight.id).map(scoresheet => scoresheet.get({plain:true}))
 			}
 		})
 
@@ -93,7 +93,7 @@ scoresheetController.initScoresheet = function(req, res) {
 		}).then(flight => {
 			Scoresheet.count({
 				where: {
-					flightKey: flight.id
+					flight_key: flight.id
 				}
 			}).then(numScoresheets => {
 				if (flight) {
@@ -161,7 +161,7 @@ scoresheetController.doScoresheetDataChange = function(req, res) {
 	});
 
 	// Associate this scoresheet to the user
-	ss.userId = req.user.id;
+	ss.user_id = req.user.id;
 
 	// Upsert the record
 	Scoresheet.upsert(
@@ -268,12 +268,12 @@ scoresheetController.generatePDF = function(req, res) {
 		return Promise.all([
 			User.findOne({
 				where: {
-					id: scoresheet.userId
+					id: scoresheet.user_id
 				}
 			}),
 			Flight.findOne({
 				where: {
-					id: scoresheet.flightKey
+					id: scoresheet.flight_key
 				}
 			}),
 		]).then(([user,flight]) => {

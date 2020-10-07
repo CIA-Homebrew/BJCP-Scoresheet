@@ -70,7 +70,7 @@ userController.home = function(req, res) {
 
 	const scoresheetPromise = Scoresheet.findAll({
 		where: {
-			userId : req.user.id
+			user_id : req.user.id
 		},
 	})
 
@@ -83,10 +83,10 @@ userController.home = function(req, res) {
 	Promise.all([scoresheetPromise, flightPromise]).then(([scoresheets, flights]) => {
 		const flightObject = {}
 
-		flights.forEach(flight => {
+		flights.forEach(flight => {		
 			flightObject[flight.id] = {
 				...flight.get({plain:true}),
-				scoresheets : scoresheets.filter(scoresheet => scoresheet.flightKey === flight.id).map(scoresheet => scoresheet.get({plain:true}))
+				scoresheets : scoresheets.filter(scoresheet => scoresheet.flight_key === flight.id).map(scoresheet => scoresheet.get({plain:true}))
 			}
 		})
 

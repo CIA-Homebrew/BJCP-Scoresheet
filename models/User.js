@@ -50,7 +50,9 @@ module.exports = (sequelize, DataTypes) => {
 			beforeCreate: (user, options) => {
 				user.password = bcrypt.hashSync(user.password, bcrypt.genSaltSync(10), null);
 			}
-		}
+		},
+		createdAt: 'created_at',
+		updatedAt: 'updated_at'
 	});
 
 	User.prototype.validatePassword = function(password) {
@@ -67,7 +69,7 @@ module.exports = (sequelize, DataTypes) => {
 
 	User.associate = function (models) {
 		// associations can be defined here
-		User.hasMany(models.Scoresheet, {as: 'scoresheets', foreignKey: 'UserID'});
+		User.hasMany(models.Scoresheet, {as: 'scoresheets', foreignKey: 'user_id'});
 	};
 
 	return User;

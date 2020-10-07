@@ -17,6 +17,8 @@ module.exports = (sequelize, DataTypes) => {
   }, {
     sequelize,
     modelName: 'Flight',
+		createdAt: 'created_at',
+    updatedAt: 'updated_at'
   });
 
   Flight.associate = function(models) {

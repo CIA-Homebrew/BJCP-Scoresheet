@@ -262,15 +262,15 @@ module.exports = {
 				type: Sequelize.BOOLEAN,
 				default: false
 			},
-			createdAt: {
+			created_at: {
 				allowNull: false,
 				type: Sequelize.DATE
 			},
-			updatedAt: {
+			updated_at: {
 				allowNull: false,
 				type: Sequelize.DATE
 			},
-			userId: {
+			user_id: {
 				type: Sequelize.UUID,
 				references: {
 					model: 'Users',

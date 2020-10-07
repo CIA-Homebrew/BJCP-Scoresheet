@@ -87,7 +87,7 @@ flightController.submitFlight = function(req, res) {
     }).then(flightData => {
         return Scoresheet.update(
             {submitted: true},
-            {where: {flightKey : flightData.id}}
+            {where: {flight_key : flightData.id}}
         ).then(scoresheets => {
             return flightData
         })
