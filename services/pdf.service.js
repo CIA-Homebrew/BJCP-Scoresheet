@@ -8,6 +8,7 @@ class PdfService {
             headless: true,
             args: [
                 '--no-sandbox',
+                '--disable-setuid-sandbox',
                 '--disable-translate',
                 '--disable-extensions',
                 '--disable-sync',
