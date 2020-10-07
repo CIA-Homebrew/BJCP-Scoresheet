@@ -10,6 +10,7 @@
 	},
 	"production": {
 		"use_env_variable":"DATABASE_URL",
+		"dialect": "postgres",
 		"pool": {
 			"max": 5,
 			"min": 0,

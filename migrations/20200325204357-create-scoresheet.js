@@ -38,26 +38,26 @@ module.exports = {
 				unique: true
 			},
 			flight_position: {
-				type: Sequelize.NUMBER,
+				type: Sequelize.INTEGER,
 				allowNull: true
 			},
 			flight_total: {
-				type: Sequelize.NUMBER,
+				type: Sequelize.INTEGER,
 				allowNull: true
 			},
 			mini_boss_advanced: {
 				type: Sequelize.BOOLEAN,
 				default: false
 			},
-			place: Sequelize.NUMBER,
-			consensus_score: Sequelize.NUMBER,
+			place: Sequelize.INTEGER,
+			consensus_score: Sequelize.FLOAT,
 			bottle_inspection_check: {
 				type: Sequelize.BOOLEAN,
 				default: false
 			},
 			bottle_inspection_comment: Sequelize.STRING,
 			aroma_score: {
-				type: Sequelize.NUMBER,
+				type: Sequelize.FLOAT,
 				default: 0
 			},
 			aroma_malt: Sequelize.STRING,
@@ -80,7 +80,7 @@ module.exports = {
 			aroma_fermentation_comment: Sequelize.STRING,
 			aroma_other_comment: Sequelize.STRING,
 			appearance_score: {
-				type: Sequelize.NUMBER,
+				type: Sequelize.FLOAT,
 				default: 0
 			},
 			appearance_color: Sequelize.STRING,
@@ -176,7 +176,7 @@ module.exports = {
 				default: false
 			},
 			flavor_score: {
-				type: Sequelize.NUMBER,
+				type: Sequelize.FLOAT,
 				default: 0
 			},
 			flavor_malt: Sequelize.STRING,
@@ -217,7 +217,7 @@ module.exports = {
 			flavor_finish_aftertaste_comment: Sequelize.STRING,
 			flavor_other_comment: Sequelize.STRING,
 			mouthfeel_score: {
-				type: Sequelize.NUMBER,
+				type: Sequelize.FLOAT,
 				default: 0
 			},
 			mouthfeel_body: Sequelize.STRING,
@@ -247,7 +247,7 @@ module.exports = {
 			},
 			mouthfeel_other_comment: Sequelize.STRING,
 			overall_score: {
-				type: Sequelize.NUMBER,
+				type: Sequelize.FLOAT,
 				default: 0
 			},
 			overall_class_example: Sequelize.STRING,
@@ -255,7 +255,7 @@ module.exports = {
 			overall_wonderful: Sequelize.STRING,
 			feedback_comment: Sequelize.STRING,
 			judge_total: {
-				type: Sequelize.NUMBER,
+				type: Sequelize.FLOAT,
 				default: 0
 			},
 			scoresheet_submitted: {

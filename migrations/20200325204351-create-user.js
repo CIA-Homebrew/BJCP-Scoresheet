@@ -39,7 +39,7 @@ module.exports = {
 			industry_description: Sequelize.STRING,
 			judging_years: Sequelize.STRING,
 			user_level: {
-				type: Sequelize.NUMBER,
+				type: Sequelize.INTEGER,
 				require: true,
 				default: 0
 			},
