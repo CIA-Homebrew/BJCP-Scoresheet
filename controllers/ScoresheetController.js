@@ -141,17 +141,7 @@ scoresheetController.doScoresheetDataChange = function(req, res) {
 	// strip the ajax property
 	delete req.body._ajax;
 
-	let ss;
-
-	// If the ID is empty or invalid then generate a new object with a new ID
-	if (req.body.id === "" || !validator.isUUID(req.body.id, 4)) {
-		ss = Scoresheet.build();
-	// If we have an ID build a new object using that existing ID
-	} else {
-		ss = Scoresheet.build({
-			id: req.body.id
-		});
-	}
+	const  ss = {};
 
 	/**
 	 * There may be a cleaner way of doing this but just for sanity only map the known keys
@@ -160,17 +150,15 @@ scoresheetController.doScoresheetDataChange = function(req, res) {
 		ss[key] = req.body[key];
 	});
 
+	// Filter an "empty string" or null ID
+	if (!ss.id || ss.id === '') {
+		delete ss.id
+	}
 	// Associate this scoresheet to the user
 	ss.user_id = req.user.id;
 
 	// Upsert the record
-	Scoresheet.upsert(
-		ss.dataValues,
-		{
-			where: {id: ss.dataValues.id},
-			validate: false
-		}
-	)
+	Scoresheet.upsert(ss)
 		.then((retData) => {
 			// associate the sheet to the user
 
@@ -184,75 +172,9 @@ scoresheetController.doScoresheetDataChange = function(req, res) {
 		})
 		.catch(err => {
 			debug(err);
+			console.log(err)
 			// Bad upsert send the error back to the AJAX caller
-			return res.send({update: false, id: null, error: err});
-		});
-};
-
-/**
- * Check if Scoresheet exists Post - This is an AJAX call
- * @param req
- * @param res
- * @returns boolean
- */
-scoresheetController.doCheckScoresheet = function(req, res) {
-	// Store the submitted data
-	let scoresheetBody = req.body;
-
-	// If the ID is empty or invalid then we have nothing to show
-	if (scoresheetBody.id === "" || validator.isUUID(scoresheetBody.id, 4)) {
-		return res.send(false);
-	}
-
-	// See if we have a sheet for this id to pull the data for
-	Scoresheet.count({
-		where: {
-			id: scoresheetBody.id
-		}
-	})
-		.then((count) => {
-			return res.send(count >= 1);
-		})
-		.catch(err => {
-			debug(err);
-			return res.send(false);
-		});
-};
-
-/**
- * Check if the data sent is valid in the required manners
- * @param req
- * @param res
- * @return boolean true if the validation passed ; false if it failed
- * TODO: Matt this was ported as is but the validation seems odd, could we not just validate based on a count query?
- */
-scoresheetController.doValidateScoresheet = function(req, res) {
-	// Store the submitted data
-	let scoresheetBody = req.body;
-
-	// Check if the entry number is used already or available
-	Scoresheet.findOne({
-		where: {
-			entry_number: scoresheetBody.entry_number		// findOne by entry_number
-		}
-	})
-		.then(sheet => {
-			if (!sheet) {
-				return res.send({entry_number: true});
-			} else {
-				if (sheet.length <= 0) {
-					return res.send({entry_number: true});
-				}
-
-				// If we have a fingerprint sent and it matches the entry number we allow a duplicate
-				if (scoresheetBody.id === sheet.id && scoresheetBody.entry_number === sheet.entry_number) {
-					return res.send({entry_number: true});
-				}
-			}
-		})
-		.catch(err => {
-			debug(err);
-			return res.send({entry_number: false});
+			return res.status(500).send({update: false, id: null, error: err});
 		});
 };
 
@@ -279,7 +201,7 @@ scoresheetController.generatePDF = function(req, res) {
 		]).then(([user,flight]) => {
 			return [scoresheet.get({plain:true}), user.get({plain:true}), flight.get({plain:true})]
 		})
-	}).then(async ([scoresheet, user]) => {
+	}).then(async ([scoresheet, user, flight]) => {
 		// These need to be STATIC and not relative! They also MUST be png files.
 		const static_image_paths = {
 			bjcp_logo: 'public/images/CANE-ISLAND-ALERS-LOGO_d400.png',
@@ -290,6 +212,7 @@ scoresheetController.generatePDF = function(req, res) {
 
 		pdfService.generateScoresheet('views/bjcp_modified.pug', {
 			scoresheet: scoresheet,
+			flight: flight,
 			judge: user,
 			images: static_image_paths
 		}).then(pdf => {

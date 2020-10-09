@@ -30,7 +30,11 @@ module.exports = {
 				type: Sequelize.STRING,
 				allowNull: true
 			},
-			special_ingredients: Sequelize.STRING,
+			special_ingredients_check: {
+				type: Sequelize.BOOLEAN,
+				default: false
+			},
+			special_ingredients: Sequelize.TEXT,
 			entry_number: {
 				type: Sequelize.STRING,
 				allowNull: true,
@@ -55,58 +59,58 @@ module.exports = {
 				type: Sequelize.BOOLEAN,
 				default: false
 			},
-			bottle_inspection_comment: Sequelize.STRING,
+			bottle_inspection_comment: Sequelize.TEXT,
 			aroma_score: {
 				type: Sequelize.FLOAT,
 				default: 0
 			},
-			aroma_malt: Sequelize.STRING,
+			aroma_malt: Sequelize.TEXT,
 			aroma_malt_inappropriate: {
 				type: Sequelize.BOOLEAN,
 				default: false
 			},
-			aroma_malt_comment: Sequelize.STRING,
-			aroma_hops: Sequelize.STRING,
+			aroma_malt_comment: Sequelize.TEXT,
+			aroma_hops: Sequelize.TEXT,
 			aroma_hops_inappropriate: {
 				type: Sequelize.BOOLEAN,
 				default: false
 			},
-			aroma_hops_comment: Sequelize.STRING,
-			aroma_fermentation: Sequelize.STRING,
+			aroma_hops_comment: Sequelize.TEXT,
+			aroma_fermentation: Sequelize.TEXT,
 			aroma_fermentation_inappropriate: {
 				type: Sequelize.BOOLEAN,
 				default: false
 			},
-			aroma_fermentation_comment: Sequelize.STRING,
-			aroma_other_comment: Sequelize.STRING,
+			aroma_fermentation_comment: Sequelize.TEXT,
+			aroma_other_comment: Sequelize.TEXT,
 			appearance_score: {
 				type: Sequelize.FLOAT,
 				default: 0
 			},
-			appearance_color: Sequelize.STRING,
+			appearance_color: Sequelize.TEXT,
 			appearance_color_inappropriate: {
 				type: Sequelize.BOOLEAN,
 				default: false
 			},
-			appearance_color_other: Sequelize.STRING,
-			appearance_clarity: Sequelize.STRING,
+			appearance_color_other: Sequelize.TEXT,
+			appearance_clarity: Sequelize.TEXT,
 			appearance_clarity_inappropriate: {
 				type: Sequelize.BOOLEAN,
 				default: false
 			},
-			appearance_head: Sequelize.STRING,
+			appearance_head: Sequelize.TEXT,
 			appearance_head_inappropriate: {
 				type: Sequelize.BOOLEAN,
 				default: false
 			},
-			appearance_head_other: Sequelize.STRING,
-			appearance_retention: Sequelize.STRING,
+			appearance_head_other: Sequelize.TEXT,
+			appearance_retention: Sequelize.TEXT,
 			appearance_retention_inappropriate: {
 				type: Sequelize.BOOLEAN,
 				default: false
 			},
-			appearance_other_comment: Sequelize.STRING,
-			appearance_texture_comment: Sequelize.STRING,
+			appearance_other_comment: Sequelize.TEXT,
+			appearance_texture_comment: Sequelize.TEXT,
 			descriptor_acetaldehyde: {
 				type: Sequelize.BOOLEAN,
 				default: false
@@ -179,81 +183,81 @@ module.exports = {
 				type: Sequelize.FLOAT,
 				default: 0
 			},
-			flavor_malt: Sequelize.STRING,
+			flavor_malt: Sequelize.TEXT,
 			flavor_malt_inappropriate: {
 				type: Sequelize.BOOLEAN,
 				default: false
 			},
-			flavor_malt_comment: Sequelize.STRING,
-			flavor_hops: Sequelize.STRING,
+			flavor_malt_comment: Sequelize.TEXT,
+			flavor_hops: Sequelize.TEXT,
 			flavor_hops_inappropriate: {
 				type: Sequelize.BOOLEAN,
 				default: false
 			},
-			flavor_hops_comment: Sequelize.STRING,
-			flavor_bitterness: Sequelize.STRING,
+			flavor_hops_comment: Sequelize.TEXT,
+			flavor_bitterness: Sequelize.TEXT,
 			flavor_bitterness_inappropriate: {
 				type: Sequelize.BOOLEAN,
 				default: false
 			},
-			flavor_bitterness_comment: Sequelize.STRING,
-			flavor_fermentation: Sequelize.STRING,
+			flavor_bitterness_comment: Sequelize.TEXT,
+			flavor_fermentation: Sequelize.TEXT,
 			flavor_fermentation_inappropriate: {
 				type: Sequelize.BOOLEAN,
 				default: false
 			},
-			flavor_fermentation_comment: Sequelize.STRING,
-			flavor_balance: Sequelize.STRING,
+			flavor_fermentation_comment: Sequelize.TEXT,
+			flavor_balance: Sequelize.TEXT,
 			flavor_balance_inappropriate: {
 				type: Sequelize.BOOLEAN,
 				default: false
 			},
-			flavor_balance_comment: Sequelize.STRING,
-			flavor_finish_aftertaste: Sequelize.STRING,
+			flavor_balance_comment: Sequelize.TEXT,
+			flavor_finish_aftertaste: Sequelize.TEXT,
 			flavor_finish_aftertaste_inappropriate: {
 				type: Sequelize.BOOLEAN,
 				default: false
 			},
-			flavor_finish_aftertaste_comment: Sequelize.STRING,
-			flavor_other_comment: Sequelize.STRING,
+			flavor_finish_aftertaste_comment: Sequelize.TEXT,
+			flavor_other_comment: Sequelize.TEXT,
 			mouthfeel_score: {
 				type: Sequelize.FLOAT,
 				default: 0
 			},
-			mouthfeel_body: Sequelize.STRING,
+			mouthfeel_body: Sequelize.TEXT,
 			mouthfeel_body_inappropriate: {
 				type: Sequelize.BOOLEAN,
 				default: false
 			},
-			mouthfeel_carbonation: Sequelize.STRING,
+			mouthfeel_carbonation: Sequelize.TEXT,
 			mouthfeel_carbonation_inappropriate: {
 				type: Sequelize.BOOLEAN,
 				default: false
 			},
-			mouthfeel_warmth: Sequelize.STRING,
+			mouthfeel_warmth: Sequelize.TEXT,
 			mouthfeel_warmth_inappropriate: {
 				type: Sequelize.BOOLEAN,
 				default: false
 			},
-			mouthfeel_creaminess: Sequelize.STRING,
+			mouthfeel_creaminess: Sequelize.TEXT,
 			mouthfeel_creaminess_inappropriate: {
 				type: Sequelize.BOOLEAN,
 				default: false
 			},
-			mouthfeel_astringency: Sequelize.STRING,
+			mouthfeel_astringency: Sequelize.TEXT,
 			mouthfeel_astringency_inappropriate: {
 				type: Sequelize.BOOLEAN,
 				default: false
 			},
-			mouthfeel_other_comment: Sequelize.STRING,
+			mouthfeel_other_comment: Sequelize.TEXT,
 			overall_score: {
 				type: Sequelize.FLOAT,
 				default: 0
 			},
-			overall_class_example: Sequelize.STRING,
-			overall_flawless: Sequelize.STRING,
-			overall_wonderful: Sequelize.STRING,
-			feedback_comment: Sequelize.STRING,
+			overall_class_example: Sequelize.TEXT,
+			overall_flawless: Sequelize.TEXT,
+			overall_wonderful: Sequelize.TEXT,
+			feedback_comment: Sequelize.TEXT,
 			judge_total: {
 				type: Sequelize.FLOAT,
 				default: 0
@@ -281,23 +285,23 @@ module.exports = {
 				allowNull: true
 			},
 			judge_id: {
-				type: Sequelize.STRING,
+				type: Sequelize.TEXT,
 				allowNull: true
 			},
 			judge_name: {
-				type: Sequelize.STRING,
+				type: Sequelize.TEXT,
 				allowNull: true
 			},
 			judge_email: {
-				type: Sequelize.STRING,
+				type: Sequelize.TEXT,
 				allowNull: true
 			},
-			judge_bjcp_id: Sequelize.STRING,
-			judge_bjcp_rank: Sequelize.STRING,
-			judge_cicerone_rank: Sequelize.STRING,
-			judge_pro_brewer_brewery: Sequelize.STRING,
-			judge_industry_description: Sequelize.STRING,
-			judge_judging_years: Sequelize.STRING,
+			judge_bjcp_id: Sequelize.TEXT,
+			judge_bjcp_rank: Sequelize.TEXT,
+			judge_cicerone_rank: Sequelize.TEXT,
+			judge_pro_brewer_brewery: Sequelize.TEXT,
+			judge_industry_description: Sequelize.TEXT,
+			judge_judging_years: Sequelize.TEXT,
 		});
 	},
 

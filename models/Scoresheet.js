@@ -36,62 +36,36 @@ module.exports = (sequelize, DataTypes) => {
 			default: DataTypes.NOW
 		},
 		session_location: {
-			type: DataTypes.STRING,
-			allowNull: true,		// We do this to utilize our own validation routine
-			validate: {
-				isEmpty: stringEmpty(this.session_location, "The session location is required.")
-			}
+			type: DataTypes.STRING
 		},
 		category: {
-			type: DataTypes.STRING,
-			allowNull: true,		// We do this to utilize our own validation routine
-			validate: {
-				isEmpty: stringEmpty(this.category, "The category is required.")
-			}
+			type: DataTypes.STRING
 		},
 		sub: {
-			type: DataTypes.STRING,
-			allowNull: true,		// We do this to utilize our own validation routine
-			validate: {
-				isEmpty: stringEmpty(this.sub, "The sub is required.")
-			}
+			type: DataTypes.STRING
 		},
 		subcategory: {
-			type: DataTypes.STRING,
-			allowNull: true,		// We do this to utilize our own validation routine
-			validate: {
-				isEmpty: stringEmpty(this.subcategory, "The sub-category is required.")
-			}
+			type: DataTypes.STRING
+		},
+		special_ingredients_check: {
+			type: DataTypes.BOOLEAN,
+			default: false
 		},
 		special_ingredients: DataTypes.STRING,
 		entry_number: {
-			type: DataTypes.STRING,
-			allowNull: true,		// We do this to utilize our own validation routine
-			validate: {
-				isEmpty: stringEmpty(this.entry_number, "The entry number is required.")
-			},
-			index: true,
-			unique: true
+			type: DataTypes.STRING
 		},
 		flight_position: {
-			type: DataTypes.NUMBER,
-			allowNull: true,		// We do this to utilize our own validation routine
-			validate: {
-				isEmpty: stringEmpty(this.flight_position, "The flight position is required.")
-			}
+			type: DataTypes.NUMBER
 		},
 		flight_total: {
-			type: DataTypes.NUMBER,
-			allowNull: true,		// We do this to utilize our own validation routine
-			validate: {
-				isEmpty: stringEmpty(this.flight_total, "The flight total is required.")
-			}
+			type: DataTypes.NUMBER
 		},
 		mini_boss_advanced: {
 			type: DataTypes.BOOLEAN,
 			default: false
 		},
-		place: DataTypes.NUMBER, /** This property doesn't look used in the sheet???? **/
+		place: DataTypes.NUMBER,
 		consensus_score: DataTypes.NUMBER,
 		bottle_inspection_check: {
 			type: DataTypes.BOOLEAN,
@@ -300,14 +274,9 @@ module.exports = (sequelize, DataTypes) => {
 			type: DataTypes.NUMBER,
 			default: 0
 		},
-		//Set to true after confirming submit scoresheet
 		scoresheet_submitted: {
 			type: DataTypes.BOOLEAN,
 			default: false
-			/*,
-			set(value) {
-				this.setDataValue('scoresheet_submitted', !!value)
-			}*/
 		},
 		user_id: {
 			type: DataTypes.UUID,
