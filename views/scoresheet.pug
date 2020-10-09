@@ -21,7 +21,7 @@ block content
 										p.small.mb-0.text-center Place
 									.card-body.text-dark.px-3.py-1.text-center
 										select.form-control(id="place" name="place")
-											option(value=null selected) Select...
+											option(value=-1 selected) Select...
 											option(value=0) Round Advance
 											option(value=1) 1st
 											option(value=2) 2nd
@@ -31,8 +31,8 @@ block content
 										p.small.mb-0.text-center Mini BOS
 									.card-body.text-dark.px-0.py-1.text-center
 										.btn-group-toggle(data-toggle='buttons')
-											label.btn.btn-outline-success.btn-sm Advance
-												input(type='checkbox'  autocomplete="off" id='mini_boss_advanced' name='mini_boss_advanced')
+											label.btn.btn-outline-success.btn-sm(class=(Boolean(scoresheet ? scoresheet.mini_boss_advanced : false) ? "active" : "")) Advance
+												input(type='checkbox' autocomplete="off" id='mini_boss_advanced' name='mini_boss_advanced')
 								.card.border-dark.mb-3.mx-1
 									.card-header.px-0.py-0
 										p.small.mb-0.text-center Consensus
@@ -71,7 +71,7 @@ block content
 									.form-group.col-sm-2.col-form-label Judge
 										label(for='judge_name')
 									.form-group.col-sm-4
-										input.form-control(type='text' id='judge_name' value=user.firstname + ' ' + user.lastname readonly)
+										input.form-control(type='text' id='judge_name' value=user.firstname + ' ' + user.lastname disabled)
 									.form-group.col-sm-1.col-form-label BJCP ID
 										label(for='bjcp_id')
 									.form-group.col-sm-2
@@ -88,7 +88,7 @@ block content
 									.form-group.col-sm-2.col-form-label Session Location
 										label(for='session_location')
 									.form-group.col-sm-4
-										input.form-control(type='text' id='session_location' name='session_location' value=session_location)
+										input.form-control(type='text' id='session_location' name='session_location' value=session_location disabled)
 
 							.form-group
 								h4 Beer Information
@@ -126,8 +126,8 @@ block content
 								.form-row.py-1
 									.form-group.col-3.col-form-label
 										.form-check
-											input.form-check-input(type='checkbox'  id='special_ingredients_select' name='special_ingredients_select')
-											label.form-check-label(for='special_ingredients_select') Special Ingredients
+											input.form-check-input(type='checkbox'  id='special_ingredients_check' name='special_ingredients_check')
+											label.form-check-label(for='special_ingredients_check') Special Ingredients
 									.form-group.col-9
 										input.form-control(type='text' id='special_ingredients' name='special_ingredients' placeholder='List Special Ingredients')
 							.form-group
@@ -840,6 +840,8 @@ block content
 							field.value = scoresheet[scoresheetField].slice(0, 10);
 						} else if (field.hasAttribute('data-slider-ticks')) {
 							window[field.id].setValue(scoresheet[scoresheetField])
+						} else if (field.id === "judge_name" || field.id === "bjcp_id" || field.id === "bjcp_rank") {
+
 						} else {
 							field.value = scoresheet[scoresheetField];
 						}
@@ -852,14 +854,6 @@ block content
 				}
 
 				recalculate_score();
-			}
-
-			if (fp !== "") {
-				$.post('/scoresheet/check', {id: $('form#newScoresheet input#id').val()}, function (data) {
-					if (data) {
-						//- console.log(data);
-					}
-				});
 			}
 
 			//- Prevent the form from doing a general submit

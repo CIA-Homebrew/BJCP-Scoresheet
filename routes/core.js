@@ -40,9 +40,6 @@ router.post('/profile/password', authMiddle.isAuthenticated, authController.upda
 
 //* SCORESHEET FUNCTIONS *//
 
-//route for scoresheet list load
-router.get('/scoresheet/load', authMiddle.isAuthenticated, scoresheetController.loadScoresheetList);
-
 //route for scoresheet individual or new load
 router.get('/scoresheet/edit/', authMiddle.isAuthenticated, scoresheetController.initScoresheet);
 
@@ -54,12 +51,6 @@ router.post('/scoresheet/update/', authMiddle.isAuthenticated, scoresheetControl
 
 //route for PDF Generate
 router.get('/scoresheet/pdf/:scoresheetId', authMiddle.isAuthenticated, scoresheetController.generatePDF);
-
-//route for check scoresheet post
-router.post('/scoresheet/check', authMiddle.isAuthenticated, scoresheetController.doCheckScoresheet);
-
-//route for validate scoresheet post
-router.post('/scoresheet/validate', authMiddle.isAuthenticated, scoresheetController.doValidateScoresheet);
 
 //* ADMIN FUNCTIONS *//
 router.get('/admin', authMiddle.isAdmin, adminController.controlPanel);
