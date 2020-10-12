@@ -1,6 +1,24 @@
 const User = require('../models').User;
 const Flight = require('../models').Flight;
 const Scoresheet = require('../models').Scoresheet;
+const errorConstants = require("../helpers/errorConstants");
+
+function jsonErrorProcessor(err, res) {
+	if (errorConstants[err]) {
+		res.status(400).json({
+			errors: [
+				{
+					code: err,
+					message: errorConstants[err]
+				}
+			]
+		})
+	} else {
+		debug(err)
+		console.log(err)
+		jsonErrorProcessor(err, res)
+	}
+}
 
 const flightController = {}
 
@@ -16,7 +34,7 @@ flightController.getFlightByName = function(req,res) {
         const flightObject = flight.get({plain:true})
         res.json(flightObject)
     }).catch(err => {
-        res.status(500)
+        jsonErrorProcessor(err, res)
         console.log(err)
     })
 }
@@ -33,7 +51,7 @@ flightController.getFlightById = function(req, res) {
         const flightObject = flight.get({plain:true})
         res.json(flightObject)
     }).catch(err => {
-        res.status(500)
+        jsonErrorProcessor(err, res)
         console.log(err)
     })
 }
@@ -49,7 +67,7 @@ flightController.addFlight = function(req, res) {
     Flight.create(newFlightParams).then(newFlight => {
         res.json(newFlight)
     }).catch(err => {
-        res.status(500)
+        jsonErrorProcessor(err, res)
         console.log(err)
     })
 }
@@ -71,7 +89,7 @@ flightController.editFlight = function(req, res) {
     }).then(newFlight => {
         res.json(newFlight)
     }).catch(err => {
-        res.status(500)
+        jsonErrorProcessor(err, res)
         console.log(err)
     })
 }
@@ -79,23 +97,29 @@ flightController.editFlight = function(req, res) {
 flightController.submitFlight = function(req, res) {
     const flightId = req.body.flightId
 
-    Flight.update({submitted: true}, {
-        where: {
-            id: flightId,
-            created_by: req.user.id
+    return Scoresheet.update(
+        {scoresheet_submitted: true},
+        {
+            where: {flight_key : flightId},
+            returning: true
         }
-    }).then(flightData => {
-        return Scoresheet.update(
-            {submitted: true},
-            {where: {flight_key : flightData.id}}
-        ).then(scoresheets => {
-            return flightData
+    ).then(scoresheets => {
+        if (scoresheets[1] === 0 || scoresheets[1].length === 0) {
+            return Promise.reject("INVALID_FLIGHT_EMPTY")
+        }
+
+        return Flight.update({submitted: true}, {
+            where: {
+                id: flightId,
+                created_by: req.user.id
+            }
         })
     })
-    .then(flightData => {
-        res.json(flightData)
-    }).catch(err => {
-        res.status(500)
+    .then(flightId => {
+        res.json(flightId)
+    })
+    .catch(err => {
+        jsonErrorProcessor(err, res)
         console.log(err)
     })
 }
@@ -111,7 +135,7 @@ flightController.deleteFlight = function(req, res) {
     }).then(() => {
         res.status(200)
     }).catch(err => {
-        res.status(500)
+        jsonErrorProcessor(err, res)
         console.log(err)
     })
 }
