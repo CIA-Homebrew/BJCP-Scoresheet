@@ -50,4 +50,15 @@ body {
 .list-group input[type="radio"]:checked + .list-group-item:before {
   color: inherit;
 }
+.link-style {
+  color: #428BCA !important;
+  text-decoration: none !important;
+  background-color: transparent;
+  -webkit-text-decoration-skip: objects; 
+}
+.link-style:hover, .link-style:focus {
+  color: #2A6496 !important;
+  text-decoration: underline !important;
+  cursor: pointer;
+}
 /* Admin page fixes */
