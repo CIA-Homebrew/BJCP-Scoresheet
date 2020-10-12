@@ -669,25 +669,25 @@ block content
 
 			if (aroma > 12 || aroma < 0) {
 				aroma = aroma > 12 ? 12 : 0
-				$('#aroma_score').val(aroma)
 			}
 			if (appearance > 3 || appearance < 0) {
 				appearance = appearance > 3 ? 3 : 0
-				$('#appearance_score').val(appearance)
 			}
 			if (flavor > 20 || flavor < 0) {
 				flavor = flavor > 20 ? 20 : 0
-				$('#flavor_score').val(flavor)
 			}
 			if (mouthfeel > 5 || mouthfeel < 0) {
 				mouthfeel = mouthfeel > 5 ? 5 : 0
-				$('#mouthfeel_score').val(mouthfeel)
 			}
 			if (summary > 10 || summary < 0) {
 				summary = summary > 10 ? 10 : 0
-				$('#overall_score').val(summary)
 			}
 
+			$('#aroma_score').val(Math.round(aroma))
+			$('#appearance_score').val(Math.round(appearance))
+			$('#flavor_score').val(Math.round(flavor))
+			$('#mouthfeel_score').val(Math.round(mouthfeel))
+			$('#overall_score').val(Math.round(summary))
 
 			document.getElementById('judge_total').innerText = Number(aroma) + Number(appearance) + Number(flavor) + Number(mouthfeel) + Number(summary);
 		}
