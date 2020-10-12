@@ -766,9 +766,10 @@ block content
 						const keySplit = key.split('_')
 						const keyType = keySplit.pop()
 
-						if (keyType === 'inappropriate' && fDataObject[key] === ) {
-							inappropriateComments.push({'inappropriate ' + keySplit.reverse().join(' ')})
-						}
+						//- // Also broken. See below
+						//- if (keyType === 'inappropriate') {
+						//- 	inappropriateComments.push({'inappropriate ' + keySplit.reverse().join(' ')})
+						//- }
 
 						if (keyType === 'score' && fDataObject[key] == 0) {
 							zeroValueScoreSections.push(keySplit[0])
