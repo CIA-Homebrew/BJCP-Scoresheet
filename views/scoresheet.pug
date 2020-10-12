@@ -189,7 +189,7 @@ block content
 											.card-header.py-1
 												p.small.mb-0.text-center Aroma Score
 											.card-body.text-dark.px-0.py-0.text-center
-												input.form-control.form-control-lg.text-center.mb-0(type='number' id='aroma_score' name='aroma_score' value='0' min='0' max='12' onchange='recalculate_score()')
+												input.form-control.form-control-lg.text-center.mb-0(type='number' id='aroma_score' name='aroma_score' value=0 min=0 max=12 onchange='recalculate_score()')
 												p.small.d-flex.align-items-end.flex-row-reverse.my-0.pb-0 /12
 						div(class='tab-pane' id='appearance' role='tabpanel' aria-labelledby='appearance-tab')
 							.form-group
@@ -661,11 +661,34 @@ block content
 
 		//- Recalculate total score
 		function recalculate_score() {
-			var aroma = document.getElementById('aroma_score').value
-			var appearance = document.getElementById('appearance_score').value
-			var flavor = document.getElementById('flavor_score').value
-			var mouthfeel = document.getElementById('mouthfeel_score').value
-			var summary = document.getElementById('overall_score').value
+			let aroma = document.getElementById('aroma_score').value
+			let appearance = document.getElementById('appearance_score').value
+			let flavor = document.getElementById('flavor_score').value
+			let mouthfeel = document.getElementById('mouthfeel_score').value
+			let summary = document.getElementById('overall_score').value
+
+			if (aroma > 12 || aroma < 0) {
+				aroma = aroma > 12 ? 12 : 0
+				$('#aroma_score').val(aroma)
+			}
+			if (appearance > 3 || appearance < 0) {
+				appearance = appearance > 3 ? 3 : 0
+				$('#appearance_score').val(appearance)
+			}
+			if (flavor > 20 || flavor < 0) {
+				flavor = flavor > 20 ? 20 : 0
+				$('#flavor_score').val(flavor)
+			}
+			if (mouthfeel > 5 || mouthfeel < 0) {
+				mouthfeel = mouthfeel > 5 ? 5 : 0
+				$('#mouthfeel_score').val(mouthfeel)
+			}
+			if (summary > 10 || summary < 0) {
+				summary = summary > 10 ? 10 : 0
+				$('#overall_score').val(summary)
+			}
+
+
 			document.getElementById('judge_total').innerText = Number(aroma) + Number(appearance) + Number(flavor) + Number(mouthfeel) + Number(summary);
 		}
 
@@ -743,8 +766,8 @@ block content
 						const keySplit = key.split('_')
 						const keyType = keySplit.pop()
 
-						if (keyType === 'inappropriate') {
-							inappropriateComments.push('inappropriate ' + keySplit.reverse().join(' '))
+						if (keyType === 'inappropriate' && fDataObject[key] === ) {
+							inappropriateComments.push({'inappropriate ' + keySplit.reverse().join(' ')})
 						}
 
 						if (keyType === 'score' && fDataObject[key] == 0) {
@@ -761,18 +784,19 @@ block content
 						}
 					})
 
-					if (inappropriateComments.length) {
-						// Update the slider for "To Style" based on number of inappropriate checks
-						const updatedValue = inappropriateComments.length <= 10 ? 50 - inappropriateComments.length*5 : 0
-						overall_class_example.setValue(updatedValue)
+					//- // This is broken - it does not allow the user to manually edit the slider or the field (changes it back on next update call). Take it out for now.
+					//- if (inappropriateComments.length) {
+					//- 	// Update the slider for "To Style" based on number of inappropriate checks
+					//- 	const updatedValue = inappropriateComments.length <= 10 ? 50 - inappropriateComments.length*5 : 0
+					//- 	overall_class_example.setValue(updatedValue)
 
-						let stringInappropriateComments = inappropriateComments.join(', ').charAt(0).toUpperCase() + inappropriateComments.join(', ').slice(1)
+					//- 	let stringInappropriateComments = inappropriateComments.join(', ').charAt(0).toUpperCase() + inappropriateComments.join(', ').slice(1)
 
-						if (currentFeedbackComment.length > 1) {
-							stringInappropriateComments = currentFeedbackComment[0] + '—\n' + stringInappropriateComments
-						} 
-						$('#feedback_comment').val(stringInappropriateComments)
-					}
+					//- 	if (currentFeedbackComment.length > 1) {
+					//- 		stringInappropriateComments = currentFeedbackComment[0] + '—\n' + stringInappropriateComments
+					//- 	} 
+					//- 	$('#feedback_comment').val(stringInappropriateComments)
+					//- }
 
 					if (zeroValueScoreSections.length) {
 						// Check for zero valued section scores and add them to submit confirmation modal
