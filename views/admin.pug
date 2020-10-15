@@ -15,6 +15,8 @@ block content
                         a(class='nav-link px-2 active' data-toggle="tab" href='#scoresheets' role="tab" aria-controls="scoresheets" aria-selected="false") Scoresheets
                     li(class='nav-item')
                         a(class='nav-link px-2' data-toggle="tab" href='#judges' role="tab" aria-controls="judges" aria-selected="false" ) Judges
+                    li(class='nav-item')
+                        a(class='nav-link px-2' data-toggle="tab" href='#flights' role="tab" aria-controls="flights" aria-selected="false" ) Flights
             div.card-body
                 div.tab-content
                     div(class='tab-pane' id='system' role='tabpanel' aria-labelledby='system-tab') Coming Soon!
@@ -24,35 +26,84 @@ block content
                             table.comp_entry_list.table.table-sm.table-striped.table-bordered.table-hover
                                 thead.thead-dark
                                     tr
-                                        th(scope='col') Entry #
-                                        th(scope='col') Cat
-                                        th(scope='col') Sub-Cat
-                                        th(scope='col') Mini BOS
+                                        th(scope='col' data-key="entry_number") Entry #
+                                        th(scope='col' data-key="category,sub") Cat
+                                        th(scope='col' data-key="subcategory") Sub-Cat
+                                        th(scope='col' data-key="mini_boss_advanced") Mini BOS
                                 tbody
-                                    if (sheets)
-                                        each sheet in sheets
-                                            if (sheet.entry_number)
-                                                tr
-                                                    th(scope='row') #{sheet.entry_number}
-                                                    td #{sheet.category}#{sheet.sub}
-                                                    td #{sheet.subcategory}
-                                                    td #{sheet.mini_boss_advanced}
-
                     div(class='tab-pane' id='judges' role='tabpane3' aria-labelledby='judges-tab')
                         .container-fluid
                             table.comp_judges_list.table.table-sm.table-striped.table-bordered.table-hover
                                 thead.thead-dark
                                     tr
-                                        th(scope='col') Email
-                                        th(scope='col') First Name
-                                        th(scope='col') Last Name
+                                        th(scope='col' data-key="email") Email
+                                        th(scope='col' data-key="firstname") First Name
+                                        th(scope='col' data-key="lastname") Last Name
                                 tbody
-                                    if (judges)
-                                        each judge in judges
-                                            tr
-                                                td #{judge.email}
-                                                td #{judge.firstname}
-                                                td #{judge.lastname}
+                    div(class='tab-pane' id='flights' role='tabpane4' aria-labelledby='flight-tab')
+                        .container-fluid
+                            table.comp_flights_list.table.table-sm.table-striped.table-bordered.table-hover
+                                thead.thead-dark
+                                    tr
+                                        th(scope='col' data-key="flight_id") FlightID
+                                tbody
+
+    .modal.fade(id='flightDataModal' tabindex='-1' role="dialog" aria-labelledby="flightDataModalLabel" aria-hidden="true")
+        .modal-dialog.modal-lg
+            .modal-content
+                .modal-header 
+                    h5 Flight Information
+                .modal-body
+                    .form-group
+                        .row
+                            .col
+                                label(for="flightModalName") Flight ID
+                                input.form-control(type="text" id="flightModalName" placeholder="6 character flight ID found on the flight sheet")
+                            .col
+                                label(for="flightModalLocation") Judging Location
+                                input.form-control(type="text" id="flightModalLocation" placeholder="Brewery, Local Homebrew Shop, Home, etc.")
+                    .form-group
+                        .row
+                            .col
+                                label(for="flightModalDate") Session Date
+                                input.form-control(type="date" id="flightModalDate")
+                            .col
+                                label(for="flightModalUser") Judge
+                                select.form-control(type="text" id="flightModalUser")
+                    .form-group
+                        .row
+                            .col
+                                .form-check
+                                    input.form-check-input(id="flighModalSubmitted" type="checkbox")
+                                    .form-check.label(for="flighModalSubmitted") Flight Submitted
+                    .table-responsive
+                        table.table
+                            thead
+                                th(scope="col") Entry #
+                                th(scope="col") Category
+                                th.text-center(scope="col") Judge Score
+                                th.text-center(scope="col") Consensus Score
+                                th.text-center(scope="col") Place / Advance
+                                th.text-center(scope="col") BOS
+                                th.text-center(scope="col") PDF
+                            tbody#flightModalEntries
+                .modal-footer
+                    button(type="button" class="btn btn-secondary" data-dismiss='modal') Cancel
+                    button(type='button' class='btn btn-primary' onclick="updateFlightData()") Update Flight
+    .modal.fade(id='scoresheetDataModal' tabindex='-1' role="dialog" aria-labelledby="scoresheetDataModalLabel" aria-hidden="true")
+        .modal-dialog.modal-lg
+            .modal-content
+                .modal-header 
+                    h5 Scoresheet Information
+                .modal-body
+                    p(id="scoresheetModalId")
+    .modal.fade(id='userDataModal' tabindex='-1' role="dialog" aria-labelledby="userDataModalLabel" aria-hidden="true")
+        .modal-dialog.modal-lg
+            .modal-content
+                .modal-header 
+                    h5 User Information
+                .modal-body
+                    p(id="userModalId")
 
     script(src='https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js')
     script(src='https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap4.min.js')

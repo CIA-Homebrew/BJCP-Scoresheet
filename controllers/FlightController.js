@@ -78,13 +78,12 @@ flightController.editFlight = function(req, res) {
         flight_id: req.body.flightName,
         location: req.body.flightLocation,
         date: req.body.flightDate,
-        created_by: req.user.id
+        created_by: req.body.createdBy || req.user.id
     }
 
-    Flight.upsert(updateFlightParams, {
+    Flight.update(updateFlightParams, {
         where: {
             id: flightId,
-            created_by: req.user.id
         }
     }).then(newFlight => {
         res.json(newFlight)

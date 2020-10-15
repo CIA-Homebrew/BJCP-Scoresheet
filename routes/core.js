@@ -54,6 +54,7 @@ router.get('/scoresheet/pdf/:scoresheetId', authMiddle.isAuthenticated, scoreshe
 
 //* ADMIN FUNCTIONS *//
 router.get('/admin', authMiddle.isAdmin, adminController.controlPanel);
+router.get('/admin/alldata', authMiddle.isAdmin, adminController.getAllData)
 
 //* FLIGHT FUNCTIONS *//
 router.post('/flight/add', authMiddle.isAuthenticated, flightController.addFlight)
