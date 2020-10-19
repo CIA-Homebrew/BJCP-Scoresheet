@@ -50,4 +50,17 @@ body {
 .list-group input[type="radio"]:checked + .list-group-item:before {
   color: inherit;
 }
-/* Admin page fixes */
+.link-style {
+  color: #428bca !important;
+  text-decoration: none;
+}
+.link-style:hover,
+.link-style:focus {
+  color: #2a6496 !important;
+  text-decoration: underline;
+  cursor: pointer;
+}
+.overflow-y-scroll {
+  overflow-y: auto;
+}
+/* NOTE! MAKE SURE TO EDIT IN .styl FILE AND NOT .css FILE! */

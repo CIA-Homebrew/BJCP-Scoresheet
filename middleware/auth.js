@@ -13,9 +13,9 @@ authMiddleware.isAuthenticated = function (req, res, next) {
 
 authMiddleware.isAdmin = function (req, res, next) {
 	if (req.user) {
-		// Anyone greater then user is an admin, however there are levels above that as well
-		if (req.user.user_level >= appConstants.USER_LEVEL) {
-			return next();
+		// Anyone with a non-null user_level is an admin, however there are levels above that as well
+		if (req.user.user_level) {
+			return next()
 		}
 		// Not an admin send them home
 		req.flash('danger', 'Access denied!');
