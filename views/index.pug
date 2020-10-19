@@ -49,7 +49,7 @@ block content
 																each scoresheet in flight.scoresheets
 																	tr
 																		td(scope="row") #{scoresheet.entry_number}
-																		td #{scoresheet.category + scoresheet.sub} #{scoresheet.subcategory}
+																		td #{scoresheet.category + scoresheet.sub} - #{scoresheet.subcategory}
 																		td.text-center
 																			input.form-control.text-center(type="number" value=scoresheet.judge_total disabled)
 																		td.text-center
@@ -100,7 +100,7 @@ block content
 														each scoresheet in flight.scoresheets
 															tr
 																td(scope="row") #{scoresheet.entry_number}
-																td #{scoresheet.category + scoresheet.sub} #{scoresheet.subcategory}
+																td #{scoresheet.category + scoresheet.sub} - #{scoresheet.subcategory}
 																td.text-center
 																	input.form-control.text-center(type="number" value=scoresheet.judge_total disabled)
 																td.text-center

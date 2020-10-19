@@ -115,6 +115,11 @@ userController.doRegister = function(req, res) {
 	let passwd = null;
 	if (req.body.password.length > 0 && req.body.passwordC.length > 0 && req.body.password === req.body.passwordC) {
 		passwd = req.body.password;
+	} else {
+		req.flash('danger', 'Password do not match. Please try again.')
+		res.render('register', {
+			title : appConstants.APP_NAME + " - Register"
+		})
 	}
 
 	let newUser = User.build({
@@ -263,18 +268,41 @@ userController.updatePassword = function(req,res) {
 
 userController.saveProfile = function(req,res) {
 	const updatedParams = req.body
+	if (!req.user.user_level) {
+		delete req.body.id
+	}
+
 	delete req.body.password
 	delete req.body.email
 
 	User.update( updatedParams , {
 		where: {
-			id: req.user.id
+			id: req.body.id || req.user.id
 		}
 	}).then((user) => {
 		console.log('Profile updated succesfully')
 		res.status(200).json(true)
 	}).catch(err => {
-		console.log(err)
+		jsonErrorProcessor(err, res)
+	})
+}
+
+userController.resetPassword = async function(req,res) {
+	const resetUserId = req.body.resetUserId
+	const resetPassword = Math.random().toString(36).slice(2)
+	const hashedResetPassword = await User.prototype.hashPassword(resetPassword)
+
+	User.update( {password: hashedResetPassword}, {
+		where: {
+			id: resetUserId
+		}
+	}).then(user => {
+		console.log(`Password reset: ${resetPassword}`)
+		res.status(200).json({
+			user: user,
+			updatedPassword: resetPassword
+		})
+	}).catch(err => {
 		jsonErrorProcessor(err, res)
 	})
 }

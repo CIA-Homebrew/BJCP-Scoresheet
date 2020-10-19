@@ -14,7 +14,6 @@ function jsonErrorProcessor(err, res) {
 			]
 		})
 	} else {
-		debug(err)
 		console.log(err)
 		jsonErrorProcessor(err, res)
 	}
@@ -68,7 +67,6 @@ flightController.addFlight = function(req, res) {
         res.json(newFlight)
     }).catch(err => {
         jsonErrorProcessor(err, res)
-        console.log(err)
     })
 }
 
@@ -78,19 +76,34 @@ flightController.editFlight = function(req, res) {
         flight_id: req.body.flightName,
         location: req.body.flightLocation,
         date: req.body.flightDate,
-        created_by: req.user.id
+        created_by: req.body.createdBy || req.user.id,
+        submitted: req.user.user_level >= 900 ? req.body.submitted : undefined
     }
 
-    Flight.upsert(updateFlightParams, {
+    Flight.update(updateFlightParams, {
         where: {
             id: flightId,
-            created_by: req.user.id
+        }
+    }).then(newFlight => {
+        if (updateFlightParams.submitted !== undefined) {
+            return Scoresheet.update(
+                {scoresheet_submitted: updateFlightParams.submitted},
+                {
+                    where: {flight_key : flightId},
+                    returning: true
+                }
+            ).then(() => {
+                return newFlight
+            }).catch(err => {
+                jsonErrorProcessor(err, res)
+            })
+        } else {
+            return Promise.resolve(newFlight)
         }
     }).then(newFlight => {
         res.json(newFlight)
     }).catch(err => {
         jsonErrorProcessor(err, res)
-        console.log(err)
     })
 }
 

@@ -1,4 +1,5 @@
 module.exports = Object.freeze({
+    NOT_AUTHORIZED: "User not authorized to access function",
     PASSWORD_FAIL_CRITERIA : "Password does not meet the required security criteria",
     INVALID_PASSWORD : "Submitted password did not match existing recorded password",
     EMAIL_FAIL_CRITERIA : "Invalid email address format",

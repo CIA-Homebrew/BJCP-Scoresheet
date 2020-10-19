@@ -25,7 +25,7 @@ class PdfService {
         this.initialized = true
     }
 
-    async generateScoresheet(template, data) {
+    async generateScoresheet(template, data, preview) {
         if (!this.initialized) {
             await this.browser
         }
@@ -42,6 +42,10 @@ class PdfService {
             ...data,
             images: base64images
         })
+
+        if (preview) {
+            return scoresheetHtml
+        }
 
 		const page = await this.browser.newPage()
 		await page.setContent(scoresheetHtml)

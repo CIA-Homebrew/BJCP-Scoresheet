@@ -51,9 +51,12 @@ router.post('/scoresheet/update/', authMiddle.isAuthenticated, scoresheetControl
 
 //route for PDF Generate
 router.get('/scoresheet/pdf/:scoresheetId', authMiddle.isAuthenticated, scoresheetController.generatePDF);
+router.post('/scoresheet/previewpdf', authMiddle.isAdmin, scoresheetController.previewPDF);
 
 //* ADMIN FUNCTIONS *//
 router.get('/admin', authMiddle.isAdmin, adminController.controlPanel);
+router.get('/admin/alldata', authMiddle.isAdmin, adminController.getAllData)
+router.post('/admin/resetpassword', authMiddle.isAdmin, authController.resetPassword)
 
 //* FLIGHT FUNCTIONS *//
 router.post('/flight/add', authMiddle.isAuthenticated, flightController.addFlight)

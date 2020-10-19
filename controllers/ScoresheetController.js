@@ -1,5 +1,7 @@
 let Scoresheet = require('../models').Scoresheet;
 let appConstants = require('../helpers/appConstants');
+const errorConstants = require("../helpers/errorConstants");
+
 let validator = require('validator');
 const User = require('../models').User;
 const Flight = require('../models').Flight;
@@ -8,6 +10,22 @@ let debug = require('debug')('aha-scoresheet:scoresheetController');
 const pdfService = require('../services/pdf.service')
 
 let scoresheetController = {};
+
+function jsonErrorProcessor(err, res) {
+	if (errorConstants[err]) {
+		res.status(400).json({
+			errors: [
+				{
+					code: err,
+					message: errorConstants[err]
+				}
+			]
+		})
+	} else {
+		console.log(err)
+		jsonErrorProcessor(err, res)
+	}
+}
 
 /**
  * Load Scoresheet List
@@ -178,8 +196,8 @@ scoresheetController.doScoresheetDataChange = function(req, res) {
 		});
 };
 
-scoresheetController.generatePDF = function(req, res) {
-	let scoresheetId = req.params.scoresheetId;
+scoresheetController.previewPDF = function(req,res) {
+	let scoresheetId = req.body.scoresheetId;
 
 	Scoresheet.findOne({
 		where: {
@@ -215,9 +233,59 @@ scoresheetController.generatePDF = function(req, res) {
 			flight: flight,
 			judge: user,
 			images: static_image_paths
+		}, true).then(html => {
+			res.send(html)
+		})
+	})
+}
+
+scoresheetController.generatePDF = function(req, res) {
+	const scoresheetId = req.params.scoresheetId;
+	const userIsAdmin = req.user.user_level
+
+	Scoresheet.findOne({
+		where: {
+			id: scoresheetId
+		}
+	}).then(scoresheet => {
+		if (!(scoresheet.user_id === req.user.id || userIsAdmin)) {
+			return Promise.reject('NOT_AUTHORIZED')
+		}
+
+		// Doing this because userId isn't a FK on Scoresheet and this is a really fugly workaround
+		return Promise.all([
+			User.findOne({
+				where: {
+					id: scoresheet.user_id
+				}
+			}),
+			Flight.findOne({
+				where: {
+					id: scoresheet.flight_key
+				}
+			}),
+		]).then(([user,flight]) => {
+			return [scoresheet.get({plain:true}), user.get({plain:true}), flight.get({plain:true})]
+		})
+	}).then(async ([scoresheet, user, flight]) => {
+		// These need to be STATIC and not relative! They also MUST be png files.
+		const static_image_paths = {
+			bjcp_logo: 'public/images/CANE-ISLAND-ALERS-LOGO_d400.png',
+			aha_logo: 'public/images/CANE-ISLAND-ALERS-LOGO_d400.png',
+			club_logo: 'public/images/CANE-ISLAND-ALERS-LOGO_d400.png',
+			comp_logo: 'public/images/OpfermVI-hybrid_d400.png'
+		}
+
+		pdfService.generateScoresheet('views/bjcp_modified.pug', {
+			scoresheet: scoresheet,
+			flight: flight,
+			judge: user,
+			images: static_image_paths
 		}).then(pdf => {
 			res.send(pdf)
 		})
+	}).catch(err => {
+        jsonErrorProcessor(err, res)
 	})
 };
 
