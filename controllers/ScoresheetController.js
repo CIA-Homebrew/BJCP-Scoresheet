@@ -198,6 +198,7 @@ scoresheetController.doScoresheetDataChange = function(req, res) {
 
 scoresheetController.previewPDF = function(req,res) {
 	let scoresheetId = req.body.scoresheetId;
+	//let scoresheetId = req.body.scoresheetId || req.params.scoresheetId;
 
 	Scoresheet.findOne({
 		where: {
