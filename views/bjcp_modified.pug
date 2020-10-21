@@ -1,680 +1,726 @@
 doctype html
 head
-  meta(charset='UTF-8')
-  title SCP BJCP Scoresheet
-  style
-    include ../public/stylesheets/cia_scoresheet.css
-#primary_header
-  .bjcp_badge
-    img(alt='Beer Judge Certification Program' src= images.bjcp_logo)
-    img(alt='Cane Island Alers Badge' src= images.club_logo)
-  .header_content
-    .text_bold.text_italic.text_arial_black.text_larger BEER SCORESHEET
-    .text_color_gray.text_center.text_size_70 AHA/BJCP Sanctioned Competition Program
-    .text_center.text_size_70 Modified Version
-  .aha_badge
-    img(alt='Cane Island Ailers Operation Fermentation' src= images.comp_logo)
-    img(alt='AHA Program' src= images.aha_logo)
-  .header_footer
-#information_row
-  .judge_information.text_normal
-    .dashed_box.padAll_5
-      .row.row_height_25
-        .col.col_20
-          | Judge Name
-        .col
-          span.border_bot_solid_1.display_iblock.lheight_normal.text_center.span_width_165.entry-text-line #{judge.firstname} #{judge.lastname}
-      .row.row_height_25
-        .col.col_20
-          | BJCP ID &amp; Rank
-        .col
-          span.border_bot_solid_1.display_iblock.lheight_normal.text_center.span_width_165.entry-text-line #{judge.bjcp_id} #{judge.bjcp_rank}
-      .row.row_height_25
-        .col.col_20
-          br
-          | &#x9;&#x9;&#x9;&#x9;&#x9;Email
-        .col
-          span.border_bot_solid_1.display_iblock.lheight_normal.text_center.span_width_165.entry-text-line #{judge.email}
-    .text_size_85
-      .row.text_bold.pbot_5.mtop_5
-        | Non-BJCP Qualifications:
-      .row.pbot_5
-        .col.col_25.text_right
-          | Cicerone
-        .col
-          span.display_iblock.border_solid_1(style='width: 8px; height: 8px; background-color: white;') #{judge.cicerone_rank ? 'X' : ' '}
-        .col.col_20.text_right
-          | Rank
-        .col.col_40
-          span.border_bot_solid_1.display_iblock.text_center.width_100.entry-text-line #{judge.cicerone_rank ? judge.cicerone_rank : ''}
-      .row.pbot_5
-        .col.col_25.text_right
-          | Pro Brewer
-        .col
-          span.display_iblock.border_solid_1(style='width: 8px; height: 8px; background-color: white;') #{judge.pro_brewer_brewery ? 'X' : ' '}
-        .col.col_20.text_right
-          | Brewery
-        .col.col_40
-          span.border_bot_solid_1.display_iblock.text_center.width_100.entry-text-line #{judge.pro_brewer_brewery ? judge.pro_brewer_brewery : ''}
-      .row.pbot_5
-        .col.col_25.text_right
-          | Industry
-        .col
-          span.display_iblock.border_solid_1(style='width: 8px; height: 8px; background-color: white;') #{judge.industry_description ? 'X' : ' '}
-        .col.col_20.text_right
-          | Describe
-        .col.col_40
-          span.border_bot_solid_1.display_iblock.text_center.width_100.entry-text-line #{judge.industry_description ? judge.industry_description : ''}
-      .row.pbot_5
-        .col.col_25.text_right
-          | Judging
-        .col
-          span.display_iblock.border_solid_1(style='width: 8px; height: 8px; background-color: white;') #{judge.judging_years ? 'X' : ' '}
-        .col.col_20.text_right
-          | Years
-        .col.col_40
-          span.border_bot_solid_1.display_iblock.text_center.width_100.entry-text-line #{judge.judging_years ? judge.judging_years : ''}
-  .location_information.text_normal.lheight_large
-    .row
-      span Location
-      span.border_bot_solid_1.display_iblock.lheight_normal.text_center.entry-text-line(style='width:150px;') #{flight.location}
-      span Date
-      span.border_bot_solid_1.display_iblock.lheight_normal.text_center.entry-text-line(style='width:150px;') #{new Date(scoresheet.session_date).toLocaleDateString()}
-  .row.clearfix
-    .entry_information.text_normal.float_left
-      .row
-        .col.col_40.float_left
-          .row.width_100.row_height_15
-            .col
-              | Category#
-            .col(style='width: 49%')
-              span.border_bot_solid_1.display_iblock.lheight_normal.text_center.width_100 #{scoresheet.category}
-          .row.width_100.row_height_15
-            .col
-              | Sub (a-f)
-            .col.float_right(style='width: 49%')
-              span.border_bot_solid_1.display_iblock.lheight_normal.text_center.width_100 #{scoresheet.sub}
-        .col.col_40.float_right
-          .row.entry_number(style='height: 28px;')
-            .part2.text_bold Entry #
-            .border_solid_1.float_left(style='width: 87%; height: 100%;') #{scoresheet.entry_number}
-      .row.width_100.row_height_15.float_left
-        .col
-          | Subcategory
-        .col(style='width: 73%')
-          span.border_bot_solid_1.display_iblock.lheight_normal.text_center.width_100.entry-text-line #{scoresheet.subcategory}
-      .row.width_100.row_height_15.float_left
-        .col
-          | Special Ingredients
-        .col(style='width: 60%')
-          span.border_bot_solid_1.display_iblock.lheight_normal.text_center.width_100.entry-text-line #{scoresheet.special_ingredients}
-    .border_solid_1.mleft_15.float_left.text_normal(style='height: 75px; width: 65px; padding: 3px; ')
-      div Position in flight
-      .row(style='margin-bottom: 3px')
-        .col.col_40.text_size_70.text_center
-          | Entry
-        .col.col_40
-          span.border_solid_1.display_iblock.width_100.height_20p.mtop_5(style='width: 35px;') #{scoresheet.flight_position}
-      .row
-        .col.col_40.text_size_70.text_center
-          | Of
-        .col.col_40
-          span.border_solid_1.display_iblock.height_20p(style='width: 35px;') #{scoresheet.flight_total}
-    .border_solid_1.float_left.text_size_50.mleft_15
-      .border_bot_solid_1(style='height: 18px')
-        span.display_iblock.text_center.float_left(style='width: 46px;')
-          | Advanced to 
-          span.text_bold MINI-BOS
-        span.border_solid_1.display_iblock.float_left(style='width: 12px; height: 90%; border-left: 2px solid black;') #{scoresheet.mini_boss_advanced ? 'X' : ' '}
-      div
-        span.border_solid_1.display_iblock.height_20p(style='margin: 1px; width: 93%;') #{scoresheet.place === -1 ? "" : scoresheet.place === 0 ? "Advance" : scoresheet.place}
-      .text_bold.text_center
-        | PLACE
-    .float_left
-      span.border_solid_4_gray.display_iblock(style='height: 52px; width: 55px; margin-left: 14px; ') #{scoresheet.consensus_score ? scoresheet.consensus_score : scoresheet.judge_total}
-    .float_right.text_center(style='width: 140px; height: 17px; background-color: #5a5a5a; color: white; padding-top: 6px; font-size: 12px; margin-right: 2.5px; ') #{scoresheet.consensus_score ? 'CONSENSUS SCORE' : 'JUDGE SCORE'}
-    .float_left.text_normal.mtop_5(style='margin-left: 35px; margin-right: 5px')
-      | Bottle Inspection
-      span.display_iblock.border_solid_2.text_bold(style='height: 8px; width: 8px; margin-left: 8px;') #{scoresheet.bottle_inspection_check ? 'X' : ' '}
-      span.text_bold(style="margin-right: 8px;") OK
-      span(style="margin-right: 3px;") Comments:
-      span.border_bot_solid_1.display_iblock.entry-text-line(style='width: 200px;') #{scoresheet.bottle_inspection_comment}
-#column_container.text_normal
-  //
-    Aroma Section
-    Color slider range: 8-94
-  .aroma_section.ptop_5(style='position: relative; ')
-    .flag_window(style='margin-left: 20px;')
-      .flag_label
-        .left_spacer &nbsp;
-        .left_point &nbsp;
-        .main_flag Aroma
-        .flag_point &nbsp;
-    span.display_iblock.text_size_70.text_bold(style='background-color: lightgrey; padding: 1px 5px 2px 5px; position: relative; left: 0; top: 0;') Inappropriate
-    .row(style='margin-left: 100.5px;')
-      .col(style='position: relative; width: 16%;')
-      span.display_iblock(style='width: 20px; background-color: lightgrey;') &nbsp;
-    .row(style='margin-left: 25px;')
-      span.text_bold.text_right.display_iblock(style='width: 68px;') Malt
-      .slider_parent.display_iblock(style='position: relative; line-height: 8px; z-index: 99; ')
-        span.display_iblock(style='width: 8px; height: 8px; background-color: black; border-radius: 50%; position: absolute; z-index: 2000; left:calc(' + 0.82*scoresheet.aroma_malt + '% + 12%); top: 4px;') &nbsp;
-        .sliver_mainline.border_bot_solid_1.display_iblock(style='width: 89px; margin-left: 10px; position: relative; z-index: 100;')
-          span.display_iblock(style='position: relative; left:18px;') |
-          span.display_iblock(style='position: relative; left:45px;') |
-          span.display_iblock(style='position: relative; left:77px;') |
-          span.text_size_40.text_bold(style='position: absolute; left:-5px; bottom: 15px;') None
-          span.text_size_50.text_bold(style='position: absolute; left:18px; bottom: 15px;') L
-          span.text_size_50.text_bold(style='position: absolute; left:49px; bottom: 15px;') M
-          span.text_size_50.text_bold(style='position: absolute; left:86px; bottom: 15px;') H
-      .display_iblock(style='width: 15px; background-color: lightgrey; margin-left: 8.5px; padding-left: 5px; height: 13px; padding-top: 7px;')
-        span.display_iblock.border_solid_1(style='width: 8px; height: 8px; background-color: white;') #{scoresheet.aroma_malt_inappropriate ? 'X' : ' '}
-      .display_iblock(style='margin-left: 10px;')
-        span.display_iblock.border_bot_solid_1.entry-text-line(style='width:430px;') #{scoresheet.aroma_malt_comment}
-    .row(style='margin-left: 25px;')
-      span.text_bold.text_right.display_iblock(style='width: 68px;') Hops
-      .slider_parent.display_iblock(style='position: relative; line-height: 8px; z-index: 99; ')
-        span.display_iblock(style='width: 8px; height: 8px; background-color: black; border-radius: 50%; position: absolute; z-index: 2000; left:calc(' + 0.82*scoresheet.aroma_hops + '% + 12%); top: 4px;') &nbsp;
-        .sliver_mainline.border_bot_solid_1.display_iblock(style='width: 89px; margin-left: 10px; position: relative; z-index: 100;')
-          span.display_iblock(style='position: relative; left:18px;') |
-          span.display_iblock(style='position: relative; left:45px;') |
-          span.display_iblock(style='position: relative; left:77px;') |
-      .display_iblock(style='width: 15px; background-color: lightgrey; margin-left: 8.5px; padding-left: 5px; height: 13px; padding-top: 7px;')
-        span.display_iblock.border_solid_1(style='width: 8px; height: 8px; background-color: white;') #{scoresheet.aroma_hops_inappropriate ? 'X' : ' '}
-      .display_iblock(style='margin-left: 10px;')
-        span.display_iblock.border_bot_solid_1.entry-text-line(style='width:430px;') #{scoresheet.aroma_hops_comment}
-    .row(style='margin-left: 25px;')
-      span.text_bold.text_right.display_iblock(style='width: 68px;') Fermentation
-      .slider_parent.display_iblock(style='position: relative; line-height: 8px; z-index: 99; ')
-        span.display_iblock(style='width: 8px; height: 8px; background-color: black; border-radius: 50%; position: absolute; z-index: 2000; left:calc(' + 0.82*scoresheet.aroma_fermentation + '% + 12%); top: 4px;') &nbsp;
-        .sliver_mainline.border_bot_solid_1.display_iblock(style='width: 89px; margin-left: 10px; position: relative; z-index: 100;')
-          span.display_iblock(style='position: relative; left:18px;') |
-          span.display_iblock(style='position: relative; left:45px;') |
-          span.display_iblock(style='position: relative; left:77px;') |
-      .display_iblock(style='width: 15px; background-color: lightgrey; margin-left: 8.5px; padding-left: 5px; height: 13px; padding-top: 7px;')
-        span.display_iblock.border_solid_1(style='width: 8px; height: 8px; background-color: white;') #{scoresheet.aroma_fermentation_inappropriate ? 'X' : ' '}
-      .display_iblock(style='margin-left: 10px;')
-        span.display_iblock.border_bot_solid_1.entry-text-line(style='width:430px;') #{scoresheet.aroma_fermentation_comment}
-    .row(style='margin-left: 25px; height: 13px; padding-top: 7px;')
-      span.text_bold.text_right.display_iblock(style='width: 68px;') Other
-      .display_iblock(style='margin-left: 11px;')
-        span.display_iblock.border_bot_solid_1.entry-text-line(style='width:562px;') #{scoresheet.aroma_other_comment}
-    .total.display_iblock.border_solid_1(style='height: 50px; width: 50px; position: absolute; top: 50px; right: 5px; ')
-      .text_center(style='height: 78%; width: 100%; background-color: lightgrey') #{scoresheet.aroma_score}
-      .text_right
-        span.display_iblock(style='border-left: 1px solid black; border-top: 1px solid black; width: 12px;')
-          | 12
-  //
-    Appearance Section
-  .appearance_section.ptop_5(style='position: relative; ')
-    .flag_window(style='margin-left: 20px;')
-      .flag_label
-        .left_spacer &nbsp;
-        .left_point &nbsp;
-        .main_flag Appearance
-        .flag_point &nbsp;
-    span.display_iblock.text_size_70.text_bold(style='background-color: lightgrey; padding: 1px 5px 2px 5px; position: relative; right: 33px; top: 0;') Inappropriate
-    span.display_iblock.text_size_70.text_bold(style='background-color: lightgrey; padding: 1px 5px 2px 5px; position: relative; left: 215px; top: 0;') Inappropriate
-    div(style='width: 20px; background-color: lightgrey; position: relative; bottom: 0; left: 206px;') &nbsp;
-    .row(style='margin-left: 25px;')
-      span.text_bold.text_right.display_iblock(style='width: 68px;') Color
-      .slider_parent.display_iblock(style='position: relative; line-height: 8px; z-index: 99; ')
-        span.display_iblock(style='width: 8px; height: 8px; background-color: black; border-radius: 50%; position: absolute; z-index: 2000; left:calc(' + 0.82*scoresheet.appearance_color + '% + 12%); top: 4px;') &nbsp;
-        .sliver_mainline.border_bot_solid_1.display_iblock(style='width: 89px; margin-left: 10px; position: relative; z-index: 100;')
-          span.display_iblock(style='position: relative; left:10px; bottom: 1px;') |
-          span.display_iblock(style='position: relative; left:20px; bottom: 1px;') |
-          span.display_iblock(style='position: relative; left:30px; bottom: 1px;') |
-          span.display_iblock(style='position: relative; left:40px; bottom: 1px;') |
-          span.display_iblock(style='position: relative; left:50px; bottom: 1px;') |
-          span.display_iblock(style='position: relative; left:60px; bottom: 1px;') |
-          span.text_size_50.text_bold.vertText(style='position: absolute; left:7px; bottom: 9px;') Yellow
-          span.text_size_50.text_bold.vertText(style='position: absolute; left:22px; bottom: 9px;') Gold
-          span.text_size_50.text_bold.vertText(style='position: absolute; left:37px; bottom: 9px;') Amber
-          span.text_size_50.text_bold.vertText(style='position: absolute; left:53px; bottom: 9px;') Copper
-          span.text_size_50.text_bold.vertText(style='position: absolute; left:68px; bottom: 9px;') Brown
-          span.text_size_50.text_bold.vertText(style='position: absolute; left:83px; bottom: 9px;') Black
-      .display_iblock(style='width: 15px; background-color: lightgrey; margin-left: 8.5px; padding-left: 5px; height: 13px; padding-top: 7px;')
-        span.display_iblock.border_solid_1(style='width: 8px; height: 8px; background-color: white;') #{scoresheet.appearance_color_inappropriate ? 'X' : ' '}
-      .display_iblock(style='margin-left: 10px;')
-        span.display_iblock.border_bot_solid_1.entry-text-line(style='width:125px;') #{scoresheet.appearance_color_other}
-      span.text_bold.text_right.display_iblock(style='width: 30px;') Head
-      .slider_parent.display_iblock(style='position: relative; line-height: 8px; z-index: 99; ')
-        span.display_iblock(style='width: 8px; height: 8px; background-color: black; border-radius: 50%; position: absolute; z-index: 2000; left:calc(' + 0.82*scoresheet.appearance_head + '% + 12%); top: 4px;') &nbsp;
-        .sliver_mainline.border_bot_solid_1.display_iblock(style='width: 89px; margin-left: 10px; position: relative; z-index: 100;')
-          span.display_iblock(style='position: relative; left:6px; bottom: 1px;') |
-          span.display_iblock(style='position: relative; left:20.5px; bottom: 1px;') |
-          span.display_iblock(style='position: relative; left:35px; bottom: 1px;') |
-          span.display_iblock(style='position: relative; left:49.5px; bottom: 1px;') |
-          span.display_iblock(style='position: relative; left:64px; bottom: 1px;') |
-          span.display_iblock.text_size_50.text_bold.vertText(style='position: absolute; left:3px; bottom: 9px;') White
-          span.display_iblock.text_size_50.text_bold.vertText(style='position: absolute; left:23px; bottom: 9px;') Ivory
-          span.display_iblock.text_size_50.text_bold.vertText(style='position: absolute; left:43px; bottom: 9px;') Beige
-          span.display_iblock.text_size_50.text_bold.vertText(style='position: absolute; left:62px; bottom: 9px;') Tan
-          span.display_iblock.text_size_50.text_bold.vertText(style='position: absolute; left:82px; bottom: 9px;') Brown
-      .display_iblock(style='width: 20px; background-color: lightgrey; position: absolute; top: 37px; right: 213px;') &nbsp;
-      .display_iblock(style='width: 15px; background-color: lightgrey; margin-left: 8.5px; padding-left: 5px; height: 13px; padding-top: 7px;')
-        span.display_iblock.border_solid_1(style='width: 8px; height: 8px; background-color: white;') #{scoresheet.appearance_head_inappropriate ? 'X' : ' '}
-      .display_iblock(style='margin-left: 10px;')
-        span.display_iblock.border_bot_solid_1.entry-text-line(style='width:125px;') #{scoresheet.appearance_head_other}
-    .row(style='margin-left: 25px;')
-      span.text_bold.text_right.display_iblock(style='width: 68px;') Clarity
-      .slider_parent.display_iblock(style='position: relative; line-height: 8px; z-index: 99; ')
-        span.display_iblock(style='width: 8px; height: 8px; background-color: black; border-radius: 50%; position: absolute; z-index: 2000; left:calc(' + 0.82*scoresheet.appearance_clarity + '% + 12%); top: 4px;') &nbsp;
-        .sliver_mainline.border_bot_solid_1.display_iblock(style='width: 89px; margin-left: 10px; position: relative; z-index: 100;')
-          span.display_iblock(style='position: relative; left:10px; bottom: 1px;') |
-          span.display_iblock(style='position: relative; left:27px; bottom: 1px;') |
-          span.display_iblock(style='position: relative; left:55px; bottom: 1px;') |
-          span.display_iblock(style='position: relative; left:72px; bottom: 1px;') |
-          span.display_iblock.text_size_50.text_bold(style='position: absolute; left:10px; bottom: 9px;') Brilliant
-          span.display_iblock.text_size_50.text_bold(style='position: absolute; left:42px; bottom: 9px;') Hazy
-          span.display_iblock.text_size_50.text_bold(style='position: absolute; left:67px; bottom: 9px;') Opaque
-      .display_iblock(style='width: 15px; background-color: lightgrey; margin-left: 8.5px; padding-left: 5px; height: 13px; padding-top: 7px;')
-        span.display_iblock.border_solid_1(style='width: 8px; height: 8px; background-color: white;') #{scoresheet.appearance_clarity_inappropriate ? 'X' : ' '}
-      .display_iblock.text_size_40(style='margin-left: 10px; width:111px; position: relative; bottom: 13px; ') Other
-      span.text_bold.text_right.display_iblock(style='width: 44px;') Retention
-      .slider_parent.display_iblock(style='position: relative; line-height: 8px; z-index: 99; ')
-        span.display_iblock(style='width: 8px; height: 8px; background-color: black; border-radius: 50%; position: absolute; z-index: 2000; left:calc(' + 0.82*scoresheet.appearance_retention + '% + 12%); top: 4px;') &nbsp;
-        .sliver_mainline.border_bot_solid_1.display_iblock(style='width: 89px; margin-left: 10px; position: relative; z-index: 100;')  #{scoresheet.appearance_clarity_other}
-          span.display_iblock(style='position: relative; left:6px; bottom: 1px;') |
-          span.display_iblock(style='position: relative; left:79px; bottom: 1px;') |
-          span.display_iblock.text_size_50.text_bold(style='position: absolute; left:9px; bottom: 9px;') Quick
-          span.display_iblock.text_size_50.text_bold(style='position: absolute; left:65px; bottom: 9px;') Lasting
-      .display_iblock(style='width: 20px; background-color: lightgrey; position: absolute; top: 34px; right: 213px;') &nbsp;
-      .display_iblock(style='width: 15px; background-color: lightgrey; margin-left: 8.5px; padding-left: 5px; height: 13px; padding-top: 7px;')
-        span.display_iblock.border_solid_1(style='width: 8px; height: 8px; background-color: white;') #{scoresheet.appearance_retention_inappropriate ? 'X' : ' '}
-      .display_iblock.text_size_40(style='margin-left: 10px; width:111px; position: relative; bottom: 13px; ') Other
-    .row(style='margin-left: 25px; height: 13px; padding-top: 7px;')
-      span.text_bold.text_right.display_iblock(style='width: 68px;') Other
-      .display_iblock(style='margin-left: 11px;')
-        span.display_iblock.border_bot_solid_1.entry-text-line(style='width:253px;') #{scoresheet.appearance_other_comment}
-      span.text_bold.text_right.display_iblock(style='width: 31px;') Texture
-      .display_iblock(style='margin-left: 11px;')
-        span.display_iblock.border_bot_solid_1.entry-text-line(style='width:259px;') #{scoresheet.appearance_texture_comment}
-    .total.display_iblock.border_solid_1(style='height: 50px; width: 50px; position: absolute; top: 50px; right: 5px; ')
-      .text_center(style='height: 78%; width: 100%; background-color: lightgrey') #{scoresheet.appearance_score}
-      .text_right
-        span.display_iblock(style='border-left: 1px solid black; border-top: 1px solid black; width: 12px;')
-          | 3
-  //
-    Flavor Section
-  .flavor_section.ptop_5(style='position: relative; ')
-    .flag_window(style='margin-left: 20px;')
-      .flag_label
-        .left_spacer &nbsp;
-        .left_point &nbsp;
-        .main_flag Flavor
-        .flag_point &nbsp;
-    span.display_iblock.text_size_70.text_bold(style='background-color: lightgrey; padding: 1px 5px 2px 5px; position: relative; left: 2px; top: 0;') Inappropriate
-    .row(style='margin-left: 100.5px;')
-      .col(style='position: relative; width: 16%;')
-      span.display_iblock(style='width: 20px; background-color: lightgrey;') &nbsp;
-    .row(style='margin-left: 25px;')
-      span.text_bold.text_right.display_iblock(style='width: 68px;') Malt
-      .slider_parent.display_iblock(style='position: relative; line-height: 8px; z-index: 99; ')
-        span.display_iblock(style='width: 8px; height: 8px; background-color: black; border-radius: 50%; position: absolute; z-index: 2000; left:calc(' + 0.82*scoresheet.flavor_malt + '% + 12%); top: 4px;') &nbsp;
-        .sliver_mainline.border_bot_solid_1.display_iblock(style='width: 89px; margin-left: 10px; position: relative; z-index: 100;')
-          span.display_iblock(style='position: relative; left:18px;') |
-          span.display_iblock(style='position: relative; left:45px;') |
-          span.display_iblock(style='position: relative; left:77px;') |
-          span.text_size_40.text_bold(style='position: absolute; left:-5px; bottom: 15px;') None
-          span.text_size_50.text_bold(style='position: absolute; left:18px; bottom: 15px;') L
-          span.text_size_50.text_bold(style='position: absolute; left:49px; bottom: 15px;') M
-          span.text_size_50.text_bold(style='position: absolute; left:86px; bottom: 15px;') H
-      .display_iblock(style='width: 15px; background-color: lightgrey; margin-left: 8.5px; padding-left: 5px; height: 13px; padding-top: 7px;')
-        span.display_iblock.border_solid_1(style='width: 8px; height: 8px; background-color: white;') #{scoresheet.flavor_malt_inappropriate ? 'X' : ' '}
-      .display_iblock(style='margin-left: 10px;')
-        span.display_iblock.border_bot_solid_1.entry-text-line(style='width:430px;') #{scoresheet.flavor_malt_comment}
-    .row(style='margin-left: 25px;')
-      span.text_bold.text_right.display_iblock(style='width: 68px;') Hops
-      .slider_parent.display_iblock(style='position: relative; line-height: 8px; z-index: 99; ')
-        span.display_iblock(style='width: 8px; height: 8px; background-color: black; border-radius: 50%; position: absolute; z-index: 2000; left:calc(' + 0.82*scoresheet.flavor_hops + '% + 12%); top: 4px;') &nbsp;
-        .sliver_mainline.border_bot_solid_1.display_iblock(style='width: 89px; margin-left: 10px; position: relative; z-index: 100;')
-          span.display_iblock(style='position: relative; left:18px;') |
-          span.display_iblock(style='position: relative; left:45px;') |
-          span.display_iblock(style='position: relative; left:77px;') |
-      .display_iblock(style='width: 15px; background-color: lightgrey; margin-left: 8.5px; padding-left: 5px; height: 13px; padding-top: 7px;')
-        span.display_iblock.border_solid_1(style='width: 8px; height: 8px; background-color: white;') #{scoresheet.flavor_hops_inappropriate ? 'X' : ' '}
-      .display_iblock(style='margin-left: 10px;')
-        span.display_iblock.border_bot_solid_1.entry-text-line(style='width:430px;') #{scoresheet.flavor_hops_comment}
-    .row(style='margin-left: 25px;')
-      span.text_bold.text_right.display_iblock(style='width: 68px;') Bitterness
-      .slider_parent.display_iblock(style='position: relative; line-height: 8px; z-index: 99; ')
-        span.display_iblock(style='width: 8px; height: 8px; background-color: black; border-radius: 50%; position: absolute; z-index: 2000; left:calc(' + 0.82*scoresheet.flavor_bitterness + '% + 12%); top: 4px;') &nbsp;
-        .sliver_mainline.border_bot_solid_1.display_iblock(style='width: 89px; margin-left: 10px; position: relative; z-index: 100;')
-          span.display_iblock(style='position: relative; left:18px;') |
-          span.display_iblock(style='position: relative; left:45px;') |
-          span.display_iblock(style='position: relative; left:77px;') |
-      .display_iblock(style='width: 15px; background-color: lightgrey; margin-left: 8.5px; padding-left: 5px; height: 13px; padding-top: 7px;')
-        span.display_iblock.border_solid_1(style='width: 8px; height: 8px; background-color: white;') #{scoresheet.flavor_bitterness_inappropriate ? 'X' : ' '}
-      .display_iblock(style='margin-left: 10px;')
-        span.display_iblock.border_bot_solid_1.entry-text-line(style='width:430px;') #{scoresheet.flavor_bitterness_comment}
-    .row(style='margin-left: 25px;')
-      span.text_bold.text_right.display_iblock(style='width: 68px;') Fermentation
-      .slider_parent.display_iblock(style='position: relative; line-height: 8px; z-index: 99; ')
-        span.display_iblock(style='width: 8px; height: 8px; background-color: black; border-radius: 50%; position: absolute; z-index: 2000; left:calc(' + 0.82*scoresheet.flavor_fermentation + '% + 12%); top: 4px;') &nbsp;
-        .sliver_mainline.border_bot_solid_1.display_iblock(style='width: 89px; margin-left: 10px; position: relative; z-index: 100;')
-          span.display_iblock(style='position: relative; left:18px;') |
-          span.display_iblock(style='position: relative; left:45px;') |
-          span.display_iblock(style='position: relative; left:77px;') |
-      .display_iblock(style='width: 15px; background-color: lightgrey; margin-left: 8.5px; padding-left: 5px; height: 13px; padding-top: 7px;')
-        span.display_iblock.border_solid_1(style='width: 8px; height: 8px; background-color: white;') #{scoresheet.flavor_fermentation_inappropriate ? 'X' : ' '}
-      .display_iblock(style='margin-left: 10px;')
-        span.display_iblock.border_bot_solid_1.entry-text-line(style='width:430px;') #{scoresheet.flavor_fermentation_comment}
-    .row(style='margin-left: 25px;')
-      span.text_bold.text_right.display_iblock(style='width: 68px;') Balance
-      .slider_parent.display_iblock(style='position: relative; line-height: 8px; z-index: 99; ')
-        span.display_iblock(style='width: 8px; height: 8px; background-color: black; border-radius: 50%; position: absolute; z-index: 2000; left:calc(' + 0.82*scoresheet.flavor_balance + '% + 12%); top: 4px;') &nbsp;
-        .sliver_mainline.border_bot_solid_1.display_iblock(style='width: 89px; margin-left: 10px; position: relative; z-index: 100;')
-          span.display_iblock(style='position: relative; left:18px;') |
-          span.display_iblock(style='position: relative; left:45px;') |
-          span.display_iblock(style='position: relative; left:77px;') |
-          span.display_iblock.text_size_50.text_bold(style='position: absolute; left:19px; bottom: 7px;') Hoppy
-          span.display_iblock.text_size_50.text_bold(style='position: absolute; left:72px; bottom: 7px;') Malty
-      .display_iblock(style='width: 15px; background-color: lightgrey; margin-left: 8.5px; padding-left: 5px; height: 13px; padding-top: 7px;')
-        span.display_iblock.border_solid_1(style='width: 8px; height: 8px; background-color: white;') #{scoresheet.flavor_balance_inappropriate ? 'X' : ' '}
-      .display_iblock(style='margin-left: 10px;')
-        span.display_iblock.border_bot_solid_1.entry-text-line(style='width:430px;') #{scoresheet.flavor_balance_comment}
-    .row(style='margin-left: 25px;')
-      span.text_bold.text_right.display_iblock(style='width: 68px;') Finish/Aftertaste
-      .slider_parent.display_iblock(style='position: relative; line-height: 8px; z-index: 99; ')
-        span.display_iblock(style='width: 8px; height: 8px; background-color: black; border-radius: 50%; position: absolute; z-index: 2000; left:calc(' + 0.82*scoresheet.flavor_finish_aftertaste + '% + 12%); top: 4px;') &nbsp;
-        .sliver_mainline.border_bot_solid_1.display_iblock(style='width: 89px; margin-left: 10px; position: relative; z-index: 100;')
-          span.display_iblock(style='position: relative; left:18px;') |
-          span.display_iblock(style='position: relative; left:45px;') |
-          span.display_iblock(style='position: relative; left:77px;') |
-          span.display_iblock.text_size_50.text_bold(style='position: absolute; left:19px; bottom: 7px;') Dry
-          span.display_iblock.text_size_50.text_bold(style='position: absolute; left:72px; bottom: 7px;') Sweet
-      .display_iblock(style='width: 15px; background-color: lightgrey; margin-left: 8.5px; padding-left: 5px; height: 13px; padding-top: 7px;')
-        span.display_iblock.border_solid_1(style='width: 8px; height: 8px; background-color: white;') #{scoresheet.flavor_finish_aftertaste_inappropriate ? 'X' : ' '}
-      .display_iblock(style='margin-left: 10px;')
-        span.display_iblock.border_bot_solid_1.entry-text-line(style='width:430px;') #{scoresheet.flavor_finish_aftertaste_comment}
-    .row(style='margin-left: 25px; height: 13px; padding-top: 7px;')
-      span.text_bold.text_right.display_iblock(style='width: 68px;') Other
-      .display_iblock(style='margin-left: 11px;')
-        span.display_iblock.border_bot_solid_1.entry-text-line(style='width:562px;') #{scoresheet.flavor_other_comment}
-    .total.display_iblock.border_solid_1(style='height: 50px; width: 50px; position: absolute; top: 97px; right: 5px; ')
-      .text_center(style='height: 78%; width: 100%; background-color: lightgrey') #{scoresheet.flavor_score}
-      .text_right
-        span.display_iblock(style='border-left: 1px solid black; border-top: 1px solid black; width: 12px;')
-          | 20
-  //
-    Flows Section and scoring guide
-  .flaws_scoring_section.float_left(style='width: 31%')
-    .mbot_5.mtop_5
-      span.text_bold.text_larger Flaws for style
-      span.text_small (mark L-M-H for all that apply)
-    .flaws_table.mleft_15.float_left
-      .row
-        div
-          | Acetaldehyde
-        div
-          span #{scoresheet.descriptor_acetaldehyde ? 'X' : ' '}
-        div
-          | Metallic
-        div
-          span #{scoresheet.descriptor_metallic ? 'X' : ' '}
-      .row
-        div
-          | Alcoholic / Hot
-        div
-          span #{scoresheet.descriptor_alcoholic ? 'X' : ' '}
-        div
-          | Musty
-        div
-          span #{scoresheet.descriptor_musty ? 'X' : ' '}
-      .row
-        div
-          | Astringent
-        div
-          span #{scoresheet.descriptor_astringent ? 'X' : ' '}
-        div
-          | Oxidized
-        div
-          span #{scoresheet.descriptor_oxidized ? 'X' : ' '}
-      .row
-        div
-          | Brettanomyces
-        div
-          span #{' '}
-        div
-          | Phenolic
-        div
-          span #{scoresheet.descriptor_phenolic ? 'X' : ' '}
-      .row
-        div
-          | Diacetyl
-        div
-          span #{scoresheet.descriptor_diacetyl ? 'X' : ' '}
-        div
-          | Solvent / Fusel
-        div
-          span #{scoresheet.descriptor_solvent ? 'X' : ' '}
-      .row
-        div
-          | DMS
-        div
-          span #{scoresheet.descriptor_dms ? 'X' : ' '}
-        div
-          | Sour / Acidic
-        div
-          span #{scoresheet.descriptor_sour ? 'X' : ' '}
-      .row
-        div
-          | Estery
-        div
-          span #{scoresheet.descriptor_estery ? 'X' : ' '}
-        div
-          | Smoky
-        div
-          span #{' '}
-      .row
-        div
-          | Grassy
-        div
-          span #{scoresheet.descriptor_grassy ? 'X' : ' '}
-        div
-          | Spicy
-        div
-          span #{' '}
-      .row
-        div
-          | Light-Struck
-        div
-          span #{scoresheet.descriptor_lightstruck ? 'X' : ' '}
-        div
-          | Sulfur
-        div
-          span #{scoresheet.descriptor_sulfur ? 'X' : ' '}
-      .row
-        div
-          | Yeasty
-        div
-          span #{scoresheet.descriptor_yeasty ? 'X' : ' '}
-        div
-          | Vegetal
-        div
-          span #{scoresheet.descriptor_vegetal ? 'X' : ' '}
-    .scoring_guide_table.mleft_15.mtop_15.float_left(style='width: 211px; ')
-      span.display_iblock.vertText.float_left.text_center.text_bold(style='height: 42px; background-color: black; color: white; ') Scoring Guide
-      .row
-        div
-          | Outstanding
-        .background_lgray
-          | 45-50
-        div
-          | World-class example of style.
-      .row
-        div
-          | Excellent
-        .background_lgray
-          | 38-44
-        div
-          | Exemplifies style well, requires minor fine-tuning.
-      .row
-        div
-          | Very Good
-        .background_lgray
-          | 30-37
-        div
-          | Generally within style parameters, minor flaws.
-      .row
-        div
-          | Good
-        .background_lgray
-          | 21-29
-        div
-          | Misses the mark on style and/or minor flaws.
-      .row
-        div
-          | Fair
-        .background_lgray
-          | 14-20
-        div
-          | Off flavors/aromas or major style deficiencies.
-      .row
-        div
-          | Problematic
-        .background_lgray
-          | 0-13
-        div
-          | Major off flavors and aromas dominate.
-  //
-    Mouthfeel Section
-  .mouthfeel_section.ptop_5.float_left(style='position: relative; width: 69%; ')
-    .flag_window.mleft_15(style='position: relative; bottom: 6px; left: 0;')
-      .flag_label
-        .left_spacer &nbsp;
-        .left_point &nbsp;
-        .main_flag Mouthfeel
-        .flag_point &nbsp;
-    span.display_iblock.text_size_70.text_bold(style='background-color: lightgrey; padding: 1px 5px 2px 5px; position: relative; right: 40px; bottom: 10px;') Inappropriate
-    span.display_iblock(style='width: 20px; background-color: lightgrey; position: relative; top: 2px; right: 81px;') &nbsp;
-    span.display_iblock.text_size_70.text_bold(style='background-color: lightgrey; padding: 1px 5px 2px 5px; position: relative; left: 85px; bottom: 10px;') Inappropriate
-    .row
-      span.text_bold.text_right.display_iblock(style='width: 68px;') Body
-      .slider_parent.display_iblock(style='position: relative; line-height: 8px; z-index: 99; ')
-        span.display_iblock(style='width: 8px; height: 8px; background-color: black; border-radius: 50%; position: absolute; z-index: 2000; left:calc(' + 0.82*scoresheet.mouthfeel_body + '% + 12%); top: 4px;') &nbsp;
-        .sliver_mainline.border_bot_solid_1.display_iblock(style='width: 89px; margin-left: 10px; position: relative; z-index: 100;')
-          span.display_iblock(style='position: relative; left:10px; bottom: 1px;') |
-          span.display_iblock(style='position: relative; left:43px; bottom: 1px;') |
-          span.display_iblock(style='position: relative; left:77px; bottom: 1px;') |
-          span.text_size_50.text_bold(style='position: absolute; left:10px; bottom: 9px;') Thin
-          span.text_size_50.text_bold(style='position: absolute; left:47px; bottom: 9px;') M
-          span.text_size_50.text_bold(style='position: absolute; left:78px; bottom: 9px;') Full
-      .display_iblock(style='width: 15px; background-color: lightgrey; margin-left: 8.5px; padding-left: 5px; height: 13px; padding-top: 7px;')
-        span.display_iblock.border_solid_1(style='width: 8px; height: 8px; background-color: white;') #{scoresheet.mouthfeel_body_inappropriate ? 'X' : ' '}
-      span.text_bold.text_right.display_iblock(style='width: 68px;') Creaminess
-      .slider_parent.display_iblock(style='position: relative; line-height: 8px; z-index: 99; ')
-        span.display_iblock(style='width: 8px; height: 8px; background-color: black; border-radius: 50%; position: absolute; z-index: 2000; left:calc(' + 0.82*scoresheet.mouthfeel_creaminess + '% + 12%); top: 4px;') &nbsp;
-        .sliver_mainline.border_bot_solid_1.display_iblock(style='width: 89px; margin-left: 10px; position: relative; z-index: 100;')
-          span.display_iblock(style='position: relative; left:10px; bottom: 1px;') |
-          span.display_iblock(style='position: relative; left:43px; bottom: 1px;') |
-          span.display_iblock(style='position: relative; left:77px; bottom: 1px;') |
-          span.text_size_50.text_bold(style='position: absolute; left:10px; bottom: 9px;') Thin
-          span.text_size_50.text_bold(style='position: absolute; left:47px; bottom: 9px;') M
-          span.text_size_50.text_bold(style='position: absolute; left:78px; bottom: 9px;') Full
-      .display_iblock(style='width: 15px; background-color: lightgrey; margin-left: 8.5px; padding-left: 5px; height: 13px; padding-top: 7px;')
-        span.display_iblock.border_solid_1(style='width: 8px; height: 8px; background-color: white;') #{scoresheet.mouthfeel_creaminess_inappropriate ? 'X' : ' '}
-      span.display_iblock(style='width: 20px; background-color: lightgrey; position: relative; bottom: 19px; right: 23px; ') &nbsp;
-    .row
-      span.text_bold.text_right.display_iblock(style='width: 68px;') Carbonation
-      .slider_parent.display_iblock(style='position: relative; line-height: 8px; z-index: 99; ')
-        span.display_iblock(style='width: 8px; height: 8px; background-color: black; border-radius: 50%; position: absolute; z-index: 2000; left:calc(' + 0.82*scoresheet.mouthfeel_carbonation + '% + 12%); top: 4px;') &nbsp;
-        .sliver_mainline.border_bot_solid_1.display_iblock(style='width: 89px; margin-left: 10px; position: relative; z-index: 100;')
-          span.display_iblock(style='position: relative; left:10px; bottom: 1px;') |
-          span.display_iblock(style='position: relative; left:43px; bottom: 1px;') |
-          span.display_iblock(style='position: relative; left:77px; bottom: 1px;') |
-          span.text_size_50.text_bold(style='position: absolute; left:10px; bottom: 9px;') L
-          span.text_size_50.text_bold(style='position: absolute; left:47px; bottom: 9px;') M
-          span.text_size_50.text_bold(style='position: absolute; left:85px; bottom: 9px;') H
-      .display_iblock(style='width: 15px; background-color: lightgrey; margin-left: 8.5px; padding-left: 5px; height: 13px; padding-top: 7px;')
-        span.display_iblock.border_solid_1(style='width: 8px; height: 8px; background-color: white;') #{scoresheet.mouthfeel_carbonation_inappropriate ? 'X' : ' '}
-      span.text_bold.text_right.display_iblock(style='width: 68px;') Astringency
-      .slider_parent.display_iblock(style='position: relative; line-height: 8px; z-index: 99; ')
-        span.display_iblock(style='width: 8px; height: 8px; background-color: black; border-radius: 50%; position: absolute; z-index: 2000; left:calc(' + 0.82*scoresheet.mouthfeel_astringency + '% + 12%); top: 4px;') &nbsp;
-        .sliver_mainline.border_bot_solid_1.display_iblock(style='width: 89px; margin-left: 10px; position: relative; z-index: 100;')
-          span.display_iblock(style='position: relative; left:10px; bottom: 1px;') |
-          span.display_iblock(style='position: relative; left:43px; bottom: 1px;') |
-          span.display_iblock(style='position: relative; left:77px; bottom: 1px;') |
-      .display_iblock(style='width: 15px; background-color: lightgrey; margin-left: 8.5px; padding-left: 5px; height: 13px; padding-top: 7px;')
-        span.display_iblock.border_solid_1(style='width: 8px; height: 8px; background-color: white;') #{scoresheet.mouthfeel_astringency_inappropriate ? 'X' : ' '}
-    .row
-      span.text_bold.text_right.display_iblock(style='width: 68px;') Warmth
-      .slider_parent.display_iblock(style='position: relative; line-height: 8px; z-index: 99; ')
-        span.display_iblock(style='width: 8px; height: 8px; background-color: black; border-radius: 50%; position: absolute; z-index: 2000; left:calc(' + 0.82*scoresheet.mouthfeel_warmth + '% + 12%); top: 4px;') &nbsp;
-        .sliver_mainline.border_bot_solid_1.display_iblock(style='width: 89px; margin-left: 10px; position: relative; z-index: 100;')
-          span.display_iblock(style='position: relative; left:10px; bottom: 1px;') |
-          span.display_iblock(style='position: relative; left:43px; bottom: 1px;') |
-          span.display_iblock(style='position: relative; left:77px; bottom: 1px;') |
-      .display_iblock(style='width: 15px; background-color: lightgrey; margin-left: 8.5px; padding-left: 5px; height: 13px; padding-top: 7px;')
-        span.display_iblock.border_solid_1(style='width: 8px; height: 8px; background-color: white;') #{scoresheet.mouthfeel_warmth_inappropriate ? 'X' : ' '}
-      span.text_bold.text_right.display_iblock(style='width: 68px;') Other
-      .display_iblock(style='margin-left: 11px;')
-        span.display_iblock.border_bot_solid_1.entry-text-line(style='width:150px;') #{scoresheet.mouthfeel_other_comment}
-    .total.display_iblock.border_solid_1(style='height: 50px; width: 50px; position: absolute; top: 25px; right: 5px; ')
-      .text_center(style='height: 78%; width: 100%; background-color: lightgrey') #{scoresheet.mouthfeel_score}
-      .text_right
-        span.display_iblock(style='border-left: 1px solid black; border-top: 1px solid black; width: 12px;')
-          | 5
-  //
-    Overall Section
-  .overall_section.float_left(style='position: relative; width: 69%; ')
-    .flag_window.mleft_15(style='position: relative; top: 10px; left: 0;')
-      .flag_label
-        .left_spacer &nbsp;
-        .left_point &nbsp;
-        .main_flag Overall
-        .flag_point &nbsp;
-    .row.mbot_5(style='margin-left: 78px; ')
-      span.text_bold.text_right.display_iblock.text_small(style='width: 77px;') Classic Example
-      .slider_parent.display_iblock(style='position: relative; line-height: 8px; z-index: 99; ')
-        span.display_iblock(style='width: 8px; height: 8px; background-color: black; border-radius: 50%; position: absolute; z-index: 2000; left:calc(' + 0.8*(100-scoresheet.overall_class_example) + '% + 9%); top: 4px;') &nbsp;
-        .sliver_mainline.border_bot_solid_1.display_iblock(style='width: 173px; margin-left: 10px; position: relative; z-index: 100;')
-          span.display_iblock(style='position: relative; left:10px; bottom: 1px;') |
-          span.display_iblock(style='position: relative; left:37px; bottom: 1px;') |
-          span.display_iblock(style='position: relative; left:64px; bottom: 1px;') |
-          span.display_iblock(style='position: relative; left:91px; bottom: 1px;') |
-          span.display_iblock(style='position: relative; left:118px; bottom: 1px;') |
-          span.display_iblock(style='position: relative; left:145px; bottom: 1px;') |
-      span.text_bold.text_left.display_iblock.text_small(style='width: 68px;') Not to Style
-    .row.mbot_5(style='margin-left: 78px; ')
-      span.text_bold.text_right.display_iblock.text_small(style='width: 77px;') Flawless
-      .slider_parent.display_iblock(style='position: relative; line-height: 8px; z-index: 99; ')
-        span.display_iblock(style='width: 8px; height: 8px; background-color: black; border-radius: 50%; position: absolute; z-index: 2000; left:calc(' + 0.8*(100-scoresheet.overall_flawless) + '% + 9%); top: 4px;') &nbsp;
-        .sliver_mainline.border_bot_solid_1.display_iblock(style='width: 173px; margin-left: 10px; position: relative; z-index: 100;')
-          span.display_iblock(style='position: relative; left:10px; bottom: 1px;') |
-          span.display_iblock(style='position: relative; left:37px; bottom: 1px;') |
-          span.display_iblock(style='position: relative; left:64px; bottom: 1px;') |
-          span.display_iblock(style='position: relative; left:91px; bottom: 1px;') |
-          span.display_iblock(style='position: relative; left:118px; bottom: 1px;') |
-          span.display_iblock(style='position: relative; left:145px; bottom: 1px;') |
-      span.text_bold.text_left.display_iblock.text_small(style='width: 93px;') Significant Flaws
-    .row(style='margin-left: 78px; ')
-      span.text_bold.text_right.display_iblock.text_small(style='width: 77px;') Wonderful
-      .slider_parent.display_iblock(style='position: relative; line-height: 8px; z-index: 99; ')
-        span.display_iblock(style='width: 8px; height: 8px; background-color: black; border-radius: 50%; position: absolute; z-index: 2000; left:calc(' + 0.8*(100-scoresheet.overall_wonderful) + '% + 9%); top: 4px;') &nbsp;
-        .sliver_mainline.border_bot_solid_1.display_iblock(style='width: 173px; margin-left: 10px; position: relative; z-index: 100;')
-          span.display_iblock(style='position: relative; left:10px; bottom: 1px;') |
-          span.display_iblock(style='position: relative; left:37px; bottom: 1px;') |
-          span.display_iblock(style='position: relative; left:64px; bottom: 1px;') |
-          span.display_iblock(style='position: relative; left:91px; bottom: 1px;') |
-          span.display_iblock(style='position: relative; left:118px; bottom: 1px;') |
-          span.display_iblock(style='position: relative; left:145px; bottom: 1px;') |
-      span.text_bold.text_left.display_iblock.text_small(style='width: 68px;') Lifeless
-    .total.display_iblock.border_solid_1(style='height: 50px; width: 50px; position: absolute; top: 25px; right: 5px; ')
-      .text_center(style='height: 78%; width: 100%; background-color: lightgrey') #{scoresheet.overall_score}
-      .text_right
-        span.display_iblock(style='border-left: 1px solid black; border-top: 1px solid black; width: 12px;')
-          | 10
-  //
-    Feedback Section
-  .feedback_section.ptop_5.float_left(style='position: relative; width: 69%; ')
-    span.display_iblock.text_bold.mleft_15 Feedback
-    span.text_size_70.mleft_5
-      | Provide comments on style, recipe, process, and drinking pleasure. Include helpful suggestions to the brewer.
-    .background_lgray.border_solid_1.mleft_5.entry-text-box(style='width: 430px; height: 100px;') #{scoresheet.feedback_comment}
-    span.display_iblock.text_bold.text_larger(style='position: relative; left: 384px; top: 11px;') Judge Total
-    .total.display_iblock.border_solid_1(style='height: 50px; width: 50px; position: absolute; top: 88px; right: 5px; ')
-      .text_center(style='height: 78%; width: 100%; background-color: lightgrey') #{scoresheet.judge_total}
-      .text_right
-        span.display_iblock(style='border-left: 1px solid black; border-top: 1px solid black; width: 12px;')
-          | 50
+	meta(charset='UTF-8')
+	title SCP BJCP Scoresheet
+	style
+		include ../public/stylesheets/cia_scoresheet.css
+body
+	#primary_header
+		.bjcp_badge
+			img(alt='Beer Judge Certification Program' src= images.bjcp_logo)
+			img(alt='Cane Island Alers Badge' src= images.club_logo)
+		.header_content
+			.text_bold.text_italic.text_arial_black.text_larger BEER SCORESHEET
+			.text_color_gray.text_center.text_size_70 AHA/BJCP Sanctioned Competition Program
+			.text_center.text_size_70 Modified Version
+		.aha_badge
+			img(alt='Cane Island Ailers Operation Fermentation' src= images.comp_logo)
+			img(alt='AHA Program' src= images.aha_logo)
+		.header_footer
+	#information_row
+		.judge_information.text_normal
+			.dashed_box.padAll_5
+				.row.row_height_25
+					.col.col_20
+						| Judge Name
+					.col
+						span.border_bot_solid_1.display_iblock.lheight_normal.text_center.span_width_165 #{judge.firstname} #{judge.lastname}
+				.row.row_height_25
+					.col.col_20
+						| BJCP ID &amp; Rank
+					.col
+						span.border_bot_solid_1.display_iblock.lheight_normal.text_center.span_width_165 #{judge.bjcp_id} #{judge.bjcp_rank}
+				.row.row_height_25
+					.col.col_20
+						br
+						| &#x9;&#x9;&#x9;&#x9;&#x9;Email
+					.col
+						span.border_bot_solid_1.display_iblock.lheight_normal.text_center.span_width_165 #{judge.email}
+			.text_size_85
+				.row.text_bold.pbot_5.mtop_5
+					| Non-BJCP Qualifications:
+				.row.pbot_5
+					.col.col_25.text_right
+						| Cicerone
+					.col
+						span.display_iblock.border_solid_1.mleft_5(style='width: 8px; height: 8px; background-color: white;') #{judge.cicerone_rank ? 'X' : ' '}
+					.col.col_20.text_right
+						| Rank
+					.col.col_40
+						span.border_bot_solid_1.display_iblock.text_center.width_100 #{judge.cicerone_rank ? judge.cicerone_rank : ''}
+				.row.pbot_5
+					.col.col_25.text_right
+						| Pro Brewer
+					.col
+						span.display_iblock.border_solid_1.mleft_5(style='width: 8px; height: 8px; background-color: white;') #{judge.pro_brewer_brewery ? 'X' : ' '}
+					.col.col_20.text_right
+						| Brewery
+					.col.col_40
+						span.border_bot_solid_1.display_iblock.text_center.width_100 #{judge.pro_brewer_brewery ? judge.pro_brewer_brewery : ''}
+				.row.pbot_5
+					.col.col_25.text_right
+						| Industry
+					.col
+						span.display_iblock.border_solid_1.mleft_5(style='width: 8px; height: 8px; background-color: white;') #{judge.industry_description ? 'X' : ' '}
+					.col.col_20.text_right
+						| Describe
+					.col.col_40
+						span.border_bot_solid_1.display_iblock.text_center.width_100 #{judge.industry_description ? judge.industry_description : ''}
+				.row.pbot_5
+					.col.col_25.text_right
+						| Judging
+					.col
+						span.display_iblock.border_solid_1.mleft_5(style='width: 8px; height: 8px; background-color: white;') #{judge.judging_years ? 'X' : ' '}
+					.col.col_20.text_right
+						| Years
+					.col.col_40
+						span.border_bot_solid_1.display_iblock.text_center.width_100 #{judge.judging_years ? judge.judging_years : ''}
+		.location_information.text_normal.lheight_large
+			.row
+				span Location
+				span.border_bot_solid_1.display_iblock.lheight_normal.text_center(style='width:150px; margin-right: 5px;') #{scoresheet.session_location}
+				span Date
+				span.border_bot_solid_1.display_iblock.lheight_normal.text_center(style='width:150px;') #{new Date(scoresheet.session_date).toLocaleDateString()}
+		.row.clearfix
+			.entry_information.text_normal.float_left
+				.row
+					.col.col_40.float_left
+						.row.width_100.row_height_15
+							.col
+								| Category#
+							.col(style='width: 49%')
+								span.border_bot_solid_1.display_iblock.lheight_normal.text_center.width_100 #{scoresheet.category}
+						.row.width_100.row_height_15
+							.col
+								| Sub (a-f)
+							.col.float_right(style='width: 49%')
+								span.border_bot_solid_1.display_iblock.lheight_normal.text_center.width_100 #{scoresheet.sub}
+					.col.col_40.float_right
+						.row.entry_number(style='height: 28px;')
+							.part2.text_bold Entry #
+							.border_solid_1.float_left.text_center.text_resize_marker(style='width: 87%; height: 100%;line-height: 27px;font-stretch: var(--fontStretch);font-size: var(--fontSize);') #{scoresheet.entry_number}
+				.row.width_100.row_height_15.float_left
+					.col
+						| Subcategory
+					.col(style='width: 73%')
+						span.border_bot_solid_1.display_iblock.lheight_normal.text_center.width_100 #{scoresheet.subcategory}
+				.row.width_100.row_height_15.float_left
+					.col
+						| Special Ingredients
+					.col(style='width: 60%')
+						span.border_bot_solid_1.display_iblock.lheight_normal.text_center.width_100 #{scoresheet.special_ingredients}
+			.border_solid_1.mleft_15.float_left.text_normal(style='height: 75px; width: 65px; padding: 3px; ')
+				div Position in flight
+				.row(style='margin-bottom: 3px')
+					.col.col_40.text_size_70.text_center
+						| Entry
+					.col.col_40
+						span.border_solid_1.display_iblock.width_100.height_20p.mtop_5.text_center.text_resize_marker(style='width: 35px;line-height: 20px;font-stretch: var(--fontStretch);font-size: var(--fontSize);') #{scoresheet.flight_position}
+				.row
+					.col.col_40.text_size_70.text_center
+						| Of
+					.col.col_40
+						span.border_solid_1.display_iblock.height_20p.text_center.text_resize_marker(style='width: 35px;line-height: 20px;font-stretch: var(--fontStretch);font-size: var(--fontSize);') #{scoresheet.flight_total}
+			.border_solid_1.float_left.text_size_50.mleft_15
+				.border_bot_solid_1(style='height: 18px')
+					span.display_iblock.text_center.float_left(style='width: 46px;')
+						| Advanced to
+						span.text_bold MINI-BOS
+					span.border_solid_1.display_iblock.float_left(style='width: 12px; height: 90%; border-left: 2px solid black;') #{scoresheet.mini_boss_advanced ? 'X' : ' '}
+				div
+					span.border_solid_1.display_iblock.height_20p.text_resize_marker(style='margin: 1px; width: 93%; text-align: center; line-height: 20px; font-stretch: var(--fontStretch);font-size: var(--fontSize);') #{scoresheet.place === -1 ? "" : scoresheet.place === 0 ? "Advance" : scoresheet.place}
+				.text_bold.text_center
+					| PLACE
+			.float_left
+				span.border_solid_4_gray.display_iblock.text_center(style='height: 45px; width: 55px; margin-left: 14px; padding-top: 7px; font-size:calc(100% + 2vw);') #{scoresheet.consensus_score ? scoresheet.consensus_score : scoresheet.judge_total}
+			.float_right.text_center(style='width: 140px; height: 17px; background-color: #5a5a5a; color: white; padding-top: 6px; font-size: 12px; margin-right: 2.5px;') #{scoresheet.consensus_score ? 'CONSENSUS SCORE' : 'JUDGE SCORE'}
+			.float_left.text_normal.mtop_5(style='margin-left: 35px; margin-right: 5px')
+				| Bottle Inspection
+				span.display_iblock.border_solid_2.text_bold(style='height: 8px; width: 8px; margin-left: 8px;') #{scoresheet.bottle_inspection_check ? 'X' : ' '}
+				span.text_bold(style="margin-right: 8px;") OK
+				span(style="margin-right: 3px;") Comments:
+				span.border_bot_solid_1.display_iblock(style='width: 200px;') #{scoresheet.bottle_inspection_comment}
+	#column_container.text_normal
+		//
+			Aroma Section
+			Color slider range: 8-94
+		.aroma_section.ptop_5(style='position: relative; ')
+			.flag_window(style='margin-left: 20px;')
+				.flag_label
+					.left_spacer &nbsp;
+					.left_point &nbsp;
+					.main_flag Aroma
+					.flag_point &nbsp;
+			span.display_iblock.text_size_70.text_bold(style='background-color: lightgrey; padding: 1px 5px 2px 5px; position: relative; left: 0; top: 0;') Inappropriate
+			.row(style='margin-left: 97px;')
+				.col(style='position: relative; width: 16%;')
+				span.display_iblock(style='width: 20px; background-color: lightgrey;') &nbsp;
+			.row(style='margin-left: 25px;')
+				span.text_bold.text_right.display_iblock(style='width: 68px;') Malt
+				.slider_parent.display_iblock(style='position: relative; line-height: 8px; z-index: 99; ')
+					.sliver_mainline.border_bot_solid_1.display_iblock(style='width: 89px; margin-left: 10px; position: relative; z-index: 100;')
+						span.display_iblock(style='width: 8px; height: 8px; background-color: black; border-radius: 50%; position: absolute; z-index: 2000; left:calc(' + scoresheet.aroma_malt + '% - 4px); top: 4px;') &nbsp;
+						span.display_iblock(style='position: relative; left:0%;') |
+						span.display_iblock(style='position: relative; left:7%;') |
+						span.display_iblock(style='position: relative; left:44%;') |
+						span.display_iblock(style='position: relative; left:91%') |
+						span.text_size_40.text_bold(style='position: absolute; left:-13px; bottom: 15px;') None
+						span.text_size_50.text_bold(style='position: absolute; left:8px; bottom: 15px;') L
+						span.text_size_50.text_bold(style='position: absolute; left:42px; bottom: 15px;') M
+						span.text_size_50.text_bold(style='position: absolute; left:87px; bottom: 15px;') H
+				.display_iblock(style='width: 15px; background-color: lightgrey; margin-left: 8.5px; padding-left: 5px; height: 13px; padding-top: 7px;')
+					span.display_iblock.border_solid_1(style='width: 8px; height: 8px; background-color: white;') #{scoresheet.aroma_malt_inappropriate ? 'X' : ' '}
+				.display_iblock(style='margin-left: 10px;')
+					span.display_iblock.border_bot_solid_1(style='width:430px;') #{scoresheet.aroma_malt_comment}
+			.row(style='margin-left: 25px;')
+				span.text_bold.text_right.display_iblock(style='width: 68px;') Hops
+				.slider_parent.display_iblock(style='position: relative; line-height: 8px; z-index: 99; ')
+					.sliver_mainline.border_bot_solid_1.display_iblock(style='width: 89px; margin-left: 10px; position: relative; z-index: 100;')
+						span.display_iblock(style='width: 8px; height: 8px; background-color: black; border-radius: 50%; position: absolute; z-index: 2000; left:calc(' + scoresheet.aroma_hops + '% - 4px); top: 4px;') &nbsp;
+						span.display_iblock(style='position: relative; left:0%;') |
+						span.display_iblock(style='position: relative; left:7%;') |
+						span.display_iblock(style='position: relative; left:44%;') |
+						span.display_iblock(style='position: relative; left:91%') |
+				.display_iblock(style='width: 15px; background-color: lightgrey; margin-left: 8.5px; padding-left: 5px; height: 13px; padding-top: 7px;')
+					span.display_iblock.border_solid_1(style='width: 8px; height: 8px; background-color: white;') #{scoresheet.aroma_hops_inappropriate ? 'X' : ' '}
+				.display_iblock(style='margin-left: 10px;')
+					span.display_iblock.border_bot_solid_1(style='width:430px;') #{scoresheet.aroma_hops_comment}
+			.row(style='margin-left: 25px;')
+				span.text_bold.text_right.display_iblock(style='width: 68px;') Fermentation
+				.slider_parent.display_iblock(style='position: relative; line-height: 8px; z-index: 99; ')
+					.sliver_mainline.border_bot_solid_1.display_iblock(style='width: 89px; margin-left: 10px; position: relative; z-index: 100;')
+						span.display_iblock(style='width: 8px; height: 8px; background-color: black; border-radius: 50%; position: absolute; z-index: 2000; left:calc(' + scoresheet.aroma_fermentation + '% - 4px); top: 4px;') &nbsp;
+						span.display_iblock(style='position: relative; left:0%;') |
+						span.display_iblock(style='position: relative; left:7%;') |
+						span.display_iblock(style='position: relative; left:44%;') |
+						span.display_iblock(style='position: relative; left:91%') |
+				.display_iblock(style='width: 15px; background-color: lightgrey; margin-left: 8.5px; padding-left: 5px; height: 13px; padding-top: 7px;')
+					span.display_iblock.border_solid_1(style='width: 8px; height: 8px; background-color: white;') #{scoresheet.aroma_fermentation_inappropriate ? 'X' : ' '}
+				.display_iblock(style='margin-left: 10px;')
+					span.display_iblock.border_bot_solid_1(style='width:430px;') #{scoresheet.aroma_fermentation_comment}
+			.row(style='margin-left: 25px; height: 13px; padding-top: 7px;')
+				span.text_bold.text_right.display_iblock(style='width: 68px;') Other
+				.display_iblock(style='margin-left: 11px;')
+					span.display_iblock.border_bot_solid_1(style='width:562px;') #{scoresheet.aroma_other_comment}
+			.total.display_iblock.border_solid_1(style='height: 50px; width: 50px; position: absolute; top: 50px; right: 5px; ')
+				.text_center(style='height: 64%; padding-top: 7px; width: 100%; background-color: lightgrey; font-size:calc(100% + 2vw);') #{scoresheet.aroma_score}
+				.text_right
+					span.display_iblock(style='border-left: 1px solid black; border-top: 1px solid black; width: 12px;')
+						| 12
+		//
+			Appearance Section
+		.appearance_section.ptop_5(style='position: relative; ')
+			.flag_window(style='margin-left: 20px;')
+				.flag_label
+					.left_spacer &nbsp;
+					.left_point &nbsp;
+					.main_flag Appearance
+					.flag_point &nbsp;
+			span.display_iblock.text_size_70.text_bold(style='background-color: lightgrey; padding: 1px 5px 2px 5px; position: relative; right: 35px; top: 0;') Inappropriate
+			span.display_iblock.text_size_70.text_bold(style='background-color: lightgrey; padding: 1px 5px 2px 5px; position: relative; left: 210px; top: 0;') Inappropriate
+			div(style='width: 20px; background-color: lightgrey; position: relative; bottom: 0; left: 27%;') &nbsp;
+			.row(style='margin-left: 25px;')
+				span.text_bold.text_right.display_iblock(style='width: 68px;') Color
+				.slider_parent.display_iblock(style='position: relative; line-height: 8px; z-index: 99; ')
+					.sliver_mainline.border_bot_solid_1.display_iblock(style='width: 89px; margin-left: 10px; position: relative; z-index: 100;')
+						span.display_iblock(style='width: 8px; height: 8px; background-color: black; border-radius: 50%; position: absolute; z-index: 2000; left:calc(' + scoresheet.appearance_color + '% - 4px); top: 4px;') &nbsp;
+						span.display_iblock(style='position: relative; left:0%;') |
+						span.display_iblock(style='position: relative; left:17%;') |
+						span.display_iblock(style='position: relative; left:35%;') |
+						span.display_iblock(style='position: relative; left:52%;') |
+						span.display_iblock(style='position: relative; left:69%;') |
+						span.display_iblock(style='position: relative; left:86%;') |
+						span.text_size_50.text_bold.vertText(style='position: absolute; left:-3px; bottom: 8px;') Yellow
+						span.text_size_50.text_bold.vertText(style='position: absolute; left:14px; bottom: 8px;') Gold
+						span.text_size_50.text_bold.vertText(style='position: absolute; left:32px; bottom: 8px;') Amber
+						span.text_size_50.text_bold.vertText(style='position: absolute; left:50px; bottom: 8px;') Copper
+						span.text_size_50.text_bold.vertText(style='position: absolute; left:67px; bottom: 8px;') Brown
+						span.text_size_50.text_bold.vertText(style='position: absolute; left:85px; bottom: 8px;') Black
+				.display_iblock(style='width: 15px; background-color: lightgrey; margin-left: 8.5px; padding-left: 5px; height: 13px; padding-top: 7px;')
+					span.display_iblock.border_solid_1(style='width: 8px; height: 8px; background-color: white;') #{scoresheet.appearance_color_inappropriate ? 'X' : ' '}
+				.display_iblock(style='margin-left: 10px;')
+					span.display_iblock.border_bot_solid_1(style='width:125px;') #{scoresheet.appearance_color_other}
+				span.text_bold.text_right.display_iblock(style='width: 30px;') Head
+				.slider_parent.display_iblock(style='position: relative; line-height: 8px; z-index: 99; ')
+					.sliver_mainline.border_bot_solid_1.display_iblock(style='width: 89px; margin-left: 10px; position: relative; z-index: 100;')
+						span.display_iblock(style='width: 8px; height: 8px; background-color: black; border-radius: 50%; position: absolute; z-index: 2000; left:calc(' + scoresheet.appearance_head + '% - 4px); top: 4px;') &nbsp;
+						span.display_iblock(style='position: relative; left:0%;') |
+						span.display_iblock(style='position: relative; left:22%;') |
+						span.display_iblock(style='position: relative; left:44%;') |
+						span.display_iblock(style='position: relative; left:66%;') |
+						span.display_iblock(style='position: relative; left:88%;') |
+						span.display_iblock.text_size_50.text_bold.vertText(style='position: absolute; left:-3px; bottom: 8px;') White
+						span.display_iblock.text_size_50.text_bold.vertText(style='position: absolute; left:19px; bottom: 8px;') Ivory
+						span.display_iblock.text_size_50.text_bold.vertText(style='position: absolute; left:41px; bottom: 8px;') Beige
+						span.display_iblock.text_size_50.text_bold.vertText(style='position: absolute; left:62px; bottom: 8px;') Tan
+						span.display_iblock.text_size_50.text_bold.vertText(style='position: absolute; left:84px; bottom: 8px;') Brown
+				.display_iblock(style='width: 20px; background-color: lightgrey; position: absolute; top: 37px; right: 229px;') &nbsp;
+				.display_iblock(style='width: 15px; background-color: lightgrey; margin-left: 8.5px; padding-left: 5px; height: 13px; padding-top: 7px;')
+					span.display_iblock.border_solid_1(style='width: 8px; height: 8px; background-color: white;') #{scoresheet.appearance_head_inappropriate ? 'X' : ' '}
+				.display_iblock(style='margin-left: 10px;')
+					span.display_iblock.border_bot_solid_1(style='width:125px;') #{scoresheet.appearance_head_other}
+			.row(style='margin-left: 25px;')
+				span.text_bold.text_right.display_iblock(style='width: 68px;') Clarity
+				.slider_parent.display_iblock(style='position: relative; line-height: 8px; z-index: 99; ')
+					.sliver_mainline.border_bot_solid_1.display_iblock(style='width: 89px; margin-left: 10px; position: relative; z-index: 100;')
+						span.display_iblock(style='width: 8px; height: 8px; background-color: black; border-radius: 50%; position: absolute; z-index: 2000; left:calc(' + scoresheet.appearance_clarity + '% - 4px); top: 4px;') &nbsp;
+						span.display_iblock(style='position: relative; left:0px;') |
+						span.display_iblock(style='position: relative; left:30%;') |
+						span.display_iblock(style='position: relative; left:60%;') |
+						span.display_iblock(style='position: relative; left:91%;') |
+						span.display_iblock.text_size_50.text_bold(style='position: absolute; left:0px; bottom: 8px;') Brilliant
+						span.display_iblock.text_size_50.text_bold(style='position: absolute; left:38px; bottom: 8px;') Hazy
+						span.display_iblock.text_size_50.text_bold(style='position: absolute; left:67px; bottom: 8px;') Opaque
+				.display_iblock(style='width: 15px; background-color: lightgrey; margin-left: 8.5px; padding-left: 5px; height: 13px; padding-top: 8.5px;')
+					span.display_iblock.border_solid_1(style='width: 8px; height: 8px; background-color: white;') #{scoresheet.appearance_clarity_inappropriate ? 'X' : ' '}
+				.display_iblock.text_size_40(style='margin-left: 10px; width:111px; position: relative; bottom: 13px; ') Other
+				span.text_bold.text_right.display_iblock(style='width: 44px;') Retention
+				.slider_parent.display_iblock(style='position: relative; line-height: 8px; z-index: 99; ')
+					.sliver_mainline.border_bot_solid_1.display_iblock(style='width: 89px; margin-left: 10px; position: relative; z-index: 100;')
+						span.display_iblock(style='width: 8px; height: 8px; background-color: black; border-radius: 50%; position: absolute; z-index: 2000; left:calc(' + scoresheet.appearance_retention + '% - 4px); top: 4px;') &nbsp;
+						span.display_iblock(style='position: relative; left:0%;') |
+						span.display_iblock(style='position: relative; left:95%; ') |
+						span.display_iblock.text_size_50.text_bold(style='position: absolute; left:9px; bottom: 9px;') Quick
+						span.display_iblock.text_size_50.text_bold(style='position: absolute; left:65px; bottom: 9px;') Lasting
+				.display_iblock(style='width: 20px; background-color: lightgrey; position: absolute; top: 34px; right: 229px;') &nbsp;
+				.display_iblock(style='width: 15px; background-color: lightgrey; margin-left: 8.5px; padding-left: 5px; height: 13px; padding-top: 8.5px;')
+					span.display_iblock.border_solid_1(style='width: 8px; height: 8px; background-color: white;') #{scoresheet.appearance_retention_inappropriate ? 'X' : ' '}
+				.display_iblock.text_size_40(style='margin-left: 10px; width:111px; position: relative; bottom: 13px; ') Other
+			.row(style='margin-left: 25px; height: 13px; padding-top: 7px;')
+				span.text_bold.text_right.display_iblock(style='width: 68px;') Other
+				.display_iblock(style='margin-left: 11px;')
+					span.display_iblock.border_bot_solid_1(style='width:253px;') #{scoresheet.appearance_other_comment}
+				span.text_bold.text_right.display_iblock(style='width: 31px;') Texture
+				.display_iblock(style='margin-left: 11px;')
+					span.display_iblock.border_bot_solid_1(style='width:259px;') #{scoresheet.appearance_texture_comment}
+			.total.display_iblock.border_solid_1(style='height: 50px; width: 50px; position: absolute; top: 50px; right: 5px; ')
+				.text_center(style='height: 64%; padding-top: 7px; width: 100%; background-color: lightgrey; font-size:calc(100% + 2vw);') #{scoresheet.appearance_score}
+				.text_right
+					span.display_iblock(style='border-left: 1px solid black; border-top: 1px solid black; width: 12px;')
+						| 3
+		//
+			Flavor Section
+		.flavor_section.ptop_5(style='position: relative; ')
+			.flag_window(style='margin-left: 20px;')
+				.flag_label
+					.left_spacer &nbsp;
+					.left_point &nbsp;
+					.main_flag Flavor
+					.flag_point &nbsp;
+			span.display_iblock.text_size_70.text_bold(style='background-color: lightgrey; padding: 1px 5px 2px 5px; position: relative; left: 2px; top: 0;') Inappropriate
+			.row(style='margin-left: 100.5px;')
+				.col(style='position: relative; width: 16%;')
+				span.display_iblock(style='width: 20px; background-color: lightgrey; position: relative; right: 2.5px;') &nbsp;
+			.row(style='margin-left: 25px;')
+				span.text_bold.text_right.display_iblock(style='width: 68px;') Malt
+				.slider_parent.display_iblock(style='position: relative; line-height: 8px; z-index: 99; ')
+					.sliver_mainline.border_bot_solid_1.display_iblock(style='width: 89px; margin-left: 10px; position: relative; z-index: 100;')
+						span.display_iblock(style='width: 8px; height: 8px; background-color: black; border-radius: 50%; position: absolute; z-index: 2000; left:calc(' + scoresheet.flavor_malt + '% - 4px); top: 4px;') &nbsp;
+						span.display_iblock(style='position: relative; left:0%;') |
+						span.display_iblock(style='position: relative; left:7%;') |
+						span.display_iblock(style='position: relative; left:44%;') |
+						span.display_iblock(style='position: relative; left:91%') |
+						span.text_size_40.text_bold(style='position: absolute; left:-13px; bottom: 15px;') None
+						span.text_size_50.text_bold(style='position: absolute; left:8px; bottom: 15px;') L
+						span.text_size_50.text_bold(style='position: absolute; left:42px; bottom: 15px;') M
+						span.text_size_50.text_bold(style='position: absolute; left:87px; bottom: 15px;') H
+				.display_iblock(style='width: 15px; background-color: lightgrey; margin-left: 8.5px; padding-left: 5px; height: 13px; padding-top: 7px;')
+					span.display_iblock.border_solid_1(style='width: 8px; height: 8px; background-color: white;') #{scoresheet.flavor_malt_inappropriate ? 'X' : ' '}
+				.display_iblock(style='margin-left: 10px;')
+					span.display_iblock.border_bot_solid_1(style='width:430px;') #{scoresheet.flavor_malt_comment}
+			.row(style='margin-left: 25px;')
+				span.text_bold.text_right.display_iblock(style='width: 68px;') Hops
+				.slider_parent.display_iblock(style='position: relative; line-height: 8px; z-index: 99; ')
+					.sliver_mainline.border_bot_solid_1.display_iblock(style='width: 89px; margin-left: 10px; position: relative; z-index: 100;')
+						span.display_iblock(style='width: 8px; height: 8px; background-color: black; border-radius: 50%; position: absolute; z-index: 2000; left:calc(' + scoresheet.flavor_hops + '% - 4px); top: 4px;') &nbsp;
+						span.display_iblock(style='position: relative; left:0%;') |
+						span.display_iblock(style='position: relative; left:7%;') |
+						span.display_iblock(style='position: relative; left:44%;') |
+						span.display_iblock(style='position: relative; left:91%') |
+				.display_iblock(style='width: 15px; background-color: lightgrey; margin-left: 8.5px; padding-left: 5px; height: 13px; padding-top: 7px;')
+					span.display_iblock.border_solid_1(style='width: 8px; height: 8px; background-color: white;') #{scoresheet.flavor_hops_inappropriate ? 'X' : ' '}
+				.display_iblock(style='margin-left: 10px;')
+					span.display_iblock.border_bot_solid_1(style='width:430px;') #{scoresheet.flavor_hops_comment}
+			.row(style='margin-left: 25px;')
+				span.text_bold.text_right.display_iblock(style='width: 68px;') Bitterness
+				.slider_parent.display_iblock(style='position: relative; line-height: 8px; z-index: 99; ')
+					.sliver_mainline.border_bot_solid_1.display_iblock(style='width: 89px; margin-left: 10px; position: relative; z-index: 100;')
+						span.display_iblock(style='width: 8px; height: 8px; background-color: black; border-radius: 50%; position: absolute; z-index: 2000; left:calc(' + scoresheet.flavor_bitterness + '% - 4px); top: 4px;') &nbsp;
+						span.display_iblock(style='position: relative; left:0%;') |
+						span.display_iblock(style='position: relative; left:7%;') |
+						span.display_iblock(style='position: relative; left:44%;') |
+						span.display_iblock(style='position: relative; left:91%') |
+				.display_iblock(style='width: 15px; background-color: lightgrey; margin-left: 8.5px; padding-left: 5px; height: 13px; padding-top: 7px;')
+					span.display_iblock.border_solid_1(style='width: 8px; height: 8px; background-color: white;') #{scoresheet.flavor_bitterness_inappropriate ? 'X' : ' '}
+				.display_iblock(style='margin-left: 10px;')
+					span.display_iblock.border_bot_solid_1(style='width:430px;') #{scoresheet.flavor_bitterness_comment}
+			.row(style='margin-left: 25px;')
+				span.text_bold.text_right.display_iblock(style='width: 68px;') Fermentation
+				.slider_parent.display_iblock(style='position: relative; line-height: 8px; z-index: 99; ')
+					.sliver_mainline.border_bot_solid_1.display_iblock(style='width: 89px; margin-left: 10px; position: relative; z-index: 100;')
+						span.display_iblock(style='width: 8px; height: 8px; background-color: black; border-radius: 50%; position: absolute; z-index: 2000; left:calc(' + scoresheet.flavor_fermentation + '% - 4px); top: 4px;') &nbsp;
+						span.display_iblock(style='position: relative; left:0%;') |
+						span.display_iblock(style='position: relative; left:7%;') |
+						span.display_iblock(style='position: relative; left:44%;') |
+						span.display_iblock(style='position: relative; left:91%') |
+				.display_iblock(style='width: 15px; background-color: lightgrey; margin-left: 8.5px; padding-left: 5px; height: 13px; padding-top: 7px;')
+					span.display_iblock.border_solid_1(style='width: 8px; height: 8px; background-color: white;') #{scoresheet.flavor_fermentation_inappropriate ? 'X' : ' '}
+				.display_iblock(style='margin-left: 10px;')
+					span.display_iblock.border_bot_solid_1(style='width:430px;') #{scoresheet.flavor_fermentation_comment}
+			.row(style='margin-left: 25px;')
+				span.text_bold.text_right.display_iblock(style='width: 68px;') Balance
+				.slider_parent.display_iblock(style='position: relative; line-height: 8px; z-index: 99; ')
+					.sliver_mainline.border_bot_solid_1.display_iblock(style='width: 89px; margin-left: 10px; position: relative; z-index: 100;')
+						span.display_iblock(style='width: 8px; height: 8px; background-color: black; border-radius: 50%; position: absolute; z-index: 2000; left:calc(' + scoresheet.flavor_balance + '% - 4px); top: 4px;') &nbsp;
+						span.display_iblock(style='position: relative; left:0%;') |
+						span.display_iblock(style='position: relative; left:95%; ') |
+						span.display_iblock.text_size_50.text_bold(style='position: absolute; left:0px; bottom: 7px;') Hoppy
+						span.display_iblock.text_size_50.text_bold(style='position: absolute; left:74px; bottom: 7px;') Malty
+				.display_iblock(style='width: 15px; background-color: lightgrey; margin-left: 8.5px; padding-left: 5px; height: 13px; padding-top: 7px;')
+					span.display_iblock.border_solid_1(style='width: 8px; height: 8px; background-color: white;') #{scoresheet.flavor_balance_inappropriate ? 'X' : ' '}
+				.display_iblock(style='margin-left: 10px;')
+					span.display_iblock.border_bot_solid_1(style='width:430px;') #{scoresheet.flavor_flavor_balance_comment}
+			.row(style='margin-left: 25px;')
+				span.text_bold.text_right.display_iblock(style='width: 68px;') Finish/Aftertaste
+				.slider_parent.display_iblock(style='position: relative; line-height: 8px; z-index: 99; ')
+					.sliver_mainline.border_bot_solid_1.display_iblock(style='width: 89px; margin-left: 10px; position: relative; z-index: 100;')
+						span.display_iblock(style='width: 8px; height: 8px; background-color: black; border-radius: 50%; position: absolute; z-index: 2000; left:calc(' + scoresheet.flavor_finish_aftertaste + '% - 4px); top: 4px;') &nbsp;
+						span.display_iblock(style='position: relative; left:0%;') |
+						span.display_iblock(style='position: relative; left:95%; ') |
+						span.display_iblock.text_size_50.text_bold(style='position: absolute; left:0px; bottom: 7px;') Dry
+						span.display_iblock.text_size_50.text_bold(style='position: absolute; left:72px; bottom: 7px;') Sweet
+				.display_iblock(style='width: 15px; background-color: lightgrey; margin-left: 8.5px; padding-left: 5px; height: 13px; padding-top: 7px;')
+					span.display_iblock.border_solid_1(style='width: 8px; height: 8px; background-color: white;') #{scoresheet.flavor_finish_aftertaste_inappropriate ? 'X' : ' '}
+				.display_iblock(style='margin-left: 10px;')
+					span.display_iblock.border_bot_solid_1(style='width:430px;') #{scoresheet.flavor_finish_aftertaste_comment}
+			.row(style='margin-left: 25px; height: 13px; padding-top: 7px;')
+				span.text_bold.text_right.display_iblock(style='width: 68px;') Other
+				.display_iblock(style='margin-left: 11px;')
+					span.display_iblock.border_bot_solid_1(style='width:562px;') #{scoresheet.flavor_other_comment}
+			.total.display_iblock.border_solid_1(style='height: 50px; width: 50px; position: absolute; top: 97px; right: 5px; ')
+				.text_center(style='height: 64%; padding-top: 7px; width: 100%; background-color: lightgrey; font-size:calc(100% + 2vw);') #{scoresheet.flavor_score}
+				.text_right
+					span.display_iblock(style='border-left: 1px solid black; border-top: 1px solid black; width: 12px;')
+						| 20
+		//
+			Flows Section and scoring guide
+		.flaws_scoring_section.float_left(style='width: 31%')
+			.mbot_5.mtop_5
+				span.text_bold.text_larger Flaws for style
+				span.text_small (mark L-M-H for all that apply)
+			.flaws_table.mleft_15.float_left
+				.row
+					div
+						| Acetaldehyde
+					div
+						span #{scoresheet.descriptor_acetaldehyde ? 'X' : ' '}
+					div
+						| Metallic
+					div
+						span #{scoresheet.descriptor_metallic ? 'X' : ' '}
+				.row
+					div
+						| Alcoholic / Hot
+					div
+						span #{scoresheet.descriptor_alcoholic ? 'X' : ' '}
+					div
+						| Musty
+					div
+						span #{scoresheet.descriptor_musty ? 'X' : ' '}
+				.row
+					div
+						| Astringent
+					div
+						span #{scoresheet.descriptor_astringent ? 'X' : ' '}
+					div
+						| Oxidized
+					div
+						span #{scoresheet.descriptor_oxidized ? 'X' : ' '}
+				.row
+					div
+						| Brettanomyces
+					div
+						span #{scoresheet.descriptor_brettanomyces ? 'X' : ' '}
+					div
+						| Phenolic
+					div
+						span #{scoresheet.descriptor_phenolic ? 'X' : ' '}
+				.row
+					div
+						| Diacetyl
+					div
+						span #{scoresheet.descriptor_diacetyl ? 'X' : ' '}
+					div
+						| Solvent / Fusel
+					div
+						span #{scoresheet.descriptor_solvent ? 'X' : ' '}
+				.row
+					div
+						| DMS
+					div
+						span #{scoresheet.descriptor_dms ? 'X' : ' '}
+					div
+						| Sour / Acidic
+					div
+						span #{scoresheet.descriptor_sour ? 'X' : ' '}
+				.row
+					div
+						| Estery
+					div
+						span #{scoresheet.descriptor_estery ? 'X' : ' '}
+					div
+						| Smoky
+					div
+						span #{scoresheet.descriptor_smoky ? 'X' : ' '}
+				.row
+					div
+						| Grassy
+					div
+						span #{scoresheet.descriptor_grassy ? 'X' : ' '}
+					div
+						| Spicy
+					div
+						span #{scoresheet.descriptor_spicy ? 'X' : ' '}
+				.row
+					div
+						| Light-Struck
+					div
+						span #{scoresheet.descriptor_lightstruck ? 'X' : ' '}
+					div
+						| Sulfur
+					div
+						span #{scoresheet.descriptor_sulfur ? 'X' : ' '}
+				.row
+					div
+						| Yeasty
+					div
+						span #{scoresheet.descriptor_yeasty ? 'X' : ' '}
+					div
+						| Vegetal
+					div
+						span #{scoresheet.descriptor_vegetal ? 'X' : ' '}
+			.scoring_guide_table.mleft_15.mtop_15.float_left(style='width: 211px; ')
+				span.display_iblock.vertText.float_left.text_center.text_bold(style='height: 42px; background-color: black; color: white; ') Scoring Guide
+				.row
+					div
+						| Outstanding
+					.background_lgray
+						| 45-50
+					div
+						| World-class example of style.
+				.row
+					div
+						| Excellent
+					.background_lgray
+						| 38-44
+					div
+						| Exemplifies style well, requires minor fine-tuning.
+				.row
+					div
+						| Very Good
+					.background_lgray
+						| 30-37
+					div
+						| Generally within style parameters, minor flaws.
+				.row
+					div
+						| Good
+					.background_lgray
+						| 21-29
+					div
+						| Misses the mark on style and/or minor flaws.
+				.row
+					div
+						| Fair
+					.background_lgray
+						| 14-20
+					div
+						| Off flavors/aromas or major style deficiencies.
+				.row
+					div
+						| Problematic
+					.background_lgray
+						| 0-13
+					div
+						| Major off flavors and aromas dominate.
+		//
+			Mouthfeel Section
+		.mouthfeel_section.ptop_5.float_left(style='position: relative; width: 69%; ')
+			.flag_window.mleft_15(style='position: relative; bottom: 6px; left: 0;')
+				.flag_label
+					.left_spacer &nbsp;
+					.left_point &nbsp;
+					.main_flag Mouthfeel
+					.flag_point &nbsp;
+			span.display_iblock.text_size_70.text_bold(style='background-color: lightgrey; padding: 1px 5px 2px 5px; position: relative; right: 40px; bottom: 8px;') Inappropriate
+			span.display_iblock(style='width: 20px; background-color: lightgrey; position: relative; top: 2px; right: 76px;') &nbsp;
+			span.display_iblock.text_size_70.text_bold(style='background-color: lightgrey; padding: 1px 5px 2px 5px; position: relative; left: 85px; bottom: 8px;') Inappropriate
+			.row
+				span.text_bold.text_right.display_iblock(style='width: 68px;') Body
+				.slider_parent.display_iblock(style='position: relative; line-height: 8px; z-index: 99; ')
+					.sliver_mainline.border_bot_solid_1.display_iblock(style='width: 89px; margin-left: 10px; position: relative; z-index: 100;')
+						span.display_iblock(style='width: 8px; height: 8px; background-color: black; border-radius: 50%; position: absolute; z-index: 2000; left:calc(' + scoresheet.mouthfeel_body + '% - 4px); top: 4px;') &nbsp;
+						span.display_iblock(style='position: relative; left:0px;') |
+						span.display_iblock(style='position: relative; left:46%;') |
+						span.display_iblock(style='position: relative; left:93%;') |
+						span.text_size_50.text_bold(style='position: absolute; left:-1px; bottom: 8px;') Thin
+						span.text_size_50.text_bold(style='position: absolute; left:42px; bottom: 8px;') M
+						span.text_size_50.text_bold(style='position: absolute; left:78px; bottom: 8px;') Full
+				.display_iblock(style='width: 15px; background-color: lightgrey; margin-left: 8.5px; padding-left: 5px; height: 13px; padding-top: 7px;')
+					span.display_iblock.border_solid_1(style='width: 8px; height: 8px; background-color: white;') #{scoresheet.mouthfeel_body_inappropriate ? 'X' : ' '}
+				span.text_bold.text_right.display_iblock(style='width: 68px;') Creaminess
+				.slider_parent.display_iblock(style='position: relative; line-height: 8px; z-index: 99; ')
+					.sliver_mainline.border_bot_solid_1.display_iblock(style='width: 89px; margin-left: 10px; position: relative; z-index: 100;')
+						span.display_iblock(style='width: 8px; height: 8px; background-color: black; border-radius: 50%; position: absolute; z-index: 2000; left:calc(' + scoresheet.mouthfeel_creaminess + '% - 4px); top: 4px;') &nbsp;
+						span.display_iblock(style='position: relative; left:0%;') |
+						span.display_iblock(style='position: relative; left:7%;') |
+						span.display_iblock(style='position: relative; left:44%;') |
+						span.display_iblock(style='position: relative; left:91%') |
+						span.text_size_40.text_bold(style='position: absolute; left:-13px; bottom: 8px;') None
+						span.text_size_50.text_bold(style='position: absolute; left:8px; bottom: 8px;') L
+						span.text_size_50.text_bold(style='position: absolute; left:42px; bottom: 8px;') M
+						span.text_size_50.text_bold(style='position: absolute; left:87px; bottom: 8px;') H
+				.display_iblock(style='width: 15px; background-color: lightgrey; margin-left: 8.5px; padding-left: 5px; height: 13px; padding-top: 7px;')
+					span.display_iblock.border_solid_1(style='width: 8px; height: 8px; background-color: white;') #{scoresheet.mouthfeel_creaminess_inappropriate ? 'X' : ' '}
+				span.display_iblock(style='width: 20px; background-color: lightgrey; position: relative; bottom: 19px; right: 20px; ') &nbsp;
+			.row
+				span.text_bold.text_right.display_iblock(style='width: 68px;') Carbonation
+				.slider_parent.display_iblock(style='position: relative; line-height: 8px; z-index: 99; ')
+					.sliver_mainline.border_bot_solid_1.display_iblock(style='width: 89px; margin-left: 10px; position: relative; z-index: 100;')
+						span.display_iblock(style='width: 8px; height: 8px; background-color: black; border-radius: 50%; position: absolute; z-index: 2000; left:calc(' + scoresheet.mouthfeel_carbonation + '% - 4px); top: 4px;') &nbsp;
+						span.display_iblock(style='position: relative; left:0%;') |
+						span.display_iblock(style='position: relative; left:7%;') |
+						span.display_iblock(style='position: relative; left:44%;') |
+						span.display_iblock(style='position: relative; left:91%') |
+						span.text_size_40.text_bold(style='position: absolute; left:-13px; bottom: 8px;') None
+						span.text_size_50.text_bold(style='position: absolute; left:8px; bottom: 8px;') L
+						span.text_size_50.text_bold(style='position: absolute; left:42px; bottom: 8px;') M
+						span.text_size_50.text_bold(style='position: absolute; left:87px; bottom: 8px;') H
+				.display_iblock(style='width: 15px; background-color: lightgrey; margin-left: 8.5px; padding-left: 5px; height: 13px; padding-top: 7px;')
+					span.display_iblock.border_solid_1(style='width: 8px; height: 8px; background-color: white;') #{scoresheet.mouthfeel_carbonation_inappropriate ? 'X' : ' '}
+				span.text_bold.text_right.display_iblock(style='width: 68px;') Astringency
+				.slider_parent.display_iblock(style='position: relative; line-height: 8px; z-index: 99; ')
+					.sliver_mainline.border_bot_solid_1.display_iblock(style='width: 89px; margin-left: 10px; position: relative; z-index: 100;')
+						span.display_iblock(style='width: 8px; height: 8px; background-color: black; border-radius: 50%; position: absolute; z-index: 2000; left:calc(' + scoresheet.mouthfeel_astringency + '% - 4px); top: 4px;') &nbsp;
+						span.display_iblock(style='position: relative; left:0%;') |
+						span.display_iblock(style='position: relative; left:7%;') |
+						span.display_iblock(style='position: relative; left:44%;') |
+						span.display_iblock(style='position: relative; left:91%') |
+				.display_iblock(style='width: 15px; background-color: lightgrey; margin-left: 8.5px; padding-left: 5px; height: 13px; padding-top: 7px;')
+					span.display_iblock.border_solid_1(style='width: 8px; height: 8px; background-color: white;') #{scoresheet.mouthfeel_astringency_inappropriate ? 'X' : ' '}
+			.row
+				span.text_bold.text_right.display_iblock(style='width: 68px;') Warmth
+				.slider_parent.display_iblock(style='position: relative; line-height: 8px; z-index: 99; ')
+					.sliver_mainline.border_bot_solid_1.display_iblock(style='width: 89px; margin-left: 10px; position: relative; z-index: 100;')
+						span.display_iblock(style='width: 8px; height: 8px; background-color: black; border-radius: 50%; position: absolute; z-index: 2000; left:calc(' + scoresheet.mouthfeel_warmth + '% - 4px); top: 4px;') &nbsp;
+						span.display_iblock(style='position: relative; left:0px;') |
+						span.display_iblock(style='position: relative; left:46%;') |
+						span.display_iblock(style='position: relative; left:93%;') |
+				.display_iblock(style='width: 15px; background-color: lightgrey; margin-left: 8.5px; padding-left: 5px; height: 13px; padding-top: 7px;')
+					span.display_iblock.border_solid_1(style='width: 8px; height: 8px; background-color: white;') #{scoresheet.mouthfeel_warmth_inappropriate ? 'X' : ' '}
+				span.text_bold.text_right.display_iblock(style='width: 68px;') Other
+				.display_iblock(style='margin-left: 11px;')
+					span.display_iblock.border_bot_solid_1(style='width:150px;') #{scoresheet.mouthfeel_other_comment}
+			.total.display_iblock.border_solid_1(style='height: 50px; width: 50px; position: absolute; top: 25px; right: 5px; ')
+				.text_center(style='height: 64%; padding-top: 7px; width: 100%; background-color: lightgrey; font-size:calc(100% + 2vw);') #{scoresheet.mouthfeel_score}
+				.text_right
+					span.display_iblock(style='border-left: 1px solid black; border-top: 1px solid black; width: 12px;')
+						| 5
+		//
+			Overall Section
+		.overall_section.float_left(style='position: relative; width: 69%; ')
+			.flag_window.mleft_15(style='position: relative; top: 10px; left: 0;')
+				.flag_label
+					.left_spacer &nbsp;
+					.left_point &nbsp;
+					.main_flag Overall
+					.flag_point &nbsp;
+			.row.mbot_5(style='margin-left: 78px; ')
+				span.text_bold.text_right.display_iblock.text_small(style='width: 77px;') Classic Example
+				.slider_parent.display_iblock(style='position: relative; line-height: 8px; z-index: 99; ')
+					.sliver_mainline.border_bot_solid_1.display_iblock(style='width: 173px; margin-left: 10px; position: relative; z-index: 100;')
+						span.display_iblock(style='width: 8px; height: 8px; background-color: black; border-radius: 50%; position: absolute; z-index: 2000; left:calc(' + scoresheet.overall_class_example + '% - 4px); top: 4px;') &nbsp;
+						span.display_iblock(style='position: relative; left:0%;') |
+						span.display_iblock(style='position: relative; left:31px;') |
+						span.display_iblock(style='position: relative; left:64px;') |
+						span.display_iblock(style='position: relative; left:96px;') |
+						span.display_iblock(style='position: relative; left:129px;') |
+						span.display_iblock(style='position: relative; left:93%;') |
+				span.text_bold.text_left.display_iblock.text_small(style='width: 68px; margin-left:10px;') Not to Style
+			.row.mbot_5(style='margin-left: 78px; ')
+				span.text_bold.text_right.display_iblock.text_small(style='width: 77px;') Flawless
+				.slider_parent.display_iblock(style='position: relative; line-height: 8px; z-index: 99; ')
+					.sliver_mainline.border_bot_solid_1.display_iblock(style='width: 173px; margin-left: 10px; position: relative; z-index: 100;')
+						span.display_iblock(style='width: 8px; height: 8px; background-color: black; border-radius: 50%; position: absolute; z-index: 2000; left:calc(' + scoresheet.overall_flawless + '% - 4px); top: 4px;') &nbsp;
+						span.display_iblock(style='position: relative; left:0%;') |
+						span.display_iblock(style='position: relative; left:31px;') |
+						span.display_iblock(style='position: relative; left:64px;') |
+						span.display_iblock(style='position: relative; left:96px;') |
+						span.display_iblock(style='position: relative; left:129px;') |
+						span.display_iblock(style='position: relative; left:93%;') |
+				span.text_bold.text_left.display_iblock.text_small(style='width: 93px; margin-left:10px;') Significant Flaws
+			.row(style='margin-left: 78px; ')
+				span.text_bold.text_right.display_iblock.text_small(style='width: 77px;') Wonderful
+				.slider_parent.display_iblock(style='position: relative; line-height: 8px; z-index: 99; ')
+					.sliver_mainline.border_bot_solid_1.display_iblock(style='width: 173px; margin-left: 10px; position: relative; z-index: 100;')
+						span.display_iblock(style='width: 8px; height: 8px; background-color: black; border-radius: 50%; position: absolute; z-index: 2000; left:calc(' + scoresheet.overall_wonderful + '% - 4px); top: 4px;') &nbsp;
+						span.display_iblock(style='position: relative; left:0%;') |
+						span.display_iblock(style='position: relative; left:31px;') |
+						span.display_iblock(style='position: relative; left:64px;') |
+						span.display_iblock(style='position: relative; left:96px;') |
+						span.display_iblock(style='position: relative; left:129px;') |
+						span.display_iblock(style='position: relative; left:93%;') |
+				span.text_bold.text_left.display_iblock.text_small(style='width: 68px; margin-left:10px;') Lifeless
+			.total.display_iblock.border_solid_1(style='height: 50px; width: 50px; position: absolute; top: 25px; right: 5px; ')
+				.text_center(style='height: 64%; padding-top: 7px; width: 100%; background-color: lightgrey; font-size:calc(100% + 2vw);') #{scoresheet.overall_score}
+				.text_right
+					span.display_iblock(style='border-left: 1px solid black; border-top: 1px solid black; width: 12px;')
+						| 10
+		//
+			Feedback Section
+		.feedback_section.ptop_5.float_left(style='position: relative; width: 69%; ')
+			span.display_iblock.text_bold.mleft_15 Feedback
+			span.text_size_70.mleft_5
+				| Provide comments on style, recipe, process, and drinking pleasure. Include helpful suggestions to the brewer.
+			.background_lgray.border_solid_1.mleft_5(style='width: 430px; height: 100px;') #{scoresheet.feedback_comment}
+			span.display_iblock.text_bold.text_larger(style='position: relative; left: 384px; top: 11px;') Judge Total
+			.total.display_iblock.border_solid_1(style='height: 50px; width: 50px; position: absolute; top: 88px; right: 5px; ')
+				.text_center(style='height: 64%; padding-top: 7px; width: 100%; background-color: lightgrey; font-size:calc(100% + 2vw);') #{scoresheet.judge_total}
+				.text_right
+					span.display_iblock(style='border-left: 1px solid black; border-top: 1px solid black; width: 12px;')
+						| 50
+
+	script.
+		function resizeText(ele) {
+			calcTextWidth(ele);
+			calcTextSize(ele);
+		}
+
+		// get each element that needs to be resized
+		let resizeThese = document.getElementsByClassName("text_resize_marker");
+		console.log(resizeThese);
+		Array.prototype.forEach.call(resizeThese, function(ele) {
+			resizeText(ele);
+		});
+
+		function calcTextWidth(ele) {
+			const parentContainerWidth = ele.parentNode.clientWidth;
+
+			const currentTextWidth = ele.scrollWidth;
+			const currentFontStretch = parseInt(window.getComputedStyle(ele).fontStretch);
+
+
+			console.log('parent: ' + parentContainerWidth + ' textwidth: ' + currentTextWidth + ' stretch: ' +currentFontStretch);
+			const newValue = Math.min(Math.max(300, (parentContainerWidth / currentTextWidth) * currentFontStretch), 500)
+
+			ele.style.setProperty('--fontStretch', newValue + '%');
+		}
+
+		function calcTextSize(ele) {
+			const parentContainerWidth = ele.parentNode.clientWidth;
+			const currentTextWidth = ele.scrollWidth;
+			const currentFontSize = parseInt(window.getComputedStyle(ele).fontSize);
+			const newValue = Math.min(Math.max(16, (parentContainerWidth / currentTextWidth) * currentFontSize), 500)
+
+			ele.style.setProperty('--fontSize', newValue +'px');
+		}
