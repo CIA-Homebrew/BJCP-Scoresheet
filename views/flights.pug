@@ -27,7 +27,7 @@ block content
 								- var unsubmittedFlights = Object.values(flights).filter(flight => !flight.submitted)
 								if unsubmittedFlights.length
 									each flight, index in unsubmittedFlights
-										- var isLastFlight = (unsubmittedFlights.length - 1) === index
+										- var isLastFlight = (unsubmittedFlights.length - 1) === flights
 										.card
 											.card-header(id="header"+flight.id style="background-color: rgba(124,122,120,0.35")
 												.d-flex.flex-row.justify-content-between.p-0.m-0.panel-title(type="button" data-toggle="collapse" data-target="#collapse"+flight.id aria-expanded=isLastFlight ? "true" : "false" aria-controls="collapseOne" class=isLastFlight ? "collapsed" : "") 
@@ -79,7 +79,7 @@ block content
 							- var submittedFlights = Object.values(flights).filter(flight => flight.submitted)
 							if submittedFlights.length
 								each flight, index in submittedFlights
-									- var isLastFlight = submittedFlights.length - 1 === index
+									- var isLastFlight = submittedFlights.length - 1 === flights
 									.card
 										.card-header(id="header"+flight.id style="background-color: rgba(124,122,120,0.35")
 											.d-flex.flex-row.justify-content-between.panel-title(type="button" data-toggle="collapse" data-target="#collapse"+flight.id aria-expanded=isLastFlight ? "true" : "false" aria-controls="collapseOne" class=isLastFlight ? "collapsed" : "") 
@@ -265,11 +265,11 @@ block content
 		$(document).ready(() => {
 			// on page load
 			addEntry = (flightId) => {
-				window.location.replace(`/scoresheet/edit?flightId=${flightId}`)
+				window.location.replace(`/flight/${flightId}/scoresheet/edit`)
 			}
 
 			editEntry = (scoresheetId) => {
-				window.location.replace(`/scoresheet/edit?scoresheetId=${scoresheetId}`)
+				window.location.replace(`/flight/scoresheet/edit/${scoresheetId}`)
 			}
 
 			downloadPdf = (scoresheetId, scoresheetEntryNumber) => {
