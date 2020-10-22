@@ -71,7 +71,7 @@ block content
 									.form-group.col-sm-2.col-form-label Judge
 										label(for='judge_name')
 									.form-group.col-sm-4
-										input.form-control(type='text' id='judge_name' value=user.firstname + ' ' + user.lastname disabled)
+										input.form-control(type='text' id='judge_name' value=user.firstname + ' ' + user.lastname readonly)
 									.form-group.col-sm-1.col-form-label BJCP ID
 										label(for='bjcp_id')
 									.form-group.col-sm-2
@@ -88,7 +88,7 @@ block content
 									.form-group.col-sm-2.col-form-label Session Location
 										label(for='session_location')
 									.form-group.col-sm-4
-										input.form-control(type='text' id='session_location' name='session_location' value=session_location disabled)
+										input.form-control(type='text' id='session_location' name='session_location' value=session_location readonly)
 
 							.form-group
 								h4 Beer Information

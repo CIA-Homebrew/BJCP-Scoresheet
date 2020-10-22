@@ -3,6 +3,9 @@ const Flight = require('../models').Flight;
 const Scoresheet = require('../models').Scoresheet;
 const errorConstants = require("../helpers/errorConstants");
 
+let appConstants = require("../helpers/appConstants");
+let debug = require('debug')('aha-scoresheet:flightController');
+
 function jsonErrorProcessor(err, res) {
 	if (errorConstants[err]) {
 		res.status(400).json({
@@ -19,7 +22,43 @@ function jsonErrorProcessor(err, res) {
 	}
 }
 
-const flightController = {}
+const flightController = {};
+
+// Restrict access to root page
+flightController.home = function(req, res) {
+	const scoresheetPromise = Scoresheet.findAll({
+		where: {
+			user_id : req.user.id
+		},
+	})
+
+	const flightPromise = Flight.findAll({
+		where: {
+			created_by : req.user.id
+		},
+	})
+
+	Promise.all([scoresheetPromise, flightPromise]).then(([scoresheets, flights]) => {
+		const flightObject = {}
+
+		flights.forEach(flight => {
+			flightObject[flight.id] = {
+				...flight.get({plain:true}),
+				scoresheets : scoresheets.filter(scoresheet => scoresheet.flight_key === flight.id).map(scoresheet => scoresheet.get({plain:true}))
+			}
+		})
+
+		res.render('flights', {
+			user: req.user,
+			title : appConstants.APP_NAME + " - Home",
+			flights: flightObject
+		})
+	}).catch(err => {
+		res.status(500)
+		debug(err)
+		console.log(err)
+	})
+};
 
 flightController.getFlightByName = function(req,res) {
     const flightName = req.body.flightName

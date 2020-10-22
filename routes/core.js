@@ -39,32 +39,41 @@ router.post('/profile/email', authMiddle.isAuthenticated, authController.updateE
 router.post('/profile/password', authMiddle.isAuthenticated, authController.updatePassword);
 
 //* SCORESHEET FUNCTIONS *//
-
-//route for scoresheet individual or new load
-router.get('/scoresheet/edit/', authMiddle.isAuthenticated, scoresheetController.initScoresheet);
-
-//route for scoresheet individual post edit
-router.post('/scoresheet/edit/', authMiddle.isAuthenticated, scoresheetController.initScoresheet);
-
-// route for scoresheet ajax autosave
-router.post('/scoresheet/update/', authMiddle.isAuthenticated, scoresheetController.doScoresheetDataChange);
-
-//route for PDF Generate
+// REWRITES
+router.get('/flight/scoresheet/edit/:scoresheetId', authMiddle.isAuthenticated, (req, res) => {
+	req.session.scoresheetId = req.params.scoresheetId;
+	res.redirect('/flight/scoresheet/edit/');
+});
+// GETS
+router.get('/flight/scoresheet/edit/', authMiddle.isAuthenticated, scoresheetController.initScoresheet);
 router.get('/scoresheet/pdf/:scoresheetId', authMiddle.isAuthenticated, scoresheetController.generatePDF);
+// POSTS
+router.post('/scoresheet/edit/', authMiddle.isAuthenticated, scoresheetController.initScoresheet);
+router.post('/scoresheet/update/', authMiddle.isAuthenticated, scoresheetController.doScoresheetDataChange);
 router.post('/scoresheet/previewpdf', authMiddle.isAdmin, scoresheetController.previewPDF);
 
 //* ADMIN FUNCTIONS *//
+// GETS
 router.get('/admin', authMiddle.isAdmin, adminController.controlPanel);
 router.get('/admin/alldata', authMiddle.isAdmin, adminController.getAllData)
+// POSTS
 router.post('/admin/resetpassword', authMiddle.isAdmin, authController.resetPassword)
 
 //* FLIGHT FUNCTIONS *//
+// REWRITES
+router.get('/flight/:flightId/scoresheet/edit/', authMiddle.isAuthenticated, (req, res) => {
+	req.session.flightId = req.params.flightId;
+	res.redirect('/flight/scoresheet/edit/');
+});
+// GETS
+router.get('/flight', authMiddle.isAuthenticated, flightController.home);
+
+//POSTS
 router.post('/flight/add', authMiddle.isAuthenticated, flightController.addFlight)
 router.post('/flight/edit', authMiddle.isAdmin, flightController.editFlight)
 router.post('/flight/submit', authMiddle.isAuthenticated, flightController.submitFlight)
 router.post('/flight/getByName', authMiddle.isAuthenticated, flightController.getFlightByName)
 router.post('/flight/getById', authMiddle.isAuthenticated, flightController.getFlightById)
 router.post('/flight/delete', authMiddle.isAdmin, flightController.deleteFlight)
-
 
 module.exports = router;

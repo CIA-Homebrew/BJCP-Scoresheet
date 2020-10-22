@@ -79,8 +79,9 @@ scoresheetController.loadScoresheetList = function(req, res) {
  */
 scoresheetController.initScoresheet = function(req, res) {	
 	// If we are provided with a scoresheet ID then load it
-	if (req.body.scoresheetId || req.query.scoresheetId) {
-		const scoresheetId = req.body.scoresheetId ? req.body.scoresheetId :  req.query.scoresheetId
+	if (req.session.scoresheetId) {
+		const scoresheetId = req.session.scoresheetId;
+		delete req.session.scoresheetId;
 
 		Scoresheet.findAll({
 			where: {
@@ -100,9 +101,11 @@ scoresheetController.initScoresheet = function(req, res) {
 				debug(err);
 			});
 	
-	} else if (req.query.flightId) {
+	} else if (req.session.flightId) {
 		// If we have a flight ID, then create a scoresheet with flight ID prepopulated
-		const flightId = req.query.flightId
+		const flightId = req.session.flightId
+		delete req.session.flightId;
+
 		Flight.findOne({
 			where: {
 				id: flightId,
@@ -120,7 +123,7 @@ scoresheetController.initScoresheet = function(req, res) {
 						user: req.user,
 						sess_date: date.getUTCFullYear() + '-' + ('0' + (date.getUTCMonth()+1)).slice(-2) + '-' + ('0' + date.getUTCDate()).slice(-2),
 						title : appConstants.APP_NAME + " - New Scoresheet",
-						flightId : req.query.flightId,
+						flightId : flightId,
 						session_location: flight.location,
 						flight_total: numScoresheets+1,
 						flight_position: numScoresheets+1

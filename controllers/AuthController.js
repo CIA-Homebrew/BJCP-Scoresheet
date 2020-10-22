@@ -58,49 +58,17 @@ function jsonErrorProcessor(err, res) {
 	}
 }
 
-// Restrict access to root page
-userController.home = function(req, res) {
-	if (!req.user) {
-		res.render('index', {
-			user : req.user,
-			title : appConstants.APP_NAME + " - Home"
-		});
-		return
+// Home page
+userController.home = function (req,res) {
+	if (req.user) {
+		res.redirect('/flight')
+		return;
 	}
-
-	const scoresheetPromise = Scoresheet.findAll({
-		where: {
-			user_id : req.user.id
-		},
-	})
-
-	const flightPromise = Flight.findAll({
-		where: {
-			created_by : req.user.id
-		},
-	})
-
-	Promise.all([scoresheetPromise, flightPromise]).then(([scoresheets, flights]) => {
-		const flightObject = {}
-
-		flights.forEach(flight => {		
-			flightObject[flight.id] = {
-				...flight.get({plain:true}),
-				scoresheets : scoresheets.filter(scoresheet => scoresheet.flight_key === flight.id).map(scoresheet => scoresheet.get({plain:true}))
-			}
-		})
-
-		res.render('index', {
-			user: req.user,
-			title : appConstants.APP_NAME + " - Home",
-			flights: flightObject
-		})
-	}).catch(err => {
-		res.status(500)
-		debug(err)
-		console.log(err)
-	})
-};
+	res.render('login', {
+		user : req.user,
+		title : appConstants.APP_NAME + " - Home"
+	});
+}
 
 // Go to registration page
 userController.register = function(req, res) {
