@@ -32,7 +32,17 @@ body {
 .border_solid_1 { border: 1px solid black; }
 .border_solid_2 { border: 2px solid black; }
 .border_solid_4_gray { border: 4px solid #5a5a5a; }
-.border_bot_solid_1 { border-bottom: 1px solid black;}
+.border_bot_solid_1 { border-bottom: 1px solid black; }
+.user_input_truncated {
+	border-bottom: 1px solid black;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+.entry_text_box {
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
 .row { }
 .display_iblock { display: inline-block; }
 .lheight_normal { line-height: normal; }

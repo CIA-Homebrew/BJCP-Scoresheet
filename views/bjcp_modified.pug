@@ -24,18 +24,18 @@ body
 					.col.col_20
 						| Judge Name
 					.col
-						span.border_bot_solid_1.display_iblock.lheight_normal.text_center.span_width_165 #{judge.firstname} #{judge.lastname}
+						span.user_input_truncated.display_iblock.lheight_normal.text_center.span_width_165 #{judge.firstname} #{judge.lastname}
 				.row.row_height_25
 					.col.col_20
 						| BJCP ID &amp; Rank
 					.col
-						span.border_bot_solid_1.display_iblock.lheight_normal.text_center.span_width_165 #{judge.bjcp_id} #{judge.bjcp_rank}
+						span.user_input_truncated.display_iblock.lheight_normal.text_center.span_width_165 #{judge.bjcp_id} #{judge.bjcp_rank}
 				.row.row_height_25
 					.col.col_20
 						br
 						| &#x9;&#x9;&#x9;&#x9;&#x9;Email
 					.col
-						span.border_bot_solid_1.display_iblock.lheight_normal.text_center.span_width_165 #{judge.email}
+						span.user_input_truncated.display_iblock.lheight_normal.text_center.span_width_165 #{judge.email}
 			.text_size_85
 				.row.text_bold.pbot_5.mtop_5
 					| Non-BJCP Qualifications:
@@ -43,72 +43,72 @@ body
 					.col.col_25.text_right
 						| Cicerone
 					.col
-						span.display_iblock.border_solid_1.mleft_5(style='width: 8px; height: 8px; background-color: white;') #{judge.cicerone_rank ? 'X' : ' '}
+						span.display_iblock.border_solid_1.mleft_5.text_center(style='width: 8px; height: 8px; background-color: white;') #{judge.cicerone_rank ? 'X' : ' '}
 					.col.col_20.text_right
 						| Rank
 					.col.col_40
-						span.border_bot_solid_1.display_iblock.text_center.width_100 #{judge.cicerone_rank ? judge.cicerone_rank : ''}
+						span.user_input_truncated.display_iblock.text_center.width_100 #{judge.cicerone_rank ? judge.cicerone_rank : ''}
 				.row.pbot_5
 					.col.col_25.text_right
 						| Pro Brewer
 					.col
-						span.display_iblock.border_solid_1.mleft_5(style='width: 8px; height: 8px; background-color: white;') #{judge.pro_brewer_brewery ? 'X' : ' '}
+						span.display_iblock.border_solid_1.mleft_5.text_center(style='width: 8px; height: 8px; background-color: white;') #{judge.pro_brewer_brewery ? 'X' : ' '}
 					.col.col_20.text_right
 						| Brewery
 					.col.col_40
-						span.border_bot_solid_1.display_iblock.text_center.width_100 #{judge.pro_brewer_brewery ? judge.pro_brewer_brewery : ''}
+						span.user_input_truncated.display_iblock.text_center.width_100 #{judge.pro_brewer_brewery ? judge.pro_brewer_brewery : ''}
 				.row.pbot_5
 					.col.col_25.text_right
 						| Industry
 					.col
-						span.display_iblock.border_solid_1.mleft_5(style='width: 8px; height: 8px; background-color: white;') #{judge.industry_description ? 'X' : ' '}
+						span.display_iblock.border_solid_1.mleft_5.text_center(style='width: 8px; height: 8px; background-color: white;') #{judge.industry_description ? 'X' : ' '}
 					.col.col_20.text_right
 						| Describe
 					.col.col_40
-						span.border_bot_solid_1.display_iblock.text_center.width_100 #{judge.industry_description ? judge.industry_description : ''}
+						span.user_input_truncated.display_iblock.text_center.width_100 #{judge.industry_description ? judge.industry_description : ''}
 				.row.pbot_5
 					.col.col_25.text_right
 						| Judging
 					.col
-						span.display_iblock.border_solid_1.mleft_5(style='width: 8px; height: 8px; background-color: white;') #{judge.judging_years ? 'X' : ' '}
+						span.display_iblock.border_solid_1.mleft_5.text_center(style='width: 8px; height: 8px; background-color: white;') #{judge.judging_years ? 'X' : ' '}
 					.col.col_20.text_right
 						| Years
 					.col.col_40
-						span.border_bot_solid_1.display_iblock.text_center.width_100 #{judge.judging_years ? judge.judging_years : ''}
+						span.user_input_truncated.display_iblock.text_center.width_100 #{judge.judging_years ? judge.judging_years : ''}
 		.location_information.text_normal.lheight_large
 			.row
-				span Location
-				span.border_bot_solid_1.display_iblock.lheight_normal.text_center(style='width:150px; margin-right: 5px;') #{scoresheet.session_location}
+				span Flight Location
+				span.user_input_truncated.display_iblock.lheight_normal.text_center(style='width:150px; margin-right: 5px;') #{scoresheet.session_location}
 				span Date
-				span.border_bot_solid_1.display_iblock.lheight_normal.text_center(style='width:150px;') #{new Date(scoresheet.session_date).toLocaleDateString()}
+				span.user_input_truncated.display_iblock.lheight_normal.text_center(style='width:150px;') #{new Date(scoresheet.session_date).toLocaleDateString()}
 		.row.clearfix
 			.entry_information.text_normal.float_left
 				.row
 					.col.col_40.float_left
 						.row.width_100.row_height_15
 							.col
-								| Category#
+								| Category #
 							.col(style='width: 49%')
-								span.border_bot_solid_1.display_iblock.lheight_normal.text_center.width_100 #{scoresheet.category}
+								span.user_input_truncated.display_iblock.lheight_normal.text_center.width_100 #{scoresheet.category}
 						.row.width_100.row_height_15
 							.col
 								| Sub (a-f)
 							.col.float_right(style='width: 49%')
-								span.border_bot_solid_1.display_iblock.lheight_normal.text_center.width_100 #{scoresheet.sub}
+								span.user_input_truncated.display_iblock.lheight_normal.text_center.width_100 #{scoresheet.sub}
 					.col.col_40.float_right
 						.row.entry_number(style='height: 28px;')
 							.part2.text_bold Entry #
-							.border_solid_1.float_left.text_center.text_resize_marker(style='width: 87%; height: 100%;line-height: 27px;font-stretch: var(--fontStretch);font-size: var(--fontSize);') #{scoresheet.entry_number}
+							.border_solid_1.float_left.text_center.text_resize_marker(style='width: 87%; height: 100%;line-height: 27px;font-stretch: var(--fontStretch);font-size: var(--fontSize);', data-min-text-size='18') #{scoresheet.entry_number}
 				.row.width_100.row_height_15.float_left
 					.col
 						| Subcategory
 					.col(style='width: 73%')
-						span.border_bot_solid_1.display_iblock.lheight_normal.text_center.width_100 #{scoresheet.subcategory}
+						span.user_input_truncated.display_iblock.lheight_normal.text_center.width_100 #{scoresheet.subcategory}
 				.row.width_100.row_height_15.float_left
 					.col
 						| Special Ingredients
 					.col(style='width: 60%')
-						span.border_bot_solid_1.display_iblock.lheight_normal.text_center.width_100 #{scoresheet.special_ingredients}
+						span.user_input_truncated.display_iblock.lheight_normal.text_center.width_100 #{scoresheet.special_ingredients}
 			.border_solid_1.mleft_15.float_left.text_normal(style='height: 75px; width: 65px; padding: 3px; ')
 				div Position in flight
 				.row(style='margin-bottom: 3px')
@@ -126,8 +126,8 @@ body
 					span.display_iblock.text_center.float_left(style='width: 46px;')
 						| Advanced to
 						span.text_bold MINI-BOS
-					span.border_solid_1.display_iblock.float_left(style='width: 12px; height: 90%; border-left: 2px solid black;') #{scoresheet.mini_boss_advanced ? 'X' : ' '}
-				div
+					span.border_solid_1.display_iblock.float_left.text_center.text_resize_marker(style='width: 12px; height: 90%; border-left: 2px solid black; line-height: 18px;') #{scoresheet.mini_boss_advanced ? 'X' : ' '}
+				div.background_lgray
 					span.border_solid_1.display_iblock.height_20p.text_resize_marker(style='margin: 1px; width: 93%; text-align: center; line-height: 20px; font-stretch: var(--fontStretch);font-size: var(--fontSize);') #{scoresheet.place === -1 ? "" : scoresheet.place === 0 ? "Advance" : scoresheet.place}
 				.text_bold.text_center
 					| PLACE
@@ -136,10 +136,10 @@ body
 			.float_right.text_center(style='width: 140px; height: 17px; background-color: #5a5a5a; color: white; padding-top: 6px; font-size: 12px; margin-right: 2.5px;') #{scoresheet.consensus_score ? 'CONSENSUS SCORE' : 'JUDGE SCORE'}
 			.float_left.text_normal.mtop_5(style='margin-left: 35px; margin-right: 5px')
 				| Bottle Inspection
-				span.display_iblock.border_solid_2.text_bold(style='height: 8px; width: 8px; margin-left: 8px;') #{scoresheet.bottle_inspection_check ? 'X' : ' '}
+				span.display_iblock.border_solid_2.text_bold.text_center(style='height: 8px; width: 8px; margin-left: 8px;') #{scoresheet.bottle_inspection_check ? 'X' : ' '}
 				span.text_bold(style="margin-right: 8px;") OK
 				span(style="margin-right: 3px;") Comments:
-				span.border_bot_solid_1.display_iblock(style='width: 200px;') #{scoresheet.bottle_inspection_comment}
+				span.user_input_truncated.display_iblock(style='width: 200px;') #{scoresheet.bottle_inspection_comment}
 	#column_container.text_normal
 		//
 			Aroma Section
@@ -169,9 +169,9 @@ body
 						span.text_size_50.text_bold(style='position: absolute; left:42px; bottom: 15px;') M
 						span.text_size_50.text_bold(style='position: absolute; left:87px; bottom: 15px;') H
 				.display_iblock(style='width: 15px; background-color: lightgrey; margin-left: 8.5px; padding-left: 5px; height: 13px; padding-top: 7px;')
-					span.display_iblock.border_solid_1(style='width: 8px; height: 8px; background-color: white;') #{scoresheet.aroma_malt_inappropriate ? 'X' : ' '}
+					span.display_iblock.border_solid_1.text_center(style='width: 8px; height: 8px; background-color: white;') #{scoresheet.aroma_malt_inappropriate ? 'X' : ' '}
 				.display_iblock(style='margin-left: 10px;')
-					span.display_iblock.border_bot_solid_1(style='width:430px;') #{scoresheet.aroma_malt_comment}
+					span.display_iblock.user_input_truncated(style='width:430px;') #{scoresheet.aroma_malt_comment}
 			.row(style='margin-left: 25px;')
 				span.text_bold.text_right.display_iblock(style='width: 68px;') Hops
 				.slider_parent.display_iblock(style='position: relative; line-height: 8px; z-index: 99; ')
@@ -182,9 +182,9 @@ body
 						span.display_iblock(style='position: relative; left:44%;') |
 						span.display_iblock(style='position: relative; left:91%') |
 				.display_iblock(style='width: 15px; background-color: lightgrey; margin-left: 8.5px; padding-left: 5px; height: 13px; padding-top: 7px;')
-					span.display_iblock.border_solid_1(style='width: 8px; height: 8px; background-color: white;') #{scoresheet.aroma_hops_inappropriate ? 'X' : ' '}
+					span.display_iblock.border_solid_1.text_center(style='width: 8px; height: 8px; background-color: white;') #{scoresheet.aroma_hops_inappropriate ? 'X' : ' '}
 				.display_iblock(style='margin-left: 10px;')
-					span.display_iblock.border_bot_solid_1(style='width:430px;') #{scoresheet.aroma_hops_comment}
+					span.display_iblock.user_input_truncated(style='width:430px;') #{scoresheet.aroma_hops_comment}
 			.row(style='margin-left: 25px;')
 				span.text_bold.text_right.display_iblock(style='width: 68px;') Fermentation
 				.slider_parent.display_iblock(style='position: relative; line-height: 8px; z-index: 99; ')
@@ -195,13 +195,13 @@ body
 						span.display_iblock(style='position: relative; left:44%;') |
 						span.display_iblock(style='position: relative; left:91%') |
 				.display_iblock(style='width: 15px; background-color: lightgrey; margin-left: 8.5px; padding-left: 5px; height: 13px; padding-top: 7px;')
-					span.display_iblock.border_solid_1(style='width: 8px; height: 8px; background-color: white;') #{scoresheet.aroma_fermentation_inappropriate ? 'X' : ' '}
+					span.display_iblock.border_solid_1.text_center(style='width: 8px; height: 8px; background-color: white;') #{scoresheet.aroma_fermentation_inappropriate ? 'X' : ' '}
 				.display_iblock(style='margin-left: 10px;')
-					span.display_iblock.border_bot_solid_1(style='width:430px;') #{scoresheet.aroma_fermentation_comment}
+					span.display_iblock.user_input_truncated(style='width:430px;') #{scoresheet.aroma_fermentation_comment}
 			.row(style='margin-left: 25px; height: 13px; padding-top: 7px;')
 				span.text_bold.text_right.display_iblock(style='width: 68px;') Other
 				.display_iblock(style='margin-left: 11px;')
-					span.display_iblock.border_bot_solid_1(style='width:562px;') #{scoresheet.aroma_other_comment}
+					span.display_iblock.user_input_truncated(style='width:562px;') #{scoresheet.aroma_other_comment}
 			.total.display_iblock.border_solid_1(style='height: 50px; width: 50px; position: absolute; top: 50px; right: 5px; ')
 				.text_center(style='height: 64%; padding-top: 7px; width: 100%; background-color: lightgrey; font-size:calc(100% + 2vw);') #{scoresheet.aroma_score}
 				.text_right
@@ -237,9 +237,9 @@ body
 						span.text_size_50.text_bold.vertText(style='position: absolute; left:67px; bottom: 8px;') Brown
 						span.text_size_50.text_bold.vertText(style='position: absolute; left:85px; bottom: 8px;') Black
 				.display_iblock(style='width: 15px; background-color: lightgrey; margin-left: 8.5px; padding-left: 5px; height: 13px; padding-top: 7px;')
-					span.display_iblock.border_solid_1(style='width: 8px; height: 8px; background-color: white;') #{scoresheet.appearance_color_inappropriate ? 'X' : ' '}
+					span.display_iblock.border_solid_1.text_center(style='width: 8px; height: 8px; background-color: white;') #{scoresheet.appearance_color_inappropriate ? 'X' : ' '}
 				.display_iblock(style='margin-left: 10px;')
-					span.display_iblock.border_bot_solid_1(style='width:125px;') #{scoresheet.appearance_color_other}
+					span.display_iblock.user_input_truncated(style='width:125px;') #{scoresheet.appearance_color_other}
 				span.text_bold.text_right.display_iblock(style='width: 30px;') Head
 				.slider_parent.display_iblock(style='position: relative; line-height: 8px; z-index: 99; ')
 					.sliver_mainline.border_bot_solid_1.display_iblock(style='width: 89px; margin-left: 10px; position: relative; z-index: 100;')
@@ -256,9 +256,9 @@ body
 						span.display_iblock.text_size_50.text_bold.vertText(style='position: absolute; left:84px; bottom: 8px;') Brown
 				.display_iblock(style='width: 20px; background-color: lightgrey; position: absolute; top: 37px; right: 229px;') &nbsp;
 				.display_iblock(style='width: 15px; background-color: lightgrey; margin-left: 8.5px; padding-left: 5px; height: 13px; padding-top: 7px;')
-					span.display_iblock.border_solid_1(style='width: 8px; height: 8px; background-color: white;') #{scoresheet.appearance_head_inappropriate ? 'X' : ' '}
+					span.display_iblock.border_solid_1.text_center(style='width: 8px; height: 8px; background-color: white;') #{scoresheet.appearance_head_inappropriate ? 'X' : ' '}
 				.display_iblock(style='margin-left: 10px;')
-					span.display_iblock.border_bot_solid_1(style='width:125px;') #{scoresheet.appearance_head_other}
+					span.display_iblock.user_input_truncated(style='width:125px;') #{scoresheet.appearance_head_other}
 			.row(style='margin-left: 25px;')
 				span.text_bold.text_right.display_iblock(style='width: 68px;') Clarity
 				.slider_parent.display_iblock(style='position: relative; line-height: 8px; z-index: 99; ')
@@ -272,7 +272,7 @@ body
 						span.display_iblock.text_size_50.text_bold(style='position: absolute; left:38px; bottom: 8px;') Hazy
 						span.display_iblock.text_size_50.text_bold(style='position: absolute; left:67px; bottom: 8px;') Opaque
 				.display_iblock(style='width: 15px; background-color: lightgrey; margin-left: 8.5px; padding-left: 5px; height: 13px; padding-top: 8.5px;')
-					span.display_iblock.border_solid_1(style='width: 8px; height: 8px; background-color: white;') #{scoresheet.appearance_clarity_inappropriate ? 'X' : ' '}
+					span.display_iblock.border_solid_1.text_center(style='width: 8px; height: 8px; background-color: white;') #{scoresheet.appearance_clarity_inappropriate ? 'X' : ' '}
 				.display_iblock.text_size_40(style='margin-left: 10px; width:111px; position: relative; bottom: 13px; ') Other
 				span.text_bold.text_right.display_iblock(style='width: 44px;') Retention
 				.slider_parent.display_iblock(style='position: relative; line-height: 8px; z-index: 99; ')
@@ -284,15 +284,15 @@ body
 						span.display_iblock.text_size_50.text_bold(style='position: absolute; left:65px; bottom: 9px;') Lasting
 				.display_iblock(style='width: 20px; background-color: lightgrey; position: absolute; top: 34px; right: 229px;') &nbsp;
 				.display_iblock(style='width: 15px; background-color: lightgrey; margin-left: 8.5px; padding-left: 5px; height: 13px; padding-top: 8.5px;')
-					span.display_iblock.border_solid_1(style='width: 8px; height: 8px; background-color: white;') #{scoresheet.appearance_retention_inappropriate ? 'X' : ' '}
+					span.display_iblock.border_solid_1.text_center(style='width: 8px; height: 8px; background-color: white;') #{scoresheet.appearance_retention_inappropriate ? 'X' : ' '}
 				.display_iblock.text_size_40(style='margin-left: 10px; width:111px; position: relative; bottom: 13px; ') Other
 			.row(style='margin-left: 25px; height: 13px; padding-top: 7px;')
 				span.text_bold.text_right.display_iblock(style='width: 68px;') Other
 				.display_iblock(style='margin-left: 11px;')
-					span.display_iblock.border_bot_solid_1(style='width:253px;') #{scoresheet.appearance_other_comment}
+					span.display_iblock.user_input_truncated(style='width:253px;') #{scoresheet.appearance_other_comment}
 				span.text_bold.text_right.display_iblock(style='width: 31px;') Texture
 				.display_iblock(style='margin-left: 11px;')
-					span.display_iblock.border_bot_solid_1(style='width:259px;') #{scoresheet.appearance_texture_comment}
+					span.display_iblock.user_input_truncated(style='width:259px;') #{scoresheet.appearance_texture_comment}
 			.total.display_iblock.border_solid_1(style='height: 50px; width: 50px; position: absolute; top: 50px; right: 5px; ')
 				.text_center(style='height: 64%; padding-top: 7px; width: 100%; background-color: lightgrey; font-size:calc(100% + 2vw);') #{scoresheet.appearance_score}
 				.text_right
@@ -325,9 +325,9 @@ body
 						span.text_size_50.text_bold(style='position: absolute; left:42px; bottom: 15px;') M
 						span.text_size_50.text_bold(style='position: absolute; left:87px; bottom: 15px;') H
 				.display_iblock(style='width: 15px; background-color: lightgrey; margin-left: 8.5px; padding-left: 5px; height: 13px; padding-top: 7px;')
-					span.display_iblock.border_solid_1(style='width: 8px; height: 8px; background-color: white;') #{scoresheet.flavor_malt_inappropriate ? 'X' : ' '}
+					span.display_iblock.border_solid_1.text_center(style='width: 8px; height: 8px; background-color: white;') #{scoresheet.flavor_malt_inappropriate ? 'X' : ' '}
 				.display_iblock(style='margin-left: 10px;')
-					span.display_iblock.border_bot_solid_1(style='width:430px;') #{scoresheet.flavor_malt_comment}
+					span.display_iblock.user_input_truncated(style='width:430px;') #{scoresheet.flavor_malt_comment}
 			.row(style='margin-left: 25px;')
 				span.text_bold.text_right.display_iblock(style='width: 68px;') Hops
 				.slider_parent.display_iblock(style='position: relative; line-height: 8px; z-index: 99; ')
@@ -338,9 +338,9 @@ body
 						span.display_iblock(style='position: relative; left:44%;') |
 						span.display_iblock(style='position: relative; left:91%') |
 				.display_iblock(style='width: 15px; background-color: lightgrey; margin-left: 8.5px; padding-left: 5px; height: 13px; padding-top: 7px;')
-					span.display_iblock.border_solid_1(style='width: 8px; height: 8px; background-color: white;') #{scoresheet.flavor_hops_inappropriate ? 'X' : ' '}
+					span.display_iblock.border_solid_1.text_center(style='width: 8px; height: 8px; background-color: white;') #{scoresheet.flavor_hops_inappropriate ? 'X' : ' '}
 				.display_iblock(style='margin-left: 10px;')
-					span.display_iblock.border_bot_solid_1(style='width:430px;') #{scoresheet.flavor_hops_comment}
+					span.display_iblock.user_input_truncated(style='width:430px;') #{scoresheet.flavor_hops_comment}
 			.row(style='margin-left: 25px;')
 				span.text_bold.text_right.display_iblock(style='width: 68px;') Bitterness
 				.slider_parent.display_iblock(style='position: relative; line-height: 8px; z-index: 99; ')
@@ -351,9 +351,9 @@ body
 						span.display_iblock(style='position: relative; left:44%;') |
 						span.display_iblock(style='position: relative; left:91%') |
 				.display_iblock(style='width: 15px; background-color: lightgrey; margin-left: 8.5px; padding-left: 5px; height: 13px; padding-top: 7px;')
-					span.display_iblock.border_solid_1(style='width: 8px; height: 8px; background-color: white;') #{scoresheet.flavor_bitterness_inappropriate ? 'X' : ' '}
+					span.display_iblock.border_solid_1.text_center(style='width: 8px; height: 8px; background-color: white;') #{scoresheet.flavor_bitterness_inappropriate ? 'X' : ' '}
 				.display_iblock(style='margin-left: 10px;')
-					span.display_iblock.border_bot_solid_1(style='width:430px;') #{scoresheet.flavor_bitterness_comment}
+					span.display_iblock.user_input_truncated(style='width:430px;') #{scoresheet.flavor_bitterness_comment}
 			.row(style='margin-left: 25px;')
 				span.text_bold.text_right.display_iblock(style='width: 68px;') Fermentation
 				.slider_parent.display_iblock(style='position: relative; line-height: 8px; z-index: 99; ')
@@ -364,9 +364,9 @@ body
 						span.display_iblock(style='position: relative; left:44%;') |
 						span.display_iblock(style='position: relative; left:91%') |
 				.display_iblock(style='width: 15px; background-color: lightgrey; margin-left: 8.5px; padding-left: 5px; height: 13px; padding-top: 7px;')
-					span.display_iblock.border_solid_1(style='width: 8px; height: 8px; background-color: white;') #{scoresheet.flavor_fermentation_inappropriate ? 'X' : ' '}
+					span.display_iblock.border_solid_1.text_center(style='width: 8px; height: 8px; background-color: white;') #{scoresheet.flavor_fermentation_inappropriate ? 'X' : ' '}
 				.display_iblock(style='margin-left: 10px;')
-					span.display_iblock.border_bot_solid_1(style='width:430px;') #{scoresheet.flavor_fermentation_comment}
+					span.display_iblock.user_input_truncated(style='width:430px;') #{scoresheet.flavor_fermentation_comment}
 			.row(style='margin-left: 25px;')
 				span.text_bold.text_right.display_iblock(style='width: 68px;') Balance
 				.slider_parent.display_iblock(style='position: relative; line-height: 8px; z-index: 99; ')
@@ -377,9 +377,9 @@ body
 						span.display_iblock.text_size_50.text_bold(style='position: absolute; left:0px; bottom: 7px;') Hoppy
 						span.display_iblock.text_size_50.text_bold(style='position: absolute; left:74px; bottom: 7px;') Malty
 				.display_iblock(style='width: 15px; background-color: lightgrey; margin-left: 8.5px; padding-left: 5px; height: 13px; padding-top: 7px;')
-					span.display_iblock.border_solid_1(style='width: 8px; height: 8px; background-color: white;') #{scoresheet.flavor_balance_inappropriate ? 'X' : ' '}
+					span.display_iblock.border_solid_1.text_center(style='width: 8px; height: 8px; background-color: white;') #{scoresheet.flavor_balance_inappropriate ? 'X' : ' '}
 				.display_iblock(style='margin-left: 10px;')
-					span.display_iblock.border_bot_solid_1(style='width:430px;') #{scoresheet.flavor_flavor_balance_comment}
+					span.display_iblock.user_input_truncated(style='width:430px;') #{scoresheet.flavor_flavor_balance_comment}
 			.row(style='margin-left: 25px;')
 				span.text_bold.text_right.display_iblock(style='width: 68px;') Finish/Aftertaste
 				.slider_parent.display_iblock(style='position: relative; line-height: 8px; z-index: 99; ')
@@ -390,13 +390,13 @@ body
 						span.display_iblock.text_size_50.text_bold(style='position: absolute; left:0px; bottom: 7px;') Dry
 						span.display_iblock.text_size_50.text_bold(style='position: absolute; left:72px; bottom: 7px;') Sweet
 				.display_iblock(style='width: 15px; background-color: lightgrey; margin-left: 8.5px; padding-left: 5px; height: 13px; padding-top: 7px;')
-					span.display_iblock.border_solid_1(style='width: 8px; height: 8px; background-color: white;') #{scoresheet.flavor_finish_aftertaste_inappropriate ? 'X' : ' '}
+					span.display_iblock.border_solid_1.text_center(style='width: 8px; height: 8px; background-color: white;') #{scoresheet.flavor_finish_aftertaste_inappropriate ? 'X' : ' '}
 				.display_iblock(style='margin-left: 10px;')
-					span.display_iblock.border_bot_solid_1(style='width:430px;') #{scoresheet.flavor_finish_aftertaste_comment}
+					span.display_iblock.user_input_truncated(style='width:430px;') #{scoresheet.flavor_finish_aftertaste_comment}
 			.row(style='margin-left: 25px; height: 13px; padding-top: 7px;')
 				span.text_bold.text_right.display_iblock(style='width: 68px;') Other
 				.display_iblock(style='margin-left: 11px;')
-					span.display_iblock.border_bot_solid_1(style='width:562px;') #{scoresheet.flavor_other_comment}
+					span.display_iblock.user_input_truncated(style='width:562px;') #{scoresheet.flavor_other_comment}
 			.total.display_iblock.border_solid_1(style='height: 50px; width: 50px; position: absolute; top: 97px; right: 5px; ')
 				.text_center(style='height: 64%; padding-top: 7px; width: 100%; background-color: lightgrey; font-size:calc(100% + 2vw);') #{scoresheet.flavor_score}
 				.text_right
@@ -620,7 +620,7 @@ body
 					span.display_iblock.border_solid_1(style='width: 8px; height: 8px; background-color: white;') #{scoresheet.mouthfeel_warmth_inappropriate ? 'X' : ' '}
 				span.text_bold.text_right.display_iblock(style='width: 68px;') Other
 				.display_iblock(style='margin-left: 11px;')
-					span.display_iblock.border_bot_solid_1(style='width:150px;') #{scoresheet.mouthfeel_other_comment}
+					span.display_iblock.user_input_truncated(style='width:150px;') #{scoresheet.mouthfeel_other_comment}
 			.total.display_iblock.border_solid_1(style='height: 50px; width: 50px; position: absolute; top: 25px; right: 5px; ')
 				.text_center(style='height: 64%; padding-top: 7px; width: 100%; background-color: lightgrey; font-size:calc(100% + 2vw);') #{scoresheet.mouthfeel_score}
 				.text_right
@@ -682,7 +682,7 @@ body
 			span.display_iblock.text_bold.mleft_15 Feedback
 			span.text_size_70.mleft_5
 				| Provide comments on style, recipe, process, and drinking pleasure. Include helpful suggestions to the brewer.
-			.background_lgray.border_solid_1.mleft_5(style='width: 430px; height: 100px;') #{scoresheet.feedback_comment}
+			.background_lgray.border_solid_1.mleft_5.entry_text_box(style='width: 430px; height: 100px;') #{scoresheet.feedback_comment}
 			span.display_iblock.text_bold.text_larger(style='position: relative; left: 384px; top: 11px;') Judge Total
 			.total.display_iblock.border_solid_1(style='height: 50px; width: 50px; position: absolute; top: 88px; right: 5px; ')
 				.text_center(style='height: 64%; padding-top: 7px; width: 100%; background-color: lightgrey; font-size:calc(100% + 2vw);') #{scoresheet.judge_total}
@@ -691,16 +691,11 @@ body
 						| 50
 
 	script.
-		function resizeText(ele) {
-			calcTextWidth(ele);
-			calcTextSize(ele);
-		}
-
 		// get each element that needs to be resized
 		let resizeThese = document.getElementsByClassName("text_resize_marker");
-		console.log(resizeThese);
 		Array.prototype.forEach.call(resizeThese, function(ele) {
-			resizeText(ele);
+			calcTextWidth(ele);
+			calcTextSize(ele);
 		});
 
 		function calcTextWidth(ele) {
@@ -708,10 +703,7 @@ body
 
 			const currentTextWidth = ele.scrollWidth;
 			const currentFontStretch = parseInt(window.getComputedStyle(ele).fontStretch);
-
-
-			console.log('parent: ' + parentContainerWidth + ' textwidth: ' + currentTextWidth + ' stretch: ' +currentFontStretch);
-			const newValue = Math.min(Math.max(300, (parentContainerWidth / currentTextWidth) * currentFontStretch), 500)
+			const newValue = Math.min(Math.max(250, (parentContainerWidth / currentTextWidth) * currentFontStretch), 500)
 
 			ele.style.setProperty('--fontStretch', newValue + '%');
 		}
@@ -720,7 +712,7 @@ body
 			const parentContainerWidth = ele.parentNode.clientWidth;
 			const currentTextWidth = ele.scrollWidth;
 			const currentFontSize = parseInt(window.getComputedStyle(ele).fontSize);
-			const newValue = Math.min(Math.max(16, (parentContainerWidth / currentTextWidth) * currentFontSize), 500)
+			const newValue = Math.min(Math.max(ele.dataset.minTextSize ? ele.dataset.minTextSize : 14, (parentContainerWidth / currentTextWidth) * currentFontSize), 500)
 
 			ele.style.setProperty('--fontSize', newValue +'px');
 		}
