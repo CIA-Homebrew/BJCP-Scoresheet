@@ -64,7 +64,7 @@ userController.home = function (req,res) {
 		res.redirect('/flight')
 		return;
 	}
-	res.render('login', {
+	res.render('index', {
 		user : req.user,
 		title : appConstants.APP_NAME + " - Home"
 	});

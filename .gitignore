@@ -4,3 +4,4 @@ node_modules/
 .skele
 *.sqlite3
 .env
+*.sqlite3-journal
