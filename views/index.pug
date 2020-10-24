@@ -42,7 +42,7 @@ block content
 																th.text-center(scope="col") Judge Score
 																th.text-center(scope="col") Consensus Score
 																th.text-center(scope="col") Place / Advance
-																th.text-center(scope="col") BOS Advance
+																th.text-center(scope="col") MiniBOS Advance
 																th(scope="col")
 														tbody
 															if flight.scoresheets.length
@@ -57,7 +57,6 @@ block content
 																		td.text-center
 																			select.form-control(onchange="updateScoresheet('"+scoresheet.id+"', 'place', this.value)")
 																				option -
-																				option(value=0 selected=scoresheet.place===0) Advance
 																				option(value=1 selected=scoresheet.place===1) 1st
 																				option(value=2 selected=scoresheet.place===2) 2nd
 																				option(value=3 selected=scoresheet.place===3) 3rd
@@ -94,7 +93,7 @@ block content
 															th.text-center(scope="col") Judge Score
 															th.text-center(scope="col") Consensus Score
 															th.text-center(scope="col") Placed / Advanced
-															th.text-center(scope="col") BOS Advanced
+															th.text-center(scope="col") MiniBOS Advanced
 															th(scope="col")
 													tbody
 														each scoresheet in flight.scoresheets

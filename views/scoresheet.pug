@@ -22,13 +22,12 @@ block content
 									.card-body.text-dark.px-3.py-1.text-center
 										select.form-control(id="place" name="place")
 											option(value=-1 selected) Select...
-											option(value=0) Round Advance
 											option(value=1) 1st
 											option(value=2) 2nd
 											option(value=3) 3rd
 								.card.border-dark.mb-3.mx-1
 									.card-header.px-0.py-0
-										p.small.mb-0.text-center Mini BOS
+										p.small.mb-0.text-center MiniBOS
 									.card-body.text-dark.px-0.py-1.text-center
 										.btn-group-toggle(data-toggle='buttons')
 											label.btn.btn-outline-success.btn-sm(class=(Boolean(scoresheet ? scoresheet.mini_boss_advanced : false) ? "active" : "")) Advance
@@ -113,7 +112,7 @@ block content
 									.form-group.col-sm-2
 										select.form-control(id='category' name='category' onchange='update_tooltips()')
 											option(hidden disabled selected value)
-											each val in [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27]
+											each val in [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34]
 												option= val
 									.form-group.col-sm-2
 										select.form-control(id='sub' name='sub' onchange='update_tooltips()')
