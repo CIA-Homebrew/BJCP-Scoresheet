@@ -61,7 +61,7 @@ block content
 				label.col-sm-4.col-form-label(for='bjcp_rank') BJCP Rank
 				.col-sm-8
 					select.form-control(name="bjcp_rank", id="bjcp_rank")
-						option(value='N/A' selected=true) N/A
+						option(value=null selected=true) N/A
 						option(value='Recognized' selected= user.bjcp_rank === 'Recognized') BJCP Recognized
 						option(value='Certified' selected= user.bjcp_rank === 'Certified') BJCP Certified
 						option(value='National' selected= user.bjcp_rank === 'National') BJCP National
@@ -73,7 +73,7 @@ block content
 				label.col-sm-4.col-form-label(for='cicerone_rank') Cicerone Rank
 				.col-sm-8
 					select.form-control(name="cicerone_rank", id="cicerone_rank")
-						option(value='N/A' selected=true) N/A
+						option(value=null selected=true) N/A
 						option(value='level1' selected= user.cicerone_rank === 'level1') Level 1 - Certified Beer Server
 						option(value='level2' selected= user.cicerone_rank === 'level2') Level 2 - Certified Cicerone
 						option(value='level3' selected= user.cicerone_rank === 'level3') Level 3 - Advanced Cicerone

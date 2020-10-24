@@ -135,6 +135,10 @@ module.exports = (sequelize, DataTypes) => {
 			type: DataTypes.BOOLEAN,
 			default: false
 		},
+		descriptor_brettanomyces: {
+			type: DataTypes.BOOLEAN,
+			default: false
+		},
 		descriptor_diacetyl: {
 			type: DataTypes.BOOLEAN,
 			default: false
@@ -171,11 +175,19 @@ module.exports = (sequelize, DataTypes) => {
 			type: DataTypes.BOOLEAN,
 			default: false
 		},
+		descriptor_smoky: {
+			type: DataTypes.BOOLEAN,
+			default: false
+		},
 		descriptor_solvent: {
 			type: DataTypes.BOOLEAN,
 			default: false
 		},
 		descriptor_sour: {
+			type: DataTypes.BOOLEAN,
+			default: false
+		},
+		descriptor_spicy: {
 			type: DataTypes.BOOLEAN,
 			default: false
 		},

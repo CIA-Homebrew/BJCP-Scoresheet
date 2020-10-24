@@ -261,10 +261,15 @@ scoresheetController.generatePDF = function(req, res) {
 			}),
 			Flight.findOne({
 				where: {
-					id: scoresheet.flight_key
+					id: scoresheet.flight_key,
+					submitted: true
 				}
 			}),
 		]).then(([user,flight]) => {
+			if (!flight) {
+				return Promise.reject("FLIGHT_NOT_SUBMITTED")
+			}
+
 			return [scoresheet.get({plain:true}), user.get({plain:true}), flight.get({plain:true})]
 		})
 	}).then(async ([scoresheet, user, flight]) => {
