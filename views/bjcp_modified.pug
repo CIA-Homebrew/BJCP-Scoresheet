@@ -128,7 +128,7 @@ body
 						span.text_bold MINI-BOS
 					span.border_solid_1.display_iblock.float_left.text_center.text_resize_marker(style='width: 12px; height: 90%; border-left: 2px solid black; line-height: 18px;') #{scoresheet.mini_boss_advanced ? 'X' : ' '}
 				div.background_lgray
-					span.border_solid_1.display_iblock.height_20p.text_resize_marker(style='margin: 1px; width: 93%; text-align: center; line-height: 20px; font-stretch: var(--fontStretch);font-size: var(--fontSize);') #{scoresheet.place === -1 ? "" : scoresheet.place === 0 ? "Advance" : scoresheet.place}
+					span.border_solid_1.display_iblock.height_20p.text_resize_marker(style='margin: 1px; width: 93%; text-align: center; line-height: 20px; font-stretch: var(--fontStretch);font-size: var(--fontSize);') #{scoresheet.place > 0 ? ['1st','2nd','3rd'][scoresheet.place-1] : ''}
 				.text_bold.text_center
 					| PLACE
 			.float_left

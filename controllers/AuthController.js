@@ -111,51 +111,88 @@ userController.register = function(req, res) {
 
 // Post registration
 userController.doRegister = function(req, res) {
-	// Password match
-	let passwd = null;
-	if (req.body.password.length > 0 && req.body.passwordC.length > 0 && req.body.password === req.body.passwordC) {
-		passwd = req.body.password;
-	} else {
-		req.flash('danger', 'Password do not match. Please try again.')
-		res.render('register', {
-			title : appConstants.APP_NAME + " - Register"
+	const emailRegex = new RegExp(appConstants.EMAIL_REGEX)
+	const passwordRegex = new RegExp(appConstants.PASSWORD_REGEX)
+	const email = req.body.email
+	const password = req.body.password
+	const confirmPassword = req.body.passwordC
+
+	User.findOne({where: {email: email}})
+	.then(takenEmailUser => {
+		let enteredUserInfo = User.build({
+			email : email,
+			firstname: req.body.firstname,
+			lastname: req.body.lastname,
+			bjcp_id: req.body.bjcp_id,
+			bjcp_rank: req.body.bjcp_rank,
+			cicerone_rank: req.body.cicerone_rank,
+			pro_brewer_brewery: req.body.pro_brewer_brewery,
+			industry_description: req.body.industry_description,
+			judging_years: req.body.judging_years
+		});
+
+		// Email available
+		if (takenEmailUser) {
+			return Promise.reject({
+				name: "CustomError",
+				message: "Email address already registered",
+				enteredInfo: enteredUserInfo
+			})
+		}
+		// Email criteria
+		if (!emailRegex.test(email)) {
+			return Promise.reject({
+				name: "CustomError",
+				message: "Invalid email format",
+				enteredInfo: enteredUserInfo
+			})
+		}
+		// Password criteria
+		if (!password) {
+			return Promise.reject({
+				name: "CustomError",
+				message: "Password cannot be empty",
+				enteredInfo: enteredUserInfo
+			})
+		}
+		if (!passwordRegex.test(password)) {
+			return Promise.reject({
+				name: "CustomError",
+				message: "Password does not meet security criteria",
+				enteredInfo: enteredUserInfo
+			})
+		}
+		// Password match
+		if (password !== confirmPassword) {
+			return Promise.reject({
+				name: "CustomError",
+				message: "Passwords do not match",
+				enteredInfo: enteredUserInfo
+			})
+		}
+
+		return User.create({
+			email : email,
+			password: password,
+			firstname: req.body.firstname,
+			lastname: req.body.lastname,
+			bjcp_id: req.body.bjcp_id,
+			bjcp_rank: req.body.bjcp_rank,
+			cicerone_rank: req.body.cicerone_rank,
+			pro_brewer_brewery: req.body.pro_brewer_brewery,
+			industry_description: req.body.industry_description,
+			judging_years: req.body.judging_years
 		})
-	}
+		.then(function(user) {
+			delete user.password
 
-	let newUser = User.build({
-		email : req.body.email,
-		firstname: req.body.firstname,
-		lastname: req.body.lastname,
-		bjcp_id: req.body.bjcp_id,
-		bjcp_rank: req.body.bjcp_rank,
-		cicerone_rank: req.body.cicerone_rank,
-		pro_brewer_brewery: req.body.pro_brewer_brewery,
-		industry_description: req.body.industry_description,
-		judging_years: req.body.judging_years
-	});
-
-	User.create({
-		email : req.body.email,
-		password: passwd,
-		firstname: req.body.firstname,
-		lastname: req.body.lastname,
-		bjcp_id: req.body.bjcp_id,
-		bjcp_rank: req.body.bjcp_rank,
-		cicerone_rank: req.body.cicerone_rank,
-		pro_brewer_brewery: req.body.pro_brewer_brewery,
-		industry_description: req.body.industry_description,
-		judging_years: req.body.judging_years
-	})
-	.then(function(user) {
-		delete user.password
-
-		req.login(user, (err) => {
-			if (err) {
-				errorProcessor(err, req);
-			}
-
-			req.flash('success', 'Registration Successful!');
-			res.redirect('/')
+			req.login(user, (err) => {
+				if (err) {
+					errorProcessor(err, req);
+				}
+				req.flash('success', 'Registration Successful!');
+				res.redirect('/')
+			})
 		})
 	})
 	.catch((err) => {
@@ -163,7 +200,7 @@ userController.doRegister = function(req, res) {
 		errorProcessor(err, req);
 
 		return res.render('register', {
-			fData: newUser,
+			fData: err.enteredInfo,
 			title : appConstants.APP_NAME + " - Register"
 		});
 	});

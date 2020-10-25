@@ -155,7 +155,9 @@ $(() => {
 		closeAllModals()
 
 		// $('#scoresheetModalId').text(JSON.stringify(scoresheet))
-		generatePdf(scoresheet.id)
+		$('#scoresheetModalEntryNumber').val(scoresheet.entry_number)
+		$('#scoresheetModalScoresheetId').val(scoresheet.id)
+		generatePdfPreview(scoresheet.id)
 
 		$('#scoresheetDataModal').modal('show')		
 	}
@@ -298,7 +300,29 @@ $(() => {
 		})
 	}
 
-	generatePdf = (scoresheetId) => {
+	updateScoresheetData = () => {
+		const updatedScoresheetData = {
+			id: $('#scoresheetModalScoresheetId').val(),
+			entry_number: $('#scoresheetModalEntryNumber').val(),
+			_ajax: "true",
+		}
+
+		fetch('/scoresheet/update/', {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json'
+			},
+			body: JSON.stringify(updatedScoresheetData)
+		}).then(() => {
+			closeAllModals()
+			updateAllTables()
+		})
+		.catch(err => {
+			console.error('Could not update scoresheet entry #' + updatedScoresheetData.entry_number)
+		})
+	}
+
+	generatePdfPreview = (scoresheetId) => {
 		fetch('/scoresheet/previewpdf/', {
 			method: 'POST',
 			headers: {
@@ -346,7 +370,7 @@ $(() => {
 				</select>
 			</td>
 			<td class="text-center">
-				<input class="form-check-input position-static m-0 flight-modal-bos-advance" type="checkbox" autocomplete="off" checked=${scoresheet.mini_boss_advanced}  ${scoresheet.scoresheet_submitted ? 'disabled' : ''}/>
+				<input class="form-check-input position-static m-0 flight-modal-bos-advance" type="checkbox" autocomplete="off" ${scoresheet.mini_boss_advanced ? "checked" : ""}  ${scoresheet.scoresheet_submitted ? 'disabled' : ''}/>
 			</td>
 			<td class="text-center">
 				<button class="btn btn-success btn-sm flight-modal-download-button" type="button"  ${!scoresheet.scoresheet_submitted ? 'disabled' : ''} onclick="downloadPdf('${scoresheet.id}','${scoresheet.entry_number}')">📄</button>

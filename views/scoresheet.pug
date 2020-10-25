@@ -95,7 +95,7 @@ block content
 									.form-group.col-sm-2.col-form-label
 										label(for='entry_number') Entry Number
 									.form-group.col-sm-4
-										input.form-control.is-invalid.vCheck(type='text' id='entry_number' placeholder='Entry Number' name='entry_number')
+										input.form-control.is-invalid.vCheck(type='text' id='entry_number' placeholder='Entry Number' name='entry_number' maxlength="6")
 										div.invalid-feedback Missing or duplicate value.
 									.form-group.col-sm-3.col-form-label.text-center.pl-4
 										label(for='flight_position') Flight Position
@@ -409,6 +409,9 @@ block content
 								input(type='checkbox'  id='descriptor_astringent' name='descriptor_astringent')
 								label.list-group-item.d-flex.justify-content-between.align-items-center(for='descriptor_astringent') Astringent
 									a.badge.badge-light.badge-pill(tabindex="0" role="button" data-toggle="popover" data-trigger="focus" title="Astringent" data-content="Puckering, lingering harshness and/or dryness in the finish/aftertaste; harsh graininess; huskiness.") i
+								input(type='checkbox'  id='descriptor_brettanomyces' name='descriptor_brettanomyces')
+								label.list-group-item.d-flex.justify-content-between.align-items-center(for='descriptor_brettanomyces') Brettanomyces
+									a.badge.badge-light.badge-pill(tabindex="0" role="button" data-toggle="popover" data-trigger="focus" title="Brettanomyces" data-content="Brettanomyces aromas and flavors may take the form of pleasant smoky, earthy, or barnyard character. Unpleasantly characteristics include Band-Aid, fetid, nail polish remover, or cheese") i
 								input(type='checkbox'  id='descriptor_diacetyl' name='descriptor_diacetyl')
 								label.list-group-item.d-flex.justify-content-between.align-items-center(for='descriptor_diacetyl') Diacetyl
 									a.badge.badge-light.badge-pill(tabindex="0" role="button" data-toggle="popover" data-trigger="focus" title="Diacetyl" data-content="Artificial butter, butterscotch, or toffee aroma and flavor. Sometimes perceived as a slickness on the tongue.") i
@@ -439,9 +442,15 @@ block content
 								input(type='checkbox'  id='descriptor_solvent' name='descriptor_solvent')
 								label.list-group-item.d-flex.justify-content-between.align-items-center(for='descriptor_solvent') Solvent
 									a.badge.badge-light.badge-pill(tabindex="0" role="button" data-toggle="popover" data-trigger="focus" title="Solvent" data-content="Aromas and flavors of higher alcohols (fusel alcohols). Similar to acetone or lacquer thinner aromas.") i
+								input(type='checkbox'  id='descriptor_smoky' name='descriptor_smoky')
+								label.list-group-item.d-flex.justify-content-between.align-items-center(for='descriptor_smoky') Smoky
+									a.badge.badge-light.badge-pill(tabindex="0" role="button" data-toggle="popover" data-trigger="focus" title="Smoky" data-content="Smoke characteristic") i
 								input(type='checkbox'  id='descriptor_sour' name='descriptor_sour')
 								label.list-group-item.d-flex.justify-content-between.align-items-center(for='descriptor_sour') Sour/Acidic
 									a.badge.badge-light.badge-pill(tabindex="0" role="button" data-toggle="popover" data-trigger="focus" title="Sour/Acidic" data-content="Tartness in aroma and flavor. Can be sharp and clean (lactic acid), or vinegar-like (acetic acid).") i
+								input(type='checkbox'  id='descriptor_spicy' name='descriptor_spicy')
+								label.list-group-item.d-flex.justify-content-between.align-items-center(for='descriptor_spicy') Spicy
+									a.badge.badge-light.badge-pill(tabindex="0" role="button" data-toggle="popover" data-trigger="focus" title="Spicy" data-content="Spice characteristic") i
 								input(type='checkbox'  id='descriptor_sulfur' name='descriptor_sulfur')
 								label.list-group-item.d-flex.justify-content-between.align-items-center(for='descriptor_sulfur') Sulfur
 									a.badge.badge-light.badge-pill(tabindex="0" role="button" data-toggle="popover" data-trigger="focus" title="Sulfur" data-content="The aroma of rotten eggs or burning matches.") i
