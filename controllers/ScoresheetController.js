@@ -1,15 +1,15 @@
-let Scoresheet = require('../models').Scoresheet;
-let appConstants = require('../helpers/appConstants');
-const errorConstants = require("../helpers/errorConstants");
+const archiver = require('archiver');
+const debug = require('debug')('aha-scoresheet:scoresheetController');
 
-let validator = require('validator');
+const Scoresheet = require('../models').Scoresheet;
 const User = require('../models').User;
 const Flight = require('../models').Flight;
 
-let debug = require('debug')('aha-scoresheet:scoresheetController');
 const pdfService = require('../services/pdf.service')
+const appConstants = require('../helpers/appConstants');
+const errorConstants = require("../helpers/errorConstants");
 
-let scoresheetController = {};
+const scoresheetController = {};
 
 function jsonErrorProcessor(err, res) {
 	if (errorConstants[err]) {
@@ -240,58 +240,176 @@ scoresheetController.previewPDF = function(req,res) {
 }
 
 scoresheetController.generatePDF = function(req, res) {
-	const scoresheetId = req.params.scoresheetId;
+	let scoresheetIds = req.body.scoresheetIds
+	let entryNumbers = req.body.entryNumbers
 	const userIsAdmin = req.user.user_level
 
-	Scoresheet.findOne({
-		where: {
-			id: scoresheetId
-		}
-	}).then(scoresheet => {
-		if (!(scoresheet.user_id === req.user.id || userIsAdmin)) {
-			return Promise.reject('NOT_AUTHORIZED')
-		}
+	const static_image_paths = {
+		bjcp_logo: 'public/images/CANE-ISLAND-ALERS-LOGO_d400.png',
+		aha_logo: 'public/images/CANE-ISLAND-ALERS-LOGO_d400.png',
+		club_logo: 'public/images/CANE-ISLAND-ALERS-LOGO_d400.png',
+		comp_logo: 'public/images/OpfermVI-hybrid_d400.png'
+	}
 
-		// Doing this because userId isn't a FK on Scoresheet and this is a really fugly workaround
+	let scoresheetsDbPromise = null
+
+	// Only admins may concatenate scoresheets by entry number
+	if (entryNumbers && userIsAdmin) {
+		scoresheetsDbPromise = Scoresheet.findAll({
+			where: {
+				entry_number: entryNumbers
+			},
+			raw: true
+		}) 
+		scoresheetIds = null
+	} else if (scoresheetIds) {
+		scoresheetsDbPromise = Scoresheet.findAll({
+			where: {
+				id: scoresheetIds
+			},
+			raw: true
+		}).then(scoresheets => {
+			// Verify user is authorized to access each scoresheet
+			scoresheets.forEach(scoresheet => {
+				if (!(scoresheet.user_id === req.user.id || userIsAdmin)) {
+					return Promise.reject('NOT_AUTHORIZED')
+				}
+			})
+
+			return scoresheets
+		})
+		entryNumbers = null
+	} else {
+		scoresheetsDbPromise = Promise.reject('NOT_AUTHORIZED')
+	}
+
+	scoresheetsDbPromise.then(scoresheets => {
+		const flights = [...new Set(scoresheets.map(scoresheet => scoresheet.flight_key))]
+		const users = [...new Set(scoresheets.map(scoresheet => scoresheet.user_id))]
+
 		return Promise.all([
-			User.findOne({
+			User.findAll({
 				where: {
-					id: scoresheet.user_id
-				}
+					id: users
+				},
+				raw: true
 			}),
-			Flight.findOne({
+			Flight.findAll({
 				where: {
-					id: scoresheet.flight_key,
+					id: flights,
 					submitted: true
-				}
+				},
+				raw: true
 			}),
-		]).then(([user,flight]) => {
-			if (!flight) {
-				return Promise.reject("FLIGHT_NOT_SUBMITTED")
-			}
+		]).then(([users, flights]) => {
+			return scoresheets.reduce((acc, val) => {
+				const currentFlight = flights.filter(flight => flight.id === val.flight_key)
 
-			return [scoresheet.get({plain:true}), user.get({plain:true}), flight.get({plain:true})]
+				if (!currentFlight.length) {
+					return {
+						...acc,
+						[val.id]: {
+							error: "flight not submitted"
+						}
+					}
+				}
+
+				return {
+					...acc,
+					[val.id]: {
+						scoresheet: val,
+						user: users.filter(user => val.user_id === user.id)[0],
+						flight: currentFlight[0]
+					}
+				}
+			}, {})
 		})
-	}).then(async ([scoresheet, user, flight]) => {
-		// These need to be STATIC and not relative! They also MUST be png files.
-		const static_image_paths = {
-			bjcp_logo: 'public/images/CANE-ISLAND-ALERS-LOGO_d400.png',
-			aha_logo: 'public/images/CANE-ISLAND-ALERS-LOGO_d400.png',
-			club_logo: 'public/images/CANE-ISLAND-ALERS-LOGO_d400.png',
-			comp_logo: 'public/images/OpfermVI-hybrid_d400.png'
+	}).then(scoresheetObject => {
+		// If there's only one scoresheet being requested, we don't need to make an archive - just send the pdf
+		if (Object.keys(scoresheetObject).length === 1) {
+			const scoresheetData = Object.values(scoresheetObject)[0]
+
+			return pdfService.generateScoresheet('views/bjcp_modified.pug', {
+				scoresheet: scoresheetData.scoresheet,
+				flight: scoresheetData.flight,
+				judge: scoresheetData.user,
+				images: static_image_paths
+			}).then(pdf => {
+				res.send(pdf)
+			})
+		} else if ([...new Set(Object.values(scoresheetObject).map(scoresheet => scoresheet.entry_number))].length === 1) {
+			const pdfGenInputData = Object.values(scoresheetObject).map(scoresheetData => ({
+				scoresheet: scoresheetData.scoresheet,
+				flight: scoresheetData.flight,
+				judge: scoresheetData.user,
+				images: static_image_paths
+			}))
+
+			return pdfService.generateScoresheet('views/bjcp_modified.pug', pdfGenInputData).then(pdf => {
+				res.send(pdf)
+			})
 		}
 
-		pdfService.generateScoresheet('views/bjcp_modified.pug', {
-			scoresheet: scoresheet,
-			flight: flight,
-			judge: user,
-			images: static_image_paths
-		}).then(pdf => {
-			res.send(pdf)
+		// If multiple scoresheets, set up the archive to pipe from pdf service to res
+		res.set('Content-disposition', 'attachment; filename="scoresheets.zip"')
+		res.set('Conent-type', 'application/zip')
+		const zip = archiver('zip')
+		zip.pipe(res)
+
+		zip.on('error', () => {
+			throw new Error('File zipping failed!')
 		})
+
+		if (entryNumbers && entryNumbers.length) {
+			// If we are processing an entry number request, we need to group together scoresheets into a single pdf by entry number
+			const groupedByEntryNumber = Object.values(scoresheetObject).reduce((acc, val) => {
+				return {
+					...acc,
+					[val.scoresheet.entry_number] : [
+						...acc[val.scoresheet.entry_number] || [],
+						val
+					]
+				}
+			}, {})
+
+			const sendPromises = Object.entries(groupedByEntryNumber).map(([entry_number, scoresheet_data_array]) => {
+				const pdfGenInputData = scoresheet_data_array.map(scoresheetData => ({
+					scoresheet: scoresheetData.scoresheet,
+					flight: scoresheetData.flight,
+					judge: scoresheetData.user,
+					images: static_image_paths
+				}))
+
+				return pdfService.generateScoresheet('views/bjcp_modified.pug', pdfGenInputData).then(scoresheetBlobData => {
+					zip.append(scoresheetBlobData, {name: `${entry_number}.pdf`})
+				})
+			})
+
+			Promise.all(sendPromises).then(() => {
+				zip.finalize()
+			})
+
+		} else {
+			// Each individual scoresheet ID will be mapped to a new PDF
+			const sendPromises = Object.values(scoresheetObject).map(scoresheetData => {
+				return pdfService.generateScoresheet('views/bjcp_modified.pug', {
+					scoresheet: scoresheetData.scoresheet,
+					flight: scoresheetData.flight,
+					judge: scoresheetData.user,
+					images: static_image_paths
+				}).then(scoresheetBlobData => {
+					zip.append(scoresheetBlobData, {name:`${scoresheetData.scoresheet.entry_number}.pdf`})
+				})
+			})
+
+			Promise.all(sendPromises).then(() => {
+				zip.finalize()
+			})
+		}
+		
 	}).catch(err => {
-        jsonErrorProcessor(err, res)
+		jsonErrorProcessor(err, res)
 	})
-};
+}
 
 module.exports = scoresheetController;

@@ -39,7 +39,7 @@ module.exports = {
 				type: Sequelize.STRING,
 				allowNull: true,
 				index: true,
-				unique: true
+				unique: false
 			},
 			flight_position: {
 				type: Sequelize.INTEGER,
