@@ -63,7 +63,7 @@ class PdfService {
     
             const page = await this.browser.newPage()
             await page.setContent(scoresheetHtml)
-            const pdfBuffer = await page.pdf({format: 'A4', margin: {top: "0.25in", left: "0.25in"}, printBackground: true })
+            const pdfBuffer = await page.pdf({width: '8.5in', height: '11.0in', printBackground: true })
             page.close()
             return pdfBuffer
         })
