@@ -10,6 +10,7 @@
 		"staging": "NODE_ENV=staging  DATABASE_URL=postgres://user:password@localhost:5432/bjcp-scoresheet npm start "
 	},
 	"dependencies": {
+		"archiver": "^5.0.2",
 		"bcryptjs": "^2.4.3",
 		"bootstrap": "^4.5.0",
 		"connect-flash": "^0.1.1",

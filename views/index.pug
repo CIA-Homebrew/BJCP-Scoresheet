@@ -159,6 +159,7 @@ block content
 						button(type="button" class="btn btn-secondary" data-dismiss='modal' onclick="clearFlightToSubmit()") Cancel
 						button(type='button' class='btn btn-primary' onclick='submitFlight();') Submit Flight
 
+	script(src='/javascripts/download.js')
 
 	script.
 		const showAddFlightModal = () => {
@@ -272,20 +273,38 @@ block content
 			}
 
 			downloadPdf = (scoresheetId, scoresheetEntryNumber) => {
-				var a = document.createElement('a');
-				a.href = '/scoresheet/pdf/'+scoresheetId;
-				a.setAttribute('download', scoresheetEntryNumber + '.pdf');
-				a.click();
-				return false;
+				fetch('/scoresheet/pdf', {
+					method: 'POST',
+					headers: {
+						'Content-Type': 'application/json'
+					},
+					body: JSON.stringify({
+						scoresheetIds: [scoresheetId]
+					})
+				})
+				.then(res => res.blob())
+				.then(blobData => {
+					download(blobData, `${scoresheetEntryNumber}.pdf`, 'application/pdf')
+				})
 			}
 
 			downloadAll = (scoresheetArray) => {
-				scoresheetArray.forEach(scoresheet => {
-					var a = document.createElement('a');
-					a.href = '/scoresheet/pdf/'+scoresheet.id;
-					a.setAttribute('download', scoresheet.entry_number + '.pdf');
-					a.click();
-					return false;
+				fetch('/scoresheet/pdf', {
+					method: 'POST',
+					headers: {
+						'Content-Type': 'application/json'
+					},
+					body: JSON.stringify({
+						scoresheetIds: scoresheetArray.map(scoresheet => scoresheet.id)
+					})
+				})
+				.then(res => res.blob())
+				.then(blobData => {
+					if (scoresheetArray.length === 1) {
+						download(blobData, `${scoresheetArray[0].entry_number}.pdf`, 'application/pdf')
+					} else {
+						download(blobData, 'scoresheets.zip', 'application/zip')
+					}
 				})
 			}
 		})

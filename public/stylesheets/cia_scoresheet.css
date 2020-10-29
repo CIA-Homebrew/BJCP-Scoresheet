@@ -3,10 +3,24 @@
 	padding: 0;
 	margin: 0;
 }
-body {
-	width: 742px;
-	height: 957px;
+.first-page, .second-page {
+	margin: 0;
+	margin-bottom: 14px; /* 0.13in @ 96dpi */
+	width: 816px; /* 8.5in @ 96dpi */
+	height: 1056px; /* 11.0in @ 96dpi */
+	padding: 0.25in;
+	overflow: hidden;
 }
+
+.overflow-pg2-container {
+	padding: 15px;
+	font-size: 60%;
+}
+
+.overflow-box {
+	margin-bottom: 10px;
+}
+
 .text_arial_black { font-family: "Arial Black", Gadget, sans-serif !important; }
 .text_bold { font-weight: bold; }
 .text_italic { font-style: italic; }

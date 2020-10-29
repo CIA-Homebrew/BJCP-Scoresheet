@@ -25,33 +25,48 @@ class PdfService {
         this.initialized = true
     }
 
-    async generateScoresheet(template, data, preview) {
+    async generateScoresheet(template, allData, preview) {
         if (!this.initialized) {
             await this.browser
         }
 
-        const base64images = await Promise.all(Object.values(data.images).map(image_path => fs.readFile(image_path, {encoding: 'base64'}))).then(base64imageStrings => {
-			const images = {}
-			Object.keys(data.images).forEach((key, idx) => {
-				images[key] = 'data:image/png;base64,' + base64imageStrings[idx]
-            })
-            return images
-        })
-        
-        const scoresheetHtml = pug.renderFile(template, {
-            ...data,
-            images: base64images
-        })
-
-        if (preview) {
-            return scoresheetHtml
+        // Backward compatibility - if we pass in an object, convert it to an array
+        if (!allData.length) {
+            allData = [allData]
         }
 
-		const page = await this.browser.newPage()
-		await page.setContent(scoresheetHtml)
-		const pdfBuffer = await page.pdf({format: 'A4', margin: {top: "0.25in", left: "0.25in"}, printBackground: true })
-        page.close()
-        return pdfBuffer
+        const scoresheetHtmlPromises = []
+
+        allData.forEach(data => {
+            scoresheetHtmlPromises.push(
+                Promise.all(Object.values(data.images).map(image_path => fs.readFile(image_path, {encoding: 'base64'}))).then(base64imageStrings => {
+                    const images = {}
+                    Object.keys(data.images).forEach((key, idx) => {
+                        images[key] = 'data:image/png;base64,' + base64imageStrings[idx]
+                    })
+                    return images
+                }).then(base64ImageBlobs => {
+                    return pug.renderFile(template, {
+                        ...data,
+                        images: base64ImageBlobs
+                    })
+                })
+            )
+        })
+
+        return Promise.all(scoresheetHtmlPromises).then(async (scoresheetHtmlArray) => {
+            const scoresheetHtml = scoresheetHtmlArray.join('')
+
+            if (preview) {
+                return scoresheetHtml
+            }
+    
+            const page = await this.browser.newPage()
+            await page.setContent(scoresheetHtml)
+            const pdfBuffer = await page.pdf({width: '8.5in', height: '11.0in', printBackground: true })
+            page.close()
+            return pdfBuffer
+        })
     }
 }
 

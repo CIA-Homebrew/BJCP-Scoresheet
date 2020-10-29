@@ -393,10 +393,18 @@ $(() => {
 	}
 
 	downloadPdf = (scoresheetId, scoresheetEntryNumber) => {
-		var a = document.createElement('a');
-		a.href = '/scoresheet/pdf/'+scoresheetId;
-		a.setAttribute('download', scoresheetEntryNumber + '.pdf');
-		a.click();
-		return false;
+		fetch('/scoresheet/pdf', {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json'
+			},
+			body: JSON.stringify({
+				scoresheetIds: [scoresheetId]
+			})
+		})
+		.then(res => res.blob())
+		.then(blobData => {
+			download(blobData, `${scoresheetEntryNumber}.pdf`, 'application/pdf')
+		})
 	}
 })

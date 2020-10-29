@@ -50,7 +50,7 @@ router.post('/scoresheet/edit/', authMiddle.isAuthenticated, scoresheetControlle
 router.post('/scoresheet/update/', authMiddle.isAuthenticated, scoresheetController.doScoresheetDataChange);
 
 //route for PDF Generate
-router.get('/scoresheet/pdf/:scoresheetId', authMiddle.isAuthenticated, scoresheetController.generatePDF);
+router.post('/scoresheet/pdf', authMiddle.isAuthenticated, scoresheetController.generatePDF);
 router.post('/scoresheet/previewpdf', authMiddle.isAdmin, scoresheetController.previewPDF);
 
 //* ADMIN FUNCTIONS *//
