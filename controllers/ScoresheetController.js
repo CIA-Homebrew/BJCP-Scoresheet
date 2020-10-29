@@ -240,8 +240,8 @@ scoresheetController.previewPDF = function(req,res) {
 }
 
 scoresheetController.generatePDF = function(req, res) {
-	let scoresheetIds = req.body.scoresheetIds
-	let entryNumbers = req.body.entryNumbers
+	let scoresheetIds = req.body.scoresheetIds || null
+	let entryNumbers = req.body.entryNumbers || null
 	const userIsAdmin = req.user.user_level
 
 	const static_image_paths = {
@@ -337,7 +337,7 @@ scoresheetController.generatePDF = function(req, res) {
 			}).then(pdf => {
 				res.send(pdf)
 			})
-		} else if ([...new Set(Object.values(scoresheetObject).map(scoresheet => scoresheet.entry_number))].length === 1) {
+		} else if (entryNumbers && Object.values(scoresheetObject).reduce((acc,scoresheet) => acc.includes(scoresheet.entry_number) ? [...acc, scoresheet.entryNumbers] : acc, []).length === 1) {
 			const pdfGenInputData = Object.values(scoresheetObject).map(scoresheetData => ({
 				scoresheet: scoresheetData.scoresheet,
 				flight: scoresheetData.flight,
