@@ -222,10 +222,10 @@ scoresheetController.previewPDF = function(req,res) {
 	}).then(async ([scoresheet, user, flight]) => {
 		// These need to be STATIC and not relative! They also MUST be png files.
 		const static_image_paths = {
-			bjcp_logo: 'public/images/CANE-ISLAND-ALERS-LOGO_d400.png',
-			aha_logo: 'public/images/CANE-ISLAND-ALERS-LOGO_d400.png',
-			club_logo: 'public/images/CANE-ISLAND-ALERS-LOGO_d400.png',
-			comp_logo: 'public/images/OpfermVI-hybrid_d400.png'
+			bjcp_logo: 'public/images/scoresheet-logos/1.png',
+			aha_logo: 'public/images/scoresheet-logos/1.png',
+			club_logo: 'public/images/scoresheet-logos/1.png',
+			comp_logo: 'public/images/scoresheet-logos/1.png'
 		}
 
 		pdfService.generateScoresheet('views/bjcp_modified.pug', {
@@ -245,10 +245,10 @@ scoresheetController.generatePDF = function(req, res) {
 	const userIsAdmin = req.user.user_level
 
 	const static_image_paths = {
-		bjcp_logo: 'public/images/CANE-ISLAND-ALERS-LOGO_d400.png',
-		aha_logo: 'public/images/CANE-ISLAND-ALERS-LOGO_d400.png',
-		club_logo: 'public/images/CANE-ISLAND-ALERS-LOGO_d400.png',
-		comp_logo: 'public/images/OpfermVI-hybrid_d400.png'
+		bjcp_logo: 'public/images/scoresheet-logos/1.png',
+		aha_logo: 'public/images/scoresheet-logos/1.png',
+		club_logo: 'public/images/scoresheet-logos/1.png',
+		comp_logo: 'public/images/scoresheet-logos/1.png'
 	}
 
 	let scoresheetsDbPromise = null

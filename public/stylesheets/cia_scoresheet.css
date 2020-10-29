@@ -267,29 +267,25 @@ div#primary_header {
 	height: 8%;
 	padding-left: 1%;
 	padding-right: 1%;
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	align-items: center;
 }
 div.bjcp_badge,
 div.aha_badge {
 	height: 85%;
-	float: left;
 }
 div.bjcp_badge img,
 div.aha_badge img {
-	max-width: 100%;
-	max-height: 100%;
+	width: 100%;
+	height: 100%;
+	object-fit: contain;
 }
 div.header_content {
 	width: 62%;
-	float: left;
 	text-align: center;
 	margin-top: 1%;
-}
-div.header_footer {
-	height: 10%;
-	width: 100%;
-	float: left;
-	font-size: 10px;
-	font-weight: unset;
 }
 div#information_row {
 	width:98%;
