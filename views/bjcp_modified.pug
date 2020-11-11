@@ -43,11 +43,11 @@ body
 						.col.col_25.text_right
 							| Cicerone
 						.col
-							span.display_iblock.border_solid_1.mleft_5.text_center(style='width: 8px; height: 8px; background-color: white;') #{judge.cicerone_rank ? 'X' : ' '}
+							span.display_iblock.border_solid_1.mleft_5.text_center(style='width: 8px; height: 8px; background-color: white;') #{!judge.cicerone_rank || judge.cicerone_rank === "N/A" ? ' ' : 'X'}
 						.col.col_20.text_right
 							| Rank
 						.col.col_40
-							span.user_input_truncated.display_iblock.text_center.width_100 #{judge.cicerone_rank ? judge.cicerone_rank : ''}
+							span.user_input_truncated.display_iblock.text_center.width_100 #{!judge.cicerone_rank || judge.cicerone_rank === "N/A" ? ' ' : judge.cicerone_rank}
 					.row.pbot_5
 						.col.col_25.text_right
 							| Pro Brewer
@@ -128,7 +128,7 @@ body
 							span.text_bold MINI-BOS
 						span.border_solid_1.display_iblock.float_left.text_center.text_resize_marker(style='width: 12px; height: 90%; border-left: 2px solid black; line-height: 18px;') #{scoresheet.mini_boss_advanced ? 'X' : ' '}
 					div.background_lgray
-						span.border_solid_1.display_iblock.height_20p.text_resize_marker(style='margin: 1px; width: 93%; text-align: center; line-height: 20px; font-stretch: var(--fontStretch);font-size: var(--fontSize);') #{scoresheet.place > 0 ? ['1st','2nd','3rd'][scoresheet.place-1] : ''}
+						span.border_solid_1.display_iblock.height_20p.text_resize_marker(style='margin: 1px; width: 93%; text-align: center; line-height: 20px; font-stretch: var(--fontStretch);font-size: var(--fontSize);') #{scoresheet.place > 0 ? ['1st', '2nd', '3rd'][scoresheet.place - 1] : ''}
 					.text_bold.text_center
 						| PLACE
 				.float_left
@@ -689,42 +689,42 @@ body
 					.text_right
 						span.display_iblock(style='border-left: 1px solid black; border-top: 1px solid black; width: 12px;')
 							| 50
-	- 
+	-
 		var allOverflow = {
-			'special ingredient' : scoresheet.special_ingredients.slice(30, -1),
-			'bottle inspection' : scoresheet.bottle_inspection_comment.slice(45, -1),
-			'aroma - malt' : scoresheet.aroma_malt_comment.slice(96, -1),
-			'aroma - hops' : scoresheet.aroma_hops_comment.slice(96, -1),
-			'aroma - fermentation' : scoresheet.aroma_fermentation_comment.slice(96, -1),
-			'aroma - other' : scoresheet.aroma_other_comment.slice(126, -1),
+			'special ingredient': scoresheet.special_ingredients.slice(30, -1),
+			'bottle inspection': scoresheet.bottle_inspection_comment.slice(45, -1),
+			'aroma - malt': scoresheet.aroma_malt_comment.slice(96, -1),
+			'aroma - hops': scoresheet.aroma_hops_comment.slice(96, -1),
+			'aroma - fermentation': scoresheet.aroma_fermentation_comment.slice(96, -1),
+			'aroma - other': scoresheet.aroma_other_comment.slice(126, -1),
 
-			'appearance - color' : scoresheet.appearance_color_other.slice(30, -1),
-			'appearance - head' : scoresheet.appearance_head_other ? scoresheet.appearance_head_other.slice(30, -1) : '',
-			'appearance - other' : scoresheet.appearance_other_comment.slice(57, -1),
-			'appearance - texture' : scoresheet.appearance_texture_comment.slice(57, -1),
+			'appearance - color': scoresheet.appearance_color_other.slice(30, -1),
+			'appearance - head': scoresheet.appearance_head_other ? scoresheet.appearance_head_other.slice(30, -1) : '',
+			'appearance - other': scoresheet.appearance_other_comment.slice(57, -1),
+			'appearance - texture': scoresheet.appearance_texture_comment.slice(57, -1),
 
-			'flavor - malt' : scoresheet.flavor_malt_comment.slice(96, -1),
-			'flavor - hops' : scoresheet.flavor_hops_comment.slice(96, -1),
-			'flavor - fermentation' : scoresheet.flavor_fermentation_comment.slice(96, -1),
-			'flavor - bitterness' : scoresheet.flavor_bitterness_comment.slice(96, -1),
-			'flavor - balance' : scoresheet.flavor_balance_comment.slice(96, -1),
-			'flavor - finish/aftertaste' : scoresheet.flavor_finish_aftertaste_comment.slice(96, -1),
-			'flavor - other' : scoresheet.flavor_other_comment.slice(126, -1),
+			'flavor - malt': scoresheet.flavor_malt_comment.slice(96, -1),
+			'flavor - hops': scoresheet.flavor_hops_comment.slice(96, -1),
+			'flavor - fermentation': scoresheet.flavor_fermentation_comment.slice(96, -1),
+			'flavor - bitterness': scoresheet.flavor_bitterness_comment.slice(96, -1),
+			'flavor - balance': scoresheet.flavor_balance_comment.slice(96, -1),
+			'flavor - finish/aftertaste': scoresheet.flavor_finish_aftertaste_comment.slice(96, -1),
+			'flavor - other': scoresheet.flavor_other_comment.slice(126, -1),
 
-			'mouthfeel - other' : scoresheet.mouthfeel_other_comment.slice(36, -1),
+			'mouthfeel - other': scoresheet.mouthfeel_other_comment.slice(36, -1),
 
-			'overall feedback' : scoresheet.feedback_comment.slice(620, -1)
+			'overall feedback': scoresheet.feedback_comment.slice(620, -1)
 		};
 	- var generateSecondPage = Object.values(allOverflow).map(value => value.length > 0).reduce((acc,val) => (val || acc), false)
 	if generateSecondPage
 		.second-page
 			.overflow-pg2-container
-				h3(style="margin-bottom: 10px;") Continued from page 1: 
+				h3(style="margin-bottom: 10px;") Continued from page 1:
 				mixin overflow(key, value)
 					.overflow-box
 						h5= key.toUpperCase()
 						p= "..." + value
-				
+
 				each val, key in allOverflow
 					if val.length > 0
 						+overflow(key, val)
@@ -732,7 +732,7 @@ body
 	script.
 		// get each element that needs to be resized
 		let resizeThese = document.getElementsByClassName("text_resize_marker");
-		Array.prototype.forEach.call(resizeThese, function(ele) {
+		Array.prototype.forEach.call(resizeThese, function (ele) {
 			calcTextWidth(ele);
 			calcTextSize(ele);
 		});
@@ -753,5 +753,5 @@ body
 			const currentFontSize = parseInt(window.getComputedStyle(ele).fontSize);
 			const newValue = Math.min(Math.max(ele.dataset.minTextSize ? ele.dataset.minTextSize : 14, (parentContainerWidth / currentTextWidth) * currentFontSize), 500)
 
-			ele.style.setProperty('--fontSize', newValue +'px');
+			ele.style.setProperty('--fontSize', newValue + 'px');
 		}
