@@ -8,12 +8,19 @@
 # Digital Scoresheet Managment System
 This application is a full stack competition scoresheet generation and management system designed for [BJCP sanctioned competitions](https://www.bjcp.org/compcenter.php).
 
+### Purpose
+This application is catered toward the flight-based judging session; two or more judges simultaneously evaluating a flight of entries sequentially while filling out scoresheets for each. 
+
+Historically, competition judging with paper scoresheets has been a chore - manual scanning and upload of hundreds of scoresheets typically postponed entrants from receiving their feedback for days, and terrible handwriting sometimes made that feedback worthless altogether! On top of that, judges are not always well-versed in all of the BJCP styles and sometimes develop "writer's block" when it comes to descriptors, leading to somewhat bland feedback. This application seeks to address all of those problems: 
+1. Judges fill out scoresheets electronically, so handwriting is not an issue
+2. Judges have access to sliders to help more accurately provide sensory description without requiring lengthy descriptions 
+3. Judges can easily see BJCP style guidelines for each section, allowing accurate judgement based on style
+4. Scoresheets are digitally created and collated, allowing quick redistribution to contestants immediatly after competition results are announced
+
 ### Who Uses It?
 [<img src="https://github.com/CIA-Homebrew/BJCP-Scoresheet/blob/master/public/images/CANE-ISLAND-ALERS-LOGO_d400.png?raw=true" width="100" height="100">](https://opferm.cialers.org)
 
 ## Basic Interface and Use
-This application is catered toward the flight-based judging session; two or more judges 
-
 <details>
 <summary>User Account Creation</summary>
 
@@ -73,21 +80,21 @@ This application is catered toward the flight-based judging session; two or more
 <details>
 <summary>Development Environment Setup Instructions</summary>
 
-Setting up a development enviroment is relatively easy.
-* Clone the repository to your development machine and run `npm install`
-* Persistent storage management is handled through Sequelize
-  * Development environent uses SQLite, which does not require additional database dependency installation
-  * **(optional)** Staging environment requires PostgreSQL
-    * Ensure PostgreSQL is installed and running
-    * Create a new database with the name `bjcp-scoresheet`
-    * Create a user with username `user` and password `password` with read/write privileges enabled
-  * Run all database migrations by by running `npm run migrate`
-  * **(optional)** Create a development admin account by running `npm run seed`
-    * Default username is `admin@scoresheets.org`, default password is `password`
-    * Standard accounts can be upgraded to admin level accounts by manually writing a query to update the `user_level` db field to a value greater than 0
-* Start development server by running `npm run debug`
-  * **(optional)** Start staging server by running `npm run staging`
-* App can be viewed at [http://localhost:3000](http://localhost:3000)
+Setting up a development enviroment is relatively easy and only requires node and npm to be set up.
+1. Clone the repository to your development machine and run `npm install`
+2. Persistent storage management is handled through Sequelize
+    * Development environent uses SQLite, which does not require additional database dependency installation
+    * **(optional)** Staging environment requires PostgreSQL
+        1. Ensure PostgreSQL is installed and running
+        2. Create a new database with the name `bjcp-scoresheet`
+        3. Create a user with username `user` and password `password` with read/write privileges enabled
+    * Run all database migrations by by running `npm run migrate`
+    * **(optional)** Create a development admin account by running `npm run seed`
+        * Default username is `admin@scoresheets.org`, default password is `password`
+        * Standard accounts can be upgraded to admin level accounts by manually writing a query to update the `user_level` db field to a value greater than 0
+3. Start development server by running `npm run debug`
+    * **(optional)** Start staging server by running `npm run staging`
+4. App can be viewed at [http://localhost:3000](http://localhost:3000)
 </details>
 
 <details>
