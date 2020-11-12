@@ -7,7 +7,7 @@ module.exports = {
 			firstname: 'Default',
 			lastname: 'Admin',
 			email: 'admin@scoresheets.org',
-			password: 'UL59$0w4wQChT2T',
+			password: 'password',
 			phone: '',
 			bjcp_id: '',
 			bjcp_rank: '',
@@ -15,7 +15,7 @@ module.exports = {
 			pro_brewer_brewery: '',
 			industry_description: '',
 			judging_years: '',
-			user_level: 90
+			user_level: 999
 		});
 	},
 

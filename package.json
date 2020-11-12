@@ -7,6 +7,7 @@
 		"start": "node ./bin/www",
 		"debug": "nodemon --inspect ./bin/www",
 		"migrate": "npx sequelize-cli db:migrate && npx sequelize-cli db:migrate --url postgres://user:password@localhost:5432/bjcp-scoresheet",
+		"seed": "npx sequelize-cli db:seed",
 		"staging": "NODE_ENV=staging  DATABASE_URL=postgres://user:password@localhost:5432/bjcp-scoresheet npm start "
 	},
 	"dependencies": {
