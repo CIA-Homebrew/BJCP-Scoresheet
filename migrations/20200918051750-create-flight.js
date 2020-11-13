@@ -1,56 +1,58 @@
-'use strict';
+"use strict";
 
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    await queryInterface.createTable('Flights', {
+    await queryInterface.createTable("Flights", {
       id: {
         type: Sequelize.UUID,
-				primaryKey: true,
-				defaultValue: Sequelize.UUIDV4,
-				allowNull: false,
-				autoIncrement: false,
+        primaryKey: true,
+        defaultValue: Sequelize.UUIDV4,
+        allowNull: false,
+        autoIncrement: false,
       },
       flight_id: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
       },
       location: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
       },
       date: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
       },
       created_at: {
         allowNull: false,
-        type: Sequelize.DATE
+        type: Sequelize.DATE,
       },
       updated_at: {
         allowNull: false,
-        type: Sequelize.DATE
-      }
+        type: Sequelize.DATE,
+      },
     });
 
-    await queryInterface.sequelize.transaction(t => {
-      queryInterface.addColumn('Scoresheets', 'flight_key', {
+    await queryInterface.sequelize.transaction((t) => {
+      queryInterface.addColumn("Scoresheets", "flight_key", {
         type: Sequelize.UUID,
-				references: {
-					model: {
-            tableName: 'Flights'
+        references: {
+          model: {
+            tableName: "Flights",
           },
-					key: 'id'
-				},
-				onUpdate: 'CASCADE',
-				onDelete: 'SET NULL',
+          key: "id",
+        },
+        onUpdate: "CASCADE",
+        onDelete: "SET NULL",
         allowNull: true,
-        transaction: t
-      })
-    })
+        transaction: t,
+      });
+    });
   },
 
   down: async (queryInterface, Sequelize) => {
-    await queryInterface.sequelize.transaction(t => {
-      queryInterface.removeColumn('Scoresheets', 'flight_key', {transaction: t})
-    })
+    await queryInterface.sequelize.transaction((t) => {
+      queryInterface.removeColumn("Scoresheets", "flight_key", {
+        transaction: t,
+      });
+    });
 
-    await queryInterface.dropTable('Flights');
-  }
+    await queryInterface.dropTable("Flights");
+  },
 };

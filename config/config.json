@@ -1,31 +1,31 @@
 {
-	"development": {
-		"dialect": "sqlite",
-		"storage": "./database.sqlite3",
-		"logging": false
-	},
-	"test": {
-		"dialect": "sqlite",
-		"storage": "./database.sqlite3"
-	},
-	"staging": {
-		"use_env_variable":"DATABASE_URL",
-		"dialect": "postgres",
-		"pool": {
-			"max": 5,
-			"min": 0,
-			"acquire": 30000,
-			"idle": 10000
-		}
-	},
-	"production": {
-		"use_env_variable":"DATABASE_URL",
-		"dialect": "postgres",
-		"pool": {
-			"max": 5,
-			"min": 0,
-			"acquire": 30000,
-			"idle": 10000
-		}
-	}
+  "development": {
+    "dialect": "sqlite",
+    "storage": "./database.sqlite3",
+    "logging": false
+  },
+  "test": {
+    "dialect": "sqlite",
+    "storage": "./database.sqlite3"
+  },
+  "staging": {
+    "use_env_variable": "DATABASE_URL",
+    "dialect": "postgres",
+    "pool": {
+      "max": 5,
+      "min": 0,
+      "acquire": 30000,
+      "idle": 10000
+    }
+  },
+  "production": {
+    "use_env_variable": "DATABASE_URL",
+    "dialect": "postgres",
+    "pool": {
+      "max": 5,
+      "min": 0,
+      "acquire": 30000,
+      "idle": 10000
+    }
+  }
 }

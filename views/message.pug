@@ -1,26 +1,26 @@
 .messages
-	each type in Object.keys(messages)
-		each message in messages[type]
-			//- Make the type class compliant with current version of bootstrap
-				https://getbootstrap.com/docs/4.0/components/alerts/
-			case type
-				when "secondary"
-					- type = "secondary"
-				when "success"
-					- type = "success"
-				when "error"
-					- type = "danger"
-				when "warning"
-					- type = "warning"
-				when "info"
-					- type = "info"
-				when "light"
-					- type = "light"
-				when "dark"
-					- type = "dark"
-				default
-					- type = "primary"
+  each type in Object.keys(messages)
+    each message in messages[type]
+      //- Make the type class compliant with current version of bootstrap
+        https://getbootstrap.com/docs/4.0/components/alerts/
+      case type
+        when "secondary"
+          - type = 'secondary';
+        when "success"
+          - type = 'success';
+        when "error"
+          - type = 'danger';
+        when "warning"
+          - type = 'warning';
+        when "info"
+          - type = 'info';
+        when "light"
+          - type = 'light';
+        when "dark"
+          - type = 'dark';
+        default
+          - type = 'primary';
 
-			div(class="alert alert-" + type + " alert-dismissable fade show" role='alert') #{message}
-				button(type='button' class='close' data-dismiss='alert' aria-label='Close')
-					span(aria-hidden='true') &times;
+      .alert.type.alert-dismissable.fade.show(class=`alert-${type}`, role="alert") #{message}
+        button.close(type="button", data-dismiss="alert", aria-label="Close")
+          span(aria-hidden="true") &times;
