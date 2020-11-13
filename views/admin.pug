@@ -1,209 +1,276 @@
 extends layout
 
 block content
-    .container.d-block.d-md-none
-        //- This only shows if the users window is too small, we have a requirement of a minimum of >= 768px -//
-        div(class="alert alert-danger alert-dismissable fade show" role='alert')
-            | This admin panel is only functional at a resolution equal to or greater then 768px. Please resize your browser or reconnect using a tablet or personal computer with the appropriate resolution.
-    .container.d-none.d-md-block
-        div.card
-            div.card-header
-                ul(class = 'nav nav-tabs card-header-tabs' id='admin-list' role='tablist')
-                    li(class='nav-item')
-                        a(class='nav-link px-2' data-toggle="tab" href='#system' role="tab" aria-controls="system" aria-selected="true" ) System
-                    li(class='nav-item')
-                        a(class='nav-link px-2 active' data-toggle="tab" href='#scoresheets' role="tab" aria-controls="scoresheets" aria-selected="false") Scoresheets
-                    li(class='nav-item')
-                        a(class='nav-link px-2' data-toggle="tab" href='#judges' role="tab" aria-controls="judges" aria-selected="false" ) Judges
-                    li(class='nav-item')
-                        a(class='nav-link px-2' data-toggle="tab" href='#flights' role="tab" aria-controls="flights" aria-selected="false" ) Flights
-            div.card-body
-                div.tab-content
-                    div(class='tab-pane' id='system' role='tabpanel' aria-labelledby='system-tab') Coming Soon!
+  .container.d-block.d-md-none
+    //- This only shows if the users window is too small, we have a requirement of a minimum of >= 768px -//
+    .alert.alert-danger.alert-dismissable.fade.show(role="alert")
+      | This admin panel is only functional at a resolution equal to or greater then 768px. Please resize your browser or reconnect using a tablet or personal computer with the appropriate resolution.
+  .container.d-none.d-md-block
+    .card
+      .card-header
+        ul#admin-list.nav.nav-tabs.card-header-tabs(role="tablist")
+          li.nav-item
+            a.nav-link.px-2(
+              data-toggle="tab",
+              href="#system",
+              role="tab",
+              aria-controls="system",
+              aria-selected="true"
+            ) System
+          li.nav-item
+            a.nav-link.px-2.active(
+              data-toggle="tab",
+              href="#scoresheets",
+              role="tab",
+              aria-controls="scoresheets",
+              aria-selected="false"
+            ) Scoresheets
+          li.nav-item
+            a.nav-link.px-2(
+              data-toggle="tab",
+              href="#judges",
+              role="tab",
+              aria-controls="judges",
+              aria-selected="false"
+            ) Judges
+          li.nav-item
+            a.nav-link.px-2(
+              data-toggle="tab",
+              href="#flights",
+              role="tab",
+              aria-controls="flights",
+              aria-selected="false"
+            ) Flights
+      .card-body
+        .tab-content
+          #system.tab-pane(role="tabpanel", aria-labelledby="system-tab") Coming Soon!
 
-                    div(class='tab-pane active' id='scoresheets' role='tabpane2' aria-labelledby='scoresheets-tab')
-                        div.container-fluid
-                            table.comp_entry_list.table.table-sm.table-striped.table-bordered.table-hover
-                                thead.thead-dark
-                                    tr
-                                        //- Table is generated dynamically by data-key in headers - to put more than one value in a cell, comma separate.
-                                        th(scope='col' data-key="entry_number") Entry #
-                                        th(scope='col' data-key="category,sub,subcategory") Category
-                                        th(scope='col' data-key="flight_key") Flight
-                                        th(scope='col' data-key="user_id") Judge
-                                        th(scope='col' data-key="consensus_score") Consenseus
-                                        th(scope='col' data-key="place") Place
-                                        th(scope='col' data-key="mini_boss_advanced") Mini BOS
-                                tbody
-                    div(class='tab-pane' id='judges' role='tabpane3' aria-labelledby='judges-tab')
-                        .container-fluid
-                            table.comp_judges_list.table.table-sm.table-striped.table-bordered.table-hover
-                                thead.thead-dark
-                                    tr
-                                        //- Table is generated dynamically by data-key in headers - to put more than one value in a cell, comma separate.
-                                        th(scope='col' data-key="email") Email
-                                        th(scope='col' data-key="firstname") First Name
-                                        th(scope='col' data-key="lastname") Last Name
-                                        th(scope='col' data-key="numUserFlights") Judging Sessions
-                                        th(scope='col' data-key="numUserScoresheets") Entries Judged
-                                tbody
-                    div(class='tab-pane' id='flights' role='tabpane4' aria-labelledby='flight-tab')
-                        .container-fluid
-                            table.comp_flights_list.table.table-sm.table-striped.table-bordered.table-hover
-                                thead.thead-dark
-                                    tr
-                                        //- Table is generated dynamically by data-key in headers - to put more than one value in a cell, comma separate.
-                                        th(scope='col' data-key="flight_id") FlightID
-                                        th(scope='col' data-key="created_by") Judge
-                                        th(scope='col' data-key="date") Date
-                                        th(scope='col' data-key="location") Location
-                                        th(scope='col' data-key="numFlightEntries") Entries
-                                tbody
+          #scoresheets.tab-pane.active(
+            role="tabpane2",
+            aria-labelledby="scoresheets-tab"
+          )
+            .container-fluid
+              table.comp_entry_list.table.table-sm.table-striped.table-bordered.table-hover
+                thead.thead-dark
+                  tr
+                    //- Table is generated dynamically by data-key in headers - to put more than one value in a cell, comma separate.
+                    th(scope="col", data-key="entry_number") Entry #
+                    th(scope="col", data-key="category,sub,subcategory") Category
+                    th(scope="col", data-key="flight_key") Flight
+                    th(scope="col", data-key="user_id") Judge
+                    th(scope="col", data-key="consensus_score") Consenseus
+                    th(scope="col", data-key="place") Place
+                    th(scope="col", data-key="mini_boss_advanced") Mini BOS
+                tbody
+          #judges.tab-pane(role="tabpane3", aria-labelledby="judges-tab")
+            .container-fluid
+              table.comp_judges_list.table.table-sm.table-striped.table-bordered.table-hover
+                thead.thead-dark
+                  tr
+                    //- Table is generated dynamically by data-key in headers - to put more than one value in a cell, comma separate.
+                    th(scope="col", data-key="email") Email
+                    th(scope="col", data-key="firstname") First Name
+                    th(scope="col", data-key="lastname") Last Name
+                    th(scope="col", data-key="numUserFlights") Judging Sessions
+                    th(scope="col", data-key="numUserScoresheets") Entries Judged
+                tbody
+          #flights.tab-pane(role="tabpane4", aria-labelledby="flight-tab")
+            .container-fluid
+              table.comp_flights_list.table.table-sm.table-striped.table-bordered.table-hover
+                thead.thead-dark
+                  tr
+                    //- Table is generated dynamically by data-key in headers - to put more than one value in a cell, comma separate.
+                    th(scope="col", data-key="flight_id") FlightID
+                    th(scope="col", data-key="created_by") Judge
+                    th(scope="col", data-key="date") Date
+                    th(scope="col", data-key="location") Location
+                    th(scope="col", data-key="numFlightEntries") Entries
+                tbody
 
-    .modal.fade(id='flightDataModal' tabindex='-1' role="dialog" aria-labelledby="flightDataModalLabel" aria-hidden="true")
-        .modal-dialog.modal-lg
-            .modal-content
-                .modal-header 
-                    h5 Flight Information
-                .modal-body
-                    .form-group
-                        .row
-                            .col
-                                .form-check
-                                    input.form-check-input(id="flighModalSubmitted" type="checkbox")
-                                    .form-check.label(for="flighModalSubmitted") Flight Submitted
-                                    small.form-text.text-muted.ml-4 Note: Flight information cannot be updated while flight is marked as submitted
-                    hr
-                    .form-group
-                        .row
-                            .col
-                                label(for="flightModalName") Flight ID
-                                input.form-control(type="text" id="flightModalName" placeholder="6 character flight ID found on the flight sheet")
-                            .col
-                                label(for="flightModalLocation") Judging Location
-                                input.form-control(type="text" id="flightModalLocation" placeholder="Brewery, Local Homebrew Shop, Home, etc.")
-                    .form-group
-                        .row
-                            .col
-                                label(for="flightModalDate") Session Date
-                                input.form-control(type="date" id="flightModalDate")
-                            .col
-                                label(for="flightModalUser") Judge
-                                select.form-control(type="text" id="flightModalUser")
-                    .table-responsive
-                        table.table
-                            thead
-                                th(scope="col") Entry #
-                                th(scope="col") Category
-                                th.text-center(scope="col") Judge Score
-                                th.text-center(scope="col") Consensus Score
-                                th.text-center(scope="col") Place / Advance
-                                th.text-center(scope="col") BOS
-                                th.text-center(scope="col") PDF
-                            tbody.overflow-y-scroll#flightModalEntries
-                .modal-footer
-                    button(type="button" class="btn btn-secondary" data-dismiss='modal') Cancel
-                    button(type='button' class='btn btn-primary' onclick="updateFlightData()") Update Flight
-    .modal.fade(id='scoresheetDataModal' tabindex='-1' role="dialog" aria-labelledby="scoresheetDataModalLabel" aria-hidden="true")
-        .modal-dialog.modal-lg
-            .modal-content
-                .modal-header 
-                    h5 Scoresheet Preview
-                    input(id="scoresheetModalScoresheetId" hidden)
-                .modal-body(style="height: 70vh;")
-                    iframe#scoresheetModalId(width='100%' height="100%")
-                .modal-footer
-                    .mr-auto
-                        label(for="scoresheetModalEntryNumber") Scoresheet ID
-                        input.form-control(type="text" id="scoresheetModalEntryNumber" maxlength="6")
-                    button(type="button" class="btn btn-secondary" data-dismiss='modal') Close
-                    button(type='button' class='btn btn-primary' onclick="updateScoresheetData()") Update Scoresheet
-    .modal.fade(id='userDataModal' tabindex='-1' role="dialog" aria-labelledby="userDataModalLabel" aria-hidden="true")
-        .modal-dialog.modal-lg
-            .modal-content
-                .modal-header 
-                    h5 User Information
-                .modal-body
-                    .form-group
-                        .row
-                            .col
-                                //- Email
-                                label(for="userModalEmail") Email
-                                input.form-control(type="text" id="userModalEmail" disabled)
-                            .col
-                                //- Password
-                                label Password
-                                .input-group
-                                    input.form-control(type="password" value="not-a-real-password" disabled)
-                                    .input-group-append
-                                        button.btn.btn-danger(type="button" id='userModalResetPasswordButton') Reset Password
-                    .form-group
-                        .row
-                            .col
-                                //- First Name
-                                label(for="userModalFirstName") First Name
-                                input.form-control(type="text" id="userModalFirstName")
-                            .col
-                                //- Last Name
-                                label(for="userModalLastName") Last Name
-                                input.form-control(type="text" id="userModalLastName")
-                            .col
-                                //- BJCP ID
-                                label(for="userModalBjcpId") BJCP ID
-                                input.form-control(type="text" id="userModalBjcpId")
-                            .col
-                                //- BJCP rank
-                                label(for="userModalBjcpRank") BJCP Rank
-                                select.form-control(id="userModalBjcpRank")
-                                    option(value='N/A' selected=true) N/A
-                                    option(value='Recognized') BJCP Recognized
-                                    option(value='Certified') BJCP Certified
-                                    option(value='National') BJCP National
-                                    option(value='Master') BJCP Master
-                                    option(value='GrandMaster') BJCP Grand Master
-                                    option(value='Apprentice') BJCP Apprentice
-                                    option(value='Affiliated') BJCP Affiliated
-                    .form-group
-                        .row
-                            .col
-                                //- Cicerone Rank
-                                label(for="userModalCiceroneRank") Cicerone
-                                select.form-control(id="userModalCiceroneRank")
-                                    option(value='N/A' selected=true) N/A
-                                    option(value='level1') Level 1 - Certified Beer Server
-                                    option(value='level2') Level 2 - Certified Cicerone
-                                    option(value='level3') Level 3 - Advanced Cicerone
-                                    option(value='level4') Level 4 - Master Cicerone
-                            .col
-                                //- Pro Brewer
-                                label(for="userModalProBrewer") Professional Brewery
-                                input.form-control(type="text" id="userModalProBrewer")
-                            .col
-                                //- Industry
-                                label(for="userModalIndustry") Industry Experience
-                                input.form-control(type="text" id="userModalIndustry")
-                            .col
-                                //- Judging Years
-                                label(for="userModalJudgingYears") Judging Years
-                                input.form-control(type="number" id="userModalJudgingYears")
-                    .table-responsive
-                        table.table
-                            thead
-                                th(scope="col") Flight #
-                                th(scope="col") Judging Date
-                                th.text-center(scope="col") Judging Location
-                                th.text-center(scope="col") # Entries
-                            tbody.overflow-y-scroll#userModalFlights
+  #flightDataModal.modal.fade(
+    tabindex="-1",
+    role="dialog",
+    aria-labelledby="flightDataModalLabel",
+    aria-hidden="true"
+  )
+    .modal-dialog.modal-lg
+      .modal-content
+        .modal-header 
+          h5 Flight Information
+        .modal-body
+          .form-group
+            .row
+              .col
+                .form-check
+                  input#flighModalSubmitted.form-check-input(type="checkbox")
+                  .form-check.label(for="flighModalSubmitted") Flight Submitted
+                  small.form-text.text-muted.ml-4 Note: Flight information cannot be updated while flight is marked as submitted
+          hr
+          .form-group
+            .row
+              .col
+                label(for="flightModalName") Flight ID
+                input#flightModalName.form-control(
+                  type="text",
+                  placeholder="6 character flight ID found on the flight sheet"
+                )
+              .col
+                label(for="flightModalLocation") Judging Location
+                input#flightModalLocation.form-control(
+                  type="text",
+                  placeholder="Brewery, Local Homebrew Shop, Home, etc."
+                )
+          .form-group
+            .row
+              .col
+                label(for="flightModalDate") Session Date
+                input#flightModalDate.form-control(type="date")
+              .col
+                label(for="flightModalUser") Judge
+                select#flightModalUser.form-control(type="text")
+          .table-responsive
+            table.table
+              thead
+                th(scope="col") Entry #
+                th(scope="col") Category
+                th.text-center(scope="col") Judge Score
+                th.text-center(scope="col") Consensus Score
+                th.text-center(scope="col") Place / Advance
+                th.text-center(scope="col") BOS
+                th.text-center(scope="col") PDF
+              tbody#flightModalEntries.overflow-y-scroll
+        .modal-footer
+          button.btn.btn-secondary(type="button", data-dismiss="modal") Cancel
+          button.btn.btn-primary(type="button", onclick="updateFlightData()") Update Flight
+  #scoresheetDataModal.modal.fade(
+    tabindex="-1",
+    role="dialog",
+    aria-labelledby="scoresheetDataModalLabel",
+    aria-hidden="true"
+  )
+    .modal-dialog.modal-lg
+      .modal-content
+        .modal-header 
+          h5 Scoresheet Preview
+          input#scoresheetModalScoresheetId(hidden)
+        .modal-body(style="height: 70vh;")
+          iframe#scoresheetModalId(width="100%", height="100%")
+        .modal-footer
+          .mr-auto
+            label(for="scoresheetModalEntryNumber") Scoresheet ID
+            input#scoresheetModalEntryNumber.form-control(
+              type="text",
+              maxlength="6"
+            )
+          button.btn.btn-secondary(type="button", data-dismiss="modal") Close
+          button.btn.btn-primary(
+            type="button",
+            onclick="updateScoresheetData()"
+          ) Update Scoresheet
+  #userDataModal.modal.fade(
+    tabindex="-1",
+    role="dialog",
+    aria-labelledby="userDataModalLabel",
+    aria-hidden="true"
+  )
+    .modal-dialog.modal-lg
+      .modal-content
+        .modal-header 
+          h5 User Information
+        .modal-body
+          .form-group
+            .row
+              .col
+                //- Email
+                label(for="userModalEmail") Email
+                input#userModalEmail.form-control(type="text", disabled)
+              .col
+                //- Password
+                label Password
+                .input-group
+                  input.form-control(
+                    type="password",
+                    value="not-a-real-password",
+                    disabled
+                  )
+                  .input-group-append
+                    button#userModalResetPasswordButton.btn.btn-danger(
+                      type="button"
+                    ) Reset Password
+          .form-group
+            .row
+              .col
+                //- First Name
+                label(for="userModalFirstName") First Name
+                input#userModalFirstName.form-control(type="text")
+              .col
+                //- Last Name
+                label(for="userModalLastName") Last Name
+                input#userModalLastName.form-control(type="text")
+              .col
+                //- BJCP ID
+                label(for="userModalBjcpId") BJCP ID
+                input#userModalBjcpId.form-control(type="text")
+              .col
+                //- BJCP rank
+                label(for="userModalBjcpRank") BJCP Rank
+                select#userModalBjcpRank.form-control
+                  option(value="N/A", selected) N/A
+                  option(value="Recognized") BJCP Recognized
+                  option(value="Certified") BJCP Certified
+                  option(value="National") BJCP National
+                  option(value="Master") BJCP Master
+                  option(value="GrandMaster") BJCP Grand Master
+                  option(value="Apprentice") BJCP Apprentice
+                  option(value="Affiliated") BJCP Affiliated
+          .form-group
+            .row
+              .col
+                //- Cicerone Rank
+                label(for="userModalCiceroneRank") Cicerone
+                select#userModalCiceroneRank.form-control
+                  option(value="N/A", selected) N/A
+                  option(value="level1") Level 1 - Certified Beer Server
+                  option(value="level2") Level 2 - Certified Cicerone
+                  option(value="level3") Level 3 - Advanced Cicerone
+                  option(value="level4") Level 4 - Master Cicerone
+              .col
+                //- Pro Brewer
+                label(for="userModalProBrewer") Professional Brewery
+                input#userModalProBrewer.form-control(type="text")
+              .col
+                //- Industry
+                label(for="userModalIndustry") Industry Experience
+                input#userModalIndustry.form-control(type="text")
+              .col
+                //- Judging Years
+                label(for="userModalJudgingYears") Judging Years
+                input#userModalJudgingYears.form-control(type="number")
+          .table-responsive
+            table.table
+              thead
+                th(scope="col") Flight #
+                th(scope="col") Judging Date
+                th.text-center(scope="col") Judging Location
+                th.text-center(scope="col") # Entries
+              tbody#userModalFlights.overflow-y-scroll
 
+        .modal-footer
+          button.btn.btn-secondary(type="button", data-dismiss="modal") Cancel
+          button.btn.btn-primary(type="button", onclick="updateUserData()") Update User Information
 
-                .modal-footer
-                    button(type="button" class="btn btn-secondary" data-dismiss='modal') Cancel
-                    button(type='button' class='btn btn-primary' onclick="updateUserData()") Update User Information
+  script(src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js")
+  script(
+    src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap4.min.js"
+  )
+  script(src="/javascripts/admin.js")
+  script(src="/javascripts/download.js")
 
-    script(src='https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js')
-    script(src='https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap4.min.js')
-    script(src='/javascripts/admin.js')
-    script(src='/javascripts/download.js')
-
-    link(rel='stylesheet', href='https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/css/bootstrap.css')
-    link(rel='stylesheet', href='https://cdn.datatables.net/1.10.19/css/dataTables.bootstrap4.min.css')
+  link(
+    rel="stylesheet",
+    href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/css/bootstrap.css"
+  )
+  link(
+    rel="stylesheet",
+    href="https://cdn.datatables.net/1.10.19/css/dataTables.bootstrap4.min.css"
+  )

@@ -1,7 +1,6 @@
 // Sandstone 4.3.1
 // Bootswatch
 
-
 // Variables ===================================================================
 
 $web-font-path: "https://fonts.googleapis.com/css?family=Roboto:400,500,700" !default;
@@ -121,7 +120,6 @@ input,
   }
 }
 
-
 .breadcrumb {
   @extend .sandstone;
   border: 1px solid $gray-300;
@@ -153,49 +151,65 @@ input,
   }
 
   &-primary {
-    &, > th, > td {
+    &,
+    > th,
+    > td {
       background-color: $primary;
     }
   }
 
   &-secondary {
-    &, > th, > td {
+    &,
+    > th,
+    > td {
       background-color: $secondary;
     }
   }
 
   &-success {
-    &, > th, > td {
+    &,
+    > th,
+    > td {
       background-color: $success;
     }
   }
 
   &-info {
-    &, > th, > td {
+    &,
+    > th,
+    > td {
       background-color: $info;
     }
   }
 
   &-danger {
-    &, > th, > td {
+    &,
+    > th,
+    > td {
       background-color: $danger;
     }
   }
 
   &-warning {
-    &, > th, > td {
+    &,
+    > th,
+    > td {
       background-color: $warning;
     }
   }
 
   &-dark {
-    &, > th, > td {
+    &,
+    > th,
+    > td {
       background-color: $dark;
     }
   }
 
   &-light {
-    &, > th, > td {
+    &,
+    > th,
+    > td {
       background-color: $light;
     }
   }
@@ -210,7 +224,6 @@ input,
 }
 
 .badge {
-
   &-success,
   &-warning {
     color: $white;
