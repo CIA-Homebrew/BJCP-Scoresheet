@@ -1,13 +1,11 @@
-# BJCP-Scoresheet
+# BJCP-Scoresheet: A Digital Scoresheet Managment System
+
+This application is a full stack competition scoresheet generation and management system designed for [BJCP sanctioned competitions](https://www.bjcp.org/compcenter.php).
 
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 [![Join the chat at https://gitter.im/BJCP-Scoresheet/community](https://badges.gitter.im/BJCP-Scoresheet/community.svg)](https://gitter.im/BJCP-Scoresheet/community?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 [![GitHub last commit](https://img.shields.io/github/last-commit/CIA-Homebrew/BJCP-Scoresheet.svg)](https://github.com/CIA-Homebrew/BJCP-Scoresheet)
 [![Dependencies](https://david-dm.org/CIA-Homebrew/BJCP-Scoresheet.svg)](https://david-dm.org/cia-homebrew/BJCP-scoresheet)
-
-# Digital Scoresheet Managment System
-
-This application is a full stack competition scoresheet generation and management system designed for [BJCP sanctioned competitions](https://www.bjcp.org/compcenter.php).
 
 ### Purpose
 
@@ -22,7 +20,7 @@ Historically, competition judging with paper scoresheets has been a chore - manu
 
 ### Who Uses It?
 
-[<img src="https://github.com/CIA-Homebrew/BJCP-Scoresheet/blob/master/public/images/CANE-ISLAND-ALERS-LOGO_d400.png?raw=true" width="100" height="100">](https://opferm.cialers.org)
+[<img src="https://github.com/CIA-Homebrew/BJCP-Scoresheet/blob/master/public/images/page-logos/club-logo.png?raw=true" width="100" height="100">](https://opferm.cialers.org)
 
 ## Basic Interface and Use
 
