@@ -3,7 +3,7 @@
 This application is a full stack competition scoresheet generation and management system designed for [BJCP sanctioned competitions](https://www.bjcp.org/compcenter.php).
 
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
-[![Join the chat at https://gitter.im/BJCP-Scoresheet/community](https://badges.gitter.im/BJCP-Scoresheet/community.svg)](https://gitter.im/BJCP-Scoresheet/community?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+[![Discord](https://img.shields.io/discord/776887453264379915?color=%237289da&label=discord&logo=discord)](https://discord.gg/jEbfDskCSx)
 [![GitHub last commit](https://img.shields.io/github/last-commit/CIA-Homebrew/BJCP-Scoresheet.svg)](https://github.com/CIA-Homebrew/BJCP-Scoresheet)
 [![Dependencies](https://david-dm.org/CIA-Homebrew/BJCP-Scoresheet.svg)](https://david-dm.org/cia-homebrew/BJCP-scoresheet)
 
