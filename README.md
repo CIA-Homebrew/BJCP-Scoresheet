@@ -1,4 +1,4 @@
-# BJCP-Scoresheet: A Digital Scoresheet Managment System
+# BJCP-Scoresheet: A Digital Homebrewing Competition Scoresheet Managment System
 
 This application is a full stack competition scoresheet generation and management system designed for [BJCP sanctioned competitions](https://www.bjcp.org/compcenter.php).
 
