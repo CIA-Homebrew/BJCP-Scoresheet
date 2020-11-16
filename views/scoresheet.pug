@@ -1500,7 +1500,8 @@ block content
     	});
 
       // This is a terrible way to load this object data into the script... we really should be doing a fetch after document is ready and loading it that way.
-    	var scoresheet = '#{scoresheet}' !== '' ? JSON.parse('!{JSON.stringify(scoresheet).replace(/\\\"/g, "\\\\\"").replace(/\'/g, "\\\'")}') : null;
+      const rawPugScoresheetObject = '!{JSON.stringify(scoresheet)}'
+      const scoresheet = rawPugScoresheetObject && rawPugScoresheetObject !== '' ? JSON.parse(rawPugScoresheetObject.replace(/\\\"/g, "\\\\\"").replace(/\'/g, "\\\'")) : null
 
     	// post scoresheet as-is to db without submitting
     	update_scoresheet = () => {
