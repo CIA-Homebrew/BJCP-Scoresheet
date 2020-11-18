@@ -1,4 +1,7 @@
+<img src="https://github.com/CIA-Homebrew/BJCP-Scoresheet/blob/master/public/images/app-logo.png?raw=true" height="100">
+
 # BJCP-Scoresheet
+
 #### A Digital Homebrewing Competition Scoresheet Managment System
 
 This application is a full stack competition scoresheet generation and management system designed for [BJCP sanctioned competitions](https://www.bjcp.org/compcenter.php).
