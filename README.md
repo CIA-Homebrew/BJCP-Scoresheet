@@ -1,4 +1,4 @@
-[<img src="https://github.com/CIA-Homebrew/BJCP-Scoresheet/blob/master/public/images/app-logo.png?raw=true" height="100">]
+<img src="https://github.com/CIA-Homebrew/BJCP-Scoresheet/blob/master/public/images/app-logo.png?raw=true" height="100">
 
 # BJCP-Scoresheet
 
