@@ -43,7 +43,25 @@ block content
             ) Flights
       .card-body
         .tab-content
-          #system.tab-pane(role="tabpanel", aria-labelledby="system-tab") Coming Soon!
+          #system.tab-pane(role="tabpanel", aria-labelledby="system-tab")
+            .container-fluid
+              .mt-5
+                label(for="download-all-entries-button") Download All Entries as Concatenated PDFs (Caution: May take a while!)
+                br
+                button.btn.btn-primary(
+                  id="download-all-entries-button",
+                  type="button",
+                  onclick=`downloadAllEntries()`
+                ) Download All Scoresheets
+
+              .mt-5
+                label(for="download-all-raw-data-button") Download All Scoresheet Data as CSV
+                br
+                button.btn.btn-primary(
+                  id="download-all-raw-data-button",
+                  type="button",
+                  onclick=`getRawDataDump()`
+                ) Download Raw Data
 
           #scoresheets.tab-pane.active(
             role="tabpane2",

@@ -88,6 +88,11 @@ router.post(
   authMiddle.isAdmin,
   scoresheetController.previewPDF
 );
+router.post(
+  "/scoresheet/downloadstatus",
+  authMiddle.isAuthenticated,
+  scoresheetController.getDownloadStatus
+);
 
 //* ADMIN FUNCTIONS *//
 router.get("/admin", authMiddle.isAdmin, adminController.controlPanel);

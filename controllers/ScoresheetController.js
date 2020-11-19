@@ -274,6 +274,7 @@ scoresheetController.generatePDF = function (req, res) {
   let scoresheetIds = req.body.scoresheetIds || null;
   let entryNumbers = req.body.entryNumbers || null;
   const userIsAdmin = req.user.user_level;
+  const requestId = req.body.requestId || null;
 
   const static_image_paths = {
     bjcp_logo: "public/images/scoresheet-logos/bjcp-logo.png",
@@ -283,6 +284,12 @@ scoresheetController.generatePDF = function (req, res) {
   };
 
   let scoresheetsDbPromise = null;
+  if (requestId) {
+    scoresheetController.downloadStatusByRequestId[requestId] = {
+      total: (entryNumbers || scoresheetIds).length,
+      completed: 0,
+    };
+  }
 
   // Only admins may concatenate scoresheets by entry number
   if (entryNumbers && userIsAdmin) {
@@ -444,13 +451,25 @@ scoresheetController.generatePDF = function (req, res) {
               .generateScoresheet("views/bjcp_modified.pug", pdfGenInputData)
               .then((scoresheetBlobData) => {
                 zip.append(scoresheetBlobData, { name: `${entry_number}.pdf` });
+
+                if (requestId) {
+                  scoresheetController.downloadStatusByRequestId[
+                    requestId
+                  ].completed += 1;
+                }
               });
           }
         );
 
-        Promise.all(sendPromises).then(() => {
-          zip.finalize();
-        });
+        Promise.all(sendPromises)
+          .then(() => {
+            return zip.finalize();
+          })
+          .then(() => {
+            if (requestId) {
+              delete scoresheetController.downloadStatusByRequestId[requestId];
+            }
+          });
       } else {
         // Each individual scoresheet ID will be mapped to a new PDF
         const sendPromises = Object.values(scoresheetObject).map(
@@ -466,18 +485,45 @@ scoresheetController.generatePDF = function (req, res) {
                 zip.append(scoresheetBlobData, {
                   name: `${scoresheetData.scoresheet.entry_number}.pdf`,
                 });
+
+                if (requestId) {
+                  scoresheetController.downloadStatusByRequestId[
+                    requestId
+                  ].completed += 1;
+                }
               });
           }
         );
 
-        Promise.all(sendPromises).then(() => {
-          zip.finalize();
-        });
+        Promise.all(sendPromises)
+          .then(() => {
+            return zip.finalize();
+          })
+          .then(() => {
+            if (requestId) {
+              delete scoresheetController.downloadStatusByRequestId[requestId];
+            }
+          });
       }
     })
     .catch((err) => {
       jsonErrorProcessor(err, res);
     });
 };
+
+scoresheetController.getDownloadStatus = function (req, res) {
+  const requestId = req.body.requestId || null;
+
+  if (
+    !requestId ||
+    !scoresheetController.downloadStatusByRequestId[requestId]
+  ) {
+    res.status(404).json(false);
+  }
+
+  res.json(scoresheetController.downloadStatusByRequestId[requestId]);
+};
+
+scoresheetController.downloadStatusByRequestId = {};
 
 module.exports = scoresheetController;
