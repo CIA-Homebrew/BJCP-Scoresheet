@@ -425,6 +425,11 @@ scoresheetController.generatePDF = function (req, res) {
         // If we are processing an entry number request, we need to group together scoresheets into a single pdf by entry number
         const groupedByEntryNumber = Object.values(scoresheetObject).reduce(
           (acc, val) => {
+            if (!val.scoresheet || val.error) {
+              console.log(val);
+              return { ...acc };
+            }
+
             return {
               ...acc,
               [val.scoresheet.entry_number]: [
