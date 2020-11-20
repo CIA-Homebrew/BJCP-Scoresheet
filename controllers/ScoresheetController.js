@@ -426,7 +426,6 @@ scoresheetController.generatePDF = function (req, res) {
         const groupedByEntryNumber = Object.values(scoresheetObject).reduce(
           (acc, val) => {
             if (!val.scoresheet || val.error) {
-              console.log(val);
               return { ...acc };
             }
 
