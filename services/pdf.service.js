@@ -30,6 +30,9 @@ class PdfService {
       await this.browser;
     }
 
+    // // Uncomment to test progress bars / loading / etc. in dev environment
+    // await new Promise(r => setTimeout(r, 5000*Math.random()))
+
     // Backward compatibility - if we pass in an object, convert it to an array
     if (!allData.length) {
       allData = [allData];

@@ -238,12 +238,15 @@ block content
                                       )
                                 td.text-center
                                   button.btn.btn-primary(
+                                    id=`download-${scoresheet.id}`,
+                                    type="button",
                                     onclick=`downloadPdf('${scoresheet.id}', '${scoresheet.entry_number}')`
                                   ) PDF
                         .d-flex.flex-row
                           button.mt-3.mr-2.btn.btn-primary(
+                            id=`download-all-${flight.id}`,
                             type="button",
-                            onClick=`downloadAll([${flight.scoresheets.map((scoresheet) => "{id:'" + scoresheet.id + "', entry_number: '" + scoresheet.entry_number + "'}").join(',')}])`
+                            onClick=`downloadAll([${flight.scoresheets.map((scoresheet) => "{id:'" + scoresheet.id + "', entry_number: '" + scoresheet.entry_number + "'}").join(',')}], "${flight.id}")`
                           ) Download All
               else
                 p.text-center.text-muted No submitted flights (yet)
@@ -419,6 +422,9 @@ block content
     	}
 
     	downloadPdf = (scoresheetId, scoresheetEntryNumber) => {
+        $(`#download-${scoresheetId}`).prop("disabled", true)
+        $(`#download-${scoresheetId}`).html('<span class="spinner-border spinner-border-sm mr-2" role="status" aria-hidden="true"></span>')
+
     		fetch('/scoresheet/pdf', {
     			method: 'POST',
     			headers: {
@@ -431,17 +437,40 @@ block content
     		.then(res => res.blob())
     		.then(blobData => {
     			download(blobData, `${scoresheetEntryNumber}.pdf`, 'application/pdf')
+          $(`#download-${scoresheetId}`).prop("disabled", false)
+          $(`#download-${scoresheetId}`).html('PDF')
     		})
     	}
 
-    	downloadAll = (scoresheetArray) => {
+    	downloadAll = (scoresheetArray, flightId) => {
+        const requestId = Math.floor(10000000000*Math.random())
+        $(`#download-all-${flightId}`).prop("disabled", true)
+        $(`#download-all-${flightId}`).html(`<span class="spinner-border spinner-border-sm mr-2" role="status" aria-hidden="true"></span><span id="${requestId}">0%</span> Downloaded`)
+
+        const checkStatus = setInterval(() => {
+          fetch('/scoresheet/downloadstatus', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+              requestId: requestId
+            })
+          })
+          .then(res => res.json())
+          .then(status => {
+            $(`#${requestId}`).text((100*(status.completed / status.total)).toFixed() + '%')
+          })
+        }, 500)
+
     		fetch('/scoresheet/pdf', {
     			method: 'POST',
     			headers: {
     				'Content-Type': 'application/json'
     			},
     			body: JSON.stringify({
-    				scoresheetIds: scoresheetArray.map(scoresheet => scoresheet.id)
+    				scoresheetIds: scoresheetArray.map(scoresheet => scoresheet.id),
+            requestId: requestId
     			})
     		})
     		.then(res => res.blob())
@@ -451,6 +480,10 @@ block content
     			} else {
     				download(blobData, 'scoresheets.zip', 'application/zip')
     			}
+
+          clearInterval(checkStatus)
+          $(`#download-all-${flightId}`).prop("disabled", false)
+          $(`#download-all-${flightId}`).html('Download All')
     		})
     	}
     })

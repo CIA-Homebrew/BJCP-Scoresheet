@@ -495,4 +495,115 @@ $(() => {
         download(blobData, `${scoresheetEntryNumber}.pdf`, "application/pdf");
       });
   };
+
+  downloadAllEntries = () => {
+    const entries = [
+      ...new Set(
+        Object.values(Scoresheets).map((scoresheet) => scoresheet.entry_number)
+      ),
+    ];
+
+    const requestId = Math.floor(10000000000 * Math.random());
+    $("#download-all-entries-button").prop("disabled", true);
+    $("#download-all-entries-button").html(
+      `<span class="spinner-border spinner-border-sm mr-2" role="status" aria-hidden="true"></span><span id="${requestId}">0%</span> Downloaded`
+    );
+
+    const checkStatus = setInterval(() => {
+      fetch("/scoresheet/downloadstatus", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          requestId: requestId,
+        }),
+      })
+        .then((res) => res.json())
+        .then((status) => {
+          console.log(status);
+          $(`#${requestId}`).text(
+            (100 * (status.completed / status.total)).toFixed() + "%"
+          );
+        });
+    }, 500);
+
+    fetch("/scoresheet/pdf", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        entryNumbers: entries,
+        requestId: requestId,
+      }),
+    })
+      .then((res) => res.blob())
+      .then((blobData) => {
+        if (entries.length === 1) {
+          download(blobData, `${entries[0]}.pdf`, "application/pdf");
+        } else {
+          download(blobData, "all_entries.zip", "application/zip");
+        }
+
+        clearInterval(checkStatus);
+        $("#download-all-entries-button").prop("disabled", false);
+        $("#download-all-entries-button").html("Download All Entries");
+      });
+  };
+
+  getRawDataDump = () => {
+    const rawDataRows = Object.values(Scoresheets).map((scoresheet) => {
+      const flightId = scoresheet.flight_key;
+      const userId = scoresheet.user_id;
+
+      const row = {
+        ...scoresheet,
+        ...Flights[flightId],
+        ...Users[userId],
+      };
+
+      delete row.id;
+      delete row.flight_key;
+      delete row.user_id;
+      delete row.user_level;
+      delete row.created_by;
+
+      return row;
+    });
+
+    const headers = Object.keys(rawDataRows[0]);
+    const headersSortObject = headers.reduce(
+      (acc, val, idx) => (acc[val] = idx),
+      {}
+    );
+
+    const headersText = headers.join(",") + "\n";
+    const values = rawDataRows
+      .map((dataRow) => {
+        return Object.entries(dataRow)
+          .sort(([keyA, valA], [keyB, valB]) => {
+            return headersSortObject[keyA] - headersSortObject[keyB];
+          })
+          .map(([key, val]) => `"${mapValsToBool(val)}"`)
+          .join(",");
+      })
+      .join("\n");
+
+    const fileBlob = new Blob([...headersText, ...values], {
+      type: "text/plain;charset=utf-8",
+    });
+
+    download(fileBlob, "all_entries.csv", "application/text");
+  };
+
+  mapValsToBool = (val) => {
+    if (val === true || val === "on") {
+      return "1";
+    } else if (val === false || val === null) {
+      return "";
+    } else {
+      return val;
+    }
+  };
 });
