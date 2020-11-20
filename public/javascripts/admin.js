@@ -92,7 +92,7 @@ const getDataValueByKey = (listItem, key) => {
 
   if (key === "created_by" || key === "user_id") {
     const userId = listItem[key];
-    value = `<a role="button" class="link-style" onclick="openDataModal('#judges','${userId}')">${Users[userId].firstname} ${Users[userId].lastname}</a>`;
+    value = `<a role="button" class="link-style" onclick="openDataModal('#judges','${userId}')">${Users[userId]?.firstname} ${Users[userId]?.lastname}</a>`;
   } else if (key === "flight_key") {
     const flightId = listItem[key];
     value = `<a role="button" class="link-style" onclick="openDataModal('#flights','${flightId}')">${Flights[flightId].flight_id}</a>`;
@@ -521,7 +521,6 @@ $(() => {
       })
         .then((res) => res.json())
         .then((status) => {
-          console.log(status);
           $(`#${requestId}`).text(
             (100 * (status.completed / status.total)).toFixed() + "%"
           );
