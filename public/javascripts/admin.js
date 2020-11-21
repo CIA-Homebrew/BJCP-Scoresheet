@@ -490,9 +490,11 @@ $(() => {
         scoresheetIds: [scoresheetId],
       }),
     })
-      .then((res) => res.blob())
-      .then((blobData) => {
-        download(blobData, `${scoresheetEntryNumber}.pdf`, "application/pdf");
+      .then((res) => res.json())
+      .then((res) => {
+        downloadHeartbeat(res.requestId, (blobData) => {
+          download(blobData, `${scoresheetEntryNumber}.pdf`, "application/pdf");
+        });
       });
   };
 
@@ -503,13 +505,37 @@ $(() => {
       ),
     ];
 
-    const requestId = Math.floor(10000000000 * Math.random());
-    $("#download-all-entries-button").prop("disabled", true);
-    $("#download-all-entries-button").html(
-      `<span class="spinner-border spinner-border-sm mr-2" role="status" aria-hidden="true"></span><span id="${requestId}">0%</span> Downloaded`
-    );
+    fetch("/scoresheet/pdf", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        entryNumbers: entries,
+      }),
+    })
+      .then((res) => res.json())
+      .then((res) => {
+        $("#download-all-entries-button").prop("disabled", true);
+        $("#download-all-entries-button").html(
+          `<span class="spinner-border spinner-border-sm mr-2" role="status" aria-hidden="true"></span><span id="${res.requestId}">0%</span> Downloaded`
+        );
 
-    const checkStatus = setInterval(() => {
+        downloadHeartbeat(res.requestId, (blobData) => {
+          if (entries.length === 1) {
+            download(blobData, `${entries[0]}.pdf`, "application/pdf");
+          } else {
+            download(blobData, "all_entries.zip", "application/zip");
+          }
+
+          $("#download-all-entries-button").prop("disabled", false);
+          $("#download-all-entries-button").html("Download All Entries");
+        });
+      });
+  };
+
+  downloadHeartbeat = (requestId, completeCallback) => {
+    const downloadHeartbeatIntervalId = setInterval(() => {
       fetch("/scoresheet/downloadstatus", {
         method: "POST",
         headers: {
@@ -518,37 +544,26 @@ $(() => {
         body: JSON.stringify({
           requestId: requestId,
         }),
-      })
-        .then((res) => res.json())
-        .then((status) => {
-          $(`#${requestId}`).text(
-            (100 * (status.completed / status.total)).toFixed() + "%"
-          );
-        });
-    }, 500);
-
-    fetch("/scoresheet/pdf", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        entryNumbers: entries,
-        requestId: requestId,
-      }),
-    })
-      .then((res) => res.blob())
-      .then((blobData) => {
-        if (entries.length === 1) {
-          download(blobData, `${entries[0]}.pdf`, "application/pdf");
+      }).then((res) => {
+        if (res.status === 202) {
+          // Processing still in progress
+          res.json().then((status) => {
+            $(`#${requestId}`).text(
+              (100 * (status.completed / status.total)).toFixed() + "%"
+            );
+          });
+        } else if (res.status === 201) {
+          // Processing complete, recieving file
+          res.blob().then((blobData) => {
+            clearInterval(downloadHeartbeatIntervalId);
+            completeCallback(blobData);
+          });
         } else {
-          download(blobData, "all_entries.zip", "application/zip");
+          // Something went wrong
+          console.error("something went wrong", res.status);
         }
-
-        clearInterval(checkStatus);
-        $("#download-all-entries-button").prop("disabled", false);
-        $("#download-all-entries-button").html("Download All Entries");
       });
+    }, 500);
   };
 
   getRawDataDump = () => {

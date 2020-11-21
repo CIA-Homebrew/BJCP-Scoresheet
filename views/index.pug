@@ -434,20 +434,46 @@ block content
     				scoresheetIds: [scoresheetId]
     			})
     		})
-    		.then(res => res.blob())
-    		.then(blobData => {
-    			download(blobData, `${scoresheetEntryNumber}.pdf`, 'application/pdf')
-          $(`#download-${scoresheetId}`).prop("disabled", false)
-          $(`#download-${scoresheetId}`).html('PDF')
+    		.then(res => res.json())
+    		.then(res => {
+          downloadHeartbeat(res.requestId, (blobData) => {
+            download(blobData, `${scoresheetEntryNumber}.pdf`, 'application/pdf')
+            $(`#download-${scoresheetId}`).prop("disabled", false)
+            $(`#download-${scoresheetId}`).html('PDF')
+          })
     		})
     	}
 
     	downloadAll = (scoresheetArray, flightId) => {
-        const requestId = Math.floor(10000000000*Math.random())
-        $(`#download-all-${flightId}`).prop("disabled", true)
-        $(`#download-all-${flightId}`).html(`<span class="spinner-border spinner-border-sm mr-2" role="status" aria-hidden="true"></span><span id="${requestId}">0%</span> Downloaded`)
+        fetch('/scoresheet/pdf', {
+    			method: 'POST',
+    			headers: {
+    				'Content-Type': 'application/json'
+    			},
+    			body: JSON.stringify({
+    				scoresheetIds: scoresheetArray.map(scoresheet => scoresheet.id),
+    			})
+    		})
+    		.then(res => res.json())
+    		.then(res => {
+          $(`#download-all-${flightId}`).prop("disabled", true)
+          $(`#download-all-${flightId}`).html(`<span class="spinner-border spinner-border-sm mr-2" role="status" aria-hidden="true"></span><span id="${res.requestId}">0%</span> Downloaded`)
 
-        const checkStatus = setInterval(() => {
+          downloadHeartbeat(res.requestId, (blobData) => {
+            if (scoresheetArray.length === 1) {
+              download(blobData, `${scoresheetArray[0].entry_number}.pdf`, 'application/pdf')
+            } else {
+              download(blobData, 'scoresheets.zip', 'application/zip')
+            }
+
+            $(`#download-all-${flightId}`).prop("disabled", false)
+            $(`#download-all-${flightId}`).html('Download All')
+          })
+    		})
+    	}
+
+      downloadHeartbeat = (requestId, completeCallback) => {
+        const downloadHeartbeatIntervalId = setInterval(() => {
           fetch('/scoresheet/downloadstatus', {
             method: 'POST',
             headers: {
@@ -457,33 +483,23 @@ block content
               requestId: requestId
             })
           })
-          .then(res => res.json())
-          .then(status => {
-            $(`#${requestId}`).text((100*(status.completed / status.total)).toFixed() + '%')
+          .then(res => {
+            if (res.status === 202) {
+              // Processing still in progress
+              res.json().then(status => {
+                $(`#${requestId}`).text((100*(status.completed / status.total)).toFixed() + '%')
+              })
+            } else if (res.status === 201) {
+              // Processing complete, recieving file
+              res.blob().then(blobData => {
+                clearInterval(downloadHeartbeatIntervalId)
+                completeCallback(blobData)
+              })
+            } else {
+              // Something went wrong
+              console.error('something went wrong', res.status)
+            }
           })
         }, 500)
-
-    		fetch('/scoresheet/pdf', {
-    			method: 'POST',
-    			headers: {
-    				'Content-Type': 'application/json'
-    			},
-    			body: JSON.stringify({
-    				scoresheetIds: scoresheetArray.map(scoresheet => scoresheet.id),
-            requestId: requestId
-    			})
-    		})
-    		.then(res => res.blob())
-    		.then(blobData => {
-    			if (scoresheetArray.length === 1) {
-    				download(blobData, `${scoresheetArray[0].entry_number}.pdf`, 'application/pdf')
-    			} else {
-    				download(blobData, 'scoresheets.zip', 'application/zip')
-    			}
-
-          clearInterval(checkStatus)
-          $(`#download-all-${flightId}`).prop("disabled", false)
-          $(`#download-all-${flightId}`).html('Download All')
-    		})
-    	}
+      }
     })
