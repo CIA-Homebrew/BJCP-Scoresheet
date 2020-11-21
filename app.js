@@ -6,11 +6,15 @@ let expressSession = require("express-session");
 let logger = require("morgan");
 let stylus = require("stylus");
 let flash = require("connect-flash");
+const tmp = require("tmp");
 let models = require("./models");
 let passport = require("passport");
 let debug = require("debug")("aha-scoresheet:app");
 
 let coreRouter = require("./routes/core");
+
+// Clear temporary files on app process exit
+tmp.setGracefulCleanup();
 
 // Setup environmental variables
 require("dotenv").config();

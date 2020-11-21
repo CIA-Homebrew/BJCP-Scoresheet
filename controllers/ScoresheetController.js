@@ -1,5 +1,8 @@
+const fs = require("fs");
 const archiver = require("archiver");
 const debug = require("debug")("aha-scoresheet:scoresheetController");
+const crypto = require("crypto");
+const tmp = require("tmp");
 
 const Scoresheet = require("../models").Scoresheet;
 const User = require("../models").User;
@@ -274,7 +277,7 @@ scoresheetController.generatePDF = function (req, res) {
   let scoresheetIds = req.body.scoresheetIds || null;
   let entryNumbers = req.body.entryNumbers || null;
   const userIsAdmin = req.user.user_level;
-  const requestId = req.body.requestId || null;
+  const requestId = crypto.randomBytes(16).toString("hex");
 
   const static_image_paths = {
     bjcp_logo: "public/images/scoresheet-logos/bjcp-logo.png",
@@ -284,12 +287,6 @@ scoresheetController.generatePDF = function (req, res) {
   };
 
   let scoresheetsDbPromise = null;
-  if (requestId) {
-    scoresheetController.downloadStatusByRequestId[requestId] = {
-      total: (entryNumbers || scoresheetIds).length,
-      completed: 0,
-    };
-  }
 
   // Only admins may concatenate scoresheets by entry number
   if (entryNumbers && userIsAdmin) {
@@ -323,6 +320,27 @@ scoresheetController.generatePDF = function (req, res) {
 
   scoresheetsDbPromise
     .then((scoresheets) => {
+      tmp.file((err, path, fd, cleanupCallback) => {
+        if (err) throw err;
+
+        scoresheetController.downloadStatusByRequestId[requestId] = {
+          id: requestId,
+          status: {
+            total: scoresheets.length,
+            completed: 0,
+          },
+          complete: false,
+          userId: req.user.id,
+          file: {
+            path,
+            fd,
+            cleanupCallback,
+          },
+        };
+
+        res.json({ requestId });
+      });
+
       const flights = [
         ...new Set(scoresheets.map((scoresheet) => scoresheet.flight_key)),
       ];
@@ -383,7 +401,33 @@ scoresheetController.generatePDF = function (req, res) {
             images: static_image_paths,
           })
           .then((pdf) => {
-            res.send(pdf);
+            const requestStatus =
+              scoresheetController.downloadStatusByRequestId[requestId];
+
+            fs.writeFile(requestStatus.file.path, pdf, (err) => {
+              if (err) throw err;
+
+              scoresheetController.downloadStatusByRequestId[requestId] = {
+                ...requestStatus,
+                complete: true,
+                status: {
+                  total: 1,
+                  completed: 1,
+                },
+              };
+
+              // Hold onto data for 1 minute before cleanup
+              setTimeout(() => {
+                if (scoresheetController.downloadStatusByRequestId[requestId]) {
+                  scoresheetController.downloadStatusByRequestId[
+                    requestId
+                  ].file.cleanupCallback();
+                  delete scoresheetController.downloadStatusByRequestId[
+                    requestId
+                  ];
+                }
+              }, 60000);
+            });
           });
       } else if (
         entryNumbers &&
@@ -407,15 +451,44 @@ scoresheetController.generatePDF = function (req, res) {
         return pdfService
           .generateScoresheet("views/bjcp_modified.pug", pdfGenInputData)
           .then((pdf) => {
-            res.send(pdf);
+            const requestStatus =
+              scoresheetController.downloadStatusByRequestId[requestId];
+
+            fs.writeFile(requestStatus.file.path, pdf, (err) => {
+              if (err) throw err;
+
+              scoresheetController.downloadStatusByRequestId[requestId] = {
+                ...requestStatus,
+                complete: true,
+                status: {
+                  total: 1,
+                  completed: 1,
+                },
+              };
+
+              // Hold onto data for 1 minute before cleanup
+              setTimeout(() => {
+                if (scoresheetController.downloadStatusByRequestId[requestId]) {
+                  scoresheetController.downloadStatusByRequestId[
+                    requestId
+                  ].file.cleanupCallback();
+                  delete scoresheetController.downloadStatusByRequestId[
+                    requestId
+                  ];
+                }
+              }, 60000);
+            });
           });
       }
 
       // If multiple scoresheets, set up the archive to pipe from pdf service to res
-      res.set("Content-disposition", 'attachment; filename="scoresheets.zip"');
-      res.set("Conent-type", "application/zip");
       const zip = archiver("zip");
-      zip.pipe(res);
+
+      const requestStatus =
+        scoresheetController.downloadStatusByRequestId[requestId];
+      const writer = fs.createWriteStream(requestStatus.file.path);
+      zip.pipe(writer);
+      // zip.pipe(res);
 
       zip.on("error", () => {
         throw new Error("File zipping failed!");
@@ -456,11 +529,9 @@ scoresheetController.generatePDF = function (req, res) {
               .then((scoresheetBlobData) => {
                 zip.append(scoresheetBlobData, { name: `${entry_number}.pdf` });
 
-                if (requestId) {
-                  scoresheetController.downloadStatusByRequestId[
-                    requestId
-                  ].completed += 1;
-                }
+                scoresheetController.downloadStatusByRequestId[
+                  requestId
+                ].status.completed += 1;
               });
           }
         );
@@ -470,9 +541,21 @@ scoresheetController.generatePDF = function (req, res) {
             return zip.finalize();
           })
           .then(() => {
-            if (requestId) {
-              delete scoresheetController.downloadStatusByRequestId[requestId];
-            }
+            scoresheetController.downloadStatusByRequestId[
+              requestId
+            ].complete = true;
+
+            // Hold onto data for 1 minute before cleanup
+            setTimeout(() => {
+              if (scoresheetController.downloadStatusByRequestId[requestId]) {
+                scoresheetController.downloadStatusByRequestId[
+                  requestId
+                ].file.cleanupCallback();
+                delete scoresheetController.downloadStatusByRequestId[
+                  requestId
+                ];
+              }
+            }, 60000);
           });
       } else {
         // Each individual scoresheet ID will be mapped to a new PDF
@@ -490,11 +573,9 @@ scoresheetController.generatePDF = function (req, res) {
                   name: `${scoresheetData.scoresheet.entry_number}.pdf`,
                 });
 
-                if (requestId) {
-                  scoresheetController.downloadStatusByRequestId[
-                    requestId
-                  ].completed += 1;
-                }
+                scoresheetController.downloadStatusByRequestId[
+                  requestId
+                ].status.completed += 1;
               });
           }
         );
@@ -504,9 +585,21 @@ scoresheetController.generatePDF = function (req, res) {
             return zip.finalize();
           })
           .then(() => {
-            if (requestId) {
-              delete scoresheetController.downloadStatusByRequestId[requestId];
-            }
+            scoresheetController.downloadStatusByRequestId[
+              requestId
+            ].complete = true;
+
+            // Hold onto data for 1 minute before cleanup
+            setTimeout(() => {
+              if (scoresheetController.downloadStatusByRequestId[requestId]) {
+                scoresheetController.downloadStatusByRequestId[
+                  requestId
+                ].file.cleanupCallback();
+                delete scoresheetController.downloadStatusByRequestId[
+                  requestId
+                ];
+              }
+            }, 60000);
           });
       }
     })
@@ -517,15 +610,33 @@ scoresheetController.generatePDF = function (req, res) {
 
 scoresheetController.getDownloadStatus = function (req, res) {
   const requestId = req.body.requestId || null;
+  const requestObject =
+    scoresheetController.downloadStatusByRequestId[requestId] || null;
 
-  if (
-    !requestId ||
-    !scoresheetController.downloadStatusByRequestId[requestId]
-  ) {
-    res.status(404).json(false);
+  if (!requestObject) {
+    res.status(404).json({
+      error: "Could not find request id",
+    });
+  } else if (requestObject.userId !== req.user.id) {
+    res.status(403).json({
+      error: "Unauthorized user",
+    });
+  } else if (requestObject.complete) {
+    res.set("Content-disposition", 'attachment; filename="scoresheets.zip"');
+    res.set("Conent-type", "application/zip");
+    res.status(201);
+    fs.createReadStream(requestObject.file.path).pipe(res);
+
+    // Clean up after response sent
+    res.on("finish", () => {
+      scoresheetController.downloadStatusByRequestId[
+        requestId
+      ].file.cleanupCallback();
+      delete scoresheetController.downloadStatusByRequestId[requestId];
+    });
+  } else {
+    res.status(202).json(requestObject.status);
   }
-
-  res.json(scoresheetController.downloadStatusByRequestId[requestId]);
 };
 
 scoresheetController.downloadStatusByRequestId = {};
