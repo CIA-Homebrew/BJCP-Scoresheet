@@ -563,7 +563,7 @@ $(() => {
           console.error("something went wrong", res.status);
         }
       });
-    }, 500);
+    }, 1000);
   };
 
   getRawDataDump = () => {

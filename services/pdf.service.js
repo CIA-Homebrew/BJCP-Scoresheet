@@ -2,6 +2,8 @@ const puppeteer = require("puppeteer");
 const pug = require("pug");
 const fs = require("fs").promises;
 
+const MAX_SIMULTANEOUS_RENDERS = 10;
+
 class PdfService {
   constructor() {
     this.config = {
@@ -25,7 +27,10 @@ class PdfService {
     this.initialized = true;
   }
 
-  async generateScoresheet(template, allData, preview) {
+  async generateScoresheet(template, allData, preview, delay) {
+    if (delay) {
+      await new Promise((r) => setTimeout(r, delay));
+    }
     const timerMetric = Date.now();
 
     if (!this.initialized) {
@@ -73,6 +78,13 @@ class PdfService {
           return scoresheetHtml;
         }
 
+        let pages = await this.browser.pages();
+
+        while (pages.length == MAX_SIMULTANEOUS_RENDERS) {
+          pages = await this.browser.pages();
+          await new Promise((r) => setTimeout(r, 1000));
+        }
+
         const page = await this.browser.newPage();
         await page.setContent(scoresheetHtml);
         const pdfBuffer = await page.pdf({
@@ -83,7 +95,7 @@ class PdfService {
         page.close();
 
         console.log(
-          `PDF_SERVICE: Rendered ${allData.length} scoresheets for entry #${
+          `PDF_SERVICE: Rendered ${allData.length} scoresheets for entry# ${
             allData[0].scoresheet.entry_number
           } in ${Date.now() - timerMetric}ms`
         );
