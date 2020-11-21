@@ -94,11 +94,6 @@ class PdfService {
         });
         page.close();
 
-        console.log(
-          `PDF_SERVICE: Rendered ${allData.length} scoresheets for entry# ${
-            allData[0].scoresheet.entry_number
-          } in ${Date.now() - timerMetric}ms`
-        );
         return pdfBuffer;
       }
     );
