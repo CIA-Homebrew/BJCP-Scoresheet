@@ -533,7 +533,7 @@ scoresheetController.generatePDF = function (req, res) {
                 "views/bjcp_modified.pug",
                 pdfGenInputData,
                 false,
-                500 * idx
+                1000 * idx
               )
               .then((scoresheetBlobData) => {
                 const fileName = `${pdfGenInputData[0].scoresheet.entry_number}.pdf`;
@@ -590,7 +590,7 @@ scoresheetController.generatePDF = function (req, res) {
                   images: static_image_paths,
                 },
                 false,
-                500 * idx
+                1000 * idx
               )
               .then((scoresheetBlobData) => {
                 const fileName = `${scoresheetData.scoresheet.entry_number}.pdf`;
