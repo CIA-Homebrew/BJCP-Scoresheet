@@ -7,7 +7,9 @@ This application is a full stack competition scoresheet generation and managemen
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 [![Discord](https://img.shields.io/discord/776887453264379915?color=%237289da&label=discord&logo=discord)](https://discord.com/channels/776887453264379915/)
 [![GitHub last commit](https://img.shields.io/github/last-commit/CIA-Homebrew/BJCP-Scoresheet.svg)](https://github.com/CIA-Homebrew/BJCP-Scoresheet)
+<!--
 [![Dependencies](https://david-dm.org/CIA-Homebrew/BJCP-Scoresheet.svg)](https://david-dm.org/cia-homebrew/BJCP-scoresheet)
+-->
 
 ### Purpose
 
