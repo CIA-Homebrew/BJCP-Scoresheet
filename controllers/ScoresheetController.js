@@ -389,6 +389,9 @@ scoresheetController.generatePDF = function (req, res) {
       });
     })
     .then((scoresheetObject) => {
+      console.log(
+        `Got ${Object.keys(scoresheetObject).length} scoresheets from db`
+      );
       // If there's only one scoresheet being requested, we don't need to make an archive - just send the pdf
       if (Object.keys(scoresheetObject).length === 1) {
         const scoresheetData = Object.values(scoresheetObject)[0];
@@ -527,7 +530,18 @@ scoresheetController.generatePDF = function (req, res) {
             return pdfService
               .generateScoresheet("views/bjcp_modified.pug", pdfGenInputData)
               .then((scoresheetBlobData) => {
-                zip.append(scoresheetBlobData, { name: `${entry_number}.pdf` });
+                const fileName = `${pdfGenInputData[0].scoresheet.entry_number}.pdf`;
+
+                zip.append(scoresheetBlobData, {
+                  name: fileName,
+                });
+
+                zip.on("entry", (entryData) => {
+                  if (entryData.name === fileName) {
+                    console.log(`Added file ${fileName} to archive`);
+                    return Promise.resolve(true);
+                  }
+                });
 
                 scoresheetController.downloadStatusByRequestId[
                   requestId
@@ -538,9 +552,11 @@ scoresheetController.generatePDF = function (req, res) {
 
         Promise.all(sendPromises)
           .then(() => {
+            console.log(`All files added. Starting to compress zip file...`);
             return zip.finalize();
           })
           .then(() => {
+            console.log(`Zip compression finished. File ready for download.`);
             scoresheetController.downloadStatusByRequestId[
               requestId
             ].complete = true;
@@ -569,8 +585,17 @@ scoresheetController.generatePDF = function (req, res) {
                 images: static_image_paths,
               })
               .then((scoresheetBlobData) => {
+                const fileName = `${scoresheetData.scoresheet.entry_number}.pdf`;
+
                 zip.append(scoresheetBlobData, {
-                  name: `${scoresheetData.scoresheet.entry_number}.pdf`,
+                  name: fileName,
+                });
+
+                zip.on("entry", (entryData) => {
+                  if (entryData.name === fileName) {
+                    console.log(`Added file ${fileName} to archive`);
+                    return Promise.resolve(true);
+                  }
                 });
 
                 scoresheetController.downloadStatusByRequestId[
@@ -582,9 +607,11 @@ scoresheetController.generatePDF = function (req, res) {
 
         Promise.all(sendPromises)
           .then(() => {
+            console.log(`All files added. Starting to compress zip file...`);
             return zip.finalize();
           })
           .then(() => {
+            console.log(`Zip compression finished. File ready for download.`);
             scoresheetController.downloadStatusByRequestId[
               requestId
             ].complete = true;

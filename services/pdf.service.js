@@ -26,6 +26,8 @@ class PdfService {
   }
 
   async generateScoresheet(template, allData, preview) {
+    const timerMetric = Date.now();
+
     if (!this.initialized) {
       await this.browser;
     }
@@ -79,6 +81,12 @@ class PdfService {
           printBackground: true,
         });
         page.close();
+
+        console.log(
+          `PDF_SERVICE: Rendered ${allData.length} scoresheets for entry #${
+            allData[0].scoresheet.entry_number
+          } in ${Date.now() - timerMetric}ms`
+        );
         return pdfBuffer;
       }
     );
