@@ -62,6 +62,11 @@ router.get(
   authMiddle.isAuthenticated,
   scoresheetController.initScoresheet
 );
+router.post(
+  "/scoresheet/data",
+  authMiddle.isAuthenticated,
+  scoresheetController.getScoresheetData
+);
 
 //route for scoresheet individual post edit
 router.post(

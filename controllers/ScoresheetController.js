@@ -31,56 +31,6 @@ function jsonErrorProcessor(err, res) {
 }
 
 /**
- * Load Scoresheet List
- * @param req
- * @param res
- */
-scoresheetController.loadScoresheetList = function (req, res) {
-  Scoresheet.findAll({
-    where: {
-      user_id: req.user.id,
-    },
-  })
-    .then((userScoresheets) => {
-      flights = {};
-      userScoresheets.forEach((scoresheet) => {
-        flights[scoresheet.flight_key] = {};
-      });
-
-      return Flight.findAll({
-        where: {
-          id: Object.keys(flights),
-        },
-      }).then((userFlights) => {
-        return [userScoresheets, userFlights];
-      });
-    })
-    .then(([userScoresheets, userFlights]) => {
-      const flightObject = {};
-      userFlights.forEach((flight) => {
-        flightObject[flight.id] = {
-          ...flight.get({ plain: true }),
-          scoresheets: userScoresheets
-            .filter((scoresheet) => scoresheet.flight_key === flight.id)
-            .map((scoresheet) => scoresheet.get({ plain: true })),
-        };
-      });
-
-      res.render("loadScoresheetList", {
-        user: req.user,
-        scoresheets: userScoresheets.map((scoresheet) =>
-          scoresheet.get({ plain: true })
-        ),
-        flights: flightObject,
-        title: appConstants.APP_NAME + " - List Scoresheet",
-      });
-    })
-    .catch((err) => {
-      debug(err);
-    });
-};
-
-/**
  * Initialize Scoresheet - either new or existing
  * @param req
  * @param res
@@ -215,6 +165,39 @@ scoresheetController.doScoresheetDataChange = function (req, res) {
       // Bad upsert send the error back to the AJAX caller
       return res.status(500).send({ update: false, id: null, error: err });
     });
+};
+
+scoresheetController.getScoresheetData = function (req, res) {
+  const scoresheetId = req.body.scoresheetId;
+  const userId = req.user.id;
+
+  Scoresheet.findOne({
+    where: {
+      id: scoresheetId,
+      user_id: userId,
+    },
+  }).then((scoresheetData) => {
+    if (!scoresheetData) throw new Error("No scoresheet found!");
+    Flight.findOne({
+      where: {
+        id: scoresheetData.flight_key,
+        created_by: userId,
+      },
+    }).then((flightData) => {
+      if (!flightData) throw new Error("No flight found!");
+      const user = req.user;
+      delete user.password;
+      delete user.user_level;
+      delete user.created_at;
+      delete user.updated_at;
+
+      res.json({
+        scoresheet: scoresheetData,
+        flight: flightData,
+        user: user,
+      });
+    });
+  });
 };
 
 scoresheetController.previewPDF = function (req, res) {
