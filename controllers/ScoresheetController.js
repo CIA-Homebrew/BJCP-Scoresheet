@@ -25,7 +25,7 @@ function jsonErrorProcessor(err, res) {
       ],
     });
   } else {
-    console.log(err);
+    debug(err);
     jsonErrorProcessor(err, res);
   }
 }
@@ -148,7 +148,7 @@ scoresheetController.initScoresheet = function (req, res) {
       })
       .catch((err) => {
         res.status(500);
-        console.log(err);
+        debug(err);
       });
   } else {
     // If we do NOT have a scoresheet ID just give the user a clean sheet to start new
@@ -212,7 +212,6 @@ scoresheetController.doScoresheetDataChange = function (req, res) {
     })
     .catch((err) => {
       debug(err);
-      console.log(err);
       // Bad upsert send the error back to the AJAX caller
       return res.status(500).send({ update: false, id: null, error: err });
     });
@@ -488,7 +487,7 @@ scoresheetController.generatePDF = function (req, res) {
         scoresheetController.downloadStatusByRequestId[requestId];
       const writer = fs.createWriteStream(requestStatus.file.path);
       zip.pipe(writer);
-      // zip.pipe(res);
+      zip.setMaxListeners(Object.keys(scoresheetObject).length);
 
       zip.on("error", () => {
         throw new Error("File zipping failed!");
@@ -513,8 +512,13 @@ scoresheetController.generatePDF = function (req, res) {
           {}
         );
 
+        //  Update the total to reflect combined groupings
+        scoresheetController.downloadStatusByRequestId[
+          requestId
+        ].status.total = Object.keys(groupedByEntryNumber).length;
+
         const sendPromises = Object.entries(groupedByEntryNumber).map(
-          ([entry_number, scoresheet_data_array]) => {
+          ([entry_number, scoresheet_data_array], idx) => {
             const pdfGenInputData = scoresheet_data_array.map(
               (scoresheetData) => ({
                 scoresheet: scoresheetData.scoresheet,
@@ -525,9 +529,24 @@ scoresheetController.generatePDF = function (req, res) {
             );
 
             return pdfService
-              .generateScoresheet("views/bjcp_modified.pug", pdfGenInputData)
+              .generateScoresheet(
+                "views/bjcp_modified.pug",
+                pdfGenInputData,
+                false,
+                1000 * idx
+              )
               .then((scoresheetBlobData) => {
-                zip.append(scoresheetBlobData, { name: `${entry_number}.pdf` });
+                const fileName = `${pdfGenInputData[0].scoresheet.entry_number}.pdf`;
+
+                zip.append(scoresheetBlobData, {
+                  name: fileName,
+                });
+
+                zip.on("entry", (entryData) => {
+                  if (entryData.name === fileName) {
+                    return Promise.resolve(true);
+                  }
+                });
 
                 scoresheetController.downloadStatusByRequestId[
                   requestId
@@ -560,17 +579,30 @@ scoresheetController.generatePDF = function (req, res) {
       } else {
         // Each individual scoresheet ID will be mapped to a new PDF
         const sendPromises = Object.values(scoresheetObject).map(
-          (scoresheetData) => {
+          (scoresheetData, idx) => {
             return pdfService
-              .generateScoresheet("views/bjcp_modified.pug", {
-                scoresheet: scoresheetData.scoresheet,
-                flight: scoresheetData.flight,
-                judge: scoresheetData.user,
-                images: static_image_paths,
-              })
+              .generateScoresheet(
+                "views/bjcp_modified.pug",
+                {
+                  scoresheet: scoresheetData.scoresheet,
+                  flight: scoresheetData.flight,
+                  judge: scoresheetData.user,
+                  images: static_image_paths,
+                },
+                false,
+                1000 * idx
+              )
               .then((scoresheetBlobData) => {
+                const fileName = `${scoresheetData.scoresheet.entry_number}.pdf`;
+
                 zip.append(scoresheetBlobData, {
-                  name: `${scoresheetData.scoresheet.entry_number}.pdf`,
+                  name: fileName,
+                });
+
+                zip.on("entry", (entryData) => {
+                  if (entryData.name === fileName) {
+                    return Promise.resolve(true);
+                  }
                 });
 
                 scoresheetController.downloadStatusByRequestId[
