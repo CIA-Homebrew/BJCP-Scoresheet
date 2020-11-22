@@ -11,6 +11,8 @@ let downloadPdf = () => {};
 const Users = {};
 const Scoresheets = {};
 const Flights = {};
+let Entries = {};
+
 const fetchAllData = () => {
   return fetch("/admin/alldata")
     .then((response) => {
@@ -26,6 +28,51 @@ const fetchAllData = () => {
       scoresheets.forEach((scoresheet) => {
         Scoresheets[scoresheet.id] = scoresheet;
       });
+
+      Entries = scoresheets.reduce((acc, scoresheet) => {
+        acc[scoresheet.entry_number] = acc[scoresheet.entry_number] || {
+          scoresheets: [],
+          category: [],
+          cat_name: [],
+          consensus_score: [],
+          place: [],
+          mini_boss_advanced: [],
+        };
+
+        acc[scoresheet.entry_number].entry_number = scoresheet.entry_number;
+        acc[scoresheet.entry_number].scoresheets.push(scoresheet);
+        acc[scoresheet.entry_number].category.push(
+          `${scoresheet.category || ""}${scoresheet.sub || ""}${
+            scoresheet.subcategory ? " - " : ""
+          }${scoresheet.subcategory || ""}`
+        );
+        acc[scoresheet.entry_number].cat_name.push(scoresheet.subcategory);
+        acc[scoresheet.entry_number].consensus_score.push(
+          scoresheet.consensus_score
+        );
+        acc[scoresheet.entry_number].place.push(scoresheet.place);
+        acc[scoresheet.entry_number].mini_boss_advanced.push(
+          scoresheet.mini_boss_advanced ? true : null
+        );
+
+        Object.keys(acc[scoresheet.entry_number]).forEach((key) => {
+          if (!Array.isArray(acc[scoresheet.entry_number][key])) return;
+          // Check if every item in the array is equal. If not, judge info for that value doesn't match, and it's "contested"
+          acc[scoresheet.entry_number][key + "_contested"] = !acc[
+            scoresheet.entry_number
+          ][key].every((val) => val === acc[scoresheet.entry_number][key][0]);
+          acc[scoresheet.entry_number][key + "_first"] =
+            acc[scoresheet.entry_number][key][0] === true ||
+            acc[scoresheet.entry_number][key][0] === "on"
+              ? "✓"
+              : acc[scoresheet.entry_number][key][0] === null ||
+                acc[scoresheet.entry_number][key][0] === false
+              ? ""
+              : acc[scoresheet.entry_number][key][0];
+        });
+
+        return acc;
+      }, {});
     });
 };
 
@@ -34,6 +81,25 @@ const updateAllTables = () => {
     updateTable("#scoresheets", Scoresheets);
     updateTable("#judges", Users);
     updateTable("#flights", Flights);
+    updateTable("#entries", Entries);
+
+    // Since we map mat_icon "warning" type in for contested entries, we can filter by that text to only show contested entries
+    $("#filterByContested").on("click", function (event) {
+      $.fn.dataTable.ext.search.push((settings, data, dataIndex) => {
+        if (settings.nTable.id !== "entry_list_table") {
+          return true;
+        }
+
+        return data
+          .map((cell) =>
+            event.target.checked ? cell.includes("warning") : true
+          )
+          .reduce((acc, val) => acc || val);
+      });
+      $("#entries").find("table").DataTable().draw();
+    });
+
+    $('[data-toggle="tooltip"]').tooltip();
 
     $("#flightModalUser").html("<option selected disabled>Select...</option>");
     Object.values(Users).forEach((user) => {
@@ -105,7 +171,7 @@ const getDataValueByKey = (listItem, key) => {
       } disabled>
 		</div>
 		`;
-  } else if (key === "place") {
+  } else if (key === "place" || key === "place_first") {
     const placeCode = listItem[key];
     const placeValues = ["Adv.", "1st", "2nd", "3rd"];
     value = typeof placeCode === "number" ? placeValues[placeCode] : "";
@@ -126,6 +192,37 @@ const getDataValueByKey = (listItem, key) => {
     ).length;
   } else if (key === "date") {
     value = new Date(listItem[key]).toLocaleDateString();
+  } else if (key === "numEntryScoresheets") {
+    const entryNumber = listItem.entry_number;
+    value = Entries[entryNumber].scoresheets.length;
+  } else if (key.split("_")[0] === "mismatched") {
+    const entryNumber = listItem.entry_number;
+    const prop = key.split("_").slice(1).join("_");
+
+    if (Entries[entryNumber][prop + "_contested"]) {
+      value = `<span class="material-icons" data-toggle="tooltip" data-placement="top" title="${Entries[
+        entryNumber
+      ][prop]
+        .map((val, idx) => {
+          const user = Users[Entries[entryNumber].scoresheets[idx].user_id];
+          const scoresheet = Entries[entryNumber].scoresheets[idx];
+
+          return (
+            user.firstname +
+            " " +
+            user.lastname +
+            ": " +
+            (scoresheet[prop] === true || scoresheet[prop] === "on"
+              ? "✓"
+              : scoresheet[prop] === null || scoresheet[prop] === false
+              ? "✗"
+              : scoresheet[prop])
+          );
+        })
+        .join("\n")}">warning</span>`;
+    } else {
+      value = "";
+    }
   }
 
   return value;
@@ -138,6 +235,8 @@ const openDataModal = (tableId, id) => {
     openUserDataModal(id);
   } else if (tableId === "#flights") {
     openFlightDataModal(id);
+  } else if (tableId === "#entries") {
+    openEntryDataModal(id);
   }
 };
 
@@ -221,6 +320,10 @@ $(() => {
     );
 
     $("#userDataModal").modal("show");
+  };
+
+  openEntryDataModal = (entryNumber) => {
+    // TODO: Entry Modal!
   };
 
   updateUserData = () => {

@@ -10,7 +10,7 @@ block content
       .card-header
         ul#admin-list.nav.nav-tabs.card-header-tabs(role="tablist")
           li.nav-item
-            a.nav-link.px-2(
+            a.nav-link.px-2.active(
               data-toggle="tab",
               href="#system",
               role="tab",
@@ -18,7 +18,15 @@ block content
               aria-selected="true"
             ) System
           li.nav-item
-            a.nav-link.px-2.active(
+            a.nav-link.px-2(
+              data-toggle="tab",
+              href="#entries",
+              role="tab",
+              aria-controls="entries",
+              aria-selected="false"
+            ) Entries
+          li.nav-item
+            a.nav-link.px-2(
               data-toggle="tab",
               href="#scoresheets",
               role="tab",
@@ -43,7 +51,7 @@ block content
             ) Flights
       .card-body
         .tab-content
-          #system.tab-pane(role="tabpanel", aria-labelledby="system-tab")
+          #system.tab-pane.active(role="tabpanel", aria-labelledby="system-tab")
             .container-fluid
               .mt-5
                 label(for="download-all-entries-button") Download All Entries as Concatenated PDFs (Caution: May take a while!)
@@ -63,12 +71,27 @@ block content
                   onclick=`getRawDataDump()`
                 ) Download Raw Data
 
-          #scoresheets.tab-pane.active(
-            role="tabpane2",
-            aria-labelledby="scoresheets-tab"
-          )
+          #entries.tab-pane(role="tabpane2", aria-labelledby="entries-tab")
             .container-fluid
-              table.comp_entry_list.table.table-sm.table-striped.table-bordered.table-hover
+              .form-check
+                  input.form-check-input(type="checkbox" id="filterByContested")
+                  label.form-check-label(for="filterByContested") Show Contested Only
+              table#entry_list_table.comp_entry_list.table.table-sm.table-striped.table-bordered.table-hover
+                thead.thead-dark
+                  tr
+                    //- Table is generated dynamically by data-key in headers - to put more than one value in a cell, comma separate.
+                    //- Entries have the property '_first' to denote the first entry with that prop; if other sheets with the same entry number vary, the '_contested' prop is flagged as true
+                    th(scope="col", data-key="entry_number") Entry #
+                    th(scope="col", data-key="numEntryScoresheets") # Scoresheets
+                    th(scope="col", data-key="category_first, cat_name_first,mismatched_category") Category
+                    th(scope="col", data-key="consensus_score_first,mismatched_consensus_score") Consenseus
+                    th(scope="col", data-key="place_first,mismatched_place") Place
+                    th(scope="col", data-key="mini_boss_advanced_first,mismatched_mini_boss_advanced") Mini BOS
+                tbody
+              
+          #scoresheets.tab-pane(role="tabpane3", aria-labelledby="scoresheets-tab")
+            .container-fluid
+              table.comp_scoresheet_list.table.table-sm.table-striped.table-bordered.table-hover
                 thead.thead-dark
                   tr
                     //- Table is generated dynamically by data-key in headers - to put more than one value in a cell, comma separate.
@@ -76,11 +99,11 @@ block content
                     th(scope="col", data-key="category,sub,subcategory") Category
                     th(scope="col", data-key="flight_key") Flight
                     th(scope="col", data-key="user_id") Judge
-                    th(scope="col", data-key="consensus_score") Consenseus
+                    th(scope="col", data-key="judge_score") Judge Score
                     th(scope="col", data-key="place") Place
                     th(scope="col", data-key="mini_boss_advanced") Mini BOS
                 tbody
-          #judges.tab-pane(role="tabpane3", aria-labelledby="judges-tab")
+          #judges.tab-pane(role="tabpane4", aria-labelledby="judges-tab")
             .container-fluid
               table.comp_judges_list.table.table-sm.table-striped.table-bordered.table-hover
                 thead.thead-dark
@@ -92,7 +115,7 @@ block content
                     th(scope="col", data-key="numUserFlights") Judging Sessions
                     th(scope="col", data-key="numUserScoresheets") Entries Judged
                 tbody
-          #flights.tab-pane(role="tabpane4", aria-labelledby="flight-tab")
+          #flights.tab-pane(role="tabpane5", aria-labelledby="flight-tab")
             .container-fluid
               table.comp_flights_list.table.table-sm.table-striped.table-bordered.table-hover
                 thead.thead-dark
