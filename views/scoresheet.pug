@@ -1,1747 +1,1849 @@
 extends layout
 
 block content
-  form#newScoresheet(role="form", action="/scoresheet/update", method="post")
-    //- Hidden form ID for backend usage
-    input#author(type="text", name="author", value=user._id, hidden)
-    input#id(type="text", name="id", hidden)
-    input#scoresheet_submitted(
-      type="text",
-      value="0",
-      name="scoresheet_submitted",
-      hidden
-    )
-    input#flight_key(type="text", name="flight_key", hidden, value=flightId)
-    .container
-      .card
-        .card-header
-          .row
-            .col-md
-              h4.card-title BJCP Digital Soresheet
-              sub.form-text.mb-2.text-subdued Please fill this form to the most comprehensive degree possible.
-            .col-md
-              .card-deck
-                .card.border-dark.mb-3.mx-1
-                  .card-header.px-0.py-0
-                    p.small.mb-0.text-center Place
-                  .card-body.text-dark.px-3.py-1.text-center
-                    select#place.form-control(name="place")
-                      option(value=-1, selected) Select...
-                      option(value=1) 1st
-                      option(value=2) 2nd
-                      option(value=3) 3rd
-                .card.border-dark.mb-3.mx-1
-                  .card-header.px-0.py-0
-                    p.small.mb-0.text-center MiniBOS
-                  .card-body.text-dark.px-0.py-1.text-center
-                    .btn-group-toggle(data-toggle="buttons")
-                      label.btn.btn-outline-success.btn-sm(
-                        class=Boolean(scoresheet ? scoresheet.mini_boss_advanced : false) ? 'active' : ''
-                      ) Advance
-                        input#mini_boss_advanced(
-                          type="checkbox",
-                          autocomplete="off",
-                          name="mini_boss_advanced"
-                        )
-                .card.border-dark.mb-3.mx-1
-                  .card-header.px-0.py-0
-                    p.small.mb-0.text-center Consensus
-                  .card-body.text-dark.my-0.px-0.py-0.text-center
-                    input#consensus_score.form-control.form-control-lg.text-center.my-0.p-0.ml-auto.mr-auto.remove-internal-padding(
-                      type="number",
-                      name="consensus_score",
-                      value="0",
-                      min="0",
-                      max="50",
-                      style="width:50%;height:90%;line-height:90%;"
-                    )
-                .card.border-dark.mb-3.mx-1
-                  .card-header.px-0.py-0
-                    p.small.mb-0.text-center Total Score
-                  .card-body.text-dark.px-0.py-1.text-center
-                    h4#judge_total.my-0(name="judge_total") 0
+	form#newScoresheet(role="form", action="/scoresheet/update", method="post")
+		//- Hidden form ID for backend usage
+		input#author(type="text", name="author", value=user._id, hidden)
+		input#id(type="text", name="id", hidden)
+		input#scoresheet_submitted(
+			type="text",
+			value="0",
+			name="scoresheet_submitted",
+			hidden
+		)
+		input#flight_key(type="text", name="flight_key", hidden, value=flightId)
+		.container
+			.card
+				.card-header
+					.row
+						.col-md
+							h4.card-title BJCP Digital Soresheet
+							sub.form-text.mb-2.text-subdued Please fill this form to the most comprehensive degree possible.
+						.col-md
+							.card-deck
+								.card.border-dark.mb-3.mx-1
+									.card-header.px-0.py-0
+										p.small.mb-0.text-center Place
+									.card-body.text-dark.px-3.py-1.text-center
+										select#place.form-control(name="place")
+											option(value=-1, selected) Select...
+											option(value=1) 1st
+											option(value=2) 2nd
+											option(value=3) 3rd
+								.card.border-dark.mb-3.mx-1
+									.card-header.px-0.py-0
+										p.small.mb-0.text-center MiniBOS
+									.card-body.text-dark.px-0.py-1.text-center
+										.btn-group-toggle(data-toggle="buttons")
+											label.btn.btn-outline-success.btn-sm(
+												class=Boolean(scoresheet ? scoresheet.mini_boss_advanced : false) ? 'active' : ''
+											) Advance
+												input#mini_boss_advanced(
+													type="checkbox",
+													autocomplete="off",
+													name="mini_boss_advanced"
+												)
+								.card.border-dark.mb-3.mx-1
+									.card-header.px-0.py-0
+										p.small.mb-0.text-center Consensus
+									.card-body.text-dark.my-0.px-0.py-0.text-center
+										input#consensus_score.form-control.form-control-lg.text-center.my-0.p-0.ml-auto.mr-auto.remove-internal-padding(
+											type="number",
+											name="consensus_score",
+											value="0",
+											min="0",
+											max="50",
+											style="width:50%;height:90%;line-height:90%;"
+										)
+								.card.border-dark.mb-3.mx-1
+									.card-header.px-0.py-0
+										p.small.mb-0.text-center Total Score
+									.card-body.text-dark.px-0.py-1.text-center
+										h4#judge_total.my-0(name="judge_total") 0
 
-            .col-md-auto.mt-auto.mb-auto
-              button#submitBtn.btn.btn-primary(
-                type="button",
-                name="btn",
-                value="Submit",
-                data-toggle="modal",
-                onClick="goHome()"
-              ) Back to My Flights
-          ul#scoresheet-list.nav.nav-tabs.card-header-tabs(role="tablist")
-            li.nav-item
-              a#information-tab.nav-link.active.px-2(
-                data-toggle="tab",
-                href="#information",
-                role="tab",
-                aria-controls="information",
-                aria-selected="true"
-              ) Information
-            li.nav-item
-              a#aroma-tab.nav-link.px-2(
-                data-toggle="tab",
-                href="#aroma",
-                role="tab",
-                aria-controls="aroma",
-                aria-selected="false"
-              ) Aroma
-            li.nav-item
-              a#appearance-tab.nav-link.px-2(
-                data-toggle="tab",
-                href="#appearance",
-                role="tab",
-                aria-controls="appearance",
-                aria-selected="false"
-              ) Appearance
-            li.nav-item
-              a#flavor-tab.nav-link.px-2(
-                data-toggle="tab",
-                href="#flavor",
-                role="tab",
-                aria-controls="flavor",
-                aria-selected="false"
-              ) Flavor
-            li.nav-item
-              a#mouthfeel-tab.nav-link.px-2(
-                data-toggle="tab",
-                href="#mouthfeel",
-                role="tab",
-                aria-controls="mouthfeel",
-                aria-selected="false"
-              ) Mouthfeel
-            li.nav-item
-              a#descriptors-tab.nav-link.px-2(
-                data-toggle="tab",
-                href="#descriptors",
-                role="tab",
-                aria-controls="descriptors",
-                aria-selected="false"
-              ) Descriptors
-            li.nav-item
-              a#summary-tab.nav-link.px-2(
-                data-toggle="tab",
-                href="#summary",
-                role="tab",
-                aria-controls="summary",
-                aria-selected="false"
-              ) Summary
-        .card-body
-          .tab-content
-            #information.tab-pane.active(
-              role="tabpanel",
-              name="information",
-              aria-labelledby="information-tab"
-            )
-              .form-group
-                h4 Judge Information
-                .form-row.py-1
-                  .form-group.col-sm-2.col-form-label Judge
-                    label(for="judge_name")
-                  .form-group.col-sm-4
-                    input#judge_name.form-control(
-                      type="text",
-                      value=user.firstname + ' ' + user.lastname,
-                      disabled
-                    )
-                  .form-group.col-sm-1.col-form-label BJCP ID
-                    label(for="bjcp_id")
-                  .form-group.col-sm-2
-                    input#bjcp_id.form-control(
-                      type="text",
-                      value=user.bjcp_id,
-                      readonly
-                    )
-                  .form-group.col-sm-1.col-form-label Rank
-                    label(for="bjcp_rank")
-                  .form-group.col-sm-2
-                    input#bjcp_rank.form-control(
-                      type="text",
-                      value=user.bjcp_rank,
-                      readonly
-                    )
-                .form-row.py-1
-                  .form-group.col-sm-2.col-form-label Session Date
-                    label(for="session_date")
-                  .form-group.col-sm-4
-                    input#session_date.form-control(
-                      type="date",
-                      name="session_date",
-                      value=sess_date
-                    )
-                  .form-group.col-sm-2.col-form-label Session Location
-                    label(for="session_location")
-                  .form-group.col-sm-4
-                    input#session_location.form-control(
-                      type="text",
-                      name="session_location",
-                      value=session_location,
-                      disabled
-                    )
+						.col-md-auto.mt-auto.mb-auto
+							button#submitBtn.btn.btn-primary(
+								type="button",
+								name="btn",
+								value="Submit",
+								data-toggle="modal",
+								onClick="goHome()"
+							) Back to My Flights
+					ul#scoresheet-list.nav.nav-tabs.card-header-tabs(role="tablist")
+						li.nav-item
+							a#information-tab.nav-link.active.px-2(
+								data-toggle="tab",
+								href="#information",
+								role="tab",
+								aria-controls="information",
+								aria-selected="true"
+							) Information
+						li.nav-item
+							a#aroma-tab.nav-link.px-2(
+								data-toggle="tab",
+								href="#aroma",
+								role="tab",
+								aria-controls="aroma",
+								aria-selected="false"
+							) Aroma
+						li.nav-item
+							a#appearance-tab.nav-link.px-2(
+								data-toggle="tab",
+								href="#appearance",
+								role="tab",
+								aria-controls="appearance",
+								aria-selected="false"
+							) Appearance
+						li.nav-item
+							a#flavor-tab.nav-link.px-2(
+								data-toggle="tab",
+								href="#flavor",
+								role="tab",
+								aria-controls="flavor",
+								aria-selected="false"
+							) Flavor
+						li.nav-item
+							a#mouthfeel-tab.nav-link.px-2(
+								data-toggle="tab",
+								href="#mouthfeel",
+								role="tab",
+								aria-controls="mouthfeel",
+								aria-selected="false"
+							) Mouthfeel
+						li.nav-item
+							a#descriptors-tab.nav-link.px-2(
+								data-toggle="tab",
+								href="#descriptors",
+								role="tab",
+								aria-controls="descriptors",
+								aria-selected="false"
+							) Descriptors
+						li.nav-item
+							a#summary-tab.nav-link.px-2(
+								data-toggle="tab",
+								href="#summary",
+								role="tab",
+								aria-controls="summary",
+								aria-selected="false"
+							) Summary
+				.card-body
+					.tab-content
+						#information.tab-pane.active(
+							role="tabpanel",
+							name="information",
+							aria-labelledby="information-tab"
+						)
+							.form-group
+								h4 Judge Information
+								.form-row.py-1
+									.form-group.col-sm-2.col-form-label Judge
+										label(for="judge_name")
+									.form-group.col-sm-4
+										input#judge_name.form-control(
+											type="text",
+											value=user.firstname + ' ' + user.lastname,
+											disabled
+										)
+									.form-group.col-sm-1.col-form-label BJCP ID
+										label(for="bjcp_id")
+									.form-group.col-sm-2
+										input#bjcp_id.form-control(
+											type="text",
+											value=user.bjcp_id,
+											readonly
+										)
+									.form-group.col-sm-1.col-form-label Rank
+										label(for="bjcp_rank")
+									.form-group.col-sm-2
+										input#bjcp_rank.form-control(
+											type="text",
+											value=user.bjcp_rank,
+											readonly
+										)
+								.form-row.py-1
+									.form-group.col-sm-2.col-form-label Session Date
+										label(for="session_date")
+									.form-group.col-sm-4
+										input#session_date.form-control(
+											type="date",
+											name="session_date",
+											value=sess_date
+										)
+									.form-group.col-sm-2.col-form-label Session Location
+										label(for="session_location")
+									.form-group.col-sm-4
+										input#session_location.form-control(
+											type="text",
+											name="session_location",
+											value=session_location,
+											disabled
+										)
 
-              .form-group
-                h4 Beer Information
-                .form-row.py-1
-                  .form-group.col-sm-2.col-form-label
-                    label(for="entry_number") Entry Number
-                  .form-group.col-sm-4
-                    input#entry_number.form-control.is-invalid.vCheck(
-                      type="text",
-                      placeholder="Entry Number",
-                      name="entry_number",
-                      maxlength="6"
-                    )
-                    small#entry_number_help.form-text.text-muted Enter <span style="font-family: Courier, monospace;">NONE</span> for non-competition judging sessions
-                    .invalid-feedback Missing or duplicate value.
-                  .form-group.col-sm-3.col-form-label.text-center.pl-4
-                    label(for="flight_position") Flight Position
-                  .form-group.col-sm-1.pr-0
-                    input#flight_position.form-control(
-                      type="number",
-                      name="flight_position",
-                      min="0",
-                      value=flight_position
-                    )
-                  .form-group.col-sm-1.col-form-label.text-center
-                    label(for="flight_total") of
-                  .form-group.col-sm-1.pl-0
-                    input#flight_total.form-control(
-                      type="number",
-                      name="flight_total",
-                      min="0",
-                      value=flight_total
-                    )
-              .form-group
-                .form-row.py-1
-                  .form-group.col-sm-2.col-form-label
-                    label(for="category") BJCP Style
-                  .form-group.col-sm-2
-                    select#category.form-control(
-                      name="category",
-                      onchange="update_tooltips()"
-                    )
-                      option(hidden, disabled, selected, value)
-                      each val in [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34]
-                        option= val
-                  .form-group.col-sm-2
-                    select#sub.form-control(
-                      name="sub",
-                      onchange="update_tooltips()"
-                    )
-                      option(hidden, disabled, selected, value)
-                      each val in ['A','B','C','D','E','F']
-                        option= val
-                  .form-group.col
-                    input#subcategory.form-control(
-                      type="text",
-                      name="subcategory",
-                      placeholder="Subcategory Name (please spell out)"
-                    )
-              .form-group
-                .form-row.py-1
-                  .form-group.col-3.col-form-label
-                    .form-check
-                      input#special_ingredients_check.form-check-input(
-                        type="checkbox",
-                        name="special_ingredients_check"
-                      )
-                      label.form-check-label(for="special_ingredients_check") Special Ingredients
-                  .form-group.col-9
-                    input#special_ingredients.form-control(
-                      type="text",
-                      name="special_ingredients",
-                      placeholder="List Special Ingredients"
-                    )
-              .form-group
-                .form-row.py-1
-                  .form-group.col-3.col-form-label
-                    .form-check
-                      input#bottle_inspection_check.form-check-input(
-                        type="checkbox",
-                        name="bottle_inspection_check"
-                      )
-                      label.form-check-label(for="bottle_inspection_check") Bottle Acceptable
-                  .form-group.col-9
-                    input#bottle_inspection_comment.form-control(
-                      type="text",
-                      name="bottle_inspection_comment",
-                      placeholder="Bottle Comments"
-                    )
-            #aroma.tab-pane(role="tabpanel", aria-labelledby="aroma-tab")
-              .form-group
-                .row
-                  .col-sm-9
-                    h4 Malt Aroma
-                  .col-sm-3.text-right
-                    a#bjcp_aroma.badge.badge-light.badge-pill(
-                      tabindex="0",
-                      role="button",
-                      data-toggle="popover",
-                      data-trigger="focus",
-                      title="BJCP Aroma Guidelines",
-                      data-content="Please Select a BJCP Category and Subcategory"
-                    ) Style Guidelines
-                .form-row.py-1
-                  .form-group.col-sm-6.col-form-label.px-4
-                    input#aroma_malt.data-slider(
-                      style="width:100%",
-                      name="aroma_malt",
-                      type="text",
-                      data-slider-ticks="[0, 10, 50, 100]",
-                      data-slider-ticks-snap-bounds="30",
-                      data-slider-ticks-labels="['None','Low','Med','High']"
-                    )
-                    //- button(type='button' class='btn btn-danger btn-small' data-toggle='button' aria-pressed='false' autocomplete='off') Inappropriate
-                    //- .form-group.col-sm-3.col-form-label
-                    .form-check.pt-4
-                      input#aroma_malt_inappropriate.form-check-input(
-                        type="checkbox",
-                        name="aroma_malt_inappropriate"
-                      )
-                      label.form-check-label(for="aroma_malt_inappropriate") Inappropriate
-                  .form-group.col-sm-6
-                    textarea#aroma_malt_comment.form-control(
-                      rows="5",
-                      type="text",
-                      name="aroma_malt_comment",
-                      placeholder="Comments"
-                    )
-              .form-group
-                h4 Hops Aroma
-                .form-row.py-1
-                  .form-group.col-sm-6.col-form-label.px-4
-                    input#aroma_hops.data-slider(
-                      style="width:100%",
-                      name="aroma_hops",
-                      type="text",
-                      data-slider-ticks="[0, 10, 50, 100]",
-                      data-slider-ticks-snap-bounds="30",
-                      data-slider-ticks-labels="['None','Low','Med','High']"
-                    )
-                    //- button(type='button' class='btn btn-danger btn-small' data-toggle='button' aria-pressed='false' autocomplete='off') Inappropriate
-                    //- .form-group.col-sm-3.col-form-label
-                    .form-check.pt-4
-                      input#aroma_hops_inappropriate.form-check-input(
-                        type="checkbox",
-                        name="aroma_hops_inappropriate"
-                      )
-                      label.form-check-label(for="aroma_hops_inappropriate") Inappropriate
-                  .form-group.col-sm-6
-                    textarea#aroma_hops_comment.form-control(
-                      rows="5",
-                      type="text",
-                      name="aroma_hops_comment",
-                      placeholder="Comments"
-                    )
-              .form-group
-                h4 Fermentation Aroma
-                .form-row.py-1
-                  .form-group.col-sm-6.col-form-label.px-4
-                    input#aroma_fermentation.data-slider(
-                      style="width:100%",
-                      name="aroma_fermentation",
-                      type="text",
-                      data-slider-ticks="[0, 10, 50, 100]",
-                      data-slider-ticks-snap-bounds="30",
-                      data-slider-ticks-labels="['None','Low','Med','High']"
-                    )
-                    //- button(type='button' class='btn btn-danger btn-small' data-toggle='button' aria-pressed='false' autocomplete='off') Inappropriate
-                    //- .form-group.col-sm-3.col-form-label
-                    .form-check.pt-4
-                      input#aroma_fermentation_inappropriate.form-check-input(
-                        type="checkbox",
-                        name="aroma_fermentation_inappropriate"
-                      )
-                      label.form-check-label(
-                        for="aroma_fermentation_inappropriate"
-                      ) Inappropriate
-                  .form-group.col-sm-6
-                    textarea#aroma_fermentation_comment.form-control(
-                      rows="5",
-                      type="text",
-                      name="aroma_fermentation_comment",
-                      placeholder="Comments"
-                    )
-              .form-group
-                .row
-                  .col
-                    h4 Summary Aroma Comments
-                      textarea#aroma_other_comment.form-control(
-                        rows="5",
-                        type="text",
-                        name="aroma_other_comment",
-                        placeholder="Comments"
-                      )
-                  .col.col-md-auto.d-flex.align-items-center.pl-4
-                    .card.border-dark(style="width:100px")
-                      .card-header.py-1
-                        p.small.mb-0.text-center Aroma Score
-                      .card-body.text-dark.px-0.py-0.text-center
-                        input#aroma_score.form-control.form-control-lg.text-center.mb-0(
-                          type="number",
-                          name="aroma_score",
-                          value=0,
-                          min=0,
-                          max=12,
-                          onchange="recalculate_score()"
-                        )
-                        p.small.d-flex.align-items-end.flex-row-reverse.my-0.pb-0 /12
-            #appearance.tab-pane(
-              role="tabpanel",
-              aria-labelledby="appearance-tab"
-            )
-              .form-group
-                .row
-                  .col-sm-9
-                    h4 Color
-                  .col-sm-3.text-right
-                    a#bjcp_appearance.badge.badge-light.badge-pill(
-                      tabindex="0",
-                      role="button",
-                      data-toggle="popover",
-                      data-trigger="focus",
-                      title="BJCP Appearance Guidelines",
-                      data-content="Please Select a BJCP Category and Subcategory"
-                    ) Style Guidelines
-                .form-row.py-1
-                  .form-group.col-sm-6.col-form-label.px-4
-                    input#appearance_color.data-slider(
-                      style="width:100%",
-                      name="appearance_color",
-                      type="text",
-                      data-slider-ticks="[0, 10, 50, 100]",
-                      data-slider-ticks-snap-bounds="30",
-                      data-slider-ticks-labels="['None','Low','Med','High']"
-                    )
-                    //- button(type='button' class='btn btn-danger btn-small' data-toggle='button' aria-pressed='false' autocomplete='off') Inappropriate
-                    //- .form-group.col-sm-3.col-form-label
-                    .form-check.pt-4
-                      input#appearance_color_inappropriate.form-check-input(
-                        type="checkbox",
-                        name="appearance_color_inappropriate"
-                      )
-                      label.form-check-label(
-                        for="appearance_color_inappropriate"
-                      ) Inappropriate
-                  .form-group.col-sm-6
-                    textarea#appearance_color_other.form-control(
-                      rows="5",
-                      type="text",
-                      name="appearance_color_other",
-                      placeholder="Comments"
-                    )
-              .form-group
-                h4 Clarity
-                .form-row.py-1
-                  .form-group.col-sm-6.col-form-label.px-4
-                    input#appearance_clarity.data-slider(
-                      style="width:100%",
-                      name="appearance_clarity",
-                      type="text",
-                      data-slider-ticks="[0, 10, 50, 100]",
-                      data-slider-ticks-snap-bounds="30",
-                      data-slider-ticks-labels="['None','Low','Med','High']"
-                    )
-                    //- button(type='button' class='btn btn-danger btn-small' data-toggle='button' aria-pressed='false' autocomplete='off') Inappropriate
-                    //- .form-group.col-sm-3.col-form-label
-                    .form-check.pt-4
-                      input#appearance_clarity_inappropriate.form-check-input(
-                        type="checkbox",
-                        name="appearance_clarity_inappropriate"
-                      )
-                      label.form-check-label(
-                        for="appearance_clarity_inappropriate"
-                      ) Inappropriate
-                  .form-group.col-sm-6
-                    textarea#appearance_clarity_other.form-control(
-                      rows="5",
-                      type="text",
-                      name="appearance_clarity_other",
-                      placeholder="Comments"
-                    )
-              .form-group
-                h4 Head
-                .form-row.py-1
-                  .form-group.col-sm-6.col-form-label.px-4
-                    h6 Color
-                    input#appearance_head.data-slider(
-                      style="width:100%",
-                      name="appearance_head",
-                      type="text",
-                      data-slider-ticks="[0, 10, 50, 100]",
-                      data-slider-ticks-snap-bounds="30",
-                      data-slider-ticks-labels="['None','Low','Med','High']"
-                    )
-                    //- button(type='button' class='btn btn-danger btn-small' data-toggle='button' aria-pressed='false' autocomplete='off') Inappropriate
-                    //- .form-group.col-sm-3.col-form-label
-                    .form-check.pt-2.pb-4
-                      input#appearance_head_inappropriate.form-check-input(
-                        type="checkbox",
-                        name="appearance_head_inappropriate"
-                      )
-                      label.form-check-label(
-                        for="appearance_head_inappropriate"
-                      ) Inappropriate
-                    h6 Retention
-                    input#appearance_retention.data-slider(
-                      style="width:100%",
-                      name="appearance_retention",
-                      type="text",
-                      data-slider-ticks="[0, 10, 50, 100]",
-                      data-slider-ticks-snap-bounds="30",
-                      data-slider-ticks-labels="['None','Low','Med','High']"
-                    )
-                    //- button(type='button' class='btn btn-danger btn-small' data-toggle='button' aria-pressed='false' autocomplete='off') Inappropriate
-                    //- .form-group.col-sm-3.col-form-label
-                    .form-check.py-2
-                      input#appearance_retention_inappropriate.form-check-input(
-                        type="checkbox",
-                        name="appearance_retention_inappropriate"
-                      )
-                      label.form-check-label(
-                        for="appearance_retention_inappropriate"
-                      ) Inappropriate
-                  .form-group.col-sm-6
-                    textarea#appearance_texture_comment.form-control(
-                      rows="10",
-                      type="text",
-                      name="appearance_texture_comment",
-                      placeholder="Comments"
-                    )
-              .form-group
-                .row
-                  .col
-                    h4 Summary Appearance Comments
-                      textarea#appearance_other_comment.form-control(
-                        rows="5",
-                        type="text",
-                        name="appearance_other_comment",
-                        placeholder="Comments"
-                      )
-                  .col.col-md-auto.d-flex.align-items-center.pl-4
-                    .card.border-dark(style="width:100px")
-                      .card-header.py-1.px-0
-                        p.small.mb-0.text-center Appearance Score
-                      .card-body.text-dark.px-0.py-0.text-center
-                        input#appearance_score.form-control.form-control-lg.text-center.mb-0(
-                          type="number",
-                          name="appearance_score",
-                          value="0",
-                          min="0",
-                          max="3",
-                          onchange="recalculate_score()"
-                        )
-                        p.small.d-flex.align-items-end.flex-row-reverse.my-0.pb-0 /3
-            #flavor.tab-pane(role="tabpanel", aria-labelledby="flavor-tab")
-              .form-group
-                .row
-                  .col-sm-9
-                    h4 Malt Flavor
-                  .col-sm-3.text-right
-                    a#bjcp_flavor.badge.badge-light.badge-pill(
-                      tabindex="0",
-                      role="button",
-                      data-toggle="popover",
-                      data-trigger="focus",
-                      title="BJCP Flavor Guidelines",
-                      data-content="Please Select a BJCP Category and Subcategory"
-                    ) Style Guidelines
-                .form-row.py-1
-                  .form-group.col-sm-6.col-form-label.px-4
-                    input#flavor_malt.data-slider(
-                      style="width:100%",
-                      name="flavor_malt",
-                      type="text",
-                      data-slider-ticks="[0, 10, 50, 100]",
-                      data-slider-ticks-snap-bounds="30",
-                      data-slider-ticks-labels="['None','Low','Med','High']"
-                    )
-                    //- button(type='button' class='btn btn-danger btn-small' data-toggle='button' aria-pressed='false' autocomplete='off') Inappropriate
-                    //- .form-group.col-sm-3.col-form-label
-                    .form-check.pt-4
-                      input#flavor_malt_inappropriate.form-check-input(
-                        type="checkbox",
-                        name="flavor_malt_inappropriate"
-                      )
-                      label.form-check-label(for="flavor_malt_inappropriate") Inappropriate
-                  .form-group.col-sm-6
-                    textarea#flavor_malt_comment.form-control(
-                      rows="5",
-                      type="text",
-                      name="flavor_malt_comment",
-                      placeholder="Comments"
-                    )
-              .form-group
-                h4 Hop Flavor
-                .form-row.py-1
-                  .form-group.col-sm-6.col-form-label.px-4
-                    input#flavor_hops.data-slider(
-                      style="width:100%",
-                      name="flavor_hops",
-                      type="text",
-                      data-slider-ticks="[0, 10, 50, 100]",
-                      data-slider-ticks-snap-bounds="30",
-                      data-slider-ticks-labels="['None','Low','Med','High']"
-                    )
-                    //- button(type='button' class='btn btn-danger btn-small' data-toggle='button' aria-pressed='false' autocomplete='off') Inappropriate
-                    //- .form-group.col-sm-3.col-form-label
-                    .form-check.pt-4
-                      input#flavor_hops_inappropriate.form-check-input(
-                        type="checkbox",
-                        name="flavor_hops_inappropriate"
-                      )
-                      label.form-check-label(for="flavor_hops_inappropriate") Inappropriate
-                  .form-group.col-sm-6
-                    textarea#flavor_hops_comment.form-control(
-                      rows="5",
-                      type="text",
-                      name="flavor_hops_comment",
-                      placeholder="Comments"
-                    )
-              .form-group
-                h4 Bitterness
-                .form-row.py-1
-                  .form-group.col-sm-6.col-form-label.px-4
-                    input#flavor_bitterness.data-slider(
-                      style="width:100%",
-                      name="flavor_bitterness",
-                      type="text",
-                      data-slider-ticks="[0, 10, 50, 100]",
-                      data-slider-ticks-snap-bounds="30",
-                      data-slider-ticks-labels="['None','Low','Med','High']"
-                    )
-                    //- button(type='button' class='btn btn-danger btn-small' data-toggle='button' aria-pressed='false' autocomplete='off') Inappropriate
-                    //- .form-group.col-sm-3.col-form-label
-                    .form-check.pt-4
-                      input#flavor_bitterness_inappropriate.form-check-input(
-                        type="checkbox",
-                        name="flavor_bitterness_inappropriate"
-                      )
-                      label.form-check-label(
-                        for="flavor_bitterness_inappropriate"
-                      ) Inappropriate
-                  .form-group.col-sm-6
-                    textarea#flavor_bitterness_comment.form-control(
-                      rows="5",
-                      type="text",
-                      name="flavor_bitterness_comment",
-                      placeholder="Comments"
-                    )
-              .form-group
-                h4 Fermentation Flavors
-                .form-row.py-1
-                  .form-group.col-sm-6.col-form-label.px-4
-                    input#flavor_fermentation.data-slider(
-                      style="width:100%",
-                      name="flavor_fermentation",
-                      type="text",
-                      data-slider-ticks="[0, 10, 50, 100]",
-                      data-slider-ticks-snap-bounds="30",
-                      data-slider-ticks-labels="['None','Low','Med','High']"
-                    )
-                    //- button(type='button' class='btn btn-danger btn-small' data-toggle='button' aria-pressed='false' autocomplete='off') Inappropriate
-                    //- .form-group.col-sm-3.col-form-label
-                    .form-check.pt-4
-                      input#flavor_fermentation_inappropriate.form-check-input(
-                        type="checkbox",
-                        name="flavor_fermentation_inappropriate"
-                      )
-                      label.form-check-label(
-                        for="flavor_fermentation_inappropriate"
-                      ) Inappropriate
-                  .form-group.col-sm-6
-                    textarea#flavor_fermentation_comment.form-control(
-                      rows="5",
-                      type="text",
-                      name="flavor_fermentation_comment",
-                      placeholder="Comments"
-                    )
-              .form-group
-                h4 Flavor Balance
-                .form-row.py-1
-                  .form-group.col-sm-6.col-form-label.px-4
-                    input#flavor_balance.data-slider(
-                      style="width:100%",
-                      name="flavor_balance",
-                      type="text",
-                      data-slider-ticks="[0, 10, 50, 100]",
-                      data-slider-ticks-snap-bounds="30",
-                      data-slider-ticks-labels="['None','Low','Med','High']"
-                    )
-                    //- button(type='button' class='btn btn-danger btn-small' data-toggle='button' aria-pressed='false' autocomplete='off') Inappropriate
-                    //- .form-group.col-sm-3.col-form-label
-                    .form-check.pt-4
-                      input#flavor_balance_inappropriate.form-check-input(
-                        type="checkbox",
-                        name="flavor_balance_inappropriate"
-                      )
-                      label.form-check-label(
-                        for="flavor_balance_inappropriate"
-                      ) Inappropriate
-                  .form-group.col-sm-6
-                    textarea#flavor_balance_comment.form-control(
-                      rows="5",
-                      type="text",
-                      name="flavor_balance_comment",
-                      placeholder="Comments"
-                    )
-              .form-group
-                h4 Finish / Aftertaste
-                .form-row.py-1
-                  .form-group.col-sm-6.col-form-label.px-4
-                    input#flavor_finish_aftertaste.data-slider(
-                      style="width:100%",
-                      name="flavor_finish_aftertaste",
-                      type="text",
-                      data-slider-ticks="[0, 10, 50, 100]",
-                      data-slider-ticks-snap-bounds="30",
-                      data-slider-ticks-labels="['None','Low','Med','High']"
-                    )
-                    //- button(type='button' class='btn btn-danger btn-small' data-toggle='button' aria-pressed='false' autocomplete='off') Inappropriate
-                    //- .form-group.col-sm-3.col-form-label
-                    .form-check.pt-4
-                      input#flavor_finish_aftertaste_inappropriate.form-check-input(
-                        type="checkbox",
-                        name="flavor_finish_aftertaste_inappropriate"
-                      )
-                      label.form-check-label(
-                        for="flavor_finish_aftertaste_inappropriate"
-                      ) Inappropriate
-                  .form-group.col-sm-6
-                    textarea#flavor_finish_aftertaste_comment.form-control(
-                      rows="5",
-                      type="text",
-                      name="flavor_finish_aftertaste_comment",
-                      placeholder="Comments"
-                    )
-              .form-group
-                .row
-                  .col
-                    h4 Summary Flavor Comments
-                      textarea#flavor_other_comment.form-control(
-                        rows="5",
-                        type="text",
-                        name="flavor_other_comment",
-                        placeholder="Comments"
-                      )
-                  .col.col-md-auto.d-flex.align-items-center.pl-4
-                    .card.border-dark(style="width:100px")
-                      .card-header.py-1.px-0
-                        p.small.mb-0.text-center Flavor Score
-                      .card-body.text-dark.px-0.py-0.text-center
-                        input#flavor_score.form-control.form-control-lg.text-center.mb-0(
-                          type="number",
-                          name="flavor_score",
-                          value="0",
-                          min="0",
-                          max="20",
-                          onchange="recalculate_score()"
-                        )
-                        p.small.d-flex.align-items-end.flex-row-reverse.my-0.pb-0 /20
-            #mouthfeel.tab-pane(
-              role="tabpanel",
-              aria-labelledby="mouthfeel-tab"
-            )
-              .form-group.px-5
-                .row
-                  .col-sm-9
-                    h4 Body
-                  .col-sm-3.text-right
-                    a#bjcp_mouthfeel.badge.badge-light.badge-pill(
-                      tabindex="0",
-                      role="button",
-                      data-toggle="popover",
-                      data-trigger="focus",
-                      title="BJCP Mouthfeel Guidelines",
-                      data-content="Please Select a BJCP Category and Subcategory"
-                    ) Style Guidelines
-                input#mouthfeel_body.data-slider(
-                  style="width:100%",
-                  name="mouthfeel_body",
-                  type="text",
-                  data-slider-ticks="[0, 10, 50, 100]",
-                  data-slider-ticks-snap-bounds="30",
-                  data-slider-ticks-labels="['None','Low','Med','High']"
-                )
-                //- button(type='button' class='btn btn-danger btn-small' data-toggle='button' aria-pressed='false' autocomplete='off') Inappropriate
-                //- .form-group.col-sm-3.col-form-label
-                .form-check.pt-4
-                  input#mouthfeel_body_inappropriate.form-check-input(
-                    type="checkbox",
-                    name="mouthfeel_body_inappropriate"
-                  )
-                  label.form-check-label(for="mouthfeel_body_inappropriate") Inappropriate
-              .form-group.px-5
-                h4 Carbonation
-                input#mouthfeel_carbonation.data-slider(
-                  style="width:100%",
-                  name="mouthfeel_carbonation",
-                  type="text",
-                  data-slider-ticks="[0, 10, 50, 100]",
-                  data-slider-ticks-snap-bounds="30",
-                  data-slider-ticks-labels="['None','Low','Med','High']"
-                )
-                //- button(type='button' class='btn btn-danger btn-small' data-toggle='button' aria-pressed='false' autocomplete='off') Inappropriate
-                //- .form-group.col-sm-3.col-form-label
-                .form-check.pt-4
-                  input#mouthfeel_carbonation_inappropriate.form-check-input(
-                    type="checkbox",
-                    name="mouthfeel_carbonation_inappropriate"
-                  )
-                  label.form-check-label(
-                    for="mouthfeel_carbonation_inappropriate"
-                  ) Inappropriate
-              .form-group.px-5
-                h4 Warmth
-                input#mouthfeel_warmth.data-slider(
-                  style="width:100%",
-                  name="mouthfeel_warmth",
-                  type="text",
-                  data-slider-ticks="[0, 10, 50, 100]",
-                  data-slider-ticks-snap-bounds="30",
-                  data-slider-ticks-labels="['None','Low','Med','High']"
-                )
-                //- button(type='button' class='btn btn-danger btn-small' data-toggle='button' aria-pressed='false' autocomplete='off') Inappropriate
-                //- .form-group.col-sm-3.col-form-label
-                .form-check.pt-4
-                  input#mouthfeel_warmth_inappropriate.form-check-input(
-                    type="checkbox",
-                    name="mouthfeel_warmth_inappropriate"
-                  )
-                  label.form-check-label(for="mouthfeel_warmth_inappropriate") Inappropriate
-              .form-group.px-5
-                h4 Creaminess
-                input#mouthfeel_creaminess.data-slider(
-                  style="width:100%",
-                  name="mouthfeel_creaminess",
-                  type="text",
-                  data-slider-ticks="[0, 10, 50, 100]",
-                  data-slider-ticks-snap-bounds="30",
-                  data-slider-ticks-labels="['None','Low','Med','High']"
-                )
-                //- button(type='button' class='btn btn-danger btn-small' data-toggle='button' aria-pressed='false' autocomplete='off') Inappropriate
-                //- .form-group.col-sm-3.col-form-label
-                .form-check.pt-4
-                  input#mouthfeel_creaminess_inappropriate.form-check-input(
-                    type="checkbox",
-                    name="mouthfeel_creaminess_inappropriate"
-                  )
-                  label.form-check-label(
-                    for="mouthfeel_creaminess_inappropriate"
-                  ) Inappropriate
-              .form-group.px-5
-                h4 Astringency
-                input#mouthfeel_astringency.data-slider(
-                  style="width:100%",
-                  name="mouthfeel_astringency",
-                  type="text",
-                  data-slider-ticks="[0, 10, 50, 100]",
-                  data-slider-ticks-snap-bounds="30",
-                  data-slider-ticks-labels="['None','Low','Med','High']"
-                )
-                //- button(type='button' class='btn btn-danger btn-small' data-toggle='button' aria-pressed='false' autocomplete='off') Inappropriate
-                //- .form-group.col-sm-3.col-form-label
-                .form-check.pt-4
-                  input#mouthfeel_astringency_inappropriate.form-check-input(
-                    type="checkbox",
-                    name="mouthfeel_astringency_inappropriate"
-                  )
-                  label.form-check-label(
-                    for="mouthfeel_astringency_inappropriate"
-                  ) Inappropriate
-              .form-group
-                .row
-                  .col
-                    h4 Summary Mouthfeel Comments
-                      textarea#mouthfeel_other_comment.form-control(
-                        rows="5",
-                        type="text",
-                        name="mouthfeel_other_comment",
-                        placeholder="Comments"
-                      )
-                  .col.col-md-auto.d-flex.align-items-center.pl-4
-                    .card.border-dark(style="width:100px")
-                      .card-header.py-1.px-0
-                        p.small.mb-0.text-center Mouthfeel Score
-                      .card-body.text-dark.px-0.py-0.text-center
-                        input#mouthfeel_score.form-control.form-control-lg.text-center.mb-0(
-                          type="number",
-                          name="mouthfeel_score",
-                          value="0",
-                          min="0",
-                          max="5",
-                          onchange="recalculate_score()"
-                        )
-                        p.small.d-flex.align-items-end.flex-row-reverse.my-0.pb-0 /5
-            #descriptors.tab-pane(
-              role="tabpanel",
-              aria-labelledby="descriptors-tab"
-            )
-              .list-group
-                input#descriptor_acetaldehyde(
-                  type="checkbox",
-                  name="descriptor_acetaldehyde"
-                )
-                label.list-group-item.d-flex.justify-content-between.align-items-center(
-                  for="descriptor_acetaldehyde"
-                ) Acetaldehyde
-                  //- a.badge.badge-light.badge-pill(tabindex="0" role="button" data-toggle="popover" data-trigger="focus" title="Acetaldehyde" data-content="Green apple-like aroma and flavor") i
-                  a.badge.badge-light.badge-pill(
-                    tabindex="0",
-                    role="button",
-                    data-toggle="popover",
-                    data-trigger="focus",
-                    title="Acetaldehyde",
-                    data-content="Green apple-like aroma and flavor"
-                  ) i
-                input#descriptor_alcoholic(
-                  type="checkbox",
-                  name="descriptor_alcoholic"
-                )
-                label.list-group-item.d-flex.justify-content-between.align-items-center(
-                  for="descriptor_alcoholic"
-                ) Alcoholic
-                  a.badge.badge-light.badge-pill(
-                    tabindex="0",
-                    role="button",
-                    data-toggle="popover",
-                    data-trigger="focus",
-                    title="Alcoholic",
-                    data-content="The aroma, flavor, and warming effect of ethanol and higher alcohols. Sometimes described as hot."
-                  ) i
-                input#descriptor_astringent(
-                  type="checkbox",
-                  name="descriptor_astringent"
-                )
-                label.list-group-item.d-flex.justify-content-between.align-items-center(
-                  for="descriptor_astringent"
-                ) Astringent
-                  a.badge.badge-light.badge-pill(
-                    tabindex="0",
-                    role="button",
-                    data-toggle="popover",
-                    data-trigger="focus",
-                    title="Astringent",
-                    data-content="Puckering, lingering harshness and/or dryness in the finish/aftertaste; harsh graininess; huskiness."
-                  ) i
-                input#descriptor_brettanomyces(
-                  type="checkbox",
-                  name="descriptor_brettanomyces"
-                )
-                label.list-group-item.d-flex.justify-content-between.align-items-center(
-                  for="descriptor_brettanomyces"
-                ) Brettanomyces
-                  a.badge.badge-light.badge-pill(
-                    tabindex="0",
-                    role="button",
-                    data-toggle="popover",
-                    data-trigger="focus",
-                    title="Brettanomyces",
-                    data-content="Brettanomyces aromas and flavors may take the form of pleasant smoky, earthy, or barnyard character. Unpleasantly characteristics include Band-Aid, fetid, nail polish remover, or cheese"
-                  ) i
-                input#descriptor_diacetyl(
-                  type="checkbox",
-                  name="descriptor_diacetyl"
-                )
-                label.list-group-item.d-flex.justify-content-between.align-items-center(
-                  for="descriptor_diacetyl"
-                ) Diacetyl
-                  a.badge.badge-light.badge-pill(
-                    tabindex="0",
-                    role="button",
-                    data-toggle="popover",
-                    data-trigger="focus",
-                    title="Diacetyl",
-                    data-content="Artificial butter, butterscotch, or toffee aroma and flavor. Sometimes perceived as a slickness on the tongue."
-                  ) i
-                input#descriptor_dms(type="checkbox", name="descriptor_dms")
-                label.list-group-item.d-flex.justify-content-between.align-items-center(
-                  for="descriptor_dms"
-                ) DMS (Dimethyl Sulfide)
-                  a.badge.badge-light.badge-pill(
-                    tabindex="0",
-                    role="button",
-                    data-toggle="popover",
-                    data-trigger="focus",
-                    title="DMS (dimethyl sulfide)",
-                    data-content="At low levels a sweet, cooked or canned corn-like aroma and flavor."
-                  ) i
-                input#descriptor_estery(
-                  type="checkbox",
-                  name="descriptor_estery"
-                )
-                label.list-group-item.d-flex.justify-content-between.align-items-center(
-                  for="descriptor_estery"
-                ) Estery
-                  a.badge.badge-light.badge-pill(
-                    tabindex="0",
-                    role="button",
-                    data-toggle="popover",
-                    data-trigger="focus",
-                    title="Estery",
-                    data-content="Aroma and/or flavor of any ester (fruits, fruit flavorings, or roses)"
-                  ) i
-                input#descriptor_grassy(
-                  type="checkbox",
-                  name="descriptor_grassy"
-                )
-                label.list-group-item.d-flex.justify-content-between.align-items-center(
-                  for="descriptor_grassy"
-                ) Grassy
-                  a.badge.badge-light.badge-pill(
-                    tabindex="0",
-                    role="button",
-                    data-toggle="popover",
-                    data-trigger="focus",
-                    title="Grassy",
-                    data-content="Aroma/flavor of fresh-cut grass or green leaves."
-                  ) i
-                input#descriptor_lightstruck(
-                  type="checkbox",
-                  name="descriptor_lightstruck"
-                )
-                label.list-group-item.d-flex.justify-content-between.align-items-center(
-                  for="descriptor_lightstruck"
-                ) Light-Struck
-                  a.badge.badge-light.badge-pill(
-                    tabindex="0",
-                    role="button",
-                    data-toggle="popover",
-                    data-trigger="focus",
-                    title="Light-Struck",
-                    data-content="Similar to the aroma of a skunk."
-                  ) i
-                input#descriptor_metallic(
-                  type="checkbox",
-                  name="descriptor_metallic"
-                )
-                label.list-group-item.d-flex.justify-content-between.align-items-center(
-                  for="descriptor_metallic"
-                ) Metallic
-                  a.badge.badge-light.badge-pill(
-                    tabindex="0",
-                    role="button",
-                    data-toggle="popover",
-                    data-trigger="focus",
-                    title="Metallic",
-                    data-content="Tinny, coiny, copper, iron, or blood-like flavor."
-                  ) i
-                input#descriptor_musty(
-                  type="checkbox",
-                  name="descriptor_musty"
-                )
-                label.list-group-item.d-flex.justify-content-between.align-items-center(
-                  for="descriptor_musty"
-                ) Musty
-                  a.badge.badge-light.badge-pill(
-                    tabindex="0",
-                    role="button",
-                    data-toggle="popover",
-                    data-trigger="focus",
-                    title="Musty",
-                    data-content="Stale, musty, or moldy aromas/flavors."
-                  ) i
-                input#descriptor_oxidized(
-                  type="checkbox",
-                  name="descriptor_oxidized"
-                )
-                label.list-group-item.d-flex.justify-content-between.align-items-center(
-                  for="descriptor_oxidized"
-                ) Oxidized
-                  a.badge.badge-light.badge-pill(
-                    tabindex="0",
-                    role="button",
-                    data-toggle="popover",
-                    data-trigger="focus",
-                    title="Oxidized",
-                    data-content="Any one or combination of stale, winy/vinous, cardboard, papery, or sherry-like aromas and flavors."
-                  ) i
-                input#descriptor_phenolic(
-                  type="checkbox",
-                  name="descriptor_phenolic"
-                )
-                label.list-group-item.d-flex.justify-content-between.align-items-center(
-                  for="descriptor_phenolic"
-                ) Phenolic
-                  a.badge.badge-light.badge-pill(
-                    tabindex="0",
-                    role="button",
-                    data-toggle="popover",
-                    data-trigger="focus",
-                    title="Phenolic",
-                    data-content="Spicy (clove, pepper), smoky, plastic, plastic adhesive strip, and/or medicinal (chlorophenolic)."
-                  ) i
-                input#descriptor_solvent(
-                  type="checkbox",
-                  name="descriptor_solvent"
-                )
-                label.list-group-item.d-flex.justify-content-between.align-items-center(
-                  for="descriptor_solvent"
-                ) Solvent
-                  a.badge.badge-light.badge-pill(
-                    tabindex="0",
-                    role="button",
-                    data-toggle="popover",
-                    data-trigger="focus",
-                    title="Solvent",
-                    data-content="Aromas and flavors of higher alcohols (fusel alcohols). Similar to acetone or lacquer thinner aromas."
-                  ) i
-                input#descriptor_smoky(
-                  type="checkbox",
-                  name="descriptor_smoky"
-                )
-                label.list-group-item.d-flex.justify-content-between.align-items-center(
-                  for="descriptor_smoky"
-                ) Smoky
-                  a.badge.badge-light.badge-pill(
-                    tabindex="0",
-                    role="button",
-                    data-toggle="popover",
-                    data-trigger="focus",
-                    title="Smoky",
-                    data-content="Smoke characteristic"
-                  ) i
-                input#descriptor_sour(type="checkbox", name="descriptor_sour")
-                label.list-group-item.d-flex.justify-content-between.align-items-center(
-                  for="descriptor_sour"
-                ) Sour/Acidic
-                  a.badge.badge-light.badge-pill(
-                    tabindex="0",
-                    role="button",
-                    data-toggle="popover",
-                    data-trigger="focus",
-                    title="Sour/Acidic",
-                    data-content="Tartness in aroma and flavor. Can be sharp and clean (lactic acid), or vinegar-like (acetic acid)."
-                  ) i
-                input#descriptor_spicy(
-                  type="checkbox",
-                  name="descriptor_spicy"
-                )
-                label.list-group-item.d-flex.justify-content-between.align-items-center(
-                  for="descriptor_spicy"
-                ) Spicy
-                  a.badge.badge-light.badge-pill(
-                    tabindex="0",
-                    role="button",
-                    data-toggle="popover",
-                    data-trigger="focus",
-                    title="Spicy",
-                    data-content="Spice characteristic"
-                  ) i
-                input#descriptor_sulfur(
-                  type="checkbox",
-                  name="descriptor_sulfur"
-                )
-                label.list-group-item.d-flex.justify-content-between.align-items-center(
-                  for="descriptor_sulfur"
-                ) Sulfur
-                  a.badge.badge-light.badge-pill(
-                    tabindex="0",
-                    role="button",
-                    data-toggle="popover",
-                    data-trigger="focus",
-                    title="Sulfur",
-                    data-content="The aroma of rotten eggs or burning matches."
-                  ) i
-                input#descriptor_vegetal(
-                  type="checkbox",
-                  name="descriptor_vegetal"
-                )
-                label.list-group-item.d-flex.justify-content-between.align-items-center(
-                  for="descriptor_vegetal"
-                ) Vegetal
-                  a.badge.badge-light.badge-pill(
-                    tabindex="0",
-                    role="button",
-                    data-toggle="popover",
-                    data-trigger="focus",
-                    title="Yeasty",
-                    data-content="Cooked, canned, or rotten vegetable aroma and flavor (cabbage, onion, celery, asparagus, etc.)"
-                  ) i
-                input#descriptor_yeasty(
-                  type="checkbox",
-                  name="descriptor_yeasty"
-                )
-                label.list-group-item.d-flex.justify-content-between.align-items-center(
-                  for="descriptor_yeasty"
-                ) Yeasty
-                  a.badge.badge-light.badge-pill(
-                    tabindex="0",
-                    role="button",
-                    data-toggle="popover",
-                    data-trigger="focus",
-                    title="Yeasty",
-                    data-content="A bready, sulfury or yeast-like aroma or flavor"
-                  ) i
-            #summary.tab-pane(role="tabpanel", aria-labelledby="summary-tab")
-              .form-group.px-5
-                h4 Style Accuracy
-                input#overall_class_example.data-slider(
-                  style="width:100%",
-                  name="overall_class_example",
-                  type="text",
-                  data-slider-ticks="[0, 10, 50, 100]",
-                  data-slider-ticks-snap-bounds="30",
-                  data-slider-ticks-labels="['None','Low','Med','High']"
-                )
-              .form-group.px-5
-                h4 Execution
-                input#overall_flawless.data-slider(
-                  style="width:100%",
-                  name="overall_flawless",
-                  type="text",
-                  data-slider-ticks="[0, 10, 50, 100]",
-                  data-slider-ticks-snap-bounds="30",
-                  data-slider-ticks-labels="['None','Low','Med','High']"
-                )
-              .form-group.px-5
-                h4 Overall Opinion
-                input#overall_wonderful.data-slider(
-                  style="width:100%",
-                  name="overall_wonderful",
-                  type="text",
-                  data-slider-ticks="[0, 10, 50, 100]",
-                  data-slider-ticks-snap-bounds="30",
-                  data-slider-ticks-labels="['None','Low','Med','High']"
-                )
-              .form-group
-                .row
-                  .col
-                    h4 Feedback
-                      textarea#feedback_comment.form-control(
-                        rows="5",
-                        type="text",
-                        name="feedback_comment",
-                        placeholder="Comments"
-                      )
-                  .col.col-md-auto.d-flex.align-items-center.pl-4
-                    .card.border-dark(style="width:100px")
-                      .card-header.py-1.px-0
-                        p.small.mb-0.text-center Summary Score
-                      .card-body.text-dark.px-0.py-0.text-center
-                        input#overall_score.form-control.form-control-lg.text-center.mb-0(
-                          type="number",
-                          name="overall_score",
-                          value="0",
-                          min="0",
-                          max="10",
-                          onchange="recalculate_score()"
-                        )
-                        p.small.d-flex.align-items-end.flex-row-reverse.my-0.pb-0 /10
+							.form-group
+								h4 Beer Information
+								.form-row.py-1
+									.form-group.col-sm-2.col-form-label
+										label(for="entry_number") Entry Number
+									.form-group.col-sm-4
+										input#entry_number.form-control.is-invalid.vCheck(
+											type="text",
+											placeholder="Entry Number",
+											name="entry_number",
+											maxlength="6"
+										)
+										small#entry_number_help.form-text.text-muted Enter <span style="font-family: Courier, monospace;">NONE</span> for non-competition judging sessions
+										.invalid-feedback Missing or duplicate value.
+									.form-group.col-sm-3.col-form-label.text-center.pl-4
+										label(for="flight_position") Flight Position
+									.form-group.col-sm-1.pr-0
+										input#flight_position.form-control(
+											type="number",
+											name="flight_position",
+											min="0",
+											value=flight_position
+										)
+									.form-group.col-sm-1.col-form-label.text-center
+										label(for="flight_total") of
+									.form-group.col-sm-1.pl-0
+										input#flight_total.form-control(
+											type="number",
+											name="flight_total",
+											min="0",
+											value=flight_total
+										)
+							.form-group
+								.form-row.py-1
+									.form-group.col-sm-2.col-form-label
+										label(for="category") BJCP Style
+									.form-group.col-sm-2
+										select#category.form-control(
+											name="category",
+											onchange="update_tooltips()"
+										)
+											option(hidden, disabled, selected, value)
+											each val in [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34]
+												option= val
+									.form-group.col-sm-2
+										select#sub.form-control(
+											name="sub",
+											onchange="update_tooltips()"
+										)
+											option(hidden, disabled, selected, value)
+											each val in ['A','B','C','D','E','F']
+												option= val
+									.form-group.col
+										input#subcategory.form-control(
+											type="text",
+											name="subcategory",
+											placeholder="Subcategory Name (please spell out)"
+										)
+							.form-group
+								.form-row.py-1
+									.form-group.col-3.col-form-label
+										.form-check
+											input#special_ingredients_check.form-check-input(
+												type="checkbox",
+												name="special_ingredients_check"
+											)
+											label.form-check-label(for="special_ingredients_check") Special Ingredients
+									.form-group.col-9
+										input#special_ingredients.form-control(
+											type="text",
+											name="special_ingredients",
+											placeholder="List Special Ingredients"
+										)
+							.form-group
+								.form-row.py-1
+									.form-group.col-3.col-form-label
+										.form-check
+											input#bottle_inspection_check.form-check-input(
+												type="checkbox",
+												name="bottle_inspection_check"
+											)
+											label.form-check-label(for="bottle_inspection_check") Bottle Acceptable
+									.form-group.col-9
+										input#bottle_inspection_comment.form-control(
+											type="text",
+											name="bottle_inspection_comment",
+											placeholder="Bottle Comments",
+											data-role="tagsinput"
+										)
+										.bootstrap-tagsinput.border-0
+											.btn.btn-primary.bootstrap-tagsinput-toggler Show Quick Comments
+											.quick_comments.d-none
+												//- Bottle Caps
+												div
+													span.badge.badge-primary.mx-1(style='cursor:pointer' data-value='silver-cap' data-category='cap_color') Silver Cap
+													span.badge.badge-primary.mx-1(style='cursor:pointer' data-value='gold-cap' data-category='cap_color') Gold Cap
+													span.badge.badge-primary.mx-1(style='cursor:pointer' data-value='black-cap' data-category='cap_color') Black Cap
+													span.badge.badge-primary.mx-1(style='cursor:pointer' data-value='white-cap' data-category='cap_color') White Cap
+													span.badge.badge-primary.mx-1(style='cursor:pointer' data-value='blue-cap' data-category='cap_color') Blue Cap
+													span.badge.badge-primary.mx-1(style='cursor:pointer' data-value='red-cap' data-category='cap_color') Red cap
+													span.badge.badge-primary.mx-1(style='cursor:pointer' data-value='green-cap' data-category='cap_color') Green Cap
+													span.badge.badge-primary.mx-1(style='cursor:pointer' data-value='other-cap' data-category='cap_color') Other Cap
+												//- Bottle Fill
+												div
+													span.badge.badge-danger.badge-important.mx-1(style='cursor:pointer' data-value='veryhigh-fill' data-category='bottle_fill') Very High Fill
+													span.badge.badge-danger.badge-important.mx-1(style='cursor:pointer' data-value='high-fill' data-category='bottle_fill') High Fill
+													span.badge.badge-danger.badge-important.mx-1(style='cursor:pointer' data-value='good-fill' data-category='bottle_fill') Good Fill
+													span.badge.badge-danger.badge-important.mx-1(style='cursor:pointer' data-value='low-fill' data-category='bottle_fill') Low Fill
+													span.badge.badge-danger.badge-important.mx-1(style='cursor:pointer' data-value='verylow-fill' data-category='bottle_fill') Very Low Fill
+												//- Bottle Style
+												div
+													span.badge.badge-warning.mx-1(style='cursor:pointer' data-value='longneck-style' data-category='bottle_style') Longneck Bottle
+													span.badge.badge-warning.mx-1(style='cursor:pointer' data-value='stubby-style' data-category='bottle_style') Stubby Bottle
+													span.badge.badge-warning.mx-1(style='cursor:pointer' data-value='belgian-style' data-category='bottle_style') Belgian Bottle
+													span.badge.badge-warning.mx-1(style='cursor:pointer' data-value='champagne-style' data-category='bottle_style') Champagne Bottle
+													span.badge.badge-warning.mx-1(style='cursor:pointer' data-value='other-style' data-category='bottle_style') Other Bottle
 
-  script.
-    $("[data-toggle=popover]").popover();
+						#aroma.tab-pane(role="tabpanel", aria-labelledby="aroma-tab")
+							.form-group
+								.row
+									.col-sm-9
+										h4 Malt Aroma
+									.col-sm-3.text-right
+										a#bjcp_aroma.badge.badge-light.badge-pill(
+											tabindex="0",
+											role="button",
+											data-toggle="popover",
+											data-trigger="focus",
+											title="BJCP Aroma Guidelines",
+											data-content="Please Select a BJCP Category and Subcategory"
+										) Style Guidelines
+								.form-row.py-1
+									.form-group.col-sm-6.col-form-label.px-4
+										input#aroma_malt.data-slider(
+											style="width:100%",
+											name="aroma_malt",
+											type="text",
+											data-slider-ticks="[0, 10, 50, 100]",
+											data-slider-ticks-snap-bounds="30",
+											data-slider-ticks-labels="['None','Low','Med','High']"
+										)
+										//- button(type='button' class='btn btn-danger btn-small' data-toggle='button' aria-pressed='false' autocomplete='off') Inappropriate
+										//- .form-group.col-sm-3.col-form-label
+										.form-check.pt-4
+											input#aroma_malt_inappropriate.form-check-input(
+												type="checkbox",
+												name="aroma_malt_inappropriate"
+											)
+											label.form-check-label(for="aroma_malt_inappropriate") Inappropriate
+									.form-group.col-sm-6
+										textarea#aroma_malt_comment.form-control(
+											rows="5",
+											type="text",
+											name="aroma_malt_comment",
+											placeholder="Comments"
+										)
+							.form-group
+								h4 Hops Aroma
+								.form-row.py-1
+									.form-group.col-sm-6.col-form-label.px-4
+										input#aroma_hops.data-slider(
+											style="width:100%",
+											name="aroma_hops",
+											type="text",
+											data-slider-ticks="[0, 10, 50, 100]",
+											data-slider-ticks-snap-bounds="30",
+											data-slider-ticks-labels="['None','Low','Med','High']"
+										)
+										//- button(type='button' class='btn btn-danger btn-small' data-toggle='button' aria-pressed='false' autocomplete='off') Inappropriate
+										//- .form-group.col-sm-3.col-form-label
+										.form-check.pt-4
+											input#aroma_hops_inappropriate.form-check-input(
+												type="checkbox",
+												name="aroma_hops_inappropriate"
+											)
+											label.form-check-label(for="aroma_hops_inappropriate") Inappropriate
+									.form-group.col-sm-6
+										textarea#aroma_hops_comment.form-control(
+											rows="5",
+											type="text",
+											name="aroma_hops_comment",
+											placeholder="Comments"
+										)
+							.form-group
+								h4 Fermentation Aroma
+								.form-row.py-1
+									.form-group.col-sm-6.col-form-label.px-4
+										input#aroma_fermentation.data-slider(
+											style="width:100%",
+											name="aroma_fermentation",
+											type="text",
+											data-slider-ticks="[0, 10, 50, 100]",
+											data-slider-ticks-snap-bounds="30",
+											data-slider-ticks-labels="['None','Low','Med','High']"
+										)
+										//- button(type='button' class='btn btn-danger btn-small' data-toggle='button' aria-pressed='false' autocomplete='off') Inappropriate
+										//- .form-group.col-sm-3.col-form-label
+										.form-check.pt-4
+											input#aroma_fermentation_inappropriate.form-check-input(
+												type="checkbox",
+												name="aroma_fermentation_inappropriate"
+											)
+											label.form-check-label(
+												for="aroma_fermentation_inappropriate"
+											) Inappropriate
+									.form-group.col-sm-6
+										textarea#aroma_fermentation_comment.form-control(
+											rows="5",
+											type="text",
+											name="aroma_fermentation_comment",
+											placeholder="Comments"
+										)
+							.form-group
+								.row
+									.col
+										h4 Summary Aroma Comments
+											textarea#aroma_other_comment.form-control(
+												rows="5",
+												type="text",
+												name="aroma_other_comment",
+												placeholder="Comments"
+											)
+									.col.col-md-auto.d-flex.align-items-center.pl-4
+										.card.border-dark(style="width:100px")
+											.card-header.py-1
+												p.small.mb-0.text-center Aroma Score
+											.card-body.text-dark.px-0.py-0.text-center
+												input#aroma_score.form-control.form-control-lg.text-center.mb-0(
+													type="number",
+													name="aroma_score",
+													value=0,
+													min=0,
+													max=12,
+													onchange="recalculate_score()"
+												)
+												p.small.d-flex.align-items-end.flex-row-reverse.my-0.pb-0 /12
+						#appearance.tab-pane(
+							role="tabpanel",
+							aria-labelledby="appearance-tab"
+						)
+							.form-group
+								.row
+									.col-sm-9
+										h4 Color
+									.col-sm-3.text-right
+										a#bjcp_appearance.badge.badge-light.badge-pill(
+											tabindex="0",
+											role="button",
+											data-toggle="popover",
+											data-trigger="focus",
+											title="BJCP Appearance Guidelines",
+											data-content="Please Select a BJCP Category and Subcategory"
+										) Style Guidelines
+								.form-row.py-1
+									.form-group.col-sm-6.col-form-label.px-4
+										input#appearance_color.data-slider(
+											style="width:100%",
+											name="appearance_color",
+											type="text",
+											data-slider-ticks="[0, 10, 50, 100]",
+											data-slider-ticks-snap-bounds="30",
+											data-slider-ticks-labels="['None','Low','Med','High']"
+										)
+										//- button(type='button' class='btn btn-danger btn-small' data-toggle='button' aria-pressed='false' autocomplete='off') Inappropriate
+										//- .form-group.col-sm-3.col-form-label
+										.form-check.pt-4
+											input#appearance_color_inappropriate.form-check-input(
+												type="checkbox",
+												name="appearance_color_inappropriate"
+											)
+											label.form-check-label(
+												for="appearance_color_inappropriate"
+											) Inappropriate
+									.form-group.col-sm-6
+										textarea#appearance_color_other.form-control(
+											rows="5",
+											type="text",
+											name="appearance_color_other",
+											placeholder="Comments"
+										)
+							.form-group
+								h4 Clarity
+								.form-row.py-1
+									.form-group.col-sm-6.col-form-label.px-4
+										input#appearance_clarity.data-slider(
+											style="width:100%",
+											name="appearance_clarity",
+											type="text",
+											data-slider-ticks="[0, 10, 50, 100]",
+											data-slider-ticks-snap-bounds="30",
+											data-slider-ticks-labels="['None','Low','Med','High']"
+										)
+										//- button(type='button' class='btn btn-danger btn-small' data-toggle='button' aria-pressed='false' autocomplete='off') Inappropriate
+										//- .form-group.col-sm-3.col-form-label
+										.form-check.pt-4
+											input#appearance_clarity_inappropriate.form-check-input(
+												type="checkbox",
+												name="appearance_clarity_inappropriate"
+											)
+											label.form-check-label(
+												for="appearance_clarity_inappropriate"
+											) Inappropriate
+									.form-group.col-sm-6
+										textarea#appearance_clarity_other.form-control(
+											rows="5",
+											type="text",
+											name="appearance_clarity_other",
+											placeholder="Comments"
+										)
+							.form-group
+								h4 Head
+								.form-row.py-1
+									.form-group.col-sm-6.col-form-label.px-4
+										h6 Color
+										input#appearance_head.data-slider(
+											style="width:100%",
+											name="appearance_head",
+											type="text",
+											data-slider-ticks="[0, 10, 50, 100]",
+											data-slider-ticks-snap-bounds="30",
+											data-slider-ticks-labels="['None','Low','Med','High']"
+										)
+										//- button(type='button' class='btn btn-danger btn-small' data-toggle='button' aria-pressed='false' autocomplete='off') Inappropriate
+										//- .form-group.col-sm-3.col-form-label
+										.form-check.pt-2.pb-4
+											input#appearance_head_inappropriate.form-check-input(
+												type="checkbox",
+												name="appearance_head_inappropriate"
+											)
+											label.form-check-label(
+												for="appearance_head_inappropriate"
+											) Inappropriate
+										h6 Retention
+										input#appearance_retention.data-slider(
+											style="width:100%",
+											name="appearance_retention",
+											type="text",
+											data-slider-ticks="[0, 10, 50, 100]",
+											data-slider-ticks-snap-bounds="30",
+											data-slider-ticks-labels="['None','Low','Med','High']"
+										)
+										//- button(type='button' class='btn btn-danger btn-small' data-toggle='button' aria-pressed='false' autocomplete='off') Inappropriate
+										//- .form-group.col-sm-3.col-form-label
+										.form-check.py-2
+											input#appearance_retention_inappropriate.form-check-input(
+												type="checkbox",
+												name="appearance_retention_inappropriate"
+											)
+											label.form-check-label(
+												for="appearance_retention_inappropriate"
+											) Inappropriate
+									.form-group.col-sm-6
+										textarea#appearance_texture_comment.form-control(
+											rows="10",
+											type="text",
+											name="appearance_texture_comment",
+											placeholder="Comments"
+										)
+							.form-group
+								.row
+									.col
+										h4 Summary Appearance Comments
+											textarea#appearance_other_comment.form-control(
+												rows="5",
+												type="text",
+												name="appearance_other_comment",
+												placeholder="Comments"
+											)
+									.col.col-md-auto.d-flex.align-items-center.pl-4
+										.card.border-dark(style="width:100px")
+											.card-header.py-1.px-0
+												p.small.mb-0.text-center Appearance Score
+											.card-body.text-dark.px-0.py-0.text-center
+												input#appearance_score.form-control.form-control-lg.text-center.mb-0(
+													type="number",
+													name="appearance_score",
+													value="0",
+													min="0",
+													max="3",
+													onchange="recalculate_score()"
+												)
+												p.small.d-flex.align-items-end.flex-row-reverse.my-0.pb-0 /3
+						#flavor.tab-pane(role="tabpanel", aria-labelledby="flavor-tab")
+							.form-group
+								.row
+									.col-sm-9
+										h4 Malt Flavor
+									.col-sm-3.text-right
+										a#bjcp_flavor.badge.badge-light.badge-pill(
+											tabindex="0",
+											role="button",
+											data-toggle="popover",
+											data-trigger="focus",
+											title="BJCP Flavor Guidelines",
+											data-content="Please Select a BJCP Category and Subcategory"
+										) Style Guidelines
+								.form-row.py-1
+									.form-group.col-sm-6.col-form-label.px-4
+										input#flavor_malt.data-slider(
+											style="width:100%",
+											name="flavor_malt",
+											type="text",
+											data-slider-ticks="[0, 10, 50, 100]",
+											data-slider-ticks-snap-bounds="30",
+											data-slider-ticks-labels="['None','Low','Med','High']"
+										)
+										//- button(type='button' class='btn btn-danger btn-small' data-toggle='button' aria-pressed='false' autocomplete='off') Inappropriate
+										//- .form-group.col-sm-3.col-form-label
+										.form-check.pt-4
+											input#flavor_malt_inappropriate.form-check-input(
+												type="checkbox",
+												name="flavor_malt_inappropriate"
+											)
+											label.form-check-label(for="flavor_malt_inappropriate") Inappropriate
+									.form-group.col-sm-6
+										textarea#flavor_malt_comment.form-control(
+											rows="5",
+											type="text",
+											name="flavor_malt_comment",
+											placeholder="Comments"
+										)
+							.form-group
+								h4 Hop Flavor
+								.form-row.py-1
+									.form-group.col-sm-6.col-form-label.px-4
+										input#flavor_hops.data-slider(
+											style="width:100%",
+											name="flavor_hops",
+											type="text",
+											data-slider-ticks="[0, 10, 50, 100]",
+											data-slider-ticks-snap-bounds="30",
+											data-slider-ticks-labels="['None','Low','Med','High']"
+										)
+										//- button(type='button' class='btn btn-danger btn-small' data-toggle='button' aria-pressed='false' autocomplete='off') Inappropriate
+										//- .form-group.col-sm-3.col-form-label
+										.form-check.pt-4
+											input#flavor_hops_inappropriate.form-check-input(
+												type="checkbox",
+												name="flavor_hops_inappropriate"
+											)
+											label.form-check-label(for="flavor_hops_inappropriate") Inappropriate
+									.form-group.col-sm-6
+										textarea#flavor_hops_comment.form-control(
+											rows="5",
+											type="text",
+											name="flavor_hops_comment",
+											placeholder="Comments"
+										)
+							.form-group
+								h4 Bitterness
+								.form-row.py-1
+									.form-group.col-sm-6.col-form-label.px-4
+										input#flavor_bitterness.data-slider(
+											style="width:100%",
+											name="flavor_bitterness",
+											type="text",
+											data-slider-ticks="[0, 10, 50, 100]",
+											data-slider-ticks-snap-bounds="30",
+											data-slider-ticks-labels="['None','Low','Med','High']"
+										)
+										//- button(type='button' class='btn btn-danger btn-small' data-toggle='button' aria-pressed='false' autocomplete='off') Inappropriate
+										//- .form-group.col-sm-3.col-form-label
+										.form-check.pt-4
+											input#flavor_bitterness_inappropriate.form-check-input(
+												type="checkbox",
+												name="flavor_bitterness_inappropriate"
+											)
+											label.form-check-label(
+												for="flavor_bitterness_inappropriate"
+											) Inappropriate
+									.form-group.col-sm-6
+										textarea#flavor_bitterness_comment.form-control(
+											rows="5",
+											type="text",
+											name="flavor_bitterness_comment",
+											placeholder="Comments"
+										)
+							.form-group
+								h4 Fermentation Flavors
+								.form-row.py-1
+									.form-group.col-sm-6.col-form-label.px-4
+										input#flavor_fermentation.data-slider(
+											style="width:100%",
+											name="flavor_fermentation",
+											type="text",
+											data-slider-ticks="[0, 10, 50, 100]",
+											data-slider-ticks-snap-bounds="30",
+											data-slider-ticks-labels="['None','Low','Med','High']"
+										)
+										//- button(type='button' class='btn btn-danger btn-small' data-toggle='button' aria-pressed='false' autocomplete='off') Inappropriate
+										//- .form-group.col-sm-3.col-form-label
+										.form-check.pt-4
+											input#flavor_fermentation_inappropriate.form-check-input(
+												type="checkbox",
+												name="flavor_fermentation_inappropriate"
+											)
+											label.form-check-label(
+												for="flavor_fermentation_inappropriate"
+											) Inappropriate
+									.form-group.col-sm-6
+										textarea#flavor_fermentation_comment.form-control(
+											rows="5",
+											type="text",
+											name="flavor_fermentation_comment",
+											placeholder="Comments"
+										)
+							.form-group
+								h4 Flavor Balance
+								.form-row.py-1
+									.form-group.col-sm-6.col-form-label.px-4
+										input#flavor_balance.data-slider(
+											style="width:100%",
+											name="flavor_balance",
+											type="text",
+											data-slider-ticks="[0, 10, 50, 100]",
+											data-slider-ticks-snap-bounds="30",
+											data-slider-ticks-labels="['None','Low','Med','High']"
+										)
+										//- button(type='button' class='btn btn-danger btn-small' data-toggle='button' aria-pressed='false' autocomplete='off') Inappropriate
+										//- .form-group.col-sm-3.col-form-label
+										.form-check.pt-4
+											input#flavor_balance_inappropriate.form-check-input(
+												type="checkbox",
+												name="flavor_balance_inappropriate"
+											)
+											label.form-check-label(
+												for="flavor_balance_inappropriate"
+											) Inappropriate
+									.form-group.col-sm-6
+										textarea#flavor_balance_comment.form-control(
+											rows="5",
+											type="text",
+											name="flavor_balance_comment",
+											placeholder="Comments"
+										)
+							.form-group
+								h4 Finish / Aftertaste
+								.form-row.py-1
+									.form-group.col-sm-6.col-form-label.px-4
+										input#flavor_finish_aftertaste.data-slider(
+											style="width:100%",
+											name="flavor_finish_aftertaste",
+											type="text",
+											data-slider-ticks="[0, 10, 50, 100]",
+											data-slider-ticks-snap-bounds="30",
+											data-slider-ticks-labels="['None','Low','Med','High']"
+										)
+										//- button(type='button' class='btn btn-danger btn-small' data-toggle='button' aria-pressed='false' autocomplete='off') Inappropriate
+										//- .form-group.col-sm-3.col-form-label
+										.form-check.pt-4
+											input#flavor_finish_aftertaste_inappropriate.form-check-input(
+												type="checkbox",
+												name="flavor_finish_aftertaste_inappropriate"
+											)
+											label.form-check-label(
+												for="flavor_finish_aftertaste_inappropriate"
+											) Inappropriate
+									.form-group.col-sm-6
+										textarea#flavor_finish_aftertaste_comment.form-control(
+											rows="5",
+											type="text",
+											name="flavor_finish_aftertaste_comment",
+											placeholder="Comments"
+										)
+							.form-group
+								.row
+									.col
+										h4 Summary Flavor Comments
+											textarea#flavor_other_comment.form-control(
+												rows="5",
+												type="text",
+												name="flavor_other_comment",
+												placeholder="Comments"
+											)
+									.col.col-md-auto.d-flex.align-items-center.pl-4
+										.card.border-dark(style="width:100px")
+											.card-header.py-1.px-0
+												p.small.mb-0.text-center Flavor Score
+											.card-body.text-dark.px-0.py-0.text-center
+												input#flavor_score.form-control.form-control-lg.text-center.mb-0(
+													type="number",
+													name="flavor_score",
+													value="0",
+													min="0",
+													max="20",
+													onchange="recalculate_score()"
+												)
+												p.small.d-flex.align-items-end.flex-row-reverse.my-0.pb-0 /20
+						#mouthfeel.tab-pane(
+							role="tabpanel",
+							aria-labelledby="mouthfeel-tab"
+						)
+							.form-group.px-5
+								.row
+									.col-sm-9
+										h4 Body
+									.col-sm-3.text-right
+										a#bjcp_mouthfeel.badge.badge-light.badge-pill(
+											tabindex="0",
+											role="button",
+											data-toggle="popover",
+											data-trigger="focus",
+											title="BJCP Mouthfeel Guidelines",
+											data-content="Please Select a BJCP Category and Subcategory"
+										) Style Guidelines
+								input#mouthfeel_body.data-slider(
+									style="width:100%",
+									name="mouthfeel_body",
+									type="text",
+									data-slider-ticks="[0, 10, 50, 100]",
+									data-slider-ticks-snap-bounds="30",
+									data-slider-ticks-labels="['None','Low','Med','High']"
+								)
+								//- button(type='button' class='btn btn-danger btn-small' data-toggle='button' aria-pressed='false' autocomplete='off') Inappropriate
+								//- .form-group.col-sm-3.col-form-label
+								.form-check.pt-4
+									input#mouthfeel_body_inappropriate.form-check-input(
+										type="checkbox",
+										name="mouthfeel_body_inappropriate"
+									)
+									label.form-check-label(for="mouthfeel_body_inappropriate") Inappropriate
+							.form-group.px-5
+								h4 Carbonation
+								input#mouthfeel_carbonation.data-slider(
+									style="width:100%",
+									name="mouthfeel_carbonation",
+									type="text",
+									data-slider-ticks="[0, 10, 50, 100]",
+									data-slider-ticks-snap-bounds="30",
+									data-slider-ticks-labels="['None','Low','Med','High']"
+								)
+								//- button(type='button' class='btn btn-danger btn-small' data-toggle='button' aria-pressed='false' autocomplete='off') Inappropriate
+								//- .form-group.col-sm-3.col-form-label
+								.form-check.pt-4
+									input#mouthfeel_carbonation_inappropriate.form-check-input(
+										type="checkbox",
+										name="mouthfeel_carbonation_inappropriate"
+									)
+									label.form-check-label(
+										for="mouthfeel_carbonation_inappropriate"
+									) Inappropriate
+							.form-group.px-5
+								h4 Warmth
+								input#mouthfeel_warmth.data-slider(
+									style="width:100%",
+									name="mouthfeel_warmth",
+									type="text",
+									data-slider-ticks="[0, 10, 50, 100]",
+									data-slider-ticks-snap-bounds="30",
+									data-slider-ticks-labels="['None','Low','Med','High']"
+								)
+								//- button(type='button' class='btn btn-danger btn-small' data-toggle='button' aria-pressed='false' autocomplete='off') Inappropriate
+								//- .form-group.col-sm-3.col-form-label
+								.form-check.pt-4
+									input#mouthfeel_warmth_inappropriate.form-check-input(
+										type="checkbox",
+										name="mouthfeel_warmth_inappropriate"
+									)
+									label.form-check-label(for="mouthfeel_warmth_inappropriate") Inappropriate
+							.form-group.px-5
+								h4 Creaminess
+								input#mouthfeel_creaminess.data-slider(
+									style="width:100%",
+									name="mouthfeel_creaminess",
+									type="text",
+									data-slider-ticks="[0, 10, 50, 100]",
+									data-slider-ticks-snap-bounds="30",
+									data-slider-ticks-labels="['None','Low','Med','High']"
+								)
+								//- button(type='button' class='btn btn-danger btn-small' data-toggle='button' aria-pressed='false' autocomplete='off') Inappropriate
+								//- .form-group.col-sm-3.col-form-label
+								.form-check.pt-4
+									input#mouthfeel_creaminess_inappropriate.form-check-input(
+										type="checkbox",
+										name="mouthfeel_creaminess_inappropriate"
+									)
+									label.form-check-label(
+										for="mouthfeel_creaminess_inappropriate"
+									) Inappropriate
+							.form-group.px-5
+								h4 Astringency
+								input#mouthfeel_astringency.data-slider(
+									style="width:100%",
+									name="mouthfeel_astringency",
+									type="text",
+									data-slider-ticks="[0, 10, 50, 100]",
+									data-slider-ticks-snap-bounds="30",
+									data-slider-ticks-labels="['None','Low','Med','High']"
+								)
+								//- button(type='button' class='btn btn-danger btn-small' data-toggle='button' aria-pressed='false' autocomplete='off') Inappropriate
+								//- .form-group.col-sm-3.col-form-label
+								.form-check.pt-4
+									input#mouthfeel_astringency_inappropriate.form-check-input(
+										type="checkbox",
+										name="mouthfeel_astringency_inappropriate"
+									)
+									label.form-check-label(
+										for="mouthfeel_astringency_inappropriate"
+									) Inappropriate
+							.form-group
+								.row
+									.col
+										h4 Summary Mouthfeel Comments
+											textarea#mouthfeel_other_comment.form-control(
+												rows="5",
+												type="text",
+												name="mouthfeel_other_comment",
+												placeholder="Comments"
+											)
+									.col.col-md-auto.d-flex.align-items-center.pl-4
+										.card.border-dark(style="width:100px")
+											.card-header.py-1.px-0
+												p.small.mb-0.text-center Mouthfeel Score
+											.card-body.text-dark.px-0.py-0.text-center
+												input#mouthfeel_score.form-control.form-control-lg.text-center.mb-0(
+													type="number",
+													name="mouthfeel_score",
+													value="0",
+													min="0",
+													max="5",
+													onchange="recalculate_score()"
+												)
+												p.small.d-flex.align-items-end.flex-row-reverse.my-0.pb-0 /5
+						#descriptors.tab-pane(
+							role="tabpanel",
+							aria-labelledby="descriptors-tab"
+						)
+							.list-group
+								input#descriptor_acetaldehyde(
+									type="checkbox",
+									name="descriptor_acetaldehyde"
+								)
+								label.list-group-item.d-flex.justify-content-between.align-items-center(
+									for="descriptor_acetaldehyde"
+								) Acetaldehyde
+									//- a.badge.badge-light.badge-pill(tabindex="0" role="button" data-toggle="popover" data-trigger="focus" title="Acetaldehyde" data-content="Green apple-like aroma and flavor") i
+									a.badge.badge-light.badge-pill(
+										tabindex="0",
+										role="button",
+										data-toggle="popover",
+										data-trigger="focus",
+										title="Acetaldehyde",
+										data-content="Green apple-like aroma and flavor"
+									) i
+								input#descriptor_alcoholic(
+									type="checkbox",
+									name="descriptor_alcoholic"
+								)
+								label.list-group-item.d-flex.justify-content-between.align-items-center(
+									for="descriptor_alcoholic"
+								) Alcoholic
+									a.badge.badge-light.badge-pill(
+										tabindex="0",
+										role="button",
+										data-toggle="popover",
+										data-trigger="focus",
+										title="Alcoholic",
+										data-content="The aroma, flavor, and warming effect of ethanol and higher alcohols. Sometimes described as hot."
+									) i
+								input#descriptor_astringent(
+									type="checkbox",
+									name="descriptor_astringent"
+								)
+								label.list-group-item.d-flex.justify-content-between.align-items-center(
+									for="descriptor_astringent"
+								) Astringent
+									a.badge.badge-light.badge-pill(
+										tabindex="0",
+										role="button",
+										data-toggle="popover",
+										data-trigger="focus",
+										title="Astringent",
+										data-content="Puckering, lingering harshness and/or dryness in the finish/aftertaste; harsh graininess; huskiness."
+									) i
+								input#descriptor_brettanomyces(
+									type="checkbox",
+									name="descriptor_brettanomyces"
+								)
+								label.list-group-item.d-flex.justify-content-between.align-items-center(
+									for="descriptor_brettanomyces"
+								) Brettanomyces
+									a.badge.badge-light.badge-pill(
+										tabindex="0",
+										role="button",
+										data-toggle="popover",
+										data-trigger="focus",
+										title="Brettanomyces",
+										data-content="Brettanomyces aromas and flavors may take the form of pleasant smoky, earthy, or barnyard character. Unpleasantly characteristics include Band-Aid, fetid, nail polish remover, or cheese"
+									) i
+								input#descriptor_diacetyl(
+									type="checkbox",
+									name="descriptor_diacetyl"
+								)
+								label.list-group-item.d-flex.justify-content-between.align-items-center(
+									for="descriptor_diacetyl"
+								) Diacetyl
+									a.badge.badge-light.badge-pill(
+										tabindex="0",
+										role="button",
+										data-toggle="popover",
+										data-trigger="focus",
+										title="Diacetyl",
+										data-content="Artificial butter, butterscotch, or toffee aroma and flavor. Sometimes perceived as a slickness on the tongue."
+									) i
+								input#descriptor_dms(type="checkbox", name="descriptor_dms")
+								label.list-group-item.d-flex.justify-content-between.align-items-center(
+									for="descriptor_dms"
+								) DMS (Dimethyl Sulfide)
+									a.badge.badge-light.badge-pill(
+										tabindex="0",
+										role="button",
+										data-toggle="popover",
+										data-trigger="focus",
+										title="DMS (dimethyl sulfide)",
+										data-content="At low levels a sweet, cooked or canned corn-like aroma and flavor."
+									) i
+								input#descriptor_estery(
+									type="checkbox",
+									name="descriptor_estery"
+								)
+								label.list-group-item.d-flex.justify-content-between.align-items-center(
+									for="descriptor_estery"
+								) Estery
+									a.badge.badge-light.badge-pill(
+										tabindex="0",
+										role="button",
+										data-toggle="popover",
+										data-trigger="focus",
+										title="Estery",
+										data-content="Aroma and/or flavor of any ester (fruits, fruit flavorings, or roses)"
+									) i
+								input#descriptor_grassy(
+									type="checkbox",
+									name="descriptor_grassy"
+								)
+								label.list-group-item.d-flex.justify-content-between.align-items-center(
+									for="descriptor_grassy"
+								) Grassy
+									a.badge.badge-light.badge-pill(
+										tabindex="0",
+										role="button",
+										data-toggle="popover",
+										data-trigger="focus",
+										title="Grassy",
+										data-content="Aroma/flavor of fresh-cut grass or green leaves."
+									) i
+								input#descriptor_lightstruck(
+									type="checkbox",
+									name="descriptor_lightstruck"
+								)
+								label.list-group-item.d-flex.justify-content-between.align-items-center(
+									for="descriptor_lightstruck"
+								) Light-Struck
+									a.badge.badge-light.badge-pill(
+										tabindex="0",
+										role="button",
+										data-toggle="popover",
+										data-trigger="focus",
+										title="Light-Struck",
+										data-content="Similar to the aroma of a skunk."
+									) i
+								input#descriptor_metallic(
+									type="checkbox",
+									name="descriptor_metallic"
+								)
+								label.list-group-item.d-flex.justify-content-between.align-items-center(
+									for="descriptor_metallic"
+								) Metallic
+									a.badge.badge-light.badge-pill(
+										tabindex="0",
+										role="button",
+										data-toggle="popover",
+										data-trigger="focus",
+										title="Metallic",
+										data-content="Tinny, coiny, copper, iron, or blood-like flavor."
+									) i
+								input#descriptor_musty(
+									type="checkbox",
+									name="descriptor_musty"
+								)
+								label.list-group-item.d-flex.justify-content-between.align-items-center(
+									for="descriptor_musty"
+								) Musty
+									a.badge.badge-light.badge-pill(
+										tabindex="0",
+										role="button",
+										data-toggle="popover",
+										data-trigger="focus",
+										title="Musty",
+										data-content="Stale, musty, or moldy aromas/flavors."
+									) i
+								input#descriptor_oxidized(
+									type="checkbox",
+									name="descriptor_oxidized"
+								)
+								label.list-group-item.d-flex.justify-content-between.align-items-center(
+									for="descriptor_oxidized"
+								) Oxidized
+									a.badge.badge-light.badge-pill(
+										tabindex="0",
+										role="button",
+										data-toggle="popover",
+										data-trigger="focus",
+										title="Oxidized",
+										data-content="Any one or combination of stale, winy/vinous, cardboard, papery, or sherry-like aromas and flavors."
+									) i
+								input#descriptor_phenolic(
+									type="checkbox",
+									name="descriptor_phenolic"
+								)
+								label.list-group-item.d-flex.justify-content-between.align-items-center(
+									for="descriptor_phenolic"
+								) Phenolic
+									a.badge.badge-light.badge-pill(
+										tabindex="0",
+										role="button",
+										data-toggle="popover",
+										data-trigger="focus",
+										title="Phenolic",
+										data-content="Spicy (clove, pepper), smoky, plastic, plastic adhesive strip, and/or medicinal (chlorophenolic)."
+									) i
+								input#descriptor_solvent(
+									type="checkbox",
+									name="descriptor_solvent"
+								)
+								label.list-group-item.d-flex.justify-content-between.align-items-center(
+									for="descriptor_solvent"
+								) Solvent
+									a.badge.badge-light.badge-pill(
+										tabindex="0",
+										role="button",
+										data-toggle="popover",
+										data-trigger="focus",
+										title="Solvent",
+										data-content="Aromas and flavors of higher alcohols (fusel alcohols). Similar to acetone or lacquer thinner aromas."
+									) i
+								input#descriptor_smoky(
+									type="checkbox",
+									name="descriptor_smoky"
+								)
+								label.list-group-item.d-flex.justify-content-between.align-items-center(
+									for="descriptor_smoky"
+								) Smoky
+									a.badge.badge-light.badge-pill(
+										tabindex="0",
+										role="button",
+										data-toggle="popover",
+										data-trigger="focus",
+										title="Smoky",
+										data-content="Smoke characteristic"
+									) i
+								input#descriptor_sour(type="checkbox", name="descriptor_sour")
+								label.list-group-item.d-flex.justify-content-between.align-items-center(
+									for="descriptor_sour"
+								) Sour/Acidic
+									a.badge.badge-light.badge-pill(
+										tabindex="0",
+										role="button",
+										data-toggle="popover",
+										data-trigger="focus",
+										title="Sour/Acidic",
+										data-content="Tartness in aroma and flavor. Can be sharp and clean (lactic acid), or vinegar-like (acetic acid)."
+									) i
+								input#descriptor_spicy(
+									type="checkbox",
+									name="descriptor_spicy"
+								)
+								label.list-group-item.d-flex.justify-content-between.align-items-center(
+									for="descriptor_spicy"
+								) Spicy
+									a.badge.badge-light.badge-pill(
+										tabindex="0",
+										role="button",
+										data-toggle="popover",
+										data-trigger="focus",
+										title="Spicy",
+										data-content="Spice characteristic"
+									) i
+								input#descriptor_sulfur(
+									type="checkbox",
+									name="descriptor_sulfur"
+								)
+								label.list-group-item.d-flex.justify-content-between.align-items-center(
+									for="descriptor_sulfur"
+								) Sulfur
+									a.badge.badge-light.badge-pill(
+										tabindex="0",
+										role="button",
+										data-toggle="popover",
+										data-trigger="focus",
+										title="Sulfur",
+										data-content="The aroma of rotten eggs or burning matches."
+									) i
+								input#descriptor_vegetal(
+									type="checkbox",
+									name="descriptor_vegetal"
+								)
+								label.list-group-item.d-flex.justify-content-between.align-items-center(
+									for="descriptor_vegetal"
+								) Vegetal
+									a.badge.badge-light.badge-pill(
+										tabindex="0",
+										role="button",
+										data-toggle="popover",
+										data-trigger="focus",
+										title="Yeasty",
+										data-content="Cooked, canned, or rotten vegetable aroma and flavor (cabbage, onion, celery, asparagus, etc.)"
+									) i
+								input#descriptor_yeasty(
+									type="checkbox",
+									name="descriptor_yeasty"
+								)
+								label.list-group-item.d-flex.justify-content-between.align-items-center(
+									for="descriptor_yeasty"
+								) Yeasty
+									a.badge.badge-light.badge-pill(
+										tabindex="0",
+										role="button",
+										data-toggle="popover",
+										data-trigger="focus",
+										title="Yeasty",
+										data-content="A bready, sulfury or yeast-like aroma or flavor"
+									) i
+						#summary.tab-pane(role="tabpanel", aria-labelledby="summary-tab")
+							.form-group.px-5
+								h4 Style Accuracy
+								input#overall_class_example.data-slider(
+									style="width:100%",
+									name="overall_class_example",
+									type="text",
+									data-slider-ticks="[0, 10, 50, 100]",
+									data-slider-ticks-snap-bounds="30",
+									data-slider-ticks-labels="['None','Low','Med','High']"
+								)
+							.form-group.px-5
+								h4 Execution
+								input#overall_flawless.data-slider(
+									style="width:100%",
+									name="overall_flawless",
+									type="text",
+									data-slider-ticks="[0, 10, 50, 100]",
+									data-slider-ticks-snap-bounds="30",
+									data-slider-ticks-labels="['None','Low','Med','High']"
+								)
+							.form-group.px-5
+								h4 Overall Opinion
+								input#overall_wonderful.data-slider(
+									style="width:100%",
+									name="overall_wonderful",
+									type="text",
+									data-slider-ticks="[0, 10, 50, 100]",
+									data-slider-ticks-snap-bounds="30",
+									data-slider-ticks-labels="['None','Low','Med','High']"
+								)
+							.form-group
+								.row
+									.col
+										h4 Feedback
+											textarea#feedback_comment.form-control(
+												rows="5",
+												type="text",
+												name="feedback_comment",
+												placeholder="Comments"
+											)
+									.col.col-md-auto.d-flex.align-items-center.pl-4
+										.card.border-dark(style="width:100px")
+											.card-header.py-1.px-0
+												p.small.mb-0.text-center Summary Score
+											.card-body.text-dark.px-0.py-0.text-center
+												input#overall_score.form-control.form-control-lg.text-center.mb-0(
+													type="number",
+													name="overall_score",
+													value="0",
+													min="0",
+													max="10",
+													onchange="recalculate_score()"
+												)
+												p.small.d-flex.align-items-end.flex-row-reverse.my-0.pb-0 /10
 
-    //- Aroma Sliders
-    var aroma_malt = new Slider("#aroma_malt", {
-    	ticks: [0, 10, 50, 100],
-    	ticks_positions: [0, 10, 50, 100],
-    	//- ticks_labels: ['None','Low','Med','High'],
-    	ticks_labels: ['<p style="transform: translateY(15px) rotate(270deg);transform-origin: center;">None</p>', '<p style="transform: translateY(10px) rotate(270deg);transform-origin: center;">Low</p>', '<p style="transform: translateY(10px) rotate(270deg);transform-origin: center;">Med</p>', '<p style="transform: translateY(10px) rotate(270deg);transform-origin: center;">High</p>'],
-    	ticks_snap_bounds: 3,
-    	value: 0
-    });
-    var aroma_hops = new Slider("#aroma_hops", {
-    	ticks: [0, 10, 50, 100],
-    	ticks_positions: [0, 10, 50, 100],
-    	//- ticks_labels: ['None','Low','Med','High'],
-    	ticks_labels: ['<p style="transform: translateY(15px) rotate(270deg);transform-origin: center;">None</p>', '<p style="transform: translateY(10px) rotate(270deg);transform-origin: center;">Low</p>', '<p style="transform: translateY(10px) rotate(270deg);transform-origin: center;">Med</p>', '<p style="transform: translateY(10px) rotate(270deg);transform-origin: center;">High</p>'],
-    	ticks_snap_bounds: 3,
-    	value: 0
-    });
-    var aroma_fermentation = new Slider("#aroma_fermentation", {
-    	ticks: [0, 10, 50, 100],
-    	ticks_positions: [0, 10, 50, 100],
-    	//- ticks_labels: ['None','Low','Med','High'],
-    	ticks_labels: ['<p style="transform: translateY(15px) rotate(270deg);transform-origin: center;">None</p>', '<p style="transform: translateY(10px) rotate(270deg);transform-origin: center;">Low</p>', '<p style="transform: translateY(10px) rotate(270deg);transform-origin: center;">Med</p>', '<p style="transform: translateY(10px) rotate(270deg);transform-origin: center;">High</p>'],
-    	ticks_snap_bounds: 3,
-    	value: 0
-    });
+	script.
+		$("[data-toggle=popover]").popover();
 
-    //- Appearance Sliders
-    var appearance_color = new Slider("#appearance_color", {
-    	ticks: [0, 20, 40, 60, 80, 100],
-    	ticks_positions: [0, 20, 40, 60, 80, 100],
-    	//- ticks_labels: ['None','Low','Med','High'],
-    	ticks_labels: ['<p style="transform: translateY(15px) rotate(270deg);transform-origin: center;">Yellow</p>', '<p style="transform: translateY(10px) rotate(270deg);transform-origin: center;">Gold</p>', '<p style="transform: translateY(16px) rotate(270deg);transform-origin: center;">Amber</p>', '<p style="transform: translateY(16px) rotate(270deg);transform-origin: center;">Copper</p>', '<p style="transform: translateY(14px) rotate(270deg);transform-origin: center;">Brown</p>', '<p style="transform: translateY(10px) rotate(270deg);transform-origin: center;">Black</p>'],
-    	ticks_snap_bounds: 3,
-    	value: 0
-    });
-    var appearance_clarity = new Slider("#appearance_clarity", {
-    	ticks: [0, 50, 100],
-    	ticks_positions: [0, 50, 100],
-    	//- ticks_labels: ['None','Low','Med','High'],
-    	ticks_labels: ['<p style="transform: translateY(18px) rotate(270deg);transform-origin: center;">Brilliant</p>', '<p style="transform: translateY(10px) rotate(270deg);transform-origin: center;">Hazy</p>', '<p style="transform: translateY(15px) rotate(270deg);transform-origin: center;">Opaque</p>'],
-    	ticks_snap_bounds: 3,
-    	value: 0
-    });
-    var appearance_head = new Slider("#appearance_head", {
-    	ticks: [0, 25, 50, 75, 100],
-    	ticks_positions: [0, 25, 50, 75, 100],
-    	//- ticks_labels: ['None','Low','Med','High'],
-    	ticks_labels: ['<p style="transform: translateY(15px) rotate(270deg);transform-origin: center;">White</p>', '<p style="transform: translateY(12px) rotate(270deg);transform-origin: center;">Ivory</p>', '<p style="transform: translateY(15px) rotate(270deg);transform-origin: center;">Beige</p>', '<p style="transform: translateY(8px) rotate(270deg);transform-origin: center;">Tan</p>', '<p style="transform: translateY(14px) rotate(270deg);transform-origin: center;">Brown</p>'],
-    	ticks_snap_bounds: 3,
-    	value: 0
-    });
-    var appearance_retention = new Slider("#appearance_retention", {
-    	ticks: [0, 10, 50, 100],
-    	ticks_positions: [0, 10, 50, 100],
-    	//- ticks_labels: ['None','Low','Med','High'],
-    	ticks_labels: ['<p style="transform: translateY(15px) rotate(270deg);transform-origin: center;">None</p>', '<p style="transform: translateY(10px) rotate(270deg);transform-origin: center;">Low</p>', '<p style="transform: translateY(10px) rotate(270deg);transform-origin: center;">Med</p>', '<p style="transform: translateY(10px) rotate(270deg);transform-origin: center;">High</p>'],
-    	ticks_snap_bounds: 3,
-    	value: 0
-    });
+		//- Aroma Sliders
+		var aroma_malt = new Slider("#aroma_malt", {
+			ticks: [0, 10, 50, 100],
+			ticks_positions: [0, 10, 50, 100],
+			//- ticks_labels: ['None','Low','Med','High'],
+			ticks_labels: ['<p style="transform: translateY(15px) rotate(270deg);transform-origin: center;">None</p>', '<p style="transform: translateY(10px) rotate(270deg);transform-origin: center;">Low</p>', '<p style="transform: translateY(10px) rotate(270deg);transform-origin: center;">Med</p>', '<p style="transform: translateY(10px) rotate(270deg);transform-origin: center;">High</p>'],
+			ticks_snap_bounds: 3,
+			value: 0
+		});
+		var aroma_hops = new Slider("#aroma_hops", {
+			ticks: [0, 10, 50, 100],
+			ticks_positions: [0, 10, 50, 100],
+			//- ticks_labels: ['None','Low','Med','High'],
+			ticks_labels: ['<p style="transform: translateY(15px) rotate(270deg);transform-origin: center;">None</p>', '<p style="transform: translateY(10px) rotate(270deg);transform-origin: center;">Low</p>', '<p style="transform: translateY(10px) rotate(270deg);transform-origin: center;">Med</p>', '<p style="transform: translateY(10px) rotate(270deg);transform-origin: center;">High</p>'],
+			ticks_snap_bounds: 3,
+			value: 0
+		});
+		var aroma_fermentation = new Slider("#aroma_fermentation", {
+			ticks: [0, 10, 50, 100],
+			ticks_positions: [0, 10, 50, 100],
+			//- ticks_labels: ['None','Low','Med','High'],
+			ticks_labels: ['<p style="transform: translateY(15px) rotate(270deg);transform-origin: center;">None</p>', '<p style="transform: translateY(10px) rotate(270deg);transform-origin: center;">Low</p>', '<p style="transform: translateY(10px) rotate(270deg);transform-origin: center;">Med</p>', '<p style="transform: translateY(10px) rotate(270deg);transform-origin: center;">High</p>'],
+			ticks_snap_bounds: 3,
+			value: 0
+		});
 
-    //- Flavor Sliders
-    var flavor_malt = new Slider("#flavor_malt", {
-    	ticks: [0, 10, 50, 100],
-    	ticks_positions: [0, 10, 50, 100],
-    	//- ticks_labels: ['None','Low','Med','High'],
-    	ticks_labels: ['<p style="transform: translateY(15px) rotate(270deg);transform-origin: center;">None</p>', '<p style="transform: translateY(10px) rotate(270deg);transform-origin: center;">Low</p>', '<p style="transform: translateY(10px) rotate(270deg);transform-origin: center;">Med</p>', '<p style="transform: translateY(10px) rotate(270deg);transform-origin: center;">High</p>'],
-    	ticks_snap_bounds: 3,
-    	value: 0
-    });
-    var flavor_hops = new Slider("#flavor_hops", {
-    	ticks: [0, 10, 50, 100],
-    	ticks_positions: [0, 10, 50, 100],
-    	//- ticks_labels: ['None','Low','Med','High'],
-    	ticks_labels: ['<p style="transform: translateY(15px) rotate(270deg);transform-origin: center;">None</p>', '<p style="transform: translateY(10px) rotate(270deg);transform-origin: center;">Low</p>', '<p style="transform: translateY(10px) rotate(270deg);transform-origin: center;">Med</p>', '<p style="transform: translateY(10px) rotate(270deg);transform-origin: center;">High</p>'],
-    	ticks_snap_bounds: 3,
-    	value: 0
-    });
-    var flavor_bitterness = new Slider("#flavor_bitterness", {
-    	ticks: [0, 10, 50, 100],
-    	ticks_positions: [0, 10, 50, 100],
-    	//- ticks_labels: ['None','Low','Med','High'],
-    	ticks_labels: ['<p style="transform: translateY(15px) rotate(270deg);transform-origin: center;">None</p>', '<p style="transform: translateY(10px) rotate(270deg);transform-origin: center;">Low</p>', '<p style="transform: translateY(10px) rotate(270deg);transform-origin: center;">Med</p>', '<p style="transform: translateY(10px) rotate(270deg);transform-origin: center;">High</p>'],
-    	ticks_snap_bounds: 3,
-    	value: 0
-    });
-    var flavor_fermentation = new Slider("#flavor_fermentation", {
-    	ticks: [0, 10, 50, 100],
-    	ticks_positions: [0, 10, 50, 100],
-    	//- ticks_labels: ['None','Low','Med','High'],
-    	ticks_labels: ['<p style="transform: translateY(15px) rotate(270deg);transform-origin: center;">None</p>', '<p style="transform: translateY(10px) rotate(270deg);transform-origin: center;">Low</p>', '<p style="transform: translateY(10px) rotate(270deg);transform-origin: center;">Med</p>', '<p style="transform: translateY(10px) rotate(270deg);transform-origin: center;">High</p>'],
-    	ticks_snap_bounds: 3,
-    	value: 0
-    });
-    var flavor_balance = new Slider("#flavor_balance", {
-    	ticks: [0, 100],
-    	ticks_positions: [0, 100],
-    	//- ticks_labels: ['None','Low','Med','High'],
-    	ticks_labels: ['<p style="transform: translateY(15px) rotate(270deg);transform-origin: center;">Hoppy</p>', '<p style="transform: translateY(12px) rotate(270deg);transform-origin: center;">Malty</p>'],
-    	ticks_snap_bounds: 3,
-    	value: 0
-    });
-    var flavor_finish_aftertaste = new Slider("#flavor_finish_aftertaste", {
-    	ticks: [0, 100],
-    	ticks_positions: [0, 100],
-    	//- ticks_labels: ['None','Low','Med','High'],
-    	ticks_labels: ['<p style="transform: translateY(7px) rotate(270deg);transform-origin: center;">Dry</p>', '<p style="transform: translateY(12px) rotate(270deg);transform-origin: center;">Sweet</p>'],
-    	ticks_snap_bounds: 3,
-    	value: 0
-    });
+		//- Appearance Sliders
+		var appearance_color = new Slider("#appearance_color", {
+			ticks: [0, 20, 40, 60, 80, 100],
+			ticks_positions: [0, 20, 40, 60, 80, 100],
+			//- ticks_labels: ['None','Low','Med','High'],
+			ticks_labels: ['<p style="transform: translateY(15px) rotate(270deg);transform-origin: center;">Yellow</p>', '<p style="transform: translateY(10px) rotate(270deg);transform-origin: center;">Gold</p>', '<p style="transform: translateY(16px) rotate(270deg);transform-origin: center;">Amber</p>', '<p style="transform: translateY(16px) rotate(270deg);transform-origin: center;">Copper</p>', '<p style="transform: translateY(14px) rotate(270deg);transform-origin: center;">Brown</p>', '<p style="transform: translateY(10px) rotate(270deg);transform-origin: center;">Black</p>'],
+			ticks_snap_bounds: 3,
+			value: 0
+		});
+		var appearance_clarity = new Slider("#appearance_clarity", {
+			ticks: [0, 50, 100],
+			ticks_positions: [0, 50, 100],
+			//- ticks_labels: ['None','Low','Med','High'],
+			ticks_labels: ['<p style="transform: translateY(18px) rotate(270deg);transform-origin: center;">Brilliant</p>', '<p style="transform: translateY(10px) rotate(270deg);transform-origin: center;">Hazy</p>', '<p style="transform: translateY(15px) rotate(270deg);transform-origin: center;">Opaque</p>'],
+			ticks_snap_bounds: 3,
+			value: 0
+		});
+		var appearance_head = new Slider("#appearance_head", {
+			ticks: [0, 25, 50, 75, 100],
+			ticks_positions: [0, 25, 50, 75, 100],
+			//- ticks_labels: ['None','Low','Med','High'],
+			ticks_labels: ['<p style="transform: translateY(15px) rotate(270deg);transform-origin: center;">White</p>', '<p style="transform: translateY(12px) rotate(270deg);transform-origin: center;">Ivory</p>', '<p style="transform: translateY(15px) rotate(270deg);transform-origin: center;">Beige</p>', '<p style="transform: translateY(8px) rotate(270deg);transform-origin: center;">Tan</p>', '<p style="transform: translateY(14px) rotate(270deg);transform-origin: center;">Brown</p>'],
+			ticks_snap_bounds: 3,
+			value: 0
+		});
+		var appearance_retention = new Slider("#appearance_retention", {
+			ticks: [0, 10, 50, 100],
+			ticks_positions: [0, 10, 50, 100],
+			//- ticks_labels: ['None','Low','Med','High'],
+			ticks_labels: ['<p style="transform: translateY(15px) rotate(270deg);transform-origin: center;">None</p>', '<p style="transform: translateY(10px) rotate(270deg);transform-origin: center;">Low</p>', '<p style="transform: translateY(10px) rotate(270deg);transform-origin: center;">Med</p>', '<p style="transform: translateY(10px) rotate(270deg);transform-origin: center;">High</p>'],
+			ticks_snap_bounds: 3,
+			value: 0
+		});
 
-    //- Mouthfeel Sliders
-    var mouthfeel_body = new Slider("#mouthfeel_body", {
-    	ticks: [0, 10, 50, 100],
-    	ticks_positions: [0, 10, 50, 100],
-    	//- ticks_labels: ['None','Low','Med','High'],
-    	ticks_labels: ['<p style="transform: translateY(15px) rotate(270deg);transform-origin: center;">None</p>', '<p style="transform: translateY(10px) rotate(270deg);transform-origin: center;">Thin</p>', '<p style="transform: translateY(10px) rotate(270deg);transform-origin: center;">Med</p>', '<p style="transform: translateY(10px) rotate(270deg);transform-origin: center;">Full</p>'],
-    	ticks_snap_bounds: 3,
-    	value: 0
-    });
-    var mouthfeel_carbonation = new Slider("#mouthfeel_carbonation", {
-    	ticks: [0, 10, 50, 100],
-    	ticks_positions: [0, 10, 50, 100],
-    	//- ticks_labels: ['None','Low','Med','High'],
-    	ticks_labels: ['<p style="transform: translateY(15px) rotate(270deg);transform-origin: center;">None</p>', '<p style="transform: translateY(10px) rotate(270deg);transform-origin: center;">Low</p>', '<p style="transform: translateY(10px) rotate(270deg);transform-origin: center;">Med</p>', '<p style="transform: translateY(10px) rotate(270deg);transform-origin: center;">High</p>'],
-    	ticks_snap_bounds: 3,
-    	value: 0
-    });
-    var mouthfeel_warmth = new Slider("#mouthfeel_warmth", {
-    	ticks: [0, 10, 50, 100],
-    	ticks_positions: [0, 10, 50, 100],
-    	//- ticks_labels: ['None','Low','Med','High'],
-    	ticks_labels: ['<p style="transform: translateY(15px) rotate(270deg);transform-origin: center;">None</p>', '<p style="transform: translateY(10px) rotate(270deg);transform-origin: center;">Low</p>', '<p style="transform: translateY(10px) rotate(270deg);transform-origin: center;">Med</p>', '<p style="transform: translateY(10px) rotate(270deg);transform-origin: center;">High</p>'],
-    	ticks_snap_bounds: 3,
-    	value: 0
-    });
-    var mouthfeel_creaminess = new Slider("#mouthfeel_creaminess", {
-    	ticks: [0, 10, 50, 100],
-    	ticks_positions: [0, 10, 50, 100],
-    	//- ticks_labels: ['None','Low','Med','High'],
-    	ticks_labels: ['<p style="transform: translateY(15px) rotate(270deg);transform-origin: center;">None</p>', '<p style="transform: translateY(10px) rotate(270deg);transform-origin: center;">Low</p>', '<p style="transform: translateY(10px) rotate(270deg);transform-origin: center;">Med</p>', '<p style="transform: translateY(10px) rotate(270deg);transform-origin: center;">High</p>'],
-    	ticks_snap_bounds: 3,
-    	value: 0
-    });
-    var mouthfeel_astringency = new Slider("#mouthfeel_astringency", {
-    	ticks: [0, 10, 50, 100],
-    	ticks_positions: [0, 10, 50, 100],
-    	//- ticks_labels: ['None','Low','Med','High'],
-    	ticks_labels: ['<p style="transform: translateY(15px) rotate(270deg);transform-origin: center;">None</p>', '<p style="transform: translateY(10px) rotate(270deg);transform-origin: center;">Low</p>', '<p style="transform: translateY(10px) rotate(270deg);transform-origin: center;">Med</p>', '<p style="transform: translateY(10px) rotate(270deg);transform-origin: center;">High</p>'],
-    	ticks_snap_bounds: 3,
-    	value: 0
-    });
+		//- Flavor Sliders
+		var flavor_malt = new Slider("#flavor_malt", {
+			ticks: [0, 10, 50, 100],
+			ticks_positions: [0, 10, 50, 100],
+			//- ticks_labels: ['None','Low','Med','High'],
+			ticks_labels: ['<p style="transform: translateY(15px) rotate(270deg);transform-origin: center;">None</p>', '<p style="transform: translateY(10px) rotate(270deg);transform-origin: center;">Low</p>', '<p style="transform: translateY(10px) rotate(270deg);transform-origin: center;">Med</p>', '<p style="transform: translateY(10px) rotate(270deg);transform-origin: center;">High</p>'],
+			ticks_snap_bounds: 3,
+			value: 0
+		});
+		var flavor_hops = new Slider("#flavor_hops", {
+			ticks: [0, 10, 50, 100],
+			ticks_positions: [0, 10, 50, 100],
+			//- ticks_labels: ['None','Low','Med','High'],
+			ticks_labels: ['<p style="transform: translateY(15px) rotate(270deg);transform-origin: center;">None</p>', '<p style="transform: translateY(10px) rotate(270deg);transform-origin: center;">Low</p>', '<p style="transform: translateY(10px) rotate(270deg);transform-origin: center;">Med</p>', '<p style="transform: translateY(10px) rotate(270deg);transform-origin: center;">High</p>'],
+			ticks_snap_bounds: 3,
+			value: 0
+		});
+		var flavor_bitterness = new Slider("#flavor_bitterness", {
+			ticks: [0, 10, 50, 100],
+			ticks_positions: [0, 10, 50, 100],
+			//- ticks_labels: ['None','Low','Med','High'],
+			ticks_labels: ['<p style="transform: translateY(15px) rotate(270deg);transform-origin: center;">None</p>', '<p style="transform: translateY(10px) rotate(270deg);transform-origin: center;">Low</p>', '<p style="transform: translateY(10px) rotate(270deg);transform-origin: center;">Med</p>', '<p style="transform: translateY(10px) rotate(270deg);transform-origin: center;">High</p>'],
+			ticks_snap_bounds: 3,
+			value: 0
+		});
+		var flavor_fermentation = new Slider("#flavor_fermentation", {
+			ticks: [0, 10, 50, 100],
+			ticks_positions: [0, 10, 50, 100],
+			//- ticks_labels: ['None','Low','Med','High'],
+			ticks_labels: ['<p style="transform: translateY(15px) rotate(270deg);transform-origin: center;">None</p>', '<p style="transform: translateY(10px) rotate(270deg);transform-origin: center;">Low</p>', '<p style="transform: translateY(10px) rotate(270deg);transform-origin: center;">Med</p>', '<p style="transform: translateY(10px) rotate(270deg);transform-origin: center;">High</p>'],
+			ticks_snap_bounds: 3,
+			value: 0
+		});
+		var flavor_balance = new Slider("#flavor_balance", {
+			ticks: [0, 100],
+			ticks_positions: [0, 100],
+			//- ticks_labels: ['None','Low','Med','High'],
+			ticks_labels: ['<p style="transform: translateY(15px) rotate(270deg);transform-origin: center;">Hoppy</p>', '<p style="transform: translateY(12px) rotate(270deg);transform-origin: center;">Malty</p>'],
+			ticks_snap_bounds: 3,
+			value: 0
+		});
+		var flavor_finish_aftertaste = new Slider("#flavor_finish_aftertaste", {
+			ticks: [0, 100],
+			ticks_positions: [0, 100],
+			//- ticks_labels: ['None','Low','Med','High'],
+			ticks_labels: ['<p style="transform: translateY(7px) rotate(270deg);transform-origin: center;">Dry</p>', '<p style="transform: translateY(12px) rotate(270deg);transform-origin: center;">Sweet</p>'],
+			ticks_snap_bounds: 3,
+			value: 0
+		});
 
-    //- Summary Sliders
-    var overall_class_example = new Slider("#overall_class_example", {
-    	ticks: [0, 100],
-    	ticks_positions: [0, 100],
-    	ticks_labels: ['Not to Style', 'Classic Example'],
-    	//- ticks_labels: ['<p style="transform: translateY(15px) rotate(270deg);transform-origin: center;">Classic\nExample</p>', '<p style="transform: translateY(14px) rotate(270deg);transform-origin: center;">Not to\nStyle</p>'],
-    	ticks_snap_bounds: 3,
-    	value: 50
-    });
-    var overall_flawless = new Slider("#overall_flawless", {
-    	ticks: [0, 100],
-    	ticks_positions: [0, 100],
-    	ticks_labels: ['Significant Flaws', 'Flawless'],
-    	//- ticks_labels: ['<p style="transform: translateY(15px) rotate(270deg);transform-origin: center;">Flawless</p>', '<p style="transform: translateY(18px) rotate(270deg);transform-origin: center;">Significant/nFlaws</p>'],
-    	ticks_snap_bounds: 3,
-    	value: 50
-    });
-    var overall_wonderful = new Slider("#overall_wonderful", {
-    	ticks: [0, 100],
-    	ticks_positions: [0, 100],
-    	ticks_labels: ['Lifeless', 'Wonderful'],
-    	//- ticks_labels: ['<p style="transform: translateY(16px) rotate(270deg);transform-origin: center;">Wonderful</p>', '<p style="transform: translateY(16px) rotate(270deg);transform-origin: center;">Lifeless</p>'],
-    	ticks_snap_bounds: 3,
-    	value: 50
-    });
+		//- Mouthfeel Sliders
+		var mouthfeel_body = new Slider("#mouthfeel_body", {
+			ticks: [0, 10, 50, 100],
+			ticks_positions: [0, 10, 50, 100],
+			//- ticks_labels: ['None','Low','Med','High'],
+			ticks_labels: ['<p style="transform: translateY(15px) rotate(270deg);transform-origin: center;">None</p>', '<p style="transform: translateY(10px) rotate(270deg);transform-origin: center;">Thin</p>', '<p style="transform: translateY(10px) rotate(270deg);transform-origin: center;">Med</p>', '<p style="transform: translateY(10px) rotate(270deg);transform-origin: center;">Full</p>'],
+			ticks_snap_bounds: 3,
+			value: 0
+		});
+		var mouthfeel_carbonation = new Slider("#mouthfeel_carbonation", {
+			ticks: [0, 10, 50, 100],
+			ticks_positions: [0, 10, 50, 100],
+			//- ticks_labels: ['None','Low','Med','High'],
+			ticks_labels: ['<p style="transform: translateY(15px) rotate(270deg);transform-origin: center;">None</p>', '<p style="transform: translateY(10px) rotate(270deg);transform-origin: center;">Low</p>', '<p style="transform: translateY(10px) rotate(270deg);transform-origin: center;">Med</p>', '<p style="transform: translateY(10px) rotate(270deg);transform-origin: center;">High</p>'],
+			ticks_snap_bounds: 3,
+			value: 0
+		});
+		var mouthfeel_warmth = new Slider("#mouthfeel_warmth", {
+			ticks: [0, 10, 50, 100],
+			ticks_positions: [0, 10, 50, 100],
+			//- ticks_labels: ['None','Low','Med','High'],
+			ticks_labels: ['<p style="transform: translateY(15px) rotate(270deg);transform-origin: center;">None</p>', '<p style="transform: translateY(10px) rotate(270deg);transform-origin: center;">Low</p>', '<p style="transform: translateY(10px) rotate(270deg);transform-origin: center;">Med</p>', '<p style="transform: translateY(10px) rotate(270deg);transform-origin: center;">High</p>'],
+			ticks_snap_bounds: 3,
+			value: 0
+		});
+		var mouthfeel_creaminess = new Slider("#mouthfeel_creaminess", {
+			ticks: [0, 10, 50, 100],
+			ticks_positions: [0, 10, 50, 100],
+			//- ticks_labels: ['None','Low','Med','High'],
+			ticks_labels: ['<p style="transform: translateY(15px) rotate(270deg);transform-origin: center;">None</p>', '<p style="transform: translateY(10px) rotate(270deg);transform-origin: center;">Low</p>', '<p style="transform: translateY(10px) rotate(270deg);transform-origin: center;">Med</p>', '<p style="transform: translateY(10px) rotate(270deg);transform-origin: center;">High</p>'],
+			ticks_snap_bounds: 3,
+			value: 0
+		});
+		var mouthfeel_astringency = new Slider("#mouthfeel_astringency", {
+			ticks: [0, 10, 50, 100],
+			ticks_positions: [0, 10, 50, 100],
+			//- ticks_labels: ['None','Low','Med','High'],
+			ticks_labels: ['<p style="transform: translateY(15px) rotate(270deg);transform-origin: center;">None</p>', '<p style="transform: translateY(10px) rotate(270deg);transform-origin: center;">Low</p>', '<p style="transform: translateY(10px) rotate(270deg);transform-origin: center;">Med</p>', '<p style="transform: translateY(10px) rotate(270deg);transform-origin: center;">High</p>'],
+			ticks_snap_bounds: 3,
+			value: 0
+		});
 
-    //- Update all sliders
-    //- slider.refresh();
+		//- Summary Sliders
+		var overall_class_example = new Slider("#overall_class_example", {
+			ticks: [0, 100],
+			ticks_positions: [0, 100],
+			ticks_labels: ['Not to Style', 'Classic Example'],
+			//- ticks_labels: ['<p style="transform: translateY(15px) rotate(270deg);transform-origin: center;">Classic\nExample</p>', '<p style="transform: translateY(14px) rotate(270deg);transform-origin: center;">Not to\nStyle</p>'],
+			ticks_snap_bounds: 3,
+			value: 50
+		});
+		var overall_flawless = new Slider("#overall_flawless", {
+			ticks: [0, 100],
+			ticks_positions: [0, 100],
+			ticks_labels: ['Significant Flaws', 'Flawless'],
+			//- ticks_labels: ['<p style="transform: translateY(15px) rotate(270deg);transform-origin: center;">Flawless</p>', '<p style="transform: translateY(18px) rotate(270deg);transform-origin: center;">Significant/nFlaws</p>'],
+			ticks_snap_bounds: 3,
+			value: 50
+		});
+		var overall_wonderful = new Slider("#overall_wonderful", {
+			ticks: [0, 100],
+			ticks_positions: [0, 100],
+			ticks_labels: ['Lifeless', 'Wonderful'],
+			//- ticks_labels: ['<p style="transform: translateY(16px) rotate(270deg);transform-origin: center;">Wonderful</p>', '<p style="transform: translateY(16px) rotate(270deg);transform-origin: center;">Lifeless</p>'],
+			ticks_snap_bounds: 3,
+			value: 50
+		});
 
-    //- Recalculate total score
-    function recalculate_score() {
-    	let aroma = document.getElementById('aroma_score').value
-    	let appearance = document.getElementById('appearance_score').value
-    	let flavor = document.getElementById('flavor_score').value
-    	let mouthfeel = document.getElementById('mouthfeel_score').value
-    	let summary = document.getElementById('overall_score').value
+		//- Update all sliders
+		//- slider.refresh();
 
-    	if (aroma > 12 || aroma < 0) {
-    		aroma = aroma > 12 ? 12 : 0
-    	}
-    	if (appearance > 3 || appearance < 0) {
-    		appearance = appearance > 3 ? 3 : 0
-    	}
-    	if (flavor > 20 || flavor < 0) {
-    		flavor = flavor > 20 ? 20 : 0
-    	}
-    	if (mouthfeel > 5 || mouthfeel < 0) {
-    		mouthfeel = mouthfeel > 5 ? 5 : 0
-    	}
-    	if (summary > 10 || summary < 0) {
-    		summary = summary > 10 ? 10 : 0
-    	}
+		//- Recalculate total score
+		function recalculate_score() {
+			let aroma = document.getElementById('aroma_score').value
+			let appearance = document.getElementById('appearance_score').value
+			let flavor = document.getElementById('flavor_score').value
+			let mouthfeel = document.getElementById('mouthfeel_score').value
+			let summary = document.getElementById('overall_score').value
 
-    	$('#aroma_score').val(Math.round(aroma))
-    	$('#appearance_score').val(Math.round(appearance))
-    	$('#flavor_score').val(Math.round(flavor))
-    	$('#mouthfeel_score').val(Math.round(mouthfeel))
-    	$('#overall_score').val(Math.round(summary))
+			if (aroma > 12 || aroma < 0) {
+				aroma = aroma > 12 ? 12 : 0
+			}
+			if (appearance > 3 || appearance < 0) {
+				appearance = appearance > 3 ? 3 : 0
+			}
+			if (flavor > 20 || flavor < 0) {
+				flavor = flavor > 20 ? 20 : 0
+			}
+			if (mouthfeel > 5 || mouthfeel < 0) {
+				mouthfeel = mouthfeel > 5 ? 5 : 0
+			}
+			if (summary > 10 || summary < 0) {
+				summary = summary > 10 ? 10 : 0
+			}
 
-    	document.getElementById('judge_total').innerText = Number(aroma) + Number(appearance) + Number(flavor) + Number(mouthfeel) + Number(summary);
-    }
+			$('#aroma_score').val(Math.round(aroma))
+			$('#appearance_score').val(Math.round(appearance))
+			$('#flavor_score').val(Math.round(flavor))
+			$('#mouthfeel_score').val(Math.round(mouthfeel))
+			$('#overall_score').val(Math.round(summary))
 
-    //- Change 'scoresheet_submitted' input to true after submit confirmed
-    function confirm_submit() {
-    	$('input#scoresheet_submitted').val('1')
-    	update_scoresheet()
-    	window.alert('Scoresheet submitted!')
-    	window.location.replace('/scoresheet/load');
-    }
+			document.getElementById('judge_total').innerText = Number(aroma) + Number(appearance) + Number(flavor) + Number(mouthfeel) + Number(summary);
+		}
 
-    //- Universal data validator handler
-    function validatorHandler(_this) {
-    	//- We do not need a Validation post call right now as we do not have a scoresheets table to verify against
-    	/*
-    	$.ajax({
-    		url: '/scoresheet/validate',
-    		method: 'POST',
-    		dataType: 'JSON',
-    		data: {
-    			entry_number: $('input#entry_number').val(),
-    			id: $('input#id').val()
-    		}
-    	})
-    		//- This is a bit too specific right now need to generalize later for a universal function feel
-    		.done(function (data) {
-    			if ($(_this).val().trim() !== '' && data.entry_number) {
-    				$(_this).removeClass('is-invalid');
-    				$(_this).addClass('is-valid');
-    			} else {
-    				$(_this).removeClass('is-valid');
-    				$(_this).addClass('is-invalid');
-    			}
-    		})
-    		.fail(function (err) {
-    			$(_this).addClass('is-invalid');
-    		});
-    	*/
+		//- Change 'scoresheet_submitted' input to true after submit confirmed
+		function confirm_submit() {
+			$('input#scoresheet_submitted').val('1')
+			update_scoresheet()
+			window.alert('Scoresheet submitted!')
+			window.location.replace('/scoresheet/load');
+		}
 
-    	// Simple validation to alert user to empty text fields
-    	if ($(_this).val().trim() !== '') {
-    		$(_this).removeClass('is-invalid');
-    		$(_this).addClass('is-valid');
-    	} else {
-    		$(_this).removeClass('is-valid');
-    		$(_this).addClass('is-invalid');
-    	}
-    }
+		//- Universal data validator handler
+		function validatorHandler(_this) {
+			//- We do not need a Validation post call right now as we do not have a scoresheets table to verify against
+			/*
+			$.ajax({
+				url: '/scoresheet/validate',
+				method: 'POST',
+				dataType: 'JSON',
+				data: {
+					entry_number: $('input#entry_number').val(),
+					id: $('input#id').val()
+				}
+			})
+				//- This is a bit too specific right now need to generalize later for a universal function feel
+				.done(function (data) {
+					if ($(_this).val().trim() !== '' && data.entry_number) {
+						$(_this).removeClass('is-invalid');
+						$(_this).addClass('is-valid');
+					} else {
+						$(_this).removeClass('is-valid');
+						$(_this).addClass('is-invalid');
+					}
+				})
+				.fail(function (err) {
+					$(_this).addClass('is-invalid');
+				});
+			*/
 
-    let goHome = () => {}
+			// Simple validation to alert user to empty text fields
+			if ($(_this).val().trim() !== '') {
+				$(_this).removeClass('is-invalid');
+				$(_this).addClass('is-valid');
+			} else {
+				$(_this).removeClass('is-valid');
+				$(_this).addClass('is-invalid');
+			}
+		}
 
-    $(document).ready(function () {
-    	//- Data validator on event
-    	$('input.vCheck').on('keyup change', function () {
-    		validatorHandler(this)
-    	});
+		let goHome = () => {
+		}
 
-      // This is a terrible way to load this object data into the script... we really should be doing a fetch after document is ready and loading it that way.
-      const rawPugScoresheetObject = '!{JSON.stringify(scoresheet)}'
-      const scoresheet = rawPugScoresheetObject && rawPugScoresheetObject !== '' ? JSON.parse(rawPugScoresheetObject.replace(/\\\"/g, "\\\\\"").replace(/\'/g, "\\\'")) : null
+		$(document).ready(function () {
+			//- Data validator on event
+			$('input.vCheck').on('keyup change', function () {
+				validatorHandler(this)
+			});
 
-    	// post scoresheet as-is to db without submitting
-    	update_scoresheet = () => {
-    		var fData = $('form#newScoresheet').serialize();
-    		if (origForm !== fData) {
-    			//- We have changes to the form save them back
-    			let fDataObject = $('form#newScoresheet').serializeObject();
-    			fDataObject['_ajax'] = true;
+			// This is a terrible way to load this object data into the script... we really should be doing a fetch after document is ready and loading it that way.
+			const rawPugScoresheetObject = '!{JSON.stringify(scoresheet)}'
+			const scoresheet = rawPugScoresheetObject && rawPugScoresheetObject !== '' ? JSON.parse(rawPugScoresheetObject.replace(/\\\"/g, "\\\\\"").replace(/\'/g, "\\\'")) : null
 
-    			// Update inappropriate values in summary page
-    			const currentFeedbackComment = $('#feedback_comment').val().split('—\n') //Note that this is a "em-space" to prevent confusion with user hyphens
-    			let inappropriateComments = []
-    			let zeroValueScoreSections = []
-    			let noCommentSections = []
+			// post scoresheet as-is to db without submitting
+			update_scoresheet = () => {
+				var fData = $('form#newScoresheet').serialize();
+				if (origForm !== fData) {
+					//- We have changes to the form save them back
+					let fDataObject = $('form#newScoresheet').serializeObject();
+					fDataObject['_ajax'] = true;
 
-    			Object.keys(fDataObject).forEach(key => {
-    				const keySplit = key.split('_')
-    				const keyType = keySplit.pop()
+					// Update inappropriate values in summary page
+					const currentFeedbackComment = $('#feedback_comment').val().split('—\n') //Note that this is a "em-space" to prevent confusion with user hyphens
+					let inappropriateComments = []
+					let zeroValueScoreSections = []
+					let noCommentSections = []
 
-    				//- // Also broken. See below
-    				//- if (keyType === 'inappropriate') {
-    				//- 	inappropriateComments.push({'inappropriate ' + keySplit.reverse().join(' ')})
-    				//- }
+					Object.keys(fDataObject).forEach(key => {
+						const keySplit = key.split('_')
+						const keyType = keySplit.pop()
 
-    				if (keyType === 'score' && fDataObject[key] == 0) {
-    					zeroValueScoreSections.push(keySplit[0])
-    				}
+						//- // Also broken. See below
+						//- if (keyType === 'inappropriate') {
+						//- 	inappropriateComments.push({'inappropriate ' + keySplit.reverse().join(' ')})
+						//- }
 
-    				const ignoreEmptyKeys = ["bottle_inspection_comment", "special_ingredients_comment"]
-    				if (keyType === 'comment' && !ignoreEmptyKeys.includes(key) && fDataObject[key] == '') {
-    					if (keySplit[1] === "other") {
-    						keySplit[1] = "summary"
-    					}
+						if (keyType === 'score' && fDataObject[key] == 0) {
+							zeroValueScoreSections.push(keySplit[0])
+						}
 
-    					noCommentSections.push(keySplit.reverse().join(' '))
-    				}
-    			})
+						const ignoreEmptyKeys = ["bottle_inspection_comment", "special_ingredients_comment"]
+						if (keyType === 'comment' && !ignoreEmptyKeys.includes(key) && fDataObject[key] == '') {
+							if (keySplit[1] === "other") {
+								keySplit[1] = "summary"
+							}
 
-    			//- // This is broken - it does not allow the user to manually edit the slider or the field (changes it back on next update call). Take it out for now.
-    			//- if (inappropriateComments.length) {
-    			//- 	// Update the slider for "To Style" based on number of inappropriate checks
-    			//- 	const updatedValue = inappropriateComments.length <= 10 ? 50 - inappropriateComments.length*5 : 0
-    			//- 	overall_class_example.setValue(updatedValue)
+							noCommentSections.push(keySplit.reverse().join(' '))
+						}
+					})
 
-    			//- 	let stringInappropriateComments = inappropriateComments.join(', ').charAt(0).toUpperCase() + inappropriateComments.join(', ').slice(1)
+					//- // This is broken - it does not allow the user to manually edit the slider or the field (changes it back on next update call). Take it out for now.
+					//- if (inappropriateComments.length) {
+					//- 	// Update the slider for "To Style" based on number of inappropriate checks
+					//- 	const updatedValue = inappropriateComments.length <= 10 ? 50 - inappropriateComments.length*5 : 0
+					//- 	overall_class_example.setValue(updatedValue)
 
-    			//- 	if (currentFeedbackComment.length > 1) {
-    			//- 		stringInappropriateComments = currentFeedbackComment[0] + '—\n' + stringInappropriateComments
-    			//- 	} 
-    			//- 	$('#feedback_comment').val(stringInappropriateComments)
-    			//- }
+					//- 	let stringInappropriateComments = inappropriateComments.join(', ').charAt(0).toUpperCase() + inappropriateComments.join(', ').slice(1)
 
-    			if (zeroValueScoreSections.length) {
-    				// Check for zero valued section scores and add them to submit confirmation modal
-    				const html = `
-    					The following sections have a zero (0) score:
-    					<ul>
-    						${zeroValueScoreSections.map(val => ("<li>" + val.charAt(0).toUpperCase() + val.slice(1) + "</li>")).join('')}
-    					</ul>
-    				`
+					//- 	if (currentFeedbackComment.length > 1) {
+					//- 		stringInappropriateComments = currentFeedbackComment[0] + '—\n' + stringInappropriateComments
+					//- 	}
+					//- 	$('#feedback_comment').val(stringInappropriateComments)
+					//- }
 
-    				$("#scoresheet-section-score-warnings").html(html)
-    			}		
+					if (zeroValueScoreSections.length) {
+						// Check for zero valued section scores and add them to submit confirmation modal
+						const html = `
+							The following sections have a zero (0) score:
+							<ul>
+								${zeroValueScoreSections.map(val => ("<li>" + val.charAt(0).toUpperCase() + val.slice(1) + "</li>")).join('')}
+							</ul>
+						`;
 
-    			if (noCommentSections.length) {
-    				// Check for zero valued section scores and add them to submit confirmation modal
-    				const html = `
-    					The following sections have no comments:
-    					<ul>
-    						${noCommentSections.map(val => ("<li>" + val.charAt(0).toUpperCase() + val.slice(1) + "</li>")).join('')}
-    					</ul>
-    				`
+						$("#scoresheet-section-score-warnings").html(html)
+					}
 
-    				$("#scoresheet-comments-warnings").html(html)
-    			}
+					if (noCommentSections.length) {
+						// Check for zero valued section scores and add them to submit confirmation modal
+						const html = `
+							The following sections have no comments:
+							<ul>
+							${noCommentSections.map(val => ("<li>" + val.charAt(0).toUpperCase() + val.slice(1) + "</li>")).join('')}
+							</ul>
+						`;
 
-    			// Don't post data unless the entry number exists
-    			if (fDataObject.entry_number === '') return
+						$("#scoresheet-comments-warnings").html(html)
+					}
 
-    			// Update Judge Total to be a number
-    			fDataObject.judge_total = Number($('#judge_total').text())
+					// Don't post data unless the entry number exists
+					if (fDataObject.entry_number === '') return
 
-    			// Submit the updated scoresheet
-    			$.post('/scoresheet/update', fDataObject, function (data) {
-    				if (data.update) {
-    					$('form#newScoresheet input#id').val(data.id);
-    				} else if (data.error) {
-    				}
-    			});
-    			//- Reset the base data comparison
-    			origForm = fData;
-    		}
-    	}
+					// Update Judge Total to be a number
+					fDataObject.judge_total = Number($('#judge_total').text())
 
-    	// Save and quit
-    	goHome = () => {
-    		update_scoresheet()
-    		window.location.replace('/')
-    	}
+					// Submit the updated scoresheet
+					$.post('/scoresheet/update', fDataObject, function (data) {
+						if (data.update) {
+							$('form#newScoresheet input#id').val(data.id);
+						} else if (data.error) {
+						}
+					});
+					//- Reset the base data comparison
+					origForm = fData;
+				}
+			}
 
-    	//- Check to see if the scoresheet object was passed, and if so, pre-populate all fields
-    	if (scoresheet && scoresheet.id) {
-    		document.getElementById('id').value = scoresheet.id;
-    		var fp = scoresheet.id;
+			// Save and quit
+			goHome = () => {
+				update_scoresheet()
+				window.location.replace('/')
+			}
 
-    		for (scoresheetField in scoresheet) {
-    			var field = document.getElementById(scoresheetField);
-    			if (field) {
-    				if (scoresheet[scoresheetField] == true && field.type === 'checkbox') {
-    					field.checked = true;
-    					field.value = true;
-    				} else if (scoresheet[scoresheetField] == false && field.type === 'checkbox') {
-    					field.checked = false;
-    					field.value = false;
-    				} else if (field.id === 'session_date') {
-    					field.value = scoresheet[scoresheetField].slice(0, 10);
-    				} else if (field.hasAttribute('data-slider-ticks')) {
-    					window[field.id].setValue(scoresheet[scoresheetField])
-    				} else if (field.id === "judge_name" || field.id === "bjcp_id" || field.id === "bjcp_rank") {
+			//- Check to see if the scoresheet object was passed, and if so, pre-populate all fields
+			if (scoresheet && scoresheet.id) {
+				document.getElementById('id').value = scoresheet.id;
+				var fp = scoresheet.id;
 
-    				} else {
-    					field.value = scoresheet[scoresheetField];
-    				}
-    				//- trigger the change event to kick off validation if needed
-    				$('#' + scoresheetField).change();
-    			}
-    		}
-    		if (document.getElementById('category') && document.getElementById('sub')) {
-    			update_tooltips();
-    		}
+				for (scoresheetField in scoresheet) {
+					var field = document.getElementById(scoresheetField);
+					if (field) {
+						if (scoresheet[scoresheetField] == true && field.type === 'checkbox') {
+							field.checked = true;
+							field.value = true;
+						} else if (scoresheet[scoresheetField] == false && field.type === 'checkbox') {
+							field.checked = false;
+							field.value = false;
+						} else if (field.id === 'session_date') {
+							field.value = scoresheet[scoresheetField].slice(0, 10);
+						} else if (field.hasAttribute('data-slider-ticks')) {
+							window[field.id].setValue(scoresheet[scoresheetField])
+						} else if (field.id === "judge_name" || field.id === "bjcp_id" || field.id === "bjcp_rank") {
 
-    		recalculate_score();
-    	}
+						} else {
+							field.value = scoresheet[scoresheetField];
+						}
+						//- trigger the change event to kick off validation if needed
+						$('#' + scoresheetField).change();
+					}
+				}
+				if (document.getElementById('category') && document.getElementById('sub')) {
+					update_tooltips();
+				}
 
-    	//- Prevent the form from doing a general submit
-    	$('form#newScoresheet').submit(function(e) {
-    		e.preventDefault();
-    	});
+				recalculate_score();
+			}
 
-    	//- If we put this first, it works!! (Unlike the body wraps.)
-    	$('form#newScoresheet input:checkbox').on('change', function () {
-    		if ($(this).is(':checked')) {
-    			$(this).attr('value', 'true');
-    		} else {
-    			$(this).attr('value', 'false');
-    		}
-    	});
+			//- Prevent the form from doing a general submit
+			$('form#newScoresheet').submit(function (e) {
+				e.preventDefault();
+			});
 
-    	//- On form change we save it back to the system
-    	//- This triggers on focusOut (i.e. when user clicks out)
-    	var origForm = $('form#newScoresheet').serialize();
-    	$('form#newScoresheet :input').focusout(update_scoresheet)
+			//- If we put this first, it works!! (Unlike the body wraps.)
+			$('form#newScoresheet input:checkbox').on('change', function () {
+				if ($(this).is(':checked')) {
+					$(this).attr('value', 'true');
+				} else {
+					$(this).attr('value', 'false');
+				}
+			});
 
-    	//- This triggers when checkboxes are changed
-    	$('form#newScoresheet :checkbox').change(update_scoresheet)
+			//- On form change we save it back to the system
+			//- This triggers on focusOut (i.e. when user clicks out)
+			var origForm = $('form#newScoresheet').serialize();
+			$('form#newScoresheet :input').focusout(update_scoresheet)
 
-    	// Since sliders don't trigger on focusout, we toggle those differently using mouseUp
-    	$('.slider-handle, .slider-tick-label').mouseup(update_scoresheet)
-    });
+			//- This triggers when checkboxes are changed
+			$('form#newScoresheet :checkbox').change(update_scoresheet)
+
+			// Since sliders don't trigger on focusout, we toggle those differently using mouseUp
+			$('.slider-handle, .slider-tick-label').mouseup(update_scoresheet)
+		});
 
 
 
-    //- Function to update stylistic tooltips on each page based on the BJCP selection notes.
-    function update_tooltips() {
-    	var xmlhttp = new XMLHttpRequest();
-    	xmlhttp.onreadystatechange = function () {
-    		if (this.readyState == 4 && this.status == 200) {
-    			var bjcp_input = JSON.parse(this.responseText);
-    			//-we pull these from the category selection on page 1
-    			var sheet_category = document.getElementById('category').value;
-    			var sheet_subcategory = document.getElementById('sub').value;
-    			//- these are the ids of the tooltip items/written out subcat
-    			var bjcp_name = document.getElementById('subcategory');
-    			var bjcp_aroma = document.getElementById('bjcp_aroma');
-    			var bjcp_appearance = document.getElementById('bjcp_appearance');
-    			var bjcp_flavor = document.getElementById('bjcp_flavor');
-    			var bjcp_mouthfeel = document.getElementById('bjcp_mouthfeel');
-    			var bjcp_comments = document.getElementById('bjcp_comments');
-    			var bjcp_history = document.getElementById('bjcp_history');
-    			var bjcp_ingredients = document.getElementById('bjcp_ingredients');
-    			var bjcp_comparison = document.getElementById('bjcp_comparison');
-    			var bjcp_examples = document.getElementById('bjcp_examples');
-    			//-Loop thru BJCP JSON and update all tooltips if match
-    			for (item in bjcp_input['0']) {
-    				var category = bjcp_input['0'][item];
-    				if (category['id'] == sheet_category) {
-    					for (sub_item in category.subcategory) {
-    						var subcategory = category.subcategory[sub_item];
-    						if (subcategory['id'] == sheet_category + sheet_subcategory) {
-    							bjcp_name.value = subcategory.name;
-    							bjcp_aroma.setAttribute('data-content', subcategory.aroma);
-    							bjcp_appearance.setAttribute('data-content', subcategory.appearance);
-    							bjcp_flavor.setAttribute('data-content', subcategory.flavor);
-    							bjcp_mouthfeel.setAttribute('data-content', subcategory.mouthfeel);
-    							//- bjcp_comments.setAttribute('data-content', subcategory.comments);
-    							//- bjcp_history.setAttribute('data-content', subcategory.history);
-    							//- bjcp_ingredients.setAttribute('data-content', subcategory.ingredients);
-    							//- bjcp_comparison.setAttribute('data-content', subcategory.comparison);
-    							//- bjcp_examples.setAttribute('data-content', subcategory.examples);
-    						}
-    					}
+		//- Function to update stylistic tooltips on each page based on the BJCP selection notes.
+		function update_tooltips() {
+			var xmlhttp = new XMLHttpRequest();
+			xmlhttp.onreadystatechange = function () {
+				if (this.readyState == 4 && this.status == 200) {
+					var bjcp_input = JSON.parse(this.responseText);
+					//-we pull these from the category selection on page 1
+					var sheet_category = document.getElementById('category').value;
+					var sheet_subcategory = document.getElementById('sub').value;
+					//- these are the ids of the tooltip items/written out subcat
+					var bjcp_name = document.getElementById('subcategory');
+					var bjcp_aroma = document.getElementById('bjcp_aroma');
+					var bjcp_appearance = document.getElementById('bjcp_appearance');
+					var bjcp_flavor = document.getElementById('bjcp_flavor');
+					var bjcp_mouthfeel = document.getElementById('bjcp_mouthfeel');
+					var bjcp_comments = document.getElementById('bjcp_comments');
+					var bjcp_history = document.getElementById('bjcp_history');
+					var bjcp_ingredients = document.getElementById('bjcp_ingredients');
+					var bjcp_comparison = document.getElementById('bjcp_comparison');
+					var bjcp_examples = document.getElementById('bjcp_examples');
+					//-Loop thru BJCP JSON and update all tooltips if match
+					for (item in bjcp_input['0']) {
+						var category = bjcp_input['0'][item];
+						if (category['id'] == sheet_category) {
+							for (sub_item in category.subcategory) {
+								var subcategory = category.subcategory[sub_item];
+								if (subcategory['id'] == sheet_category + sheet_subcategory) {
+									bjcp_name.value = subcategory.name;
+									bjcp_aroma.setAttribute('data-content', subcategory.aroma);
+									bjcp_appearance.setAttribute('data-content', subcategory.appearance);
+									bjcp_flavor.setAttribute('data-content', subcategory.flavor);
+									bjcp_mouthfeel.setAttribute('data-content', subcategory.mouthfeel);
+									//- bjcp_comments.setAttribute('data-content', subcategory.comments);
+									//- bjcp_history.setAttribute('data-content', subcategory.history);
+									//- bjcp_ingredients.setAttribute('data-content', subcategory.ingredients);
+									//- bjcp_comparison.setAttribute('data-content', subcategory.comparison);
+									//- bjcp_examples.setAttribute('data-content', subcategory.examples);
+								}
+							}
 
-    				}
+						}
 
-    			}
-    		}
-    	};
-    	xmlhttp.open("GET", "/bjcp2015.json", true);
-    	xmlhttp.send();
-    }
+					}
+				}
+			};
+			xmlhttp.open("GET", "/bjcp2015.json", true);
+			xmlhttp.send();
+		}
 
-    /*!
-     * jQuery serializeObject - v0.2 - 1/20/2010
-     * http://benalman.com/projects/jquery-misc-plugins/
-     *
-     * Copyright (c) 2010 "Cowboy" Ben Alman
-     * Dual licensed under the MIT and GPL licenses.
-     * http://benalman.com/about/license/
-     */
+		//- Initialize and setup our bottle comment tags
+		let bottleComment = $("input[name=bottle_inspection_comment]");
+		let bottleCommentPlaceholder = bottleComment.attr("placeholder");
+		bottleComment.tagsinput({
+			tagClass: function (item) {
+				switch (item.category) {
+					case 'cap_color'   :
+						return 'badge badge-primary mx-1';
+					case 'bottle_fill'  :
+						return 'badge badge-danger badge-important mx-1';
+					case 'bottle_style':
+						return 'badge badge-warning mx-1';
+				}
+			},
+			itemValue: 'value',
+			itemText: 'text',
+		});
 
-    // Whereas .serializeArray() serializes a form into an array, .serializeObject()
-    // serializes a form into an (arguably more useful) object.
+		$("div.bootstrap-tagsinput-toggler").click(function () {
+			let quickComments = $("div.quick_comments");
+			if (quickComments.is(":visible")) {
+				//- Change the text
+				$(this).text($(this).text().replace("Hide", "Show"));
+				//- Change the color of the button
+				$(this).removeClass("badge-secondary").addClass("badge-primary");
+				//- Hide the comment sections
+				quickComments.addClass("d-none");
+			} else {
+				//- Change the text
+				$(this).text($(this).text().replace("Show", "Hide"));
+				//- Change the color of the button
+				$(this).removeClass("badge-primary").addClass("badge-secondary");
+				//- Show the comment sections
+				quickComments.removeClass("d-none");
+			}
+		});
 
-    (function ($, undefined) {
-    	'$:nomunge'; // Used by YUI compressor.
+		$("div.quick_comments span.badge").click(function () {
+			//- Form the item to be added to the tags
+			let item = {
+				value: $(this).data("value"),
+				text: $(this).text(),
+				category: $(this).data("category")
+			}
 
-    	$.fn.serializeObject = function () {
-    		var obj = {};
+			//- Add it to the tag input
+			bottleComment.tagsinput('add', item);
 
-    		$.each(this.serializeArray(), function (i, o) {
-    			var n = o.name,
-    				v = o.value;
+			//- Hide the clicked element
+			$(this).toggle(false);
 
-    			obj[n] = obj[n] === undefined ? v
-    				: $.isArray(obj[n]) ? obj[n].concat(v)
-    					: [obj[n], v];
-    		});
+			//- Verify if we need a placeholder
+			bootstrapInputsPlaceholder();
+		});
 
-    		return obj;
-    	};
+		bottleComment.on("itemRemoved", function (data) {
+			//- Show the quick comment this is associated to
+			$(`span[data-value=${data.item.value}]`).toggle(true);
 
-    })(jQuery);
+			//- Verify if we need a placeholder
+			bootstrapInputsPlaceholder();
+		});
+
+		function bootstrapInputsPlaceholder() {
+			let _bc = $("input[name=bottle_inspection_comment]");
+			if (bottleComment.val().trim() !== '') {
+				_bc.removeAttr("placeholder").blur();
+			} else {
+				_bc.attr("placeholder", bottleCommentPlaceholder).blur();
+			}
+		}
+
+		/*!
+		* jQuery serializeObject - v0.2 - 1/20/2010
+		* http://benalman.com/projects/jquery-misc-plugins/
+		*
+		* Copyright (c) 2010 "Cowboy" Ben Alman
+		* Dual licensed under the MIT and GPL licenses.
+		* http://benalman.com/about/license/
+		*/
+
+		// Whereas .serializeArray() serializes a form into an array, .serializeObject()
+		// serializes a form into an (arguably more useful) object.
+
+		(function ($, undefined) {
+			'$:nomunge'; // Used by YUI compressor.
+
+			$.fn.serializeObject = function () {
+				var obj = {};
+
+				$.each(this.serializeArray(), function (i, o) {
+					var n = o.name,
+						v = o.value;
+
+					obj[n] = obj[n] === undefined ? v
+						: $.isArray(obj[n]) ? obj[n].concat(v)
+							: [obj[n], v];
+				});
+
+				return obj;
+			};
+
+		})(jQuery);
