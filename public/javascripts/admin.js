@@ -29,6 +29,7 @@ const fetchAllData = () => {
         Scoresheets[scoresheet.id] = scoresheet;
       });
 
+      // Entries are scoresheets indexed against entry_number. Multiple scoresheets can have same entry number so we capture arrays here
       Entries = scoresheets.reduce((acc, scoresheet) => {
         acc[scoresheet.entry_number] = acc[scoresheet.entry_number] || {
           scoresheets: [],
@@ -39,6 +40,7 @@ const fetchAllData = () => {
           mini_boss_advanced: [],
         };
 
+        acc[scoresheet.entry_number].id = scoresheet.entry_number;
         acc[scoresheet.entry_number].entry_number = scoresheet.entry_number;
         acc[scoresheet.entry_number].scoresheets.push(scoresheet);
         acc[scoresheet.entry_number].category.push(
@@ -99,12 +101,12 @@ const updateAllTables = () => {
       $("#entries").find("table").DataTable().draw();
     });
 
-    $('[data-toggle="tooltip"]').tooltip();
-
     $("#flightModalUser").html("<option selected disabled>Select...</option>");
     Object.values(Users).forEach((user) => {
       $("#flightModalUser").append(new Option(user.email, user.id));
     });
+
+    $('[data-toggle="tooltip"]').tooltip();
   });
 };
 
@@ -193,14 +195,14 @@ const getDataValueByKey = (listItem, key) => {
   } else if (key === "date") {
     value = new Date(listItem[key]).toLocaleDateString();
   } else if (key === "numEntryScoresheets") {
-    const entryNumber = listItem.entry_number;
+    const entryNumber = listItem.id;
     value = Entries[entryNumber].scoresheets.length;
   } else if (key.split("_")[0] === "mismatched") {
-    const entryNumber = listItem.entry_number;
+    const entryNumber = listItem.id;
     const prop = key.split("_").slice(1).join("_");
 
     if (Entries[entryNumber][prop + "_contested"]) {
-      value = `<span class="material-icons" data-toggle="tooltip" data-placement="top" title="${Entries[
+      value = `<span class="material-icons" style="cursor:pointer;" data-toggle="tooltip" data-placement="top" title="${Entries[
         entryNumber
       ][prop]
         .map((val, idx) => {
@@ -247,6 +249,7 @@ const closeAllModals = () => {
 };
 
 $(() => {
+  $("#aboutContestedPopover").popover();
   updateAllTables();
 
   openFlightDataModal = (flightId) => {
@@ -323,7 +326,22 @@ $(() => {
   };
 
   openEntryDataModal = (entryNumber) => {
-    // TODO: Entry Modal!
+    const entry = Entries[entryNumber];
+    if (!entry) return;
+    closeAllModals();
+
+    // const flightScoresheetsHtml = Object.values(Scoresheets)
+    //   .filter((scoresheet) => scoresheet.flight_key === flightId)
+    //   .map((scoresheet) => generateScoresheetModalTableRow(scoresheet))
+    //   .join("");
+    $("#entryModalEntryNumber").val(entry.id);
+    $("#entryModalCategory").val(entry.scoresheets_first.category);
+    $("#entryModalSub").val(entry.scoresheets_first.sub);
+    $("#entryModalSubcat").val(entry.scoresheets_first.subcategory);
+
+    // $("#flightModalEntries").html(flightScoresheetsHtml);
+
+    $("#entryDataModal").modal("show");
   };
 
   updateUserData = () => {
