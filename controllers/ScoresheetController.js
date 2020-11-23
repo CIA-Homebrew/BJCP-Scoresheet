@@ -411,16 +411,7 @@ scoresheetController.generatePDF = function (req, res) {
               }, 60000);
             });
           });
-      } else if (
-        entryNumbers &&
-        Object.values(scoresheetObject).reduce(
-          (acc, scoresheet) =>
-            acc.includes(scoresheet.entry_number)
-              ? [...acc, scoresheet.entryNumbers]
-              : acc,
-          []
-        ).length === 1
-      ) {
+      } else if (entryNumbers && [...new Set(entryNumbers)].length === 1) {
         const pdfGenInputData = Object.values(scoresheetObject).map(
           (scoresheetData) => ({
             scoresheet: scoresheetData.scoresheet,

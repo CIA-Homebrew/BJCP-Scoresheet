@@ -73,9 +73,12 @@ block content
 
           #entries.tab-pane(role="tabpane2", aria-labelledby="entries-tab")
             .container-fluid
-              .form-check
-                  input.form-check-input(type="checkbox" id="filterByContested")
-                  label.form-check-label(for="filterByContested") Show Contested Only
+              .form-check.mb-2
+                .row
+                  .col-3
+                    input.form-check-input(type="checkbox" id="filterByContested")
+                    label.form-check-label(for="filterByContested") Show Nonuniform Only
+                    small.form-text.text-muted.link-style#aboutContestedPopover(data-toggle="popover" data-placement="bottom" title="About Nonuniform Entries" data-html="true" data-content="Nonuniform entries occur when two or more scoresheets with the same entry number have different values that judges should have agreed upon. <br><br>Tracked nonuniform values include: <ul><li>Category</li><li>Consensus Score</li><li>Place</li><li>MiniBOS Advance</li></ul>") What does this mean?
               table#entry_list_table.comp_entry_list.table.table-sm.table-striped.table-bordered.table-hover
                 thead.thead-dark
                   tr
@@ -95,7 +98,7 @@ block content
                 thead.thead-dark
                   tr
                     //- Table is generated dynamically by data-key in headers - to put more than one value in a cell, comma separate.
-                    th(scope="col", data-key="entry_number") Entry #
+                    th(scope="col", data-key="entry_number") Scoresheet #
                     th(scope="col", data-key="category,sub,subcategory") Category
                     th(scope="col", data-key="flight_key") Flight
                     th(scope="col", data-key="user_id") Judge
@@ -179,7 +182,7 @@ block content
                 th.text-center(scope="col") Place / Advance
                 th.text-center(scope="col") BOS
                 th.text-center(scope="col") PDF
-              tbody#flightModalEntries.overflow-y-scroll
+              tbody#flightModalEntries
         .modal-footer
           button.btn.btn-secondary(type="button", data-dismiss="modal") Cancel
           button.btn.btn-primary(type="button", onclick="updateFlightData()") Update Flight
@@ -294,7 +297,7 @@ block content
                 th(scope="col") Judging Date
                 th.text-center(scope="col") Judging Location
                 th.text-center(scope="col") # Entries
-              tbody#userModalFlights.overflow-y-scroll
+              tbody#userModalFlights
 
         .modal-footer
           button.btn.btn-secondary(type="button", data-dismiss="modal") Cancel
@@ -313,11 +316,11 @@ block content
           .form-group
             .row
               .col
-                #entryModalEntryContested
-                  h5.mb-1 #[span.material-icons warning] This entry is contested
-                  small.form-text.text-muted.link-style#aboutContestedPopover(data-toggle="popover" data-placement="bottom" title="About Contested Entries" data-html="true" data-content="Contested entries occur when two or more scoresheets with the same entry number have different common values. Common values include: <ul><li>Category</li><li>Consensus Score</li><li>Place</li><li>MiniBOS Advance</li></ul>") What does this mean?
+                #entryModalEntryContested(hidden)
+                  h5.mb-1.text-center.text-danger #[span.material-icons warning] This entry is not uniform
+                  small.text-center.form-text.text-muted.link-style#aboutContestedPopover(data-toggle="popover" data-placement="bottom" title="About Nonuniform Entries" data-html="true" data-content="Nonuniform entries occur when two or more scoresheets with the same entry number have different values that judges should have agreed upon. <br><br>Tracked nonuniform values include: <ul><li>Category</li><li>Consensus Score</li><li>Place</li><li>MiniBOS Advance</li></ul>") What does this mean?
               .col-auto.ml-auto
-                button.btn.btn-primary.ml-auto Download Entry Scoresheets
+                button.btn.btn-primary.ml-auto#downloadEntryScoresheetButton(onclick="downloadEntryScoresheet()") Download Entry Scoresheets
                 small.form-text.text-muted Combines all scoresheets for entry into one PDF
             hr
           .form-group
@@ -357,10 +360,10 @@ block content
                 th.text-center(scope="col") Place / Advance
                 th.text-center(scope="col") BOS
                 th.text-center(scope="col") PDF
-              tbody#flightModalEntries.overflow-y-scroll
+              tbody#entryModalScoresheets
         .modal-footer
           button.btn.btn-secondary(type="button", data-dismiss="modal") Cancel
-          button.btn.btn-primary(type="button", onclick="updateFlightData()") Update Entry
+          button.btn.btn-primary(type="button", onclick="updateEntryData()") Update Entry
 
   script(src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js")
   script(
