@@ -175,7 +175,6 @@ block content
                       value=session_location,
                       disabled
                     )
-
               .form-group
                 h4 Beer Information
                 .form-row.py-1
@@ -259,11 +258,20 @@ block content
                       )
                       label.form-check-label(for="bottle_inspection_check") Bottle Acceptable
                   .form-group.col-9
-                    input#bottle_inspection_comment.form-control(
-                      type="text",
-                      name="bottle_inspection_comment",
-                      placeholder="Bottle Comments"
-                    )
+                    .quick-comments.form-control
+                      span.quick-comments-list
+                      input(
+                        type="text"
+                      )
+                      input#bottle_inspection_comment.sr-only(
+                        type="text",
+                        name="bottle_inspection_comment",
+                        placeholder="Bottle Comments",
+                        data-role="tagsinput"
+                      )
+                    .small.form-text.text-muted Use the <span style="font-family: Courier, monospace;">ENTER</span> or <span style="font-family: Courier, monospace;">COMMA</span> key to add custom comment
+                    .small.form-text.text-muted Click on a quick comment to insert
+                    .quick-comments-options
             #aroma.tab-pane(role="tabpanel", aria-labelledby="aroma-tab")
               .form-group
                 .row
