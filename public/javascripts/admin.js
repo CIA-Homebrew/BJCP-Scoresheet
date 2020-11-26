@@ -1,16 +1,21 @@
 let openFlightDataModal = () => {};
 let openScoresheetDataModal = () => {};
 let openUserDataModal = () => {};
+let openEntryDataModal = () => {};
 
 let updateFlightData = () => {};
 let updateScoresheetData = () => {};
 let updateUserData = () => {};
+let updateEntryData = () => {};
 
 let downloadPdf = () => {};
+let downloadEntryScoresheet = () => {};
 
 const Users = {};
 const Scoresheets = {};
 const Flights = {};
+let Entries = {};
+
 const fetchAllData = () => {
   return fetch("/admin/alldata")
     .then((response) => {
@@ -26,6 +31,57 @@ const fetchAllData = () => {
       scoresheets.forEach((scoresheet) => {
         Scoresheets[scoresheet.id] = scoresheet;
       });
+
+      // Entries are scoresheets indexed against entry_number. Multiple scoresheets can have same entry number so we capture arrays here
+      Entries = scoresheets.reduce((acc, scoresheet) => {
+        acc[scoresheet.entry_number] = acc[scoresheet.entry_number] || {
+          scoresheets: [],
+          category: [],
+          cat_name: [],
+          consensus_score: [],
+          place: [],
+          mini_boss_advanced: [],
+        };
+
+        acc[scoresheet.entry_number].id = scoresheet.entry_number;
+        acc[scoresheet.entry_number].entry_number = scoresheet.entry_number;
+        acc[scoresheet.entry_number].scoresheets.push(scoresheet);
+        acc[scoresheet.entry_number].category.push(
+          `${scoresheet.category || ""}${scoresheet.sub || ""}${
+            scoresheet.subcategory ? " - " : ""
+          }${scoresheet.subcategory || ""}`
+        );
+        acc[scoresheet.entry_number].cat_name.push(scoresheet.subcategory);
+        acc[scoresheet.entry_number].consensus_score.push(
+          scoresheet.consensus_score
+        );
+        acc[scoresheet.entry_number].place.push(scoresheet.place);
+        acc[scoresheet.entry_number].mini_boss_advanced.push(
+          scoresheet.mini_boss_advanced ? true : null
+        );
+
+        Object.keys(acc[scoresheet.entry_number]).forEach((key) => {
+          if (!Array.isArray(acc[scoresheet.entry_number][key])) return;
+
+          acc[scoresheet.entry_number][key + "_first"] =
+            acc[scoresheet.entry_number][key][0] === true ||
+            acc[scoresheet.entry_number][key][0] === "on"
+              ? "✓"
+              : acc[scoresheet.entry_number][key][0] === null ||
+                acc[scoresheet.entry_number][key][0] === false
+              ? ""
+              : acc[scoresheet.entry_number][key][0];
+
+          if (key === "scoresheets") return;
+
+          // Check if every item in the array is equal. If not, judge info for that value doesn't match, and it's "contested"
+          acc[scoresheet.entry_number][key + "_contested"] = !acc[
+            scoresheet.entry_number
+          ][key].every((val) => val === acc[scoresheet.entry_number][key][0]);
+        });
+
+        return acc;
+      }, {});
     });
 };
 
@@ -34,11 +90,30 @@ const updateAllTables = () => {
     updateTable("#scoresheets", Scoresheets);
     updateTable("#judges", Users);
     updateTable("#flights", Flights);
+    updateTable("#entries", Entries);
+
+    // Since we map mat_icon "warning" type in for contested entries, we can filter by that text to only show contested entries
+    $("#filterByContested").on("click", function (event) {
+      $.fn.dataTable.ext.search.push((settings, data, dataIndex) => {
+        if (settings.nTable.id !== "entry_list_table") {
+          return true;
+        }
+
+        return data
+          .map((cell) =>
+            event.target.checked ? cell.includes("warning") : true
+          )
+          .reduce((acc, val) => acc || val);
+      });
+      $("#entries").find("table").DataTable().draw();
+    });
 
     $("#flightModalUser").html("<option selected disabled>Select...</option>");
     Object.values(Users).forEach((user) => {
       $("#flightModalUser").append(new Option(user.email, user.id));
     });
+
+    $('[data-toggle="tooltip"]').tooltip();
   });
 };
 
@@ -105,7 +180,7 @@ const getDataValueByKey = (listItem, key) => {
       } disabled>
 		</div>
 		`;
-  } else if (key === "place") {
+  } else if (key === "place" || key === "place_first") {
     const placeCode = listItem[key];
     const placeValues = ["Adv.", "1st", "2nd", "3rd"];
     value = typeof placeCode === "number" ? placeValues[placeCode] : "";
@@ -126,6 +201,37 @@ const getDataValueByKey = (listItem, key) => {
     ).length;
   } else if (key === "date") {
     value = new Date(listItem[key]).toLocaleDateString();
+  } else if (key === "numEntryScoresheets") {
+    const entryNumber = listItem.id;
+    value = Entries[entryNumber].scoresheets.length;
+  } else if (key.split("_")[0] === "mismatched") {
+    const entryNumber = listItem.id;
+    const prop = key.split("_").slice(1).join("_");
+
+    if (Entries[entryNumber][prop + "_contested"]) {
+      value = `<span class="material-icons" style="cursor:pointer;" data-toggle="tooltip" data-placement="top" title="${Entries[
+        entryNumber
+      ][prop]
+        .map((val, idx) => {
+          const user = Users[Entries[entryNumber].scoresheets[idx].user_id];
+          const scoresheet = Entries[entryNumber].scoresheets[idx];
+
+          return (
+            user.firstname +
+            " " +
+            user.lastname +
+            ": " +
+            (scoresheet[prop] === true || scoresheet[prop] === "on"
+              ? "✓"
+              : scoresheet[prop] === null || scoresheet[prop] === false
+              ? "✗"
+              : scoresheet[prop])
+          );
+        })
+        .join("\n")}">warning</span>`;
+    } else {
+      value = "";
+    }
   }
 
   return value;
@@ -138,6 +244,8 @@ const openDataModal = (tableId, id) => {
     openUserDataModal(id);
   } else if (tableId === "#flights") {
     openFlightDataModal(id);
+  } else if (tableId === "#entries") {
+    openEntryDataModal(id);
   }
 };
 
@@ -145,9 +253,11 @@ const closeAllModals = () => {
   $("#flightDataModal").modal("hide");
   $("#scoresheetDataModal").modal("hide");
   $("#userDataModal").modal("hide");
+  $("#entryDataModal").modal("hide");
 };
 
 $(() => {
+  $("#aboutContestedPopover").popover();
   updateAllTables();
 
   openFlightDataModal = (flightId) => {
@@ -221,6 +331,29 @@ $(() => {
     );
 
     $("#userDataModal").modal("show");
+  };
+
+  openEntryDataModal = (entryNumber) => {
+    const entry = Entries[entryNumber];
+    if (!entry) return;
+    closeAllModals();
+
+    const contested = Object.keys(Entries[entryNumber])
+      .map((key) => key.match(/_contested/g) && Entries[entryNumber][key])
+      .reduce((acc, val) => acc || val === true, false);
+    $("#entryModalEntryContested").attr("hidden", !contested);
+
+    const flightScoresheetsHtml = Entries[entryNumber].scoresheets
+      .map((scoresheet) => generateEntryTableRow(scoresheet))
+      .join("");
+    $("#entryModalEntryNumber").val(entry.id);
+    $("#entryModalCategory").val(entry.scoresheets_first.category);
+    $("#entryModalSub").val(entry.scoresheets_first.sub);
+    $("#entryModalSubcat").val(entry.scoresheets_first.subcategory);
+
+    $("#entryModalScoresheets").html(flightScoresheetsHtml);
+
+    $("#entryDataModal").modal("show");
   };
 
   updateUserData = () => {
@@ -362,12 +495,13 @@ $(() => {
     });
   };
 
-  updateScoresheetData = () => {
-    const updatedScoresheetData = {
+  updateScoresheetData = (updatedData) => {
+    const updatedScoresheetData = updatedData || {
       id: $("#scoresheetModalScoresheetId").val(),
       entry_number: $("#scoresheetModalEntryNumber").val(),
-      _ajax: "true",
     };
+
+    updatedScoresheetData._ajax = "true";
 
     fetch("/scoresheet/update/", {
       method: "POST",
@@ -385,6 +519,32 @@ $(() => {
           "Could not update scoresheet entry #" +
             updatedScoresheetData.entry_number
         );
+      });
+  };
+
+  updateEntryData = () => {
+    const updatedEntryData = {
+      entry_number: $("#entryModalEntryNumber").val(),
+      category: $("#entryModalCategory").val(),
+      sub: $("#entryModalSub").val(),
+      subcategory: $("#entryModalSubcat").val(),
+    };
+
+    $("#entryModalScoresheets")
+      .children()
+      .each(function () {
+        const updatedScoresheetData = {
+          ...updatedEntryData,
+          id: $(this).attr("data-scoresheet-id"),
+          consensus_score: $(this).find(".entry-modal-consensus").first().val(),
+          place: $(this).find(".entry-modal-place").first().val(),
+          mini_boss_advanced: $(this)
+            .find(".entry-modal-bos-advance")
+            .first()
+            .is(":checked"),
+        };
+
+        updateScoresheetData(updatedScoresheetData);
       });
   };
 
@@ -453,9 +613,7 @@ $(() => {
 			<td class="text-center">
 				<button class="btn btn-success btn-sm flight-modal-download-button" type="button"  ${
           !scoresheet.scoresheet_submitted ? "disabled" : ""
-        } onclick="downloadPdf('${scoresheet.id}','${
-      scoresheet.entry_number
-    }')">📄</button>
+        } onclick="downloadPdf('${scoresheet.id}')">📄</button>
 			</td>
 		</tr>
 		`;
@@ -480,20 +638,88 @@ $(() => {
 		`;
   };
 
-  downloadPdf = (scoresheetId, scoresheetEntryNumber) => {
-    fetch("/scoresheet/pdf", {
+  const generateEntryTableRow = (scoresheet) => {
+    return `
+    <tr data-scoresheet-id="${scoresheet.id}">
+      <td scope="row">
+        <a role="button" class="link-style" onclick=openUserDataModal("${
+          scoresheet.user_id
+        }")>${Users[scoresheet.user_id].firstname} ${
+      Users[scoresheet.user_id].lastname
+    }</a>
+      </td>
+      <td>
+        <a role="button" class="link-style" onclick=openFlightDataModal("${
+          scoresheet.flight_key
+        }")>${Flights[scoresheet.flight_key].flight_id}</a>
+      </td>
+      <td>${scoresheet.category}${scoresheet.sub}-${scoresheet.subcategory}</td>
+      <td>${scoresheet.judge_total}</td>
+      <td class="text-center">
+				<input class="form-control form-control-sm text-center entry-modal-consensus" type="number" value="${
+          scoresheet.consensus_score
+        }"  ${scoresheet.scoresheet_submitted ? "disabled" : ""}/>
+			</td>
+			<td class="text-center">
+				<select class="form-control form-control-sm entry-modal-place"  ${
+          scoresheet.scoresheet_submitted ? "disabled" : ""
+        }>
+					<option>-</option>
+					<option value="0" ${scoresheet.place === 0 ? "selected" : ""}>Advance</option>
+					<option value="1" ${scoresheet.place === 1 ? "selected" : ""}>1st</option>
+					<option value="2" ${scoresheet.place === 2 ? "selected" : ""}>2nd</option>
+					<option value="3" ${scoresheet.place === 3 ? "selected" : ""}>3rd</option>
+				</select>
+			</td>
+			<td class="text-center">
+				<input class="form-check-input position-static m-0 entry-modal-bos-advance" type="checkbox" autocomplete="off" ${
+          scoresheet.mini_boss_advanced ? "checked" : ""
+        }  ${scoresheet.scoresheet_submitted ? "disabled" : ""}/>
+			</td>
+			<td class="text-center">
+				<button class="btn btn-success btn-sm entry-modal-download-button" type="button"  ${
+          !scoresheet.scoresheet_submitted ? "disabled" : ""
+        } onclick="downloadPdf('${scoresheet.id}')">📄</button>
+			</td>
+    </tr>
+    `;
+  };
+
+  downloadEntryScoresheet = () => {
+    $("#downloadEntryScoresheetButton").prop("disabled", true);
+
+    downloadPdf($("#entryModalEntryNumber").val()).then(() => {
+      $("#downloadEntryScoresheetButton").prop("disabled", false);
+    });
+  };
+
+  downloadPdf = (id) => {
+    let pdfName = "";
+    let reqBody = "";
+
+    if (Scoresheets[id]) {
+      pdfName = `${Scoresheets[id].entry_number}.pdf`;
+      reqBody = {
+        scoresheetIds: [id],
+      };
+    } else if (Entries[id]) {
+      pdfName = `${id}.pdf`;
+      reqBody = {
+        entryNumbers: [id],
+      };
+    } else return;
+
+    return fetch("/scoresheet/pdf", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({
-        scoresheetIds: [scoresheetId],
-      }),
+      body: JSON.stringify(reqBody),
     })
       .then((res) => res.json())
       .then((res) => {
         downloadHeartbeat(res.requestId, (blobData) => {
-          download(blobData, `${scoresheetEntryNumber}.pdf`, "application/pdf");
+          download(blobData, pdfName, "application/pdf");
         });
       });
   };
