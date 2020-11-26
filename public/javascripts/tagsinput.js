@@ -8,7 +8,7 @@
 
   var defaultOptions = {
     tagClass: function (item) {
-      return item.tagClass ? item.tagClass : "badge badge-info";
+      return "badge badge-info";
     },
     focusClass: "focus",
     itemValue: function (item) {
@@ -53,19 +53,11 @@
     this.placeholderText = element.hasAttribute("placeholder")
       ? this.$element.attr("placeholder")
       : "";
-    this.name = element.hasAttribute("name") ? this.$element.attr("name") : "";
-    this.type = element.hasAttribute("type")
-      ? this.$element.attr("type")
-      : "text";
     this.inputSize = Math.max(1, this.placeholderText.length);
 
-    this.$container = $('<div class="bootstrap-tagsinput"></div>');
+    this.$container = $('<div class="bootstrap-tagsinput form-control"></div>');
     this.$input = $(
-      '<input type="' +
-        this.type +
-        '" name="' +
-        this.name +
-        '" placeholder="' +
+      '<input type="text" style="margin-top: 3px;" placeholder="' +
         this.placeholderText +
         '"/>'
     ).appendTo(this.$container);
@@ -168,7 +160,7 @@
       // add a tag element
 
       var $tag = $(
-        '<span class="' +
+        '<span class="badge ' +
           htmlEncode(tagClass) +
           (itemTitle !== null ? '" title="' + itemTitle : "") +
           '">' +
@@ -791,13 +783,5 @@
     return found;
   }
 
-  /**
-   * Initialize tagsinput behaviour on inputs and selects which have
-   * data-role=tagsinput
-   */
-  $(function () {
-    $(
-      "input[data-role=tagsinput], select[multiple][data-role=tagsinput]"
-    ).tagsinput();
-  });
-})(window.jQuery);
+  return this;
+});

@@ -451,7 +451,218 @@ $(document).ready(function () {
 
   // Since sliders don't trigger on focusout, we toggle those differently using mouseUp
   $(".slider-handle, .slider-tick-label").mouseup(update_scoresheet);
+
+  //- Initialize and setup our bottle comments
+  let bottleComment = $("input#bottle_inspection_comment");
+  let quickCommentsOptions = $(".quick-comments-options");
+  let quickCommentsList = $(".quick-comments-list");
+
+  /** Dynamically create our quick comments
+	TODO: this needs to be converted to database table for admin to add/remove
+	**/
+  let quick_comments = {
+    "cap-color": [
+      { "data-text": "Silver Cap", style: "badge badge-light" },
+      { "data-text": "Gold Cap", style: "badge badge-light" },
+      { "data-text": "Black Cap", style: "badge badge-light" },
+      { "data-text": "White Cap", style: "badge badge-light" },
+      { "data-text": "Blue Cap", style: "badge badge-light" },
+      { "data-text": "Red Cap", style: "badge badge-light" },
+      { "data-text": "Green Cap", style: "badge badge-light" },
+      { "data-text": "Other Cap", style: "badge badge-light" },
+    ],
+    "bottle-fill": [
+      { "data-text": "Very High Fill", style: "badge badge-secondary" },
+      { "data-text": "High Fill", style: "badge badge-secondary" },
+      { "data-text": "Good Fill", style: "badge badge-secondary" },
+      { "data-text": "Low Fill", style: "badge badge-secondary" },
+      { "data-text": "Very Low Fill", style: "badge badge-secondary" },
+    ],
+    "bottle-style": [
+      { "data-text": "Longneck Bottle", style: "badge badge-dark" },
+      { "data-text": "Stubby Bottle", style: "badge badge-dark" },
+      { "data-text": "Belgian Bottle", style: "badge badge-dark" },
+      { "data-text": "Champagne Bottle", style: "badge badge-dark" },
+      { "data-text": "Other Bottle", style: "badge badge-dark" },
+    ],
+  };
+
+  Object.keys(quick_comments).forEach(function (category) {
+    let _com_sec = $("<div></div>");
+
+    quick_comments[category].forEach(function (comment) {
+      let bottleComment = formTagObject(comment);
+      bottleComment.appendTo(_com_sec);
+    });
+
+    _com_sec.appendTo(quickCommentsOptions);
+  });
+
+  $("div.quick-comments-toggler").click(function () {
+    if (quickCommentsOptions.is(":visible")) {
+      //- Change the text
+      $(this).text($(this).text().replace("Hide", "Show"));
+      //- Change the color of the button
+      $(this).removeClass("badge-secondary").addClass("badge-primary");
+      //- Hide the comment sections
+      quickCommentsOptions.addClass("d-none");
+    } else {
+      //- Change the text
+      $(this).text($(this).text().replace("Show", "Hide"));
+      //- Change the color of the button
+      $(this).removeClass("badge-primary").addClass("badge-secondary");
+      //- Show the comment sections
+      quickCommentsOptions.removeClass("d-none");
+    }
+  });
+
+  $("input#bottle_inspection_comment").change(function () {
+    console.log("FIRE!!!");
+  });
+
+  $(".quick-comments-options span.badge").click(function () {
+    //- Add the tag
+    insertBottleTag($(this));
+
+    //- Update our input value
+    updateBottleCommentVal("add", $(this).text());
+
+    //- Hide the clicked element
+    $(this).toggle(false);
+
+    //- Verify if we need a placeholder
+    //bootstrapInputsPlaceholder();
+  });
+
+  quickCommentsList.on("click", "span[data-role=remove]", function (e) {
+    //- Get our parent with the data we need
+    let tag = $(this).parent("span");
+
+    //- Show the quick comment this is associated to
+    $(`.quick-comments-options span[data-value=${tag.data("value")}]`).toggle(
+      true
+    );
+
+    //- Rmeove the selected value from the input
+    updateBottleCommentVal("remove", tag.text());
+
+    //- Remove this tag
+    tag.remove();
+
+    //- Verify if we need a placeholder
+    //bootstrapInputsPlaceholder();
+  });
+
+  $(".quick-comments input").on("keypress", function (e) {
+    let confirmKeys = [13, 44];
+    let returnOnEmpty = true;
+
+    //- Check if the key pressed is one we want to fire the add event on
+    if (confirmKeys.includes(e.which)) {
+      //- If we don't want a blank value added return
+      if (returnOnEmpty && $(this).val() === "") return;
+      let v = $(this).val().replace(",", "");
+      //- Add the value the user requested as a tag
+      insertBottleTag(v);
+      //- Add the value the user requested as a value
+      updateBottleCommentVal("add", v);
+      //- Clear our value
+      $(this).val("");
+
+      e.preventDefault();
+    }
+  });
+
+  let bootstrapInputsPlaceholder = () => {
+    let _bc = $(".bootstrap-tagsinput input");
+    if (bottleComment.val().trim() !== "") {
+      _bc.removeAttr("placeholder").blur();
+    } else {
+      _bc.attr("placeholder", bottleCommentPlaceholder).blur();
+    }
+  };
 });
+
+let formTagObject = (comment) => {
+  let _com_tpl = $("<span></span>");
+  _com_tpl
+    .data("data-value", comment["data-text"].replace(/\s+/g, ""))
+    .attr("data-value", comment["data-text"].replace(/\s+/g, ""))
+    .text(comment["data-text"])
+    .addClass(comment.style)
+    .addClass(" mx-1 px-1 py-1")
+    .css("cursor", "pointer");
+
+  return _com_tpl;
+};
+
+let updateBottleCommentVal = (action, value) => {
+  let bottleComment = $("input#bottle_inspection_comment");
+  let v = bottleComment.val().split(",");
+  console.log(v);
+  //- Remove blanks
+  v = v.filter((_v) => _v !== "");
+
+  switch (action) {
+    case "add":
+      v.push(value);
+      break;
+    case "remove":
+      v = v.filter((t) => t.toLowerCase() !== value.toLowerCase());
+      break;
+  }
+
+  //- Add the value to the input
+  bottleComment.val(v.join(","));
+  //- Force a save
+  bottleComment.blur();
+};
+
+let insertBottleTag = (comment) => {
+  //- Form the item to be added to the tags
+  let tag_remove = $("<span data-role='remove''></span>");
+  let tag = null;
+
+  switch (typeof comment) {
+    //- If we are handed an object just clone it
+    case "object":
+      tag = comment.clone();
+      break;
+    //- If we are handed anything else handle it as a string and build out an object
+    default:
+      comment = comment.toString();
+
+      //- See if we have a quick comment that matches this
+      let dv = comment.replace(/\s+/g, "");
+      let f = $(".quick-comments-options").find(`span[data-value=${dv}]`);
+      if (f.length === 1) {
+        insertBottleTag(f);
+        //- Hide the one that is already there
+        f.toggle(false);
+        return;
+      }
+
+      let _c = {
+        "data-text": comment,
+        style: "badge badge-primary",
+      };
+      tag = formTagObject(_c);
+      break;
+  }
+
+  tag.append(tag_remove);
+
+  //- Add it to the tag input
+  $(".quick-comments-list").append(tag);
+};
+
+let buildQuickCommentInput = () => {
+  let value = $("input#bottle_inspection_comment").val().split(",");
+  value.forEach(function (v) {
+    //- Add the tag
+    insertBottleTag(v);
+  });
+};
 
 load_scoresheet_data = () => {
   const scoresheetId = $("#id").val();
@@ -489,6 +700,9 @@ load_scoresheet_data = () => {
             field.value = user[field.id];
           } else if (field.id === "session_location") {
             field.value = scoresheet[fieldId] || flight.location;
+          } else if (field.id === "bottle_inspection_comment") {
+            field.value = scoresheet[field.id];
+            buildQuickCommentInput();
           } else {
             field.value = scoresheet[fieldId];
           }
