@@ -76,3 +76,6 @@ app.use(function (err, req, res, next) {
 });
 
 module.exports = app;
+
+const emailService = require("./services/email.service");
+emailService.sendTestMail("matt.westwick@gmail.com");
