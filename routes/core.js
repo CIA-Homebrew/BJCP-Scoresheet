@@ -54,6 +54,17 @@ router.post(
   authController.updatePassword
 );
 
+// route for email functinos
+router.get("/validate", authController.validateEmail);
+router.get("/forgotPassword", authController.userRequestPasswordResetForm);
+router.post("/forgotpassword", authController.userRequestPasswordReset);
+router.get("/resetpassword", authController.userResetPasswordForm);
+router.post("/resetpassword", authController.userResetPassword);
+
+// route for unsubscribe from email functions
+router.get("/unsubscribe", authController.unsubscribeForm);
+router.post("/unsubscribe", authController.unsubscribe);
+
 //* SCORESHEET FUNCTIONS *//
 
 //route for scoresheet individual or new load

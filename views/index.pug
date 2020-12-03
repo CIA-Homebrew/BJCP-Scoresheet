@@ -1,7 +1,7 @@
 extends layout
 
 block content
-  unless user
+  if !user
     .container
       .logo_holder.mx-auto.text-center
         img.img-fluid.d-inline-block(
@@ -16,7 +16,10 @@ block content
         )
       h1.text-center Welcome!
       p.text-center Welcome to the Cane Island Alers Digital Scoresheet Manager. Please use the menu above to navigate to your desired action.
-
+  else if !user.email_verified
+    .container
+      h3 Verify Email
+      p Almost done! Please check your email inbox and verify your account.
   else
     .container
       .card

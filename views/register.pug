@@ -87,5 +87,14 @@ block content
         placeholder="Judging Years",
         value=typeof fData === 'undefined' ? '' : fData.judging_years
       )
+      .form-check.mb-3
+        input#allow_automated_email.form-check-input(
+          type="checkbox",
+          name="allow_automated_email",
+          value="true",
+          checked
+        )
+        label.form-check-label(for="allow_automated_email") Allow email communication
+        small.form-text.text-muted.mt-0 For competition updates and information. We will <strong>never</strong> send marketing or advertising emails.
 
       button.btn.btn-lg.btn-primary.btn-block(type="submit") Sign Up

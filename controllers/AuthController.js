@@ -186,6 +186,8 @@ userController.doRegister = function (req, res) {
         pro_brewer_brewery: req.body.pro_brewer_brewery,
         industry_description: req.body.industry_description,
         judging_years: req.body.judging_years,
+        allow_automated_email: req.body.allow_automated_email || false,
+        email_verified: false,
       }).then(function (user) {
         delete user.password;
 
@@ -193,9 +195,12 @@ userController.doRegister = function (req, res) {
           if (err) {
             errorProcessor(err, req);
           }
-          req.flash("success", "Registration Successful!");
+          req.flash("warning", "Email validation Required");
           res.redirect("/");
         });
+
+        // Create email verification code
+        // Write email verification code to DB User
       });
     })
     .catch((err) => {
@@ -366,6 +371,96 @@ userController.resetPassword = async function (req, res) {
     .catch((err) => {
       jsonErrorProcessor(err, res);
     });
+};
+
+userController.validateEmail = function (req, res) {
+  const validationCode = req.query.key;
+
+  // match validation code
+  // Set email_validated on user in db
+  // Delete email_validated code in db
+
+  console.log("validationCode", validationCode);
+};
+
+userController.userRequestPasswordResetForm = function (req, res) {
+  res.render("forgot_password");
+};
+
+userController.userRequestPasswordReset = function (req, res) {
+  const userEmail = req.body.email;
+
+  console.log("password reset requested for", userEmail);
+  // Create password reset code
+  // Write password reset code to db
+  // Send email with reset code
+  // Set timeout for 60 min to delete reset code
+
+  req.flash(
+    "success",
+    "An email with a link to reset your password has been sent. If you cannot find it, please check your spam folder."
+  );
+  res.redirect("/");
+};
+
+userController.userResetPasswordForm = function (req, res) {
+  const passwordKey = req.query.key;
+
+  // Write password key to user in DB here
+
+  res.render("reset_password", {
+    passwordResetKey: passwordKey,
+  });
+
+  console.log("passwordCode", passwordKey);
+};
+
+userController.userResetPassword = function (req, res) {
+  const passwordKey = req.body.passwordResetKey;
+  const password1 = req.body.password1;
+  const password2 = req.body.password2;
+
+  // check that password match
+  if (password1 !== password2) {
+    req.flash("danger", "Passwords do not match");
+    res.render("reset_password", {
+      passwordResetKey: passwordKey,
+    });
+    return;
+  }
+
+  // validate new password meets minimum requirements
+  if (!passwordRegex.test(newPassword)) {
+    req.flash("danger", "Password does not meet minimum password criteria");
+    res.render("reset_password", {
+      passwordResetKey: passwordKey,
+    });
+    return;
+  }
+
+  // Lookup user by password key here and assign new password
+  // delete password reset code
+};
+
+userController.unsubscribeForm = function (req, res) {
+  res.render("unsubscribe");
+};
+
+userController.unsubscribe = function (req, res) {
+  const email = req.body.email;
+  const allowMail = req.body.allow_automated_email;
+
+  User.update(
+    { allow_automated_email: allowMail || false },
+    {
+      where: {
+        email: email,
+      },
+    }
+  ).then((user) => {
+    req.flash("success", "Email communication preference set");
+    res.redirect("/");
+  });
 };
 
 module.exports = userController;
