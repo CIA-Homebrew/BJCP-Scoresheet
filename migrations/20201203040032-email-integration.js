@@ -15,7 +15,7 @@ module.exports = {
       });
       queryInterface.addColumn("Users", "email_verified", {
         type: Sequelize.BOOLEAN,
-        defaultValue: true,
+        defaultValue: false,
       });
     });
   },
