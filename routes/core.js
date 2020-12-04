@@ -55,6 +55,7 @@ router.post(
 );
 
 // route for email functinos
+router.get("/requestvalidation", authController.requestEmailValidation);
 router.get("/validate", authController.validateEmail);
 router.get("/forgotPassword", authController.userRequestPasswordResetForm);
 router.post("/forgotpassword", authController.userRequestPasswordReset);

@@ -49,28 +49,48 @@ class EmailService {
     return true;
   }
 
-  async sendUserVerificationEmail(userEmail, userVerificationCode) {
-    await this.waitForInitialization();
-  }
-
-  async sendPasswordResetEmail(userEmail, passwordResetCode) {
-    await this.waitForInitialization();
-  }
-
-  async sendTestMail(recipient) {
+  async sendUserVerificationEmail(recipient, emailVerificationCode) {
     await this.waitForInitialization();
 
     const mailInfo = await this.transporter
       .sendMail({
         from: `"BJCP Scoresheets" <${this.user || "test@example.com"}>`,
         to: recipient,
-        subject: "Test mail",
-        text: "Hello there. This is the plaintext version of the message.",
+        subject: "Verify BJCP-Scoresheets Email Address",
+        text: `Please navigate to http://localhost:3000/validate/?key=${emailVerificationCode} to validate your email address.`,
         html: this.generateHtmlMessage(
-          "Test Header",
-          "This is the HTML version of the message",
-          "http://localhost:3000",
-          "Button Text"
+          "Verify your Email Address",
+          "Please click the button below to verify your email address.",
+          `http://localhost:3000/validate/?key=${emailVerificationCode}`,
+          "Verify Email"
+        ),
+      })
+      .catch((err) => {
+        debug(err);
+      });
+
+    if (this.testEnv) {
+      console.log(
+        "Mail sent. View message here:",
+        nodemailer.getTestMessageUrl(mailInfo)
+      );
+    }
+  }
+
+  async sendPasswordResetEmail(recipient, passwordResetCode) {
+    await this.waitForInitialization();
+
+    const mailInfo = await this.transporter
+      .sendMail({
+        from: `"BJCP Scoresheets" <${this.user || "test@example.com"}>`,
+        to: recipient,
+        subject: "Reset BJCP-Scoresheets Password",
+        text: `Please navigate to http://localhost:3000/resetpassword/?key=${passwordResetCode} to reset your password. If you did not request a password reset, please disregard this email.`,
+        html: this.generateHtmlMessage(
+          "Reset Your Password",
+          "Please click the button below to reset your password. If you did not request a password reset, please disregard this email.",
+          `http://localhost:3000/resetpassword/?key=${passwordResetCode}`,
+          "Reset Password"
         ),
       })
       .catch((err) => {

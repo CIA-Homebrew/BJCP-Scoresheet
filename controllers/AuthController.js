@@ -1,12 +1,15 @@
-let passport = require("../helpers/seq.passport");
-let User = require("../models").User;
-let appConstants = require("../helpers/appConstants");
+const crypto = require("crypto");
+const emailService = require("../services/email.service");
+
+const passport = require("../helpers/seq.passport");
+const User = require("../models").User;
+const appConstants = require("../helpers/appConstants");
 const errorConstants = require("../helpers/errorConstants");
-let debug = require("debug")("aha-scoresheet:authController");
+const debug = require("debug")("aha-scoresheet:authController");
 const Scoresheet = require("../models").Scoresheet;
 const Flight = require("../models").Flight;
 
-let _fields = ["username", "firstname", "lastname", "password"];
+const _fields = ["username", "firstname", "lastname", "password"];
 
 let userController = {};
 
@@ -53,14 +56,13 @@ function jsonErrorProcessor(err, res) {
     });
   } else {
     debug(err);
-    console.log(err);
     res.status(500);
   }
 }
 
 // Restrict access to root page
 userController.home = function (req, res) {
-  if (!req.user) {
+  if (!req.user || !req.user.id) {
     res.render("index", {
       user: req.user,
       title: appConstants.APP_NAME + " - Home",
@@ -102,7 +104,6 @@ userController.home = function (req, res) {
     .catch((err) => {
       res.status(500);
       debug(err);
-      console.log(err);
     });
 };
 
@@ -175,6 +176,8 @@ userController.doRegister = function (req, res) {
         });
       }
 
+      const emailVerificationCode = crypto.randomBytes(16).toString("hex");
+
       return User.create({
         email: email,
         password: password,
@@ -188,19 +191,25 @@ userController.doRegister = function (req, res) {
         judging_years: req.body.judging_years,
         allow_automated_email: req.body.allow_automated_email || false,
         email_verified: false,
+        verification_id: emailVerificationCode,
       }).then(function (user) {
-        delete user.password;
-
         req.login(user, (err) => {
           if (err) {
             errorProcessor(err, req);
           }
-          req.flash("warning", "Email validation Required");
+
+          // TODO: Send email with verification code
+          emailService.sendUserVerificationEmail(
+            user.email,
+            emailVerificationCode
+          );
+
+          req.flash(
+            "warning",
+            "An email with a link to verify your account has been sent. If you cannot find it, please check your spam folder."
+          );
           res.redirect("/");
         });
-
-        // Create email verification code
-        // Write email verification code to DB User
       });
     })
     .catch((err) => {
@@ -316,11 +325,9 @@ userController.updatePassword = function (req, res) {
         });
     })
     .then((user) => {
-      console.log("Password Change Successful");
       res.status(200).json(true);
     })
     .catch((err) => {
-      console.log(err);
       jsonErrorProcessor(err, res);
     });
 };
@@ -338,9 +345,20 @@ userController.saveProfile = function (req, res) {
     where: {
       id: req.body.id || req.user.id,
     },
+    returning: true,
+    plain: true,
   })
     .then((user) => {
-      console.log("Profile updated succesfully");
+      if (user[1] !== 1) {
+        req.login(user[1].get(), (err) => {
+          if (err) {
+            return Promise.reject(
+              "Error re-establishing session. Please login again."
+            );
+          }
+        });
+      }
+
       res.status(200).json(true);
     })
     .catch((err) => {
@@ -362,7 +380,6 @@ userController.resetPassword = async function (req, res) {
     }
   )
     .then((user) => {
-      console.log(`Password reset: ${resetPassword}`);
       res.status(200).json({
         user: user,
         updatedPassword: resetPassword,
@@ -373,49 +390,148 @@ userController.resetPassword = async function (req, res) {
     });
 };
 
-userController.validateEmail = function (req, res) {
-  const validationCode = req.query.key;
+userController.requestEmailValidation = function (req, res) {
+  const userId = req.user.id;
+  const userEmail = req.user.email;
+  const emailVerificationCode = crypto.randomBytes(16).toString("hex");
 
-  // match validation code
-  // Set email_validated on user in db
-  // Delete email_validated code in db
+  User.update(
+    {
+      verification_id: emailVerificationCode,
+    },
+    {
+      where: {
+        id: userId,
+      },
+    }
+  ).then(() => {
+    // TODO: Send email with verification code
+    emailService.sendUserVerificationEmail(userEmail, emailVerificationCode);
 
-  console.log("validationCode", validationCode);
+    req.flash(
+      "warning",
+      "An email with a link to verify your account has been sent. If you cannot find it, please check your spam folder."
+    );
+    res.redirect("/");
+  });
 };
 
+// Called when user clicks link in their email inbox to validate their account
+userController.validateEmail = function (req, res) {
+  const validationCode = req.query.key;
+  const userId = req.user.id;
+
+  User.update(
+    {
+      email_verified: true,
+      verification_id: null,
+    },
+    {
+      where: {
+        id: userId,
+        verification_id: validationCode,
+      },
+      returning: true,
+      plain: true,
+    }
+  )
+    .then((user) => {
+      if (!user[1]) {
+        Promise.reject("Could not validate email address. Please try again.");
+      }
+
+      if (user[1] !== 1) {
+        req.login(user[1].get(), (err) => {
+          if (err) {
+            return Promise.reject(err);
+          }
+          return Promise.resolve(user[1].get());
+        });
+      } else {
+        req.logout();
+        return Promise.resolve(null);
+      }
+    })
+    .then((user) => {
+      req.flash(
+        "success",
+        `Email address ${user ? user.email : ""} successfully validated`
+      );
+      res.redirect("/");
+    })
+    .catch((err) => {
+      errorProcessor(err, req);
+      res.redirect("/");
+    });
+};
+
+// Called when user clicks "forgot password" button
 userController.userRequestPasswordResetForm = function (req, res) {
+  if (req.user) {
+    res.redirect("/");
+    return;
+  }
+
   res.render("forgot_password");
 };
 
+// Called when user submits password reset form (with their email)
 userController.userRequestPasswordReset = function (req, res) {
+  const NUM_MINUTES_EXPIRE = 60;
   const userEmail = req.body.email;
+  const passwordResetCode = crypto.randomBytes(16).toString("hex");
 
-  console.log("password reset requested for", userEmail);
-  // Create password reset code
-  // Write password reset code to db
-  // Send email with reset code
-  // Set timeout for 60 min to delete reset code
+  User.update(
+    {
+      password_reset_id: passwordResetCode,
+    },
+    {
+      where: {
+        email: userEmail,
+      },
+    }
+  ).then(() => {
+    emailService.sendPasswordResetEmail(userEmail, passwordResetCode);
 
-  req.flash(
-    "success",
-    "An email with a link to reset your password has been sent. If you cannot find it, please check your spam folder."
-  );
-  res.redirect("/");
+    req.flash(
+      "warning",
+      `An email with a link to reset your password has been sent. The link expires in ${NUM_MINUTES_EXPIRE} minues. If you cannot find it, please check your spam folder.`
+    );
+    res.redirect("/");
+  });
+
+  // Set timeout to delete reset code after certain amount of time
+  setTimeout(() => {
+    User.update(
+      {
+        password_reset_id: null,
+      },
+      {
+        where: {
+          email: userEmail,
+        },
+      }
+    );
+  }, NUM_MINUTES_EXPIRE * 60 * 1000);
 };
 
+// Called when user clicks email in their email to confirm reset password
 userController.userResetPasswordForm = function (req, res) {
   const passwordKey = req.query.key;
 
-  // Write password key to user in DB here
+  if (!passwordKey) {
+    res.redirect("/");
+    return;
+  }
 
   res.render("reset_password", {
     passwordResetKey: passwordKey,
   });
-
-  console.log("passwordCode", passwordKey);
 };
 
-userController.userResetPassword = function (req, res) {
+// Called when user submits password change form
+userController.userResetPassword = async function (req, res) {
+  const passwordRegex = new RegExp(appConstants.PASSWORD_REGEX);
   const passwordKey = req.body.passwordResetKey;
   const password1 = req.body.password1;
   const password2 = req.body.password2;
@@ -430,7 +546,7 @@ userController.userResetPassword = function (req, res) {
   }
 
   // validate new password meets minimum requirements
-  if (!passwordRegex.test(newPassword)) {
+  if (!passwordRegex.test(password1)) {
     req.flash("danger", "Password does not meet minimum password criteria");
     res.render("reset_password", {
       passwordResetKey: passwordKey,
@@ -438,8 +554,49 @@ userController.userResetPassword = function (req, res) {
     return;
   }
 
-  // Lookup user by password key here and assign new password
-  // delete password reset code
+  const hashedResetPassword = await User.prototype.hashPassword(password1);
+
+  User.update(
+    {
+      password: hashedResetPassword,
+      password_reset_id: null,
+    },
+    {
+      where: {
+        password_reset_id: passwordKey,
+      },
+      returning: true,
+      plain: true,
+    }
+  )
+    .then((user) => {
+      if (!user[1]) {
+        req.flash("danger", "Could not reset password. Please try again.");
+        res.redirect("/");
+      }
+
+      // Log back in to re-establish session with new credentials
+      if (user[1] !== 1) {
+        req.login(user[1].get(), (err) => {
+          if (err) {
+            return Promise.reject(err);
+          }
+
+          return Promise.resolve(user);
+        });
+      } else {
+        req.logout();
+        return Promise.resolve(null);
+      }
+    })
+    .then((user) => {
+      req.flash("success", "Password changed successfully");
+      res.redirect("/");
+    })
+    .catch((err) => {
+      errorProcessor(err, req);
+      res.redirect("/");
+    });
 };
 
 userController.unsubscribeForm = function (req, res) {

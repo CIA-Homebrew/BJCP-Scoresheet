@@ -17,9 +17,12 @@ block content
       h1.text-center Welcome!
       p.text-center Welcome to the Cane Island Alers Digital Scoresheet Manager. Please use the menu above to navigate to your desired action.
   else if !user.email_verified
-    .container
+    .container.d-flex.flex-column.justify-content-center.mt-5(
+      style="width: 450px;"
+    )
       h3 Verify Email
       p Almost done! Please check your email inbox and verify your account.
+      a.mt-3.btn.btn-primary(type="button", href="/requestvalidation") Resend Validation
   else
     .container
       .card
