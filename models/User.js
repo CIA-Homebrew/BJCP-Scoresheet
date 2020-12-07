@@ -47,6 +47,16 @@ module.exports = (sequelize, DataTypes) => {
         require: true,
         default: 0, // 0 = judge/basic user; 1 = head judge; 90 = admin
       },
+      verification_id: DataTypes.STRING,
+      password_reset_id: DataTypes.STRING,
+      allow_automated_email: {
+        type: DataTypes.BOOLEAN,
+        default: true,
+      },
+      email_verified: {
+        type: DataTypes.BOOLEAN,
+        default: false,
+      },
     },
     {
       hooks: {

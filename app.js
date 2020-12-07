@@ -1,3 +1,6 @@
+// Setup environmental variables
+require("dotenv").config();
+
 let createError = require("http-errors");
 let express = require("express");
 let path = require("path");
@@ -15,9 +18,6 @@ let coreRouter = require("./routes/core");
 
 // Clear temporary files on app process exit
 tmp.setGracefulCleanup();
-
-// Setup environmental variables
-require("dotenv").config();
 
 let app = express();
 

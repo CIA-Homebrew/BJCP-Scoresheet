@@ -1,7 +1,7 @@
 extends layout
 
 block content
-  .container.mt-5(style="width: 30%; min-width: 250px;")
+  .container.mt-5(style="width: 450px;")
     form.form-signin(role="form", action="/login", method="post")
       h2.form-signin-heading Please sign in
       label.sr-only(for="inputEmail")
@@ -17,4 +17,10 @@ block content
         name="password",
         placeholder="Password"
       )
-      button.btn.btn-lg.btn-primary.btn-block(type="submit") LOGIN
+      .mt-3(width="100%")
+        button.btn.btn-lg.btn-primary(type="submit", style="width: 60%;") LOGIN
+        a.btn.btn-lg.btn-secondary(
+          type="button",
+          href="/forgotpassword",
+          style="width: 40%;"
+        ) Forgot Password

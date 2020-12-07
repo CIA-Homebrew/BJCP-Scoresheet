@@ -1,7 +1,7 @@
 extends layout
 
 block content
-  unless user
+  if !user
     .container
       .logo_holder.mx-auto.text-center
         img.img-fluid.d-inline-block(
@@ -16,7 +16,31 @@ block content
         )
       h1.text-center Welcome!
       p.text-center Welcome to the Cane Island Alers Digital Scoresheet Manager. Please use the menu above to navigate to your desired action.
-
+  else if !user.email_verified
+    .container.d-flex.flex-column.justify-content-center.mt-5(
+      style="width: 450px;"
+    )
+      h3 Verify Email
+      p Almost done! Please check your email inbox and verify your account.
+      a.mt-3.btn.btn-primary(type="button", href="/requestvalidation") Resend Validation
+      if locals.messages.success && locals.messages.success.includes('Login Successful')
+        #info-modal.modal.fade(
+          tabindex="-1",
+          role="dialog",
+          aria-labelledby="infoModalLabel",
+          aria-hidden="true"
+        )
+          .modal-dialog
+            .modal-content
+              .modal-header 
+                h5 Email Validation Now Required
+              .modal-body 
+                p Hey guys! We have recently added email functionality to the app. 🎉
+                p This means exciting new features, like self-service password resets and competition email updates. However, this also means <em>we need to make sure your email address works</em>.
+                p Please click the <span class="badge badge-primary">Resend Validation</span> button on the home screen to generate a validation email that will be sent to your email address associated with your account. Once the email arrives, click the <span class="badge badge-info">Verify Email</span> button to verify your account.
+                p If you can't find the email, it may have gone to your spam or junk folder. Let us know <a href="https://discord.gg/jEbfDskCSx">on discord</a> if you have any issues.
+              .modal-footer
+                button.btn.btn-primary(type="button", data-dismiss="modal") Awesome!
   else
     .container
       .card
@@ -307,7 +331,6 @@ block content
               onclick="clearFlightToSubmit()"
             ) Cancel
             button.btn.btn-primary(type="button", onclick="submitFlight();") Submit Flight
-
   script(src="/javascripts/download.js")
 
   script.
@@ -412,6 +435,10 @@ block content
     let downloadPdf = () => {}
 
     $(document).ready(() => {
+      if ($('#info-modal')) {
+        $('#info-modal').modal('show')
+      }
+  
     	// on page load
     	addEntry = (flightId) => {
     		window.location.replace(`/scoresheet/edit?flightId=${flightId}`)
