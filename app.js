@@ -1,5 +1,7 @@
 // Setup environmental variables
-require("dotenv").config();
+if (process.env.NODE_ENV !== "production") {
+  require("dotenv").config();
+}
 
 let createError = require("http-errors");
 let express = require("express");
