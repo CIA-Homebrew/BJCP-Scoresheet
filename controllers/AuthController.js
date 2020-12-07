@@ -198,7 +198,6 @@ userController.doRegister = function (req, res) {
             errorProcessor(err, req);
           }
 
-          // TODO: Send email with verification code
           emailService.sendUserVerificationEmail(
             user.email,
             emailVerificationCode
@@ -405,7 +404,6 @@ userController.requestEmailValidation = function (req, res) {
       },
     }
   ).then(() => {
-    // TODO: Send email with verification code
     emailService.sendUserVerificationEmail(userEmail, emailVerificationCode);
 
     req.flash(
@@ -420,6 +418,11 @@ userController.requestEmailValidation = function (req, res) {
 userController.validateEmail = function (req, res) {
   const validationCode = req.query.key;
   const userId = req.user.id;
+
+  if (!validationCode) {
+    res.redirect("/");
+    return;
+  }
 
   User.update(
     {
@@ -571,8 +574,7 @@ userController.userResetPassword = async function (req, res) {
   )
     .then((user) => {
       if (!user[1]) {
-        req.flash("danger", "Could not reset password. Please try again.");
-        res.redirect("/");
+        return Promise.reject("Could not reset password. Please try again.");
       }
 
       // Log back in to re-establish session with new credentials
