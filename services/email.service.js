@@ -57,11 +57,11 @@ class EmailService {
         from: `"BJCP Scoresheets" <${this.user || "test@example.com"}>`,
         to: recipient,
         subject: "Verify BJCP-Scoresheets Email Address",
-        text: `Please navigate to http://localhost:3000/validate/?key=${emailVerificationCode} to validate your email address.`,
+        text: `Please navigate to ${this.domain}/validate/?key=${emailVerificationCode} to validate your email address.`,
         html: this.generateHtmlMessage(
           "Verify your Email Address",
           "Please click the button below to verify your email address.",
-          `http://localhost:3000/validate/?key=${emailVerificationCode}`,
+          `${this.domain}/validate/?key=${emailVerificationCode}`,
           "Verify Email"
         ),
       })
@@ -85,11 +85,11 @@ class EmailService {
         from: `"BJCP Scoresheets" <${this.user || "test@example.com"}>`,
         to: recipient,
         subject: "Reset BJCP-Scoresheets Password",
-        text: `Please navigate to http://localhost:3000/resetpassword/?key=${passwordResetCode} to reset your password. If you did not request a password reset, please disregard this email.`,
+        text: `Please navigate to ${this.domain}/resetpassword/?key=${passwordResetCode} to reset your password. If you did not request a password reset, please disregard this email.`,
         html: this.generateHtmlMessage(
           "Reset Your Password",
           "Please click the button below to reset your password. If you did not request a password reset, please disregard this email.",
-          `http://localhost:3000/resetpassword/?key=${passwordResetCode}`,
+          `${this.domain}/resetpassword/?key=${passwordResetCode}`,
           "Reset Password"
         ),
       })
