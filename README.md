@@ -2,6 +2,8 @@
 
 #### A Digital Homebrewing Competition Scoresheet Managment System
 
+[Play in the sandbox! Demo available here](https://bjcp-scoresheets.herokuapp.com/)
+
 This application is a full stack competition scoresheet generation and management system designed for [BJCP sanctioned competitions](https://www.bjcp.org/compcenter.php).
 
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
