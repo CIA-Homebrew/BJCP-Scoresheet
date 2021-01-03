@@ -3,19 +3,23 @@ extends layout
 block content
   if !user
     .container
-      .logo_holder.mx-auto.text-center
-        img.img-fluid.d-inline-block(
+      .logo_holder.mx-auto.d-flex.justify-content-around
+        img(
           src="/images/page-logos/club-logo.png",
           alt="Logo",
-          height="400px"
+          height="400px",
+          width="400px",
+          style="object-fit:contain;"
         )
-        img.img-fluid.d-inline-block(
+        img(
           src="/images/page-logos/comp-logo.png",
           alt="Logo",
-          height="400px"
+          height="400px",
+          width="400px",
+          style="object-fit:contain;"
         )
       h1.text-center Welcome!
-      p.text-center Welcome to the Cane Island Alers Digital Scoresheet Manager. Please use the menu above to navigate to your desired action.
+      p.text-center Please use the menu above to register or login.
   else if !user.email_verified
     .container.d-flex.flex-column.justify-content-center.mt-5(
       style="width: 450px;"
@@ -438,7 +442,7 @@ block content
       if ($('#info-modal')) {
         $('#info-modal').modal('show')
       }
-  
+
     	// on page load
     	addEntry = (flightId) => {
     		window.location.replace(`/scoresheet/edit?flightId=${flightId}`)
