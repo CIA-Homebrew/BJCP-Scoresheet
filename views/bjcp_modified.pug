@@ -48,7 +48,7 @@ body
             .col
               span.display_iblock.border_solid_1.mleft_5.text_center(
                 style="width: 8px; height: 8px; background-color: white;"
-              ) #{!judge.cicerone_rank || judge.cicerone_rank === "N/A" ? ' ' : 'X'}
+              ) #{(!judge.cicerone_rank || judge.cicerone_rank === "N/A") ? ' ' : 'X'}
             .col.col_20.text_right
               | Rank
             .col.col_40
