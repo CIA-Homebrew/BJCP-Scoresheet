@@ -25,6 +25,7 @@ function jsonErrorProcessor(err, res) {
       ],
     });
   } else {
+    res.status(500).json(true);
     debug(err);
   }
 }
