@@ -118,7 +118,7 @@ userController.register = function (req, res) {
 userController.doRegister = function (req, res) {
   const emailRegex = new RegExp(appConstants.EMAIL_REGEX);
   const passwordRegex = new RegExp(appConstants.PASSWORD_REGEX);
-  const email = req.body.email;
+  const email = req.body.email.toLowerCase();
   const password = req.body.password;
   const confirmPassword = req.body.passwordC;
 
@@ -231,6 +231,8 @@ userController.login = function (req, res) {
 
 // Post login
 userController.doLogin = function (req, res) {
+  req.body.email = req.body.email.toLowerCase();
+
   passport.authenticate("passport-sequelize", {
     // Login is bad, try again!
     failureRedirect: "/login",
@@ -258,8 +260,9 @@ userController.editProfile = function (req, res) {
 
 userController.updateEmail = function (req, res) {
   const emailRegex = new RegExp(appConstants.EMAIL_REGEX);
-  const oldEmail = req.body.oldEmail;
-  const newEmail = req.body.newEmail;
+  const oldEmail = req.body.oldEmail.toLowerCase();
+  const newEmail = req.body.newEmail.toLowerCase();
+  const emailVerificationCode = crypto.randomBytes(16).toString("hex");
 
   User.findByPk(req.user.id)
     .then((user) => {
@@ -273,7 +276,11 @@ userController.updateEmail = function (req, res) {
       }
 
       return User.update(
-        { email: newEmail },
+        {
+          email: newEmail,
+          email_verified: false,
+          verification_id: emailVerificationCode,
+        },
         {
           where: {
             id: user.id,
@@ -282,6 +289,7 @@ userController.updateEmail = function (req, res) {
       );
     })
     .then((user) => {
+      emailService.sendUserVerificationEmail(newEmail, emailVerificationCode);
       res.status(200).json(true);
     })
     .catch((err) => {
@@ -606,7 +614,7 @@ userController.unsubscribeForm = function (req, res) {
 };
 
 userController.unsubscribe = function (req, res) {
-  const email = req.body.email;
+  const email = req.body.email.toLowerCase();
   const allowMail = req.body.allow_automated_email;
 
   User.update(
