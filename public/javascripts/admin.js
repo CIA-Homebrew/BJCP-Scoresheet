@@ -461,6 +461,7 @@ $(() => {
       const updatedScoresheetData = {
         id: $(flightScoresheetRow).attr("scoresheet-id"),
         _ajax: "true",
+        noUpdateUserId: true,
         consensus_score: $(flightScoresheetRow)
           .find(".flight-modal-consensus")
           .val(),
@@ -502,6 +503,7 @@ $(() => {
     };
 
     updatedScoresheetData._ajax = "true";
+    updatedScoresheetData.noUpdateUserId = true;
 
     fetch("/scoresheet/update/", {
       method: "POST",

@@ -25,8 +25,8 @@ function jsonErrorProcessor(err, res) {
       ],
     });
   } else {
-    res.status(500).json(true);
     debug(err);
+    res.status(500).json(true);
   }
 }
 
@@ -128,8 +128,11 @@ scoresheetController.doScoresheetDataChange = function (req, res) {
     return res.redirect("/scoresheet/edit");
   }
 
-  // strip the ajax property
+  const updateUserId = !req.body.noUpdateUserId;
+
+  // strip the ajax property and update userId props
   delete req.body._ajax;
+  delete req.body.noUpdateUserId;
 
   const ss = {};
 
@@ -145,7 +148,9 @@ scoresheetController.doScoresheetDataChange = function (req, res) {
     delete ss.id;
   }
   // Associate this scoresheet to the user
-  ss.user_id = req.user.id;
+  if (updateUserId) {
+    ss.user_id = req.user.id;
+  }
 
   // Upsert the record
   Scoresheet.upsert(ss)
