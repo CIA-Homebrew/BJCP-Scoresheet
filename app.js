@@ -17,6 +17,10 @@ let passport = require("passport");
 let debug = require("debug")("aha-scoresheet:app");
 const db = require("./models/index");
 
+db.sequelize.sync().then(() => {
+  console.log("successfully updated models");
+});
+
 let coreRouter = require("./routes/core");
 
 // Clear temporary files on app process exit

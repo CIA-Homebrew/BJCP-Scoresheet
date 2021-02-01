@@ -23,11 +23,12 @@ const flightController = {};
 
 flightController.getFlightByName = function (req, res) {
   const flightName = req.body.flightName;
+  const userIsAdmin = req.user.user_level;
 
   Flight.findOne({
     where: {
       flight_id: flightName,
-      created_by: req.user.id,
+      UserId: userIsAdmin ? undefined : req.user.id,
     },
   })
     .then((flight) => {
@@ -42,11 +43,12 @@ flightController.getFlightByName = function (req, res) {
 
 flightController.getFlightById = function (req, res) {
   const flightId = req.body.flightId;
+  const userIsAdmin = req.user.user_level;
 
   Flight.findOne({
     where: {
       id: flightId,
-      created_by: req.user.id,
+      UserId: userIsAdmin ? undefined : req.user.id,
     },
   })
     .then((flight) => {
@@ -64,7 +66,7 @@ flightController.addFlight = function (req, res) {
     flight_id: req.body.flightName,
     location: req.body.flightLocation,
     date: req.body.flightDate,
-    created_by: req.user.id,
+    UserId: req.user.id,
   };
 
   Flight.create(newFlightParams)
@@ -77,39 +79,23 @@ flightController.addFlight = function (req, res) {
 };
 
 flightController.editFlight = function (req, res) {
+  const userIsAdmin = req.user.user_level;
+
   const flightId = req.body.flightId;
   const updateFlightParams = {
     flight_id: req.body.flightName,
     location: req.body.flightLocation,
     date: req.body.flightDate,
-    created_by: req.body.createdBy || req.user.id,
-    submitted: req.user.user_level >= 900 ? req.body.submitted : undefined,
+    UserId: userIsAdmin ? req.body.createdBy : undefined, // Only admins can reassign flights
+    submitted: userIsAdmin ? req.body.submitted : undefined, // Only admins can unsubmit a flight
   };
 
   Flight.update(updateFlightParams, {
     where: {
       id: flightId,
+      UserId: userIsAdmin ? undefined : req.user.id,
     },
   })
-    .then((newFlight) => {
-      if (updateFlightParams.submitted !== undefined) {
-        return Scoresheet.update(
-          { scoresheet_submitted: updateFlightParams.submitted },
-          {
-            where: { flight_key: flightId },
-            returning: true,
-          }
-        )
-          .then(() => {
-            return newFlight;
-          })
-          .catch((err) => {
-            jsonErrorProcessor(err, res);
-          });
-      } else {
-        return Promise.resolve(newFlight);
-      }
-    })
     .then((newFlight) => {
       res.json(newFlight);
     })
@@ -121,15 +107,12 @@ flightController.editFlight = function (req, res) {
 flightController.submitFlight = function (req, res) {
   const flightId = req.body.flightId;
 
-  return Scoresheet.update(
-    { scoresheet_submitted: true },
-    {
-      where: { flight_key: flightId },
-      returning: true,
-    }
-  )
+  return Scoresheet.findAndCountAll({
+    where: { FlightId: flightId },
+  })
     .then((scoresheets) => {
-      if (scoresheets[1] === 0 || scoresheets[1].length === 0) {
+      if (scoresheets.count === 0) {
+        console.log(scoresheets.count);
         return Promise.reject("INVALID_FLIGHT_EMPTY");
       }
 
@@ -138,7 +121,7 @@ flightController.submitFlight = function (req, res) {
         {
           where: {
             id: flightId,
-            created_by: req.user.id,
+            UserId: req.user.id,
           },
         }
       );
@@ -154,11 +137,12 @@ flightController.submitFlight = function (req, res) {
 
 flightController.deleteFlight = function (req, res) {
   const flightId = req.body.flightId;
+  const userIsAdmin = req.user.user_level;
 
   Flight.destroy({
     where: {
       id: flightId,
-      created_by: req.user.id,
+      UserId: userIsAdmin ? undefined : req.user.id,
     },
   })
     .then(() => {

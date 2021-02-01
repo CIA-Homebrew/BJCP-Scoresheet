@@ -72,7 +72,7 @@ userController.home = function (req, res) {
 
   Flight.findAll({
     where: {
-      created_by: req.user.id,
+      UserId: req.user.id,
     },
   })
     .then((flights) => {
@@ -81,7 +81,7 @@ userController.home = function (req, res) {
       const scoresheetPromises = plainFlights.map((flight) =>
         Scoresheet.findAll({
           where: {
-            flight_key: flight.id,
+            FlightId: flight.id,
           },
         }).then((scoresheets) => {
           return {

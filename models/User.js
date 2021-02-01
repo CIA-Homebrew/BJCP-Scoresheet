@@ -1,4 +1,4 @@
-"use strict";
+// "use strict";
 
 var bcrypt = require("bcryptjs");
 
@@ -87,10 +87,7 @@ module.exports = (sequelize, DataTypes) => {
 
   User.associate = function (models) {
     // associations can be defined here
-    User.hasMany(models.Flight, {
-      as: "flights",
-      foreignKey: "created_by",
-    });
+    User.hasMany(models.Flight);
   };
 
   return User;

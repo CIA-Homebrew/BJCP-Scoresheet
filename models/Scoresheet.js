@@ -1,23 +1,4 @@
-"use strict";
-
-/**
- * stringEmpty will trim and test if the string is not empty
- * @param s
- * @param msg
- * @returns {boolean}
- */
-function stringEmpty(s, msg) {
-  // Make sure this is even a value
-  if (!s) return false;
-  // Make sure there is no white space
-  s = s.trim();
-  // Make sure it's not empty
-  if (s === "") {
-    throw new Error(msg);
-  }
-  // It's a good value
-  return true;
-}
+// "use strict";
 
 module.exports = (sequelize, DataTypes) => {
   const Scoresheet = sequelize.define(
@@ -278,10 +259,6 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.NUMBER,
         default: 0,
       },
-      flight_key: {
-        type: DataTypes.UUID,
-        allowNull: true,
-      },
     },
     {
       createdAt: "created_at",
@@ -291,7 +268,7 @@ module.exports = (sequelize, DataTypes) => {
 
   Scoresheet.associate = function (models) {
     // associations can be defined here
-    Scoresheet.belongsTo(models.Flight, { foreignKey: "id", as: "flightID" });
+    Scoresheet.belongsTo(models.Flight);
   };
 
   return Scoresheet;
