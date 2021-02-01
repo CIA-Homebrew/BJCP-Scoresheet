@@ -264,52 +264,6 @@ var overall_wonderful = new Slider("#overall_wonderful", {
   value: 50,
 });
 
-//- Recalculate total score
-function recalculate_score() {
-  let aroma = document.getElementById("aroma_score").value;
-  let appearance = document.getElementById("appearance_score").value;
-  let flavor = document.getElementById("flavor_score").value;
-  let mouthfeel = document.getElementById("mouthfeel_score").value;
-  let summary = document.getElementById("overall_score").value;
-
-  if (aroma > 12 || aroma < 0) {
-    aroma = aroma > 12 ? 12 : 0;
-  }
-  if (appearance > 3 || appearance < 0) {
-    appearance = appearance > 3 ? 3 : 0;
-  }
-  if (flavor > 20 || flavor < 0) {
-    flavor = flavor > 20 ? 20 : 0;
-  }
-  if (mouthfeel > 5 || mouthfeel < 0) {
-    mouthfeel = mouthfeel > 5 ? 5 : 0;
-  }
-  if (summary > 10 || summary < 0) {
-    summary = summary > 10 ? 10 : 0;
-  }
-
-  $("#aroma_score").val(Math.round(aroma));
-  $("#appearance_score").val(Math.round(appearance));
-  $("#flavor_score").val(Math.round(flavor));
-  $("#mouthfeel_score").val(Math.round(mouthfeel));
-  $("#overall_score").val(Math.round(summary));
-
-  document.getElementById("judge_total").innerText =
-    Number(aroma) +
-    Number(appearance) +
-    Number(flavor) +
-    Number(mouthfeel) +
-    Number(summary);
-}
-
-//- Change 'scoresheet_submitted' input to true after submit confirmed
-function confirm_submit() {
-  $("input#scoresheet_submitted").val("1");
-  update_scoresheet();
-  window.alert("Scoresheet submitted!");
-  window.location.replace("/scoresheet/load");
-}
-
 //- Universal data validator handler
 function validatorHandler(_this) {
   // Simple validation to alert user to empty text fields
@@ -409,6 +363,17 @@ $(document).ready(function () {
       // Update Judge Total to be a number
       fDataObject.judge_total = Number($("#judge_total").text());
 
+      // Update scores to be numbers
+      [
+        "aroma_score",
+        "appearance_score",
+        "flavor_score",
+        "mouthfeel_score",
+        "overall_score",
+      ].forEach((key) => {
+        fDataObject[key] = $(`.${key}`).first().val();
+      });
+
       // Submit the updated scoresheet
       $.post("/scoresheet/update", fDataObject, function (data) {
         if (data.update) {
@@ -451,6 +416,41 @@ $(document).ready(function () {
 
   // Since sliders don't trigger on focusout, we toggle those differently using mouseUp
   $(".slider-handle, .slider-tick-label").mouseup(update_scoresheet);
+
+  // Sync all score blocks and fire event when changed
+  $(".section-score").change((evt) => {
+    const maxScore = {
+      aroma_score: 12,
+      appearance_score: 3,
+      flavor_score: 20,
+      mouthfeel_score: 5,
+      overall_score: 10,
+    };
+
+    const key = evt.target.name;
+    const val =
+      evt.target.value < 0
+        ? 0
+        : evt.target.value > maxScore[key]
+        ? maxScore[key]
+        : Math.round(evt.target.value);
+
+    if (val === 0) {
+      $(`.${key}`).closest(".card").addClass("red-border");
+    } else {
+      $(`.${key}`).closest(".card").removeClass("red-border");
+    }
+
+    $(`.${key}`).val(val);
+
+    const totalScore = Object.keys(maxScore).reduce((acc, val) => {
+      acc += Number($(`.${val}`).first().val());
+      return acc;
+    }, 0);
+
+    $("#judge_total").text(totalScore);
+    update_scoresheet();
+  });
 });
 
 load_scoresheet_data = () => {
@@ -467,6 +467,25 @@ load_scoresheet_data = () => {
     .then((data) => data.json())
     .then(({ scoresheet, flight, user }) => {
       Object.keys({ ...scoresheet, ...flight, ...user }).forEach((fieldId) => {
+        const scoreFields = [
+          "aroma_score",
+          "appearance_score",
+          "flavor_score",
+          "mouthfeel_score",
+          "overall_score",
+        ];
+        if (scoreFields.includes(fieldId)) {
+          const currentVal = Number(scoresheet[fieldId]);
+
+          $(`.${fieldId}`).val(currentVal);
+
+          if (currentVal === 0) {
+            $(`.${fieldId}`).closest(".card").addClass("red-border");
+          } else {
+            $(`.${fieldId}`).closest(".card").removeClass("red-border");
+          }
+        }
+
         const field = document.getElementById(fieldId);
 
         if (field) {
@@ -500,7 +519,12 @@ load_scoresheet_data = () => {
         }
 
         update_tooltips();
-        recalculate_score();
+        const totalScore = scoreFields.reduce((acc, val) => {
+          acc += Number($(`.${val}`).first().val());
+          return acc;
+        }, 0);
+
+        $("#judge_total").text(totalScore);
       });
     });
 };

@@ -3,7 +3,7 @@ extends layout
 block content
   form#newScoresheet(role="form", action="/scoresheet/update", method="post")
     input#author(type="text", name="author", value=user._id, hidden)
-    input#id(type="text", name="id", hidden value=fingerprint)
+    input#id(type="text", name="id", hidden, value=fingerprint)
     input#scoresheet_submitted(
       type="text",
       value="0",
@@ -374,13 +374,12 @@ block content
                       .card-header.py-1
                         p.small.mb-0.text-center Aroma Score
                       .card-body.text-dark.px-0.py-0.text-center
-                        input#aroma_score.form-control.form-control-lg.text-center.mb-0(
+                        input.aroma_score.section-score.form-control.form-control-lg.text-center.mb-0(
                           type="number",
                           name="aroma_score",
                           value=0,
                           min=0,
-                          max=12,
-                          onchange="recalculate_score()"
+                          max=12
                         )
                         p.small.d-flex.align-items-end.flex-row-reverse.my-0.pb-0 /12
             #appearance.tab-pane(
@@ -520,13 +519,12 @@ block content
                       .card-header.py-1.px-0
                         p.small.mb-0.text-center Appearance Score
                       .card-body.text-dark.px-0.py-0.text-center
-                        input#appearance_score.form-control.form-control-lg.text-center.mb-0(
+                        input.appearance_score.section-score.form-control.form-control-lg.text-center.mb-0(
                           type="number",
                           name="appearance_score",
                           value="0",
                           min="0",
-                          max="3",
-                          onchange="recalculate_score()"
+                          max="3"
                         )
                         p.small.d-flex.align-items-end.flex-row-reverse.my-0.pb-0 /3
             #flavor.tab-pane(role="tabpanel", aria-labelledby="flavor-tab")
@@ -726,13 +724,12 @@ block content
                       .card-header.py-1.px-0
                         p.small.mb-0.text-center Flavor Score
                       .card-body.text-dark.px-0.py-0.text-center
-                        input#flavor_score.form-control.form-control-lg.text-center.mb-0(
+                        input.flavor_score.section-score.form-control.form-control-lg.text-center.mb-0(
                           type="number",
                           name="flavor_score",
                           value="0",
                           min="0",
-                          max="20",
-                          onchange="recalculate_score()"
+                          max="20"
                         )
                         p.small.d-flex.align-items-end.flex-row-reverse.my-0.pb-0 /20
             #mouthfeel.tab-pane(
@@ -861,13 +858,12 @@ block content
                       .card-header.py-1.px-0
                         p.small.mb-0.text-center Mouthfeel Score
                       .card-body.text-dark.px-0.py-0.text-center
-                        input#mouthfeel_score.form-control.form-control-lg.text-center.mb-0(
+                        input#mouthfeel_score.section-score.form-control.form-control-lg.text-center.mb-0(
                           type="number",
                           name="mouthfeel_score",
                           value="0",
                           min="0",
-                          max="5",
-                          onchange="recalculate_score()"
+                          max="5"
                         )
                         p.small.d-flex.align-items-end.flex-row-reverse.my-0.pb-0 /5
             #descriptors.tab-pane(
@@ -1216,14 +1212,84 @@ block content
                       .card-header.py-1.px-0
                         p.small.mb-0.text-center Summary Score
                       .card-body.text-dark.px-0.py-0.text-center
-                        input#overall_score.form-control.form-control-lg.text-center.mb-0(
+                        input.overall_score.form-control.section-score.form-control-lg.text-center.mb-0(
                           type="number",
                           name="overall_score",
                           value="0",
                           min="0",
-                          max="10",
-                          onchange="recalculate_score()"
+                          max="10"
                         )
                         p.small.d-flex.align-items-end.flex-row-reverse.my-0.pb-0 /10
+        .card-footer
+          .d-flex.flex-row.justify-content-around
+            // Aroma
+            .card.border-dark(style="width:100px")
+              .card-header.py-1
+                p.small.mb-0.text-center Aroma
+              .card-body.text-dark.px-0.py-0.text-center
+                input.aroma_score.section-score.form-control.form-control-lg.text-center.mb-0(
+                  type="number",
+                  name="aroma_score",
+                  value=0,
+                  min=0,
+                  max=12
+                )
+                p.small.d-flex.align-items-end.flex-row-reverse.my-0.pb-0 /12
+
+            // Appearance
+            .card.border-dark(style="width:100px")
+              .card-header.py-1.px-0
+                p.small.mb-0.text-center Appearance
+              .card-body.text-dark.px-0.py-0.text-center
+                input.appearance_score.section-score.form-control.form-control-lg.text-center.mb-0(
+                  type="number",
+                  name="appearance_score",
+                  value="0",
+                  min="0",
+                  max="3"
+                )
+                p.small.d-flex.align-items-end.flex-row-reverse.my-0.pb-0 /3
+
+            // Flavor
+            .card.border-dark(style="width:100px")
+              .card-header.py-1.px-0
+                p.small.mb-0.text-center Flavor
+              .card-body.text-dark.px-0.py-0.text-center
+                input.flavor_score.section-score.form-control.form-control-lg.text-center.mb-0(
+                  type="number",
+                  name="flavor_score",
+                  value="0",
+                  min="0",
+                  max="20"
+                )
+                p.small.d-flex.align-items-end.flex-row-reverse.my-0.pb-0 /20
+
+            // Mouthfeel
+            .card.border-dark(style="width:100px")
+              .card-header.py-1.px-0
+                p.small.mb-0.text-center Mouthfeel
+              .card-body.text-dark.px-0.py-0.text-center
+                input.mouthfeel_score.section-score.form-control.form-control-lg.text-center.mb-0(
+                  type="number",
+                  name="mouthfeel_score",
+                  value="0",
+                  min="0",
+                  max="5"
+                )
+                p.small.d-flex.align-items-end.flex-row-reverse.my-0.pb-0 /5
+
+            // Overall
+            .card.border-dark(style="width:100px;")
+              .card-header.py-1.px-0
+                p.small.mb-0.text-center Summary
+              .card-body.text-dark.px-0.py-0.text-center
+                input.overall_score.section-score.form-control.form-control-lg.text-center.mb-0(
+                  type="number",
+                  name="overall_score",
+                  value="0",
+                  min="0",
+                  max="10"
+                )
+                p.small.d-flex.align-items-end.flex-row-reverse.my-0.pb-0 /10
 
   script(src="/javascripts/scoresheet.js")
