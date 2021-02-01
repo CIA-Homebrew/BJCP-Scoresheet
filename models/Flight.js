@@ -26,7 +26,8 @@ module.exports = (sequelize, DataTypes) => {
   );
 
   Flight.associate = function (models) {
-    Flight.hasMany(models.Scoresheet, { as: "scoresheets", foreignKey: "id" });
+    Flight.belongsTo(models.User, { foreignKey: "id", as: "userId" });
+    Flight.hasMany(models.Scoresheet, { foreignKey: "id" });
   };
 
   return Flight;

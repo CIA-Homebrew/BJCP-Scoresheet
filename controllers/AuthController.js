@@ -70,35 +70,35 @@ userController.home = function (req, res) {
     return;
   }
 
-  const scoresheetPromise = Scoresheet.findAll({
-    where: {
-      user_id: req.user.id,
-    },
-  });
-
-  const flightPromise = Flight.findAll({
+  Flight.findAll({
     where: {
       created_by: req.user.id,
     },
-  });
+  })
+    .then((flights) => {
+      const plainFlights = flights.map((flight) => flight.get({ plain: true }));
 
-  Promise.all([scoresheetPromise, flightPromise])
-    .then(([scoresheets, flights]) => {
-      const flightObject = {};
+      const scoresheetPromises = plainFlights.map((flight) =>
+        Scoresheet.findAll({
+          where: {
+            flight_key: flight.id,
+          },
+        }).then((scoresheets) => {
+          return {
+            ...flight,
+            scoresheets: scoresheets.map((scoresheet) =>
+              scoresheet.get({ plain: true })
+            ),
+          };
+        })
+      );
 
-      flights.forEach((flight) => {
-        flightObject[flight.id] = {
-          ...flight.get({ plain: true }),
-          scoresheets: scoresheets
-            .filter((scoresheet) => scoresheet.flight_key === flight.id)
-            .map((scoresheet) => scoresheet.get({ plain: true })),
-        };
-      });
-
-      res.render("index", {
-        user: req.user,
-        title: appConstants.APP_NAME + " - Home",
-        flights: flightObject,
+      Promise.all(scoresheetPromises).then((flightObject) => {
+        res.render("index", {
+          user: req.user,
+          title: appConstants.APP_NAME + " - Home",
+          flights: flightObject,
+        });
       });
     })
     .catch((err) => {
