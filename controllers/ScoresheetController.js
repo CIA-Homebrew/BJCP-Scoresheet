@@ -31,97 +31,30 @@ function jsonErrorProcessor(err, res) {
   }
 }
 
-/**
- * Initialize Scoresheet - either new or existing
- * @param req
- * @param res
- */
 scoresheetController.initScoresheet = function (req, res) {
-  // If we are provided with a scoresheet ID then load it
   if (req.body.scoresheetId || req.query.scoresheetId) {
+    // Load scoresheet directly from id
     const scoresheetId = req.body.scoresheetId
       ? req.body.scoresheetId
       : req.query.scoresheetId;
 
-    Scoresheet.findAll({
-      where: {
-        id: scoresheetId,
-      },
-    })
-      .then((scoresheets) => {
-        if (!scoresheets.length)
-          throw new Error("No scoresheet found for given ID!");
-        res.render("scoresheet", {
-          user: req.user,
-          scoresheet: scoresheets[0].get({ plain: true }),
-          fingerprint: scoresheetId,
-          title: appConstants.APP_NAME + " - Load Scoresheet",
-        });
-      })
-      .catch((err) => {
-        debug(err);
-      });
-  } else if (req.query.flightId) {
-    // If we have a flight ID, then create a scoresheet with flight ID prepopulated
-    const flightId = req.query.flightId;
-    Flight.findOne({
-      where: {
-        id: flightId,
-        UserId: req.user.id,
-      },
-    })
-      .then((flight) => {
-        Scoresheet.count({
-          where: {
-            FlightId: flight.id,
-          },
-        }).then((numScoresheets) => {
-          if (flight) {
-            let date = new Date(flight.date);
-            res.render("scoresheet", {
-              user: req.user,
-              sess_date:
-                date.getUTCFullYear() +
-                "-" +
-                ("0" + (date.getUTCMonth() + 1)).slice(-2) +
-                "-" +
-                ("0" + date.getUTCDate()).slice(-2),
-              title: appConstants.APP_NAME + " - New Scoresheet",
-              flightId: req.query.flightId,
-              session_location: flight.location,
-              flight_total: numScoresheets + 1,
-              flight_position: numScoresheets + 1,
-            });
-          } else {
-            res.status(401);
-          }
-        });
-      })
-      .catch((err) => {
-        res.status(500);
-        debug(err);
-      });
-  } else {
-    // If we do NOT have a scoresheet ID just give the user a clean sheet to start new
-    let date = new Date(Date.now());
     res.render("scoresheet", {
-      user: req.user,
-      sess_date:
-        date.getUTCFullYear() +
-        "-" +
-        ("0" + (date.getUTCMonth() + 1)).slice(-2) +
-        "-" +
-        ("0" + date.getUTCDate()).slice(-2),
-      title: appConstants.APP_NAME + " - New Scoresheet",
+      scoresheetId: scoresheetId,
+      title: appConstants.APP_NAME + " - Scoresheet",
     });
+  } else if (req.body.flightId || req.query.flightId) {
+    // Create a new scoresheet in a flight
+    const flightId = req.body.flightId ? req.body.flightId : req.query.flightId;
+
+    res.render("scoresheet", {
+      flightId: flightId,
+      title: appConstants.APP_NAME + " - Scoresheet",
+    });
+  } else {
+    throw new Error("No scoresheet or flight found!");
   }
 };
 
-/**
- * Do Scoresheet Data Post
- * @param req
- * @param res
- */
 scoresheetController.doScoresheetDataChange = function (req, res) {
   // Make sure we don't allow a regular submit we ONLY take our AJAX calls
   if (req.body._ajax !== "true") {
@@ -171,26 +104,29 @@ scoresheetController.getScoresheetData = function (req, res) {
     where: {
       id: scoresheetId,
     },
-  }).then((scoresheetData) => {
+    include: {
+      model: Flight,
+      include: User,
+    },
+  }).then(async (scoresheetData) => {
     if (!scoresheetData) throw new Error("No scoresheet found!");
-    Flight.findOne({
-      where: {
-        id: scoresheetData.FlightId,
-        UserId: userId,
-      },
-    }).then((flightData) => {
-      if (!flightData) throw new Error("No flight found!");
-      const user = req.user;
-      delete user.password;
-      delete user.user_level;
-      delete user.created_at;
-      delete user.updated_at;
 
-      res.json({
-        scoresheet: scoresheetData,
-        flight: flightData,
-        user: user,
-      });
+    let user = scoresheetData.Flight.User;
+    delete user.password;
+    delete user.user_level;
+    delete user.created_at;
+    delete user.updated_at;
+
+    let flight = scoresheetData.Flight.get({ plain: true });
+    flight.flight_total = await Scoresheet.findAndCountAll({
+      where: { FlightId: flight.id },
+    }).then((result) => result.count);
+    delete flight.User;
+
+    res.json({
+      scoresheet: scoresheetData,
+      flight: flight,
+      user: user,
     });
   });
 };
@@ -277,15 +213,18 @@ scoresheetController.generatePDF = function (req, res) {
     });
     scoresheetIds = null;
   } else if (scoresheetIds) {
+    const selectorQueries = {};
+    if (!userIsAdmin) {
+      selectorQueries.UserId = req.user.id;
+    }
+
     scoresheetsDbPromise = Scoresheet.findAll({
       where: {
         id: scoresheetIds,
       },
       include: {
         model: Flight,
-        where: {
-          UserId: userIsAdmin ? undefined : req.user.id,
-        },
+        where: selectorQueries,
         include: User,
       },
     });
@@ -320,10 +259,15 @@ scoresheetController.generatePDF = function (req, res) {
         res.json({ requestId });
       });
 
-      return scoresheets.reduce((acc, scoresheet) => {
+      return scoresheets.reduce(async (acc, scoresheet) => {
+        let flight = scoresheet.Flight;
+        flight.flight_total = await Scoresheet.findAndCountAll({
+          where: { FlightId: flight.id },
+        }).then((result) => result.count);
+
         acc[scoresheet.id] = {
           scoresheet,
-          flight: scoresheet.Flight,
+          flight: flight,
           user: scoresheet.Flight.User,
         };
         return acc;

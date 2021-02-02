@@ -28,7 +28,6 @@ flightController.getFlightByName = function (req, res) {
   Flight.findOne({
     where: {
       flight_id: flightName,
-      UserId: userIsAdmin ? undefined : req.user.id,
     },
   })
     .then((flight) => {
@@ -48,11 +47,22 @@ flightController.getFlightById = function (req, res) {
   Flight.findOne({
     where: {
       id: flightId,
-      UserId: userIsAdmin ? undefined : req.user.id,
     },
+    include: User,
   })
-    .then((flight) => {
+    .then(async (flight) => {
+      const numScoresheets = await Scoresheet.findAndCountAll({
+        where: { FlightId: flight.id },
+      }).then((scoresheets) => scoresheets.count);
+
       const flightObject = flight.get({ plain: true });
+      flightObject.flight_total = numScoresheets;
+
+      flightObject.judge_name =
+        flight.User.firstname + " " + flight.User.lastname;
+      flightObject.bjcp_id = flight.User.bjcp_id;
+      flightObject.bjcp_rank = flight.User.bjcp_rank;
+
       res.json(flightObject);
     })
     .catch((err) => {
@@ -82,19 +92,29 @@ flightController.editFlight = function (req, res) {
   const userIsAdmin = req.user.user_level;
 
   const flightId = req.body.flightId;
-  const updateFlightParams = {
+  let updateFlightParams = {
     flight_id: req.body.flightName,
     location: req.body.flightLocation,
     date: req.body.flightDate,
-    UserId: userIsAdmin ? req.body.createdBy : undefined, // Only admins can reassign flights
-    submitted: userIsAdmin ? req.body.submitted : undefined, // Only admins can unsubmit a flight
   };
 
+  // Only admins can reassign flights
+  if (req.body.createdBy && userIsAdmin) {
+    updateFlightParams.UserId = req.body.createdBy;
+  }
+
+  // Only admins can unsubmit a flight
+  if (userIsAdmin) {
+    updateFlightParams.submitted = Boolean(req.body.submitted);
+  }
+
+  const searchConditions = { id: flightId };
+  if (!userIsAdmin) {
+    searchConditions.UserId = req.user.id;
+  }
+
   Flight.update(updateFlightParams, {
-    where: {
-      id: flightId,
-      UserId: userIsAdmin ? undefined : req.user.id,
-    },
+    where: searchConditions,
   })
     .then((newFlight) => {
       res.json(newFlight);
@@ -112,7 +132,6 @@ flightController.submitFlight = function (req, res) {
   })
     .then((scoresheets) => {
       if (scoresheets.count === 0) {
-        console.log(scoresheets.count);
         return Promise.reject("INVALID_FLIGHT_EMPTY");
       }
 
