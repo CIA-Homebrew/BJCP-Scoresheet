@@ -22,9 +22,13 @@ module.exports = {
     );
     await queryInterface.removeColumn("Scoresheets", "judge_judging_years");
     await queryInterface.removeColumn("Scoresheets", "user_id");
+    await queryInterface.renameColumn("Scoresheets", "flight_key", "FlightId");
+    await queryInterface.renameColumn("Flights", "created_by", "UserId");
   },
 
   down: async (queryInterface, Sequelize) => {
+    await queryInterface.renameColumn("Scoresheets", "FlightId", "flight_key");
+    await queryInterface.renameColumn("Flights", "UserId", "created_by");
     await queryInterface.addColumn("Scoresheets", "user_id", {
       type: Sequelize.UUID,
       references: {
