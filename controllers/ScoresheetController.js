@@ -26,7 +26,6 @@ function jsonErrorProcessor(err, res) {
     });
   } else {
     debug(err);
-    console.log(err);
     res.status(500).json(true);
   }
 }
@@ -111,11 +110,7 @@ scoresheetController.getScoresheetData = function (req, res) {
   }).then(async (scoresheetData) => {
     if (!scoresheetData) throw new Error("No scoresheet found!");
 
-    let user = scoresheetData.Flight.User;
-    delete user.password;
-    delete user.user_level;
-    delete user.created_at;
-    delete user.updated_at;
+    let user = scoresheetData.Flight.User.sanitize();
 
     let flight = scoresheetData.Flight.get({ plain: true });
     flight.flight_total = await Scoresheet.findAndCountAll({

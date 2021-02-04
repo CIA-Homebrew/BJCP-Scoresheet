@@ -85,6 +85,19 @@ module.exports = (sequelize, DataTypes) => {
     return bcrypt.hash(password, bcrypt.genSaltSync(10), null);
   };
 
+  User.prototype.sanitize = function () {
+    const user = { ...this.get({ plain: true }) };
+    delete user.password;
+    delete user.user_level;
+    delete user.created_at;
+    delete user.updated_at;
+    delete user.verification_id;
+    delete user.password_reset_id;
+    delete user.allow_automated_email;
+    delete user.email_verified;
+    return user;
+  };
+
   User.associate = function (models) {
     // associations can be defined here
     User.hasMany(models.Flight);
