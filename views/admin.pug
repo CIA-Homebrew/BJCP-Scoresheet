@@ -51,13 +51,15 @@ block content
             ) Flights
       .card-body
         .tab-content
-          #system.tab-pane.active(role="tabpanel", aria-labelledby="system-tab")
+          #system.tab-pane.active(
+            role="tabpanel",
+            aria-labelledby="system-tab"
+          )
             .container-fluid
               .mt-5
                 label(for="download-all-entries-button") Download All Entries as Concatenated PDFs (Caution: May take a while!)
                 br
-                button.btn.btn-primary(
-                  id="download-all-entries-button",
+                button#download-all-entries-button.btn.btn-primary(
                   type="button",
                   onclick=`downloadAllEntries()`
                 ) Download All Scoresheets
@@ -65,8 +67,7 @@ block content
               .mt-5
                 label(for="download-all-raw-data-button") Download All Scoresheet Data as CSV
                 br
-                button.btn.btn-primary(
-                  id="download-all-raw-data-button",
+                button#download-all-raw-data-button.btn.btn-primary(
                   type="button",
                   onclick=`getRawDataDump()`
                 ) Download Raw Data
@@ -76,9 +77,15 @@ block content
               .form-check.mb-2
                 .row
                   .col-3
-                    input.form-check-input(type="checkbox" id="filterByContested")
+                    input#filterByContested.form-check-input(type="checkbox")
                     label.form-check-label(for="filterByContested") Show Nonuniform Only
-                    small.form-text.text-muted.link-style#aboutContestedPopover(data-toggle="popover" data-placement="bottom" title="About Nonuniform Entries" data-html="true" data-content="Nonuniform entries occur when two or more scoresheets with the same entry number have different values that judges should have agreed upon. <br><br>Tracked nonuniform values include: <ul><li>Category</li><li>Consensus Score</li><li>Place</li><li>MiniBOS Advance</li></ul>") What does this mean?
+                    small#aboutContestedPopover.form-text.text-muted.link-style(
+                      data-toggle="popover",
+                      data-placement="bottom",
+                      title="About Nonuniform Entries",
+                      data-html="true",
+                      data-content="Nonuniform entries occur when two or more scoresheets with the same entry number have different values that judges should have agreed upon. <br><br>Tracked nonuniform values include: <ul><li>Category</li><li>Consensus Score</li><li>Place</li><li>MiniBOS Advance</li></ul>"
+                    ) What does this mean?
               table#entry_list_table.comp_entry_list.table.table-sm.table-striped.table-bordered.table-hover
                 thead.thead-dark
                   tr
@@ -86,13 +93,25 @@ block content
                     //- Entries have the property '_first' to denote the first entry with that prop; if other sheets with the same entry number vary, the '_contested' prop is flagged as true
                     th(scope="col", data-key="entry_number") Entry #
                     th(scope="col", data-key="numEntryScoresheets") # Scoresheets
-                    th(scope="col", data-key="category_first, cat_name_first,mismatched_category") Category
-                    th(scope="col", data-key="consensus_score_first,mismatched_consensus_score") Consenseus
+                    th(
+                      scope="col",
+                      data-key="category_first, cat_name_first,mismatched_category"
+                    ) Category
+                    th(
+                      scope="col",
+                      data-key="consensus_score_first,mismatched_consensus_score"
+                    ) Consenseus
                     th(scope="col", data-key="place_first,mismatched_place") Place
-                    th(scope="col", data-key="mini_boss_advanced_first,mismatched_mini_boss_advanced") Mini BOS
+                    th(
+                      scope="col",
+                      data-key="mini_boss_advanced_first,mismatched_mini_boss_advanced"
+                    ) Mini BOS
                 tbody
-              
-          #scoresheets.tab-pane(role="tabpane3", aria-labelledby="scoresheets-tab")
+
+          #scoresheets.tab-pane(
+            role="tabpane3",
+            aria-labelledby="scoresheets-tab"
+          )
             .container-fluid
               table.comp_scoresheet_list.table.table-sm.table-striped.table-bordered.table-hover
                 thead.thead-dark
@@ -100,9 +119,9 @@ block content
                     //- Table is generated dynamically by data-key in headers - to put more than one value in a cell, comma separate.
                     th(scope="col", data-key="entry_number") Scoresheet #
                     th(scope="col", data-key="category,sub,subcategory") Category
-                    th(scope="col", data-key="flight_key") Flight
-                    th(scope="col", data-key="user_id") Judge
-                    th(scope="col", data-key="judge_score") Judge Score
+                    th(scope="col", data-key="FlightId") Flight
+                    th(scope="col", data-key="UserId") Judge
+                    th(scope="col", data-key="judge_total") Judge Score
                     th(scope="col", data-key="place") Place
                     th(scope="col", data-key="mini_boss_advanced") Mini BOS
                 tbody
@@ -125,7 +144,7 @@ block content
                   tr
                     //- Table is generated dynamically by data-key in headers - to put more than one value in a cell, comma separate.
                     th(scope="col", data-key="flight_id") FlightID
-                    th(scope="col", data-key="created_by") Judge
+                    th(scope="col", data-key="UserId") Judge
                     th(scope="col", data-key="date") Date
                     th(scope="col", data-key="location") Location
                     th(scope="col", data-key="numFlightEntries") Entries
@@ -318,9 +337,17 @@ block content
               .col
                 #entryModalEntryContested(hidden)
                   h5.mb-1.text-center.text-danger #[span.material-icons warning] This entry is not uniform
-                  small.text-center.form-text.text-muted.link-style#aboutContestedPopover(data-toggle="popover" data-placement="bottom" title="About Nonuniform Entries" data-html="true" data-content="Nonuniform entries occur when two or more scoresheets with the same entry number have different values that judges should have agreed upon. <br><br>Tracked nonuniform values include: <ul><li>Category</li><li>Consensus Score</li><li>Place</li><li>MiniBOS Advance</li></ul>") What does this mean?
+                  small#aboutContestedPopover.text-center.form-text.text-muted.link-style(
+                    data-toggle="popover",
+                    data-placement="bottom",
+                    title="About Nonuniform Entries",
+                    data-html="true",
+                    data-content="Nonuniform entries occur when two or more scoresheets with the same entry number have different values that judges should have agreed upon. <br><br>Tracked nonuniform values include: <ul><li>Category</li><li>Consensus Score</li><li>Place</li><li>MiniBOS Advance</li></ul>"
+                  ) What does this mean?
               .col-auto.ml-auto
-                button.btn.btn-primary.ml-auto#downloadEntryScoresheetButton(onclick="downloadEntryScoresheet()") Download Entry Scoresheets
+                button#downloadEntryScoresheetButton.btn.btn-primary.ml-auto(
+                  onclick="downloadEntryScoresheet()"
+                ) Download Entry Scoresheets
                 small.form-text.text-muted Combines all scoresheets for entry into one PDF
             hr
           .form-group

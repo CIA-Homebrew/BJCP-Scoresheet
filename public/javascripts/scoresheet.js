@@ -374,6 +374,11 @@ $(document).ready(function () {
         fDataObject[key] = $(`.${key}`).first().val();
       });
 
+      // Populate checkboxes
+      $("form#newScoresheet input:checkbox").each(function () {
+        fDataObject[$(this).attr("id")] = $(this).is(":checked");
+      });
+
       // Submit the updated scoresheet
       $.post("/scoresheet/update", fDataObject, function (data) {
         if (data.update) {
@@ -455,7 +460,54 @@ $(document).ready(function () {
 
 load_scoresheet_data = () => {
   const scoresheetId = $("#id").val();
-  if (!scoresheetId) return;
+  if (!scoresheetId) {
+    const flightId = $("#FlightId").val();
+
+    fetch("/flight/getById", {
+      method: "POST",
+      body: JSON.stringify({ flightId: flightId }),
+      headers: {
+        "Content-type": "application/json",
+      },
+    })
+      .then((res) => res.json())
+      .then((flightInfo) => {
+        Object.keys(flightInfo).forEach((flightInfoKey) => {
+          const field = document.getElementById(flightInfoKey);
+
+          if (field) {
+            if (flightInfoKey === "flight_total") {
+              field.value = flightInfo[flightInfoKey] + 1;
+              document.getElementById("flight_position").value =
+                flightInfo[flightInfoKey] + 1;
+            } else if (field.id === "date") {
+              const date = new Date(flightInfo[flightInfoKey]);
+              const year = String(date.getFullYear()).padStart(4, "0");
+              const month = String(date.getMonth() + 1).padStart(2, "0");
+              const day = String(date.getDate()).padStart(2, "0");
+
+              field.value = `${year}-${month}-${day}`;
+            } else {
+              field.value = flightInfo[flightInfoKey];
+            }
+          }
+        });
+
+        const scoreFields = [
+          "aroma_score",
+          "appearance_score",
+          "flavor_score",
+          "mouthfeel_score",
+          "overall_score",
+        ];
+
+        scoreFields.forEach((fieldId) => {
+          $(`.${fieldId}`).closest(".card").addClass("red-border");
+        });
+      });
+
+    return;
+  }
 
   fetch("/scoresheet/data", {
     method: "POST",
@@ -492,14 +544,18 @@ load_scoresheet_data = () => {
           if (scoresheet[fieldId] == true && field.type === "checkbox") {
             field.checked = true;
             field.value = true;
+
+            if ($(`#${fieldId}_label`)) {
+              $(`#${fieldId}_label`).addClass("active");
+            }
           } else if (
             scoresheet[fieldId] == false &&
             field.type === "checkbox"
           ) {
             field.checked = false;
             field.value = false;
-          } else if (field.id === "session_date") {
-            const date = new Date(scoresheet[fieldId]);
+          } else if (field.id === "date") {
+            const date = new Date(flight[fieldId]);
             const year = String(date.getFullYear()).padStart(4, "0");
             const month = String(date.getMonth() + 1).padStart(2, "0");
             const day = String(date.getDate()).padStart(2, "0");
@@ -507,12 +563,10 @@ load_scoresheet_data = () => {
             field.value = `${year}-${month}-${day}`;
           } else if (field.hasAttribute("data-slider-ticks")) {
             window[field.id].setValue(scoresheet[fieldId]);
-          } else if (field.id === "judge_name") {
-            field.value = `${user.firstname} ${user.lastname}`;
           } else if (field.id === "bjcp_id" || field.id === "bjcp_rank") {
             field.value = user[field.id];
-          } else if (field.id === "session_location") {
-            field.value = scoresheet[fieldId] || flight.location;
+          } else if (field.id === "location" || field.id === "flight_total") {
+            field.value = flight[field.id];
           } else {
             field.value = scoresheet[fieldId];
           }
@@ -521,6 +575,8 @@ load_scoresheet_data = () => {
           if (field.classList.contains("vCheck")) {
             validatorHandler(field);
           }
+        } else if (fieldId === "firstname" && user) {
+          $("#judge_name").val(`${user.firstname} ${user.lastname}`);
         }
 
         update_tooltips();

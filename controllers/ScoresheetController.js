@@ -30,105 +30,36 @@ function jsonErrorProcessor(err, res) {
   }
 }
 
-/**
- * Initialize Scoresheet - either new or existing
- * @param req
- * @param res
- */
 scoresheetController.initScoresheet = function (req, res) {
-  // If we are provided with a scoresheet ID then load it
   if (req.body.scoresheetId || req.query.scoresheetId) {
+    // Load scoresheet directly from id
     const scoresheetId = req.body.scoresheetId
       ? req.body.scoresheetId
       : req.query.scoresheetId;
 
-    Scoresheet.findAll({
-      where: {
-        id: scoresheetId,
-      },
-    })
-      .then((scoresheets) => {
-        if (!scoresheets.length)
-          throw new Error("No scoresheet found for given ID!");
-        res.render("scoresheet", {
-          user: req.user,
-          scoresheet: scoresheets[0].get({ plain: true }),
-          fingerprint: scoresheetId,
-          title: appConstants.APP_NAME + " - Load Scoresheet",
-        });
-      })
-      .catch((err) => {
-        debug(err);
-      });
-  } else if (req.query.flightId) {
-    // If we have a flight ID, then create a scoresheet with flight ID prepopulated
-    const flightId = req.query.flightId;
-    Flight.findOne({
-      where: {
-        id: flightId,
-        created_by: req.user.id,
-      },
-    })
-      .then((flight) => {
-        Scoresheet.count({
-          where: {
-            flight_key: flight.id,
-          },
-        }).then((numScoresheets) => {
-          if (flight) {
-            let date = new Date(flight.date);
-            res.render("scoresheet", {
-              user: req.user,
-              sess_date:
-                date.getUTCFullYear() +
-                "-" +
-                ("0" + (date.getUTCMonth() + 1)).slice(-2) +
-                "-" +
-                ("0" + date.getUTCDate()).slice(-2),
-              title: appConstants.APP_NAME + " - New Scoresheet",
-              flightId: req.query.flightId,
-              session_location: flight.location,
-              flight_total: numScoresheets + 1,
-              flight_position: numScoresheets + 1,
-            });
-          } else {
-            res.status(401);
-          }
-        });
-      })
-      .catch((err) => {
-        res.status(500);
-        debug(err);
-      });
-  } else {
-    // If we do NOT have a scoresheet ID just give the user a clean sheet to start new
-    let date = new Date(Date.now());
     res.render("scoresheet", {
-      user: req.user,
-      sess_date:
-        date.getUTCFullYear() +
-        "-" +
-        ("0" + (date.getUTCMonth() + 1)).slice(-2) +
-        "-" +
-        ("0" + date.getUTCDate()).slice(-2),
-      title: appConstants.APP_NAME + " - New Scoresheet",
+      scoresheetId: scoresheetId,
+      title: appConstants.APP_NAME + " - Scoresheet",
     });
+  } else if (req.body.flightId || req.query.flightId) {
+    // Create a new scoresheet in a flight
+    const flightId = req.body.flightId ? req.body.flightId : req.query.flightId;
+
+    res.render("scoresheet", {
+      flightId: flightId,
+      title: appConstants.APP_NAME + " - Scoresheet",
+    });
+  } else {
+    throw new Error("No scoresheet or flight found!");
   }
 };
 
-/**
- * Do Scoresheet Data Post
- * @param req
- * @param res
- */
 scoresheetController.doScoresheetDataChange = function (req, res) {
   // Make sure we don't allow a regular submit we ONLY take our AJAX calls
   if (req.body._ajax !== "true") {
     // Just send them back to the edit page
     return res.redirect("/scoresheet/edit");
   }
-
-  const updateUserId = !req.body.noUpdateUserId;
 
   // strip the ajax property and update userId props
   delete req.body._ajax;
@@ -147,22 +78,14 @@ scoresheetController.doScoresheetDataChange = function (req, res) {
   if (!ss.id || ss.id === "") {
     delete ss.id;
   }
-  // Associate this scoresheet to the user
-  if (updateUserId) {
-    ss.user_id = req.user.id;
-  }
 
   // Upsert the record
   Scoresheet.upsert(ss)
     .then((retData) => {
-      // associate the sheet to the user
-
       // Returned Data
       let sheet = retData[0];
       let created = retData[1];
 
-      //req.flash('success', 'Scoresheet Submitted');
-      //res.redirect('/scoresheet/load');
       return res.send({ update: true, id: sheet.id });
     })
     .catch((err) => {
@@ -179,28 +102,26 @@ scoresheetController.getScoresheetData = function (req, res) {
   Scoresheet.findOne({
     where: {
       id: scoresheetId,
-      user_id: userId,
     },
-  }).then((scoresheetData) => {
+    include: {
+      model: Flight,
+      include: User,
+    },
+  }).then(async (scoresheetData) => {
     if (!scoresheetData) throw new Error("No scoresheet found!");
-    Flight.findOne({
-      where: {
-        id: scoresheetData.flight_key,
-        created_by: userId,
-      },
-    }).then((flightData) => {
-      if (!flightData) throw new Error("No flight found!");
-      const user = req.user;
-      delete user.password;
-      delete user.user_level;
-      delete user.created_at;
-      delete user.updated_at;
 
-      res.json({
-        scoresheet: scoresheetData,
-        flight: flightData,
-        user: user,
-      });
+    let user = scoresheetData.Flight.User.sanitize();
+
+    let flight = scoresheetData.Flight.get({ plain: true });
+    flight.flight_total = await Scoresheet.findAndCountAll({
+      where: { FlightId: flight.id },
+    }).then((result) => result.count);
+    delete flight.User;
+
+    res.json({
+      scoresheet: scoresheetData,
+      flight: flight,
+      user: user,
     });
   });
 };
@@ -213,25 +134,24 @@ scoresheetController.previewPDF = function (req, res) {
       id: scoresheetId,
     },
   })
-    .then((scoresheet) => {
-      // Doing this because userId isn't a FK on Scoresheet and this is a really fugly workaround
-      return Promise.all([
-        User.findOne({
+    // Doing this because stupid query joins don't work and this is a really fugly workaround
+    .then(async (scoresheet) => {
+      return Flight.findOne({
+        where: {
+          id: scoresheet.FlightId,
+        },
+      }).then((flight) => {
+        return User.findOne({
           where: {
-            id: scoresheet.user_id,
+            id: flight.UserId,
           },
-        }),
-        Flight.findOne({
-          where: {
-            id: scoresheet.flight_key,
-          },
-        }),
-      ]).then(([user, flight]) => {
-        return [
-          scoresheet.get({ plain: true }),
-          user.get({ plain: true }),
-          flight.get({ plain: true }),
-        ];
+        }).then((user) => {
+          return [
+            scoresheet.get({ plain: true }),
+            user.get({ plain: true }),
+            flight.get({ plain: true }),
+          ];
+        });
       });
     })
     .then(async ([scoresheet, user, flight]) => {
@@ -281,24 +201,27 @@ scoresheetController.generatePDF = function (req, res) {
       where: {
         entry_number: entryNumbers,
       },
-      raw: true,
+      include: {
+        model: Flight,
+        include: User,
+      },
     });
     scoresheetIds = null;
   } else if (scoresheetIds) {
+    const selectorQueries = {};
+    if (!userIsAdmin) {
+      selectorQueries.UserId = req.user.id;
+    }
+
     scoresheetsDbPromise = Scoresheet.findAll({
       where: {
         id: scoresheetIds,
       },
-      raw: true,
-    }).then((scoresheets) => {
-      // Verify user is authorized to access each scoresheet
-      scoresheets.forEach((scoresheet) => {
-        if (!(scoresheet.user_id === req.user.id || userIsAdmin)) {
-          return Promise.reject("NOT_AUTHORIZED");
-        }
-      });
-
-      return scoresheets;
+      include: {
+        model: Flight,
+        where: selectorQueries,
+        include: User,
+      },
     });
     entryNumbers = null;
   } else {
@@ -307,6 +230,9 @@ scoresheetController.generatePDF = function (req, res) {
 
   scoresheetsDbPromise
     .then((scoresheets) => {
+      if (!scoresheets.length) return Promise.reject("NOT_AUTHORIZED");
+
+      // Set up callback queue / download progress
       tmp.file((err, path, fd, cleanupCallback) => {
         if (err) throw err;
 
@@ -328,52 +254,19 @@ scoresheetController.generatePDF = function (req, res) {
         res.json({ requestId });
       });
 
-      const flights = [
-        ...new Set(scoresheets.map((scoresheet) => scoresheet.flight_key)),
-      ];
-      const users = [
-        ...new Set(scoresheets.map((scoresheet) => scoresheet.user_id)),
-      ];
+      return scoresheets.reduce(async (acc, scoresheet) => {
+        let flight = scoresheet.Flight;
+        flight.flight_total = await Scoresheet.findAndCountAll({
+          where: { FlightId: flight.id },
+        }).then((result) => result.count);
 
-      return Promise.all([
-        User.findAll({
-          where: {
-            id: users,
-          },
-          raw: true,
-        }),
-        Flight.findAll({
-          where: {
-            id: flights,
-            submitted: true,
-          },
-          raw: true,
-        }),
-      ]).then(([users, flights]) => {
-        return scoresheets.reduce((acc, val) => {
-          const currentFlight = flights.filter(
-            (flight) => flight.id === val.flight_key
-          );
-
-          if (!currentFlight.length) {
-            return {
-              ...acc,
-              [val.id]: {
-                error: "flight not submitted",
-              },
-            };
-          }
-
-          return {
-            ...acc,
-            [val.id]: {
-              scoresheet: val,
-              user: users.filter((user) => val.user_id === user.id)[0],
-              flight: currentFlight[0],
-            },
-          };
-        }, {});
-      });
+        acc[scoresheet.id] = {
+          scoresheet,
+          flight: flight,
+          user: scoresheet.Flight.User,
+        };
+        return acc;
+      }, {});
     })
     .then((scoresheetObject) => {
       // If there's only one scoresheet being requested, we don't need to make an archive - just send the pdf

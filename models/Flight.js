@@ -1,4 +1,4 @@
-"use strict";
+// "use strict";
 
 module.exports = (sequelize, DataTypes) => {
   const Flight = sequelize.define(
@@ -14,7 +14,6 @@ module.exports = (sequelize, DataTypes) => {
       flight_id: DataTypes.STRING,
       location: DataTypes.STRING,
       date: DataTypes.STRING,
-      created_by: DataTypes.UUID,
       submitted: DataTypes.BOOLEAN,
     },
     {
@@ -26,7 +25,8 @@ module.exports = (sequelize, DataTypes) => {
   );
 
   Flight.associate = function (models) {
-    Flight.hasMany(models.Scoresheet, { as: "scoresheets", foreignKey: "id" });
+    Flight.belongsTo(models.User);
+    Flight.hasMany(models.Scoresheet);
   };
 
   return Flight;

@@ -1,23 +1,4 @@
-"use strict";
-
-/**
- * stringEmpty will trim and test if the string is not empty
- * @param s
- * @param msg
- * @returns {boolean}
- */
-function stringEmpty(s, msg) {
-  // Make sure this is even a value
-  if (!s) return false;
-  // Make sure there is no white space
-  s = s.trim();
-  // Make sure it's not empty
-  if (s === "") {
-    throw new Error(msg);
-  }
-  // It's a good value
-  return true;
-}
+// "use strict";
 
 module.exports = (sequelize, DataTypes) => {
   const Scoresheet = sequelize.define(
@@ -32,13 +13,6 @@ module.exports = (sequelize, DataTypes) => {
         isUUID: {
           msg: "Improperly formatter ID provided.",
         },
-      },
-      session_date: {
-        type: DataTypes.DATE,
-        default: DataTypes.NOW,
-      },
-      session_location: {
-        type: DataTypes.STRING,
       },
       category: {
         type: DataTypes.STRING,
@@ -58,9 +32,6 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
       },
       flight_position: {
-        type: DataTypes.NUMBER,
-      },
-      flight_total: {
         type: DataTypes.NUMBER,
       },
       mini_boss_advanced: {
@@ -288,36 +259,6 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.NUMBER,
         default: 0,
       },
-      scoresheet_submitted: {
-        type: DataTypes.BOOLEAN,
-        default: false,
-      },
-      user_id: {
-        type: DataTypes.UUID,
-        allowNull: true,
-      },
-      judge_id: {
-        type: DataTypes.STRING,
-        allowNull: true,
-      },
-      judge_name: {
-        type: DataTypes.STRING,
-        allowNull: true,
-      },
-      judge_email: {
-        type: DataTypes.STRING,
-        allowNull: true,
-      },
-      judge_bjcp_id: DataTypes.STRING,
-      judge_bjcp_rank: DataTypes.STRING,
-      judge_cicerone_rank: DataTypes.STRING,
-      judge_pro_brewer_brewery: DataTypes.STRING,
-      judge_industry_description: DataTypes.STRING,
-      judge_judging_years: DataTypes.STRING,
-      flight_key: {
-        type: DataTypes.UUID,
-        allowNull: true,
-      },
     },
     {
       createdAt: "created_at",
@@ -327,8 +268,7 @@ module.exports = (sequelize, DataTypes) => {
 
   Scoresheet.associate = function (models) {
     // associations can be defined here
-    Scoresheet.belongsTo(models.User, { foreignKey: "id", as: "userID" });
-    Scoresheet.belongsTo(models.Flight, { foreignKey: "id", as: "flightID" });
+    Scoresheet.belongsTo(models.Flight);
   };
 
   return Scoresheet;
