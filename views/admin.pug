@@ -246,7 +246,12 @@ block content
               .col
                 //- Email
                 label(for="userModalEmail") Email
-                input#userModalEmail.form-control(type="text", disabled)
+                .input-group
+                  input#userModalEmail.form-control(type="text", disabled)
+                  .input-group-append
+                    .input-group-text
+                      input#userModalEmailVerified.mr-2(type="checkbox") 
+                      span Email Verified
               .col
                 //- Password
                 label Password

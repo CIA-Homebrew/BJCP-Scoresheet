@@ -168,7 +168,6 @@ const getDataValueByKey = (listItem, key) => {
   if (key === "created_by" || key === "UserId") {
     let userId = listItem[key];
     if (!userId && listItem.FlightId) {
-      console.log(listItem.FlightId, Flights);
       userId = Flights[listItem.FlightId].UserId;
     }
     value = `<a role="button" class="link-style" onclick="openDataModal('#judges','${userId}')">${Users[userId]?.firstname} ${Users[userId]?.lastname}</a>`;
@@ -319,6 +318,7 @@ $(() => {
     closeAllModals();
 
     $("#userModalEmail").val(user.email);
+    $("#userModalEmailVerified").prop("checked", user.email_verified);
     $("#userModalFirstName").val(user.firstname);
     $("#userModalLastName").val(user.lastname);
     $("#userModalBjcpId").val(user.bjcp_id);
@@ -376,6 +376,7 @@ $(() => {
     ) {
       const updatedUserData = {
         id: upateUserId,
+        email_verified: $("#userModalEmailVerified").prop("checked"),
         firstname: $("#userModalFirstName").val(),
         lastname: $("#userModalLastName").val(),
         bjcp_id: $("#userModalBjcpId").val(),
