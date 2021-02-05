@@ -356,7 +356,8 @@ userController.saveProfile = function (req, res) {
     plain: true,
   })
     .then((user) => {
-      if (user[1] !== 1) {
+      // Don't log in and re-establish session on admin updates
+      if (!req.body.id && user[1] !== 1) {
         req.login(user[1].get(), (err) => {
           if (err) {
             return Promise.reject(
@@ -439,7 +440,6 @@ userController.validateEmail = function (req, res) {
     },
     {
       where: {
-        id: userId,
         verification_id: validationCode,
       },
       returning: true,
@@ -451,7 +451,8 @@ userController.validateEmail = function (req, res) {
         Promise.reject("Could not validate email address. Please try again.");
       }
 
-      if (user[1] !== 1) {
+      // Only log in if we balidate on same browser that has established session
+      if (user[1] !== 1 && user[1].id === userId) {
         req.login(user[1].get(), (err) => {
           if (err) {
             return Promise.reject(err);
