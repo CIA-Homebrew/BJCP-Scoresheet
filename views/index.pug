@@ -335,6 +335,14 @@ block content
 
   script.
     const showAddFlightModal = () => {
+      // Need to do this to adjust for timezone
+      const today = new Date();
+      const year = String(today.getFullYear()).padStart(4, "0");
+      const month = String(today.getMonth() + 1).padStart(2, "0");
+      const day = String(today.getDate()).padStart(2, "0");
+
+      $('#flightDate').val(`${year}-${month}-${day}`)
+
     	$('#addFlightModal').modal('show')
     }
 
@@ -438,7 +446,7 @@ block content
       if ($('#info-modal')) {
         $('#info-modal').modal('show')
       }
-  
+
     	// on page load
     	addEntry = (flightId) => {
     		window.location.replace(`/scoresheet/edit?flightId=${flightId}`)

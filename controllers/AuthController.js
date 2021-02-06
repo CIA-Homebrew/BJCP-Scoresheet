@@ -426,7 +426,7 @@ userController.requestEmailValidation = function (req, res) {
 // Called when user clicks link in their email inbox to validate their account
 userController.validateEmail = function (req, res) {
   const validationCode = req.query.key;
-  const userId = req.user.id;
+  const userId = req.user ? req.user.id : null;
 
   if (!validationCode) {
     res.redirect("/");
@@ -467,7 +467,11 @@ userController.validateEmail = function (req, res) {
     .then((user) => {
       req.flash(
         "success",
-        `Email address ${user ? user.email : ""} successfully validated`
+        `Email address ${user ? user.email : ""} successfully validated. ${
+          user[1].id !== userId
+            ? "(You may need to log out and log back in)"
+            : ""
+        }`
       );
       res.redirect("/");
     })
