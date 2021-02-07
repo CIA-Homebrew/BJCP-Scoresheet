@@ -379,10 +379,15 @@ $(document).ready(function () {
         fDataObject[$(this).attr("id")] = $(this).is(":checked");
       });
 
+      // Explicity set the scoresheetID if it exists
+      fDataObject.id = $("#scoresheetId").val()
+        ? $("#scoresheetId").val()
+        : undefined;
+
       // Submit the updated scoresheet
       $.post("/scoresheet/update", fDataObject, function (data) {
         if (data.update) {
-          $("form#newScoresheet input#id").val(data.id);
+          $("#scoresheetId").val(data.id);
         } else if (data.error) {
         }
       });
@@ -459,7 +464,7 @@ $(document).ready(function () {
 });
 
 load_scoresheet_data = () => {
-  const scoresheetId = $("#id").val();
+  const scoresheetId = $("#scoresheetId").val();
   if (!scoresheetId) {
     const flightId = $("#FlightId").val();
 

@@ -97,6 +97,7 @@ scoresheetController.doScoresheetDataChange = function (req, res) {
 
 scoresheetController.getScoresheetData = function (req, res) {
   const scoresheetId = req.body.scoresheetId;
+  // TODO: limit to admin
   const userId = req.user.id;
 
   Scoresheet.findOne({
@@ -124,6 +125,35 @@ scoresheetController.getScoresheetData = function (req, res) {
       user: user,
     });
   });
+};
+
+scoresheetController.deleteScoresheet = function (req, res) {
+  const scoresheetId = req.body.scoresheetId;
+  const userId = req.user.id;
+  const userIsAdmin = req.user.user_level > 0;
+
+  const userQueryParams = userIsAdmin ? {} : { id: userId };
+
+  Scoresheet.destroy({
+    where: { id: scoresheetId },
+    include: [
+      {
+        model: "Flight",
+        include: [
+          {
+            model: "User",
+            where: userQueryParams,
+          },
+        ],
+      },
+    ],
+  })
+    .then(() => {
+      res.status(200).json(scoresheetId);
+    })
+    .catch((err) => {
+      jsonErrorProcessor(err, res);
+    });
 };
 
 scoresheetController.previewPDF = function (req, res) {
@@ -254,19 +284,27 @@ scoresheetController.generatePDF = function (req, res) {
         res.json({ requestId });
       });
 
-      return scoresheets.reduce(async (acc, scoresheet) => {
+      const flightTotalPromises = scoresheets.map((scoresheet) => {
         let flight = scoresheet.Flight;
-        flight.flight_total = await Scoresheet.findAndCountAll({
-          where: { FlightId: flight.id },
-        }).then((result) => result.count);
+        return Scoresheet.findAndCountAll({
+          where: { FlightId: scoresheet.Flight.id },
+        }).then((result) => {
+          flight.flight_total = result.count;
 
-        acc[scoresheet.id] = {
-          scoresheet,
-          flight: flight,
-          user: scoresheet.Flight.User,
-        };
-        return acc;
-      }, {});
+          return {
+            scoresheet,
+            flight: flight,
+            user: scoresheet.Flight.User,
+          };
+        });
+      });
+
+      return Promise.all(flightTotalPromises).then((scoresheetObjectsArray) => {
+        return scoresheetObjectsArray.reduce((acc, scoresheetObject) => {
+          acc[scoresheetObject.scoresheet.id] = scoresheetObject;
+          return acc;
+        }, {});
+      });
     })
     .then((scoresheetObject) => {
       // If there's only one scoresheet being requested, we don't need to make an archive - just send the pdf

@@ -87,6 +87,13 @@ router.post(
   scoresheetController.initScoresheet
 );
 
+// route for scoresheet delete
+router.post(
+  "/scoresheet/delete/",
+  authMiddle.isAuthenticated,
+  scoresheetController.deleteScoresheet
+);
+
 // route for scoresheet ajax autosave
 router.post(
   "/scoresheet/update/",
@@ -126,7 +133,11 @@ router.post(
   authMiddle.isAuthenticated,
   flightController.addFlight
 );
-router.post("/flight/edit", authMiddle.isAdmin, flightController.editFlight);
+router.post(
+  "/flight/edit",
+  authMiddle.isAuthenticated,
+  flightController.editFlight
+);
 router.post(
   "/flight/submit",
   authMiddle.isAuthenticated,
@@ -144,7 +155,7 @@ router.post(
 );
 router.post(
   "/flight/delete",
-  authMiddle.isAdmin,
+  authMiddle.isAuthenticated,
   flightController.deleteFlight
 );
 

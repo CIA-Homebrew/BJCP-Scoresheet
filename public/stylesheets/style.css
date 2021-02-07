@@ -70,4 +70,7 @@ body {
 .red-border {
   border-color: #f00 !important;
 }
+.modal-xl {
+  max-width: 80% !important;
+}
 /* NOTE! MAKE SURE TO EDIT IN .styl FILE AND NOT .css FILE! */
