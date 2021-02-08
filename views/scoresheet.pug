@@ -11,7 +11,7 @@ block content
     input#FlightId(type="text", name="FlightId", hidden, value=flightId)
     .container
       .card
-        .card-header
+        .card-body
           .row
             .col-md
               h4.card-title BJCP Digital Soresheet
@@ -62,7 +62,7 @@ block content
                 name="btn",
                 onClick="goHome()"
               ) Back to My Flights
-          ul#scoresheet-list.nav.nav-tabs.card-header-tabs(role="tablist")
+          ul#scoresheet-list.nav.nav-tabs.w-100(role="tablist")
             li.nav-item
               a#information-tab.nav-link.active.px-2(
                 data-toggle="tab",
@@ -1199,6 +1199,10 @@ block content
                         p.small.d-flex.align-items-end.flex-row-reverse.my-0.pb-0 /10
         .card-footer
           .d-flex.flex-row.justify-content-around
+            // Next Tab
+            .my-auto
+              button#previousTab.btn.btn-outline-primary(disabled) Previous
+
             // Aroma
             .card.border-dark(style="width:100px")
               .card-header.py-1
@@ -1268,5 +1272,9 @@ block content
                   max="10"
                 )
                 p.small.d-flex.align-items-end.flex-row-reverse.my-0.pb-0 /10
+
+            // Next Tab
+            .my-auto
+              button#nextTab.btn.btn-outline-primary Next
 
   script(src="/javascripts/scoresheet.js")

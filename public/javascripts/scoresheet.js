@@ -277,6 +277,7 @@ function validatorHandler(_this) {
 }
 
 let goHome = () => {};
+let goToTab = () => {};
 let update_tooltips = () => {};
 let update_subcat = () => {};
 let bjcp_data = {};
@@ -402,6 +403,38 @@ $(document).ready(function () {
     window.location.replace("/");
   };
 
+  goToTab = (tabId) => {
+    const tabIds = $('[data-toggle="tab"]')
+      .map(function () {
+        return this.id;
+      })
+      .get();
+    const numTabs = tabIds.length - 1;
+    const currentTabId = $('[data-toggle="tab"][aria-selected="true"]')
+      .first()
+      .attr("id");
+    const currentTabIndex = tabIds.indexOf(currentTabId);
+
+    if (tabIds.includes(tabId)) {
+      const nextTabIndex = tabIds.indexOf(tabId);
+      $("#nextTab").attr("disabled", nextTabIndex >= numTabs);
+      $("#previousTab").attr("disabled", nextTabIndex <= 0);
+      $(`#scoresheet-list a[id=${tabId}]`).tab("show");
+    } else if (tabId === "next") {
+      const nextTabIndex = currentTabIndex + 1;
+      if (nextTabIndex > numTabs) return;
+      $("#nextTab").attr("disabled", nextTabIndex >= numTabs);
+      $("#previousTab").attr("disabled", nextTabIndex <= 0);
+      $(`#scoresheet-list a[id=${tabIds[nextTabIndex]}]`).tab("show");
+    } else if (tabId === "previous") {
+      const nextTabIndex = currentTabIndex - 1;
+      if (nextTabIndex < 0) return;
+      $("#nextTab").attr("disabled", nextTabIndex >= numTabs);
+      $("#previousTab").attr("disabled", nextTabIndex <= 0);
+      $(`#scoresheet-list a[id=${tabIds[nextTabIndex]}]`).tab("show");
+    }
+  };
+
   //- Prevent the form from doing a general submit
   $("form#newScoresheet").submit(function (e) {
     e.preventDefault();
@@ -461,6 +494,14 @@ $(document).ready(function () {
     $("#judge_total").text(totalScore);
     update_scoresheet();
   });
+});
+
+$("#nextTab").on("click", () => {
+  goToTab("next");
+});
+
+$("#previousTab").on("click", () => {
+  goToTab("previous");
 });
 
 load_scoresheet_data = () => {
