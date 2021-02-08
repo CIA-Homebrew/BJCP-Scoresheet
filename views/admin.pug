@@ -148,6 +148,7 @@ block content
                     th(scope="col", data-key="date") Date
                     th(scope="col", data-key="location") Location
                     th(scope="col", data-key="numFlightEntries") Entries
+                    th(scope="col", data-key="submitted") Submitted
                 tbody
 
   #flightDataModal.modal.fade(
@@ -204,6 +205,10 @@ block content
               tbody#flightModalEntries
         .modal-footer
           button.btn.btn-secondary(type="button", data-dismiss="modal") Cancel
+          button.btn.btn-danger(
+            type="button",
+            onclick="showDeleteFlightModal()"
+          ) Delete
           button.btn.btn-primary(type="button", onclick="updateFlightData()") Update Flight
   #scoresheetDataModal.modal.fade(
     tabindex="-1",
@@ -226,6 +231,10 @@ block content
               maxlength="6"
             )
           button.btn.btn-secondary(type="button", data-dismiss="modal") Close
+          button.btn.btn-danger(
+            type="button",
+            onclick="showDeleteScoresheetModal()"
+          ) Delete
           button.btn.btn-primary(
             type="button",
             onclick="updateScoresheetData()"
@@ -396,6 +405,59 @@ block content
         .modal-footer
           button.btn.btn-secondary(type="button", data-dismiss="modal") Cancel
           button.btn.btn-primary(type="button", onclick="updateEntryData()") Update Entry
+
+  #confirm-delete-scoresheet-modal.modal.fade(
+    tabindex="-1",
+    role="dialog",
+    aria-labelledby="confirmDeleteEntryLabel",
+    aria-hidden="true",
+    style="background: rgba(0,0,0,0.7);"
+  )
+    .modal-dialog
+      .modal-content
+        .modal-header 
+          h5 Confirm Delete Scoresheet
+        .modal-body 
+          p Are you sure you want to delete this scoresheet? All data will be permanently lost.
+          p This action <strong>CANNOT BE UNDONE</strong>.
+          .form-check.pt-4
+            input#user_verify_scoresheet_delete.form-check-input(
+              type="checkbox"
+            )
+            label.form-check-label(for="user_verify_scoresheet_delete") I understand and want to delete this scoresheet.
+        .modal-footer
+          input#scoresheet-to-delete(value=null, hidden)
+          button.btn.btn-secondary(
+            type="button",
+            data-dismiss="modal",
+            onclick="clearScoresheetToDelete()"
+          ) Cancel
+          button.btn.btn-danger(type="button", onclick="deleteScoresheet();") Delete Scoresheet
+  #confirm-delete-flight-modal.modal.fade(
+    tabindex="-1",
+    role="dialog",
+    aria-labelledby="confirmDeleteFlightLabel",
+    aria-hidden="true",
+    style="background: rgba(0,0,0,0.7);"
+  )
+    .modal-dialog
+      .modal-content
+        .modal-header 
+          h5 Confirm Delete Flight
+        .modal-body 
+          p Are you sure you want to delete this flight? All child scoresheets will also be deleted.
+          p This action <strong>CANNOT BE UNDONE</strong>.
+          .form-check.pt-4
+            input#user_verify_flight_delete.form-check-input(type="checkbox")
+            label.form-check-label(for="user_verify_flight_delete") I understand and want to delete this flight.
+        .modal-footer
+          input#flight-to-delete(value=null, hidden)
+          button.btn.btn-secondary(
+            type="button",
+            data-dismiss="modal",
+            onclick="clearFlightToDelete()"
+          ) Cancel
+          button.btn.btn-danger(type="button", onclick="deleteFlight();") Delete Flight
 
   script(src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js")
   script(
