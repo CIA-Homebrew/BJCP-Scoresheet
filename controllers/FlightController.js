@@ -14,7 +14,6 @@ function jsonErrorProcessor(err, res) {
       ],
     });
   } else {
-    console.log(err);
     jsonErrorProcessor(err, res);
   }
 }
@@ -36,7 +35,6 @@ flightController.getFlightByName = function (req, res) {
     })
     .catch((err) => {
       jsonErrorProcessor(err, res);
-      console.log(err);
     });
 };
 
@@ -67,7 +65,6 @@ flightController.getFlightById = function (req, res) {
     })
     .catch((err) => {
       jsonErrorProcessor(err, res);
-      console.log(err);
     });
 };
 
@@ -150,7 +147,6 @@ flightController.submitFlight = function (req, res) {
     })
     .catch((err) => {
       jsonErrorProcessor(err, res);
-      console.log(err);
     });
 };
 
@@ -158,18 +154,22 @@ flightController.deleteFlight = function (req, res) {
   const flightId = req.body.flightId;
   const userIsAdmin = req.user.user_level;
 
+  const queryParams = {
+    id: flightId,
+  };
+
+  if (!userIsAdmin) {
+    queryParams.UserId = req.user.id;
+  }
+
   Flight.destroy({
-    where: {
-      id: flightId,
-      UserId: userIsAdmin ? undefined : req.user.id,
-    },
+    where: queryParams,
   })
     .then(() => {
-      res.status(200);
+      res.status(200).json(flightId);
     })
     .catch((err) => {
       jsonErrorProcessor(err, res);
-      console.log(err);
     });
 };
 

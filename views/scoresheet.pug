@@ -2,7 +2,12 @@ extends layout
 
 block content
   form#newScoresheet(role="form", action="/scoresheet/update", method="post")
-    input#id(type="text", name="id", hidden, value=scoresheetId)
+    input#scoresheetId(
+      type="text",
+      name="scoresheetId",
+      hidden,
+      value=scoresheetId
+    )
     input#FlightId(type="text", name="FlightId", hidden, value=flightId)
     .container
       .card

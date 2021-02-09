@@ -25,8 +25,8 @@ module.exports = (sequelize, DataTypes) => {
   );
 
   Flight.associate = function (models) {
+    Flight.hasMany(models.Scoresheet, { onDelete: "CASCADE", hooks: true });
     Flight.belongsTo(models.User);
-    Flight.hasMany(models.Scoresheet);
   };
 
   return Flight;

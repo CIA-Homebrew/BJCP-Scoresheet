@@ -2,12 +2,11 @@
 var aroma_malt = new Slider("#aroma_malt", {
   ticks: [0, 10, 50, 100],
   ticks_positions: [0, 10, 50, 100],
-  //- ticks_labels: ['None','Low','Med','High'],
   ticks_labels: [
-    '<p style="transform: translateY(15px) rotate(270deg);transform-origin: center;">None</p>',
-    '<p style="transform: translateY(10px) rotate(270deg);transform-origin: center;">Low</p>',
-    '<p style="transform: translateY(10px) rotate(270deg);transform-origin: center;">Med</p>',
-    '<p style="transform: translateY(10px) rotate(270deg);transform-origin: center;">High</p>',
+    '<p class="rotate-tick-offset-15">None</p>',
+    '<p class="rotate-tick-offset-10">Low</p>',
+    '<p class="rotate-tick-offset-10">Med</p>',
+    '<p class="rotate-tick-offset-10">High</p>',
   ],
   ticks_snap_bounds: 3,
   value: 0,
@@ -15,12 +14,11 @@ var aroma_malt = new Slider("#aroma_malt", {
 var aroma_hops = new Slider("#aroma_hops", {
   ticks: [0, 10, 50, 100],
   ticks_positions: [0, 10, 50, 100],
-  //- ticks_labels: ['None','Low','Med','High'],
   ticks_labels: [
-    '<p style="transform: translateY(15px) rotate(270deg);transform-origin: center;">None</p>',
-    '<p style="transform: translateY(10px) rotate(270deg);transform-origin: center;">Low</p>',
-    '<p style="transform: translateY(10px) rotate(270deg);transform-origin: center;">Med</p>',
-    '<p style="transform: translateY(10px) rotate(270deg);transform-origin: center;">High</p>',
+    '<p class="rotate-tick-offset-15">None</p>',
+    '<p class="rotate-tick-offset-10">Low</p>',
+    '<p class="rotate-tick-offset-10">Med</p>',
+    '<p class="rotate-tick-offset-10">High</p>',
   ],
   ticks_snap_bounds: 3,
   value: 0,
@@ -28,12 +26,11 @@ var aroma_hops = new Slider("#aroma_hops", {
 var aroma_fermentation = new Slider("#aroma_fermentation", {
   ticks: [0, 10, 50, 100],
   ticks_positions: [0, 10, 50, 100],
-  //- ticks_labels: ['None','Low','Med','High'],
   ticks_labels: [
-    '<p style="transform: translateY(15px) rotate(270deg);transform-origin: center;">None</p>',
-    '<p style="transform: translateY(10px) rotate(270deg);transform-origin: center;">Low</p>',
-    '<p style="transform: translateY(10px) rotate(270deg);transform-origin: center;">Med</p>',
-    '<p style="transform: translateY(10px) rotate(270deg);transform-origin: center;">High</p>',
+    '<p class="rotate-tick-offset-15">None</p>',
+    '<p class="rotate-tick-offset-10">Low</p>',
+    '<p class="rotate-tick-offset-10">Med</p>',
+    '<p class="rotate-tick-offset-10">High</p>',
   ],
   ticks_snap_bounds: 3,
   value: 0,
@@ -41,16 +38,16 @@ var aroma_fermentation = new Slider("#aroma_fermentation", {
 
 //- Appearance Sliders
 var appearance_color = new Slider("#appearance_color", {
-  ticks: [0, 20, 40, 60, 80, 100],
-  ticks_positions: [0, 20, 40, 60, 80, 100],
-  //- ticks_labels: ['None','Low','Med','High'],
+  ticks: [0, 17, 33, 50, 67, 83, 100],
+  ticks_positions: [0, 17, 33, 50, 67, 83, 100],
   ticks_labels: [
-    '<p style="transform: translateY(15px) rotate(270deg);transform-origin: center;">Yellow</p>',
-    '<p style="transform: translateY(10px) rotate(270deg);transform-origin: center;">Gold</p>',
-    '<p style="transform: translateY(16px) rotate(270deg);transform-origin: center;">Amber</p>',
-    '<p style="transform: translateY(16px) rotate(270deg);transform-origin: center;">Copper</p>',
-    '<p style="transform: translateY(14px) rotate(270deg);transform-origin: center;">Brown</p>',
-    '<p style="transform: translateY(10px) rotate(270deg);transform-origin: center;">Black</p>',
+    '<p class="rotate-tick-offset-15">Straw</p>',
+    '<p class="rotate-tick-offset-15">Yellow</p>',
+    '<p class="rotate-tick-offset-10">Gold</p>',
+    '<p class="rotate-tick-offset-15">Amber</p>',
+    '<p class="rotate-tick-offset-15">Copper</p>',
+    '<p class="rotate-tick-offset-15">Brown</p>',
+    '<p class="rotate-tick-offset-10">Black</p>',
   ],
   ticks_snap_bounds: 3,
   value: 0,
@@ -58,11 +55,10 @@ var appearance_color = new Slider("#appearance_color", {
 var appearance_clarity = new Slider("#appearance_clarity", {
   ticks: [0, 50, 100],
   ticks_positions: [0, 50, 100],
-  //- ticks_labels: ['None','Low','Med','High'],
   ticks_labels: [
-    '<p style="transform: translateY(18px) rotate(270deg);transform-origin: center;">Brilliant</p>',
-    '<p style="transform: translateY(10px) rotate(270deg);transform-origin: center;">Hazy</p>',
-    '<p style="transform: translateY(15px) rotate(270deg);transform-origin: center;">Opaque</p>',
+    '<p class="rotate-tick-offset-20">Brilliant</p>',
+    '<p class="rotate-tick-offset-10">Hazy</p>',
+    '<p class="rotate-tick-offset-15">Opaque</p>',
   ],
   ticks_snap_bounds: 3,
   value: 0,
@@ -70,13 +66,12 @@ var appearance_clarity = new Slider("#appearance_clarity", {
 var appearance_head = new Slider("#appearance_head", {
   ticks: [0, 25, 50, 75, 100],
   ticks_positions: [0, 25, 50, 75, 100],
-  //- ticks_labels: ['None','Low','Med','High'],
   ticks_labels: [
-    '<p style="transform: translateY(15px) rotate(270deg);transform-origin: center;">White</p>',
-    '<p style="transform: translateY(12px) rotate(270deg);transform-origin: center;">Ivory</p>',
-    '<p style="transform: translateY(15px) rotate(270deg);transform-origin: center;">Beige</p>',
-    '<p style="transform: translateY(8px) rotate(270deg);transform-origin: center;">Tan</p>',
-    '<p style="transform: translateY(14px) rotate(270deg);transform-origin: center;">Brown</p>',
+    '<p class="rotate-tick-offset-15">White</p>',
+    '<p class="rotate-tick-offset-15">Ivory</p>',
+    '<p class="rotate-tick-offset-15">Beige</p>',
+    '<p class="rotate-tick-offset-10">Tan</p>',
+    '<p class="rotate-tick-offset-15">Brown</p>',
   ],
   ticks_snap_bounds: 3,
   value: 0,
@@ -84,12 +79,11 @@ var appearance_head = new Slider("#appearance_head", {
 var appearance_retention = new Slider("#appearance_retention", {
   ticks: [0, 10, 50, 100],
   ticks_positions: [0, 10, 50, 100],
-  //- ticks_labels: ['None','Low','Med','High'],
   ticks_labels: [
-    '<p style="transform: translateY(15px) rotate(270deg);transform-origin: center;">None</p>',
-    '<p style="transform: translateY(10px) rotate(270deg);transform-origin: center;">Low</p>',
-    '<p style="transform: translateY(10px) rotate(270deg);transform-origin: center;">Med</p>',
-    '<p style="transform: translateY(10px) rotate(270deg);transform-origin: center;">High</p>',
+    '<p class="rotate-tick-offset-15">None</p>',
+    '<p class="rotate-tick-offset-10">Low</p>',
+    '<p class="rotate-tick-offset-10">Med</p>',
+    '<p class="rotate-tick-offset-10">High</p>',
   ],
   ticks_snap_bounds: 3,
   value: 0,
@@ -99,12 +93,11 @@ var appearance_retention = new Slider("#appearance_retention", {
 var flavor_malt = new Slider("#flavor_malt", {
   ticks: [0, 10, 50, 100],
   ticks_positions: [0, 10, 50, 100],
-  //- ticks_labels: ['None','Low','Med','High'],
   ticks_labels: [
-    '<p style="transform: translateY(15px) rotate(270deg);transform-origin: center;">None</p>',
-    '<p style="transform: translateY(10px) rotate(270deg);transform-origin: center;">Low</p>',
-    '<p style="transform: translateY(10px) rotate(270deg);transform-origin: center;">Med</p>',
-    '<p style="transform: translateY(10px) rotate(270deg);transform-origin: center;">High</p>',
+    '<p class="rotate-tick-offset-15">None</p>',
+    '<p class="rotate-tick-offset-10">Low</p>',
+    '<p class="rotate-tick-offset-10">Med</p>',
+    '<p class="rotate-tick-offset-10">High</p>',
   ],
   ticks_snap_bounds: 3,
   value: 0,
@@ -112,12 +105,11 @@ var flavor_malt = new Slider("#flavor_malt", {
 var flavor_hops = new Slider("#flavor_hops", {
   ticks: [0, 10, 50, 100],
   ticks_positions: [0, 10, 50, 100],
-  //- ticks_labels: ['None','Low','Med','High'],
   ticks_labels: [
-    '<p style="transform: translateY(15px) rotate(270deg);transform-origin: center;">None</p>',
-    '<p style="transform: translateY(10px) rotate(270deg);transform-origin: center;">Low</p>',
-    '<p style="transform: translateY(10px) rotate(270deg);transform-origin: center;">Med</p>',
-    '<p style="transform: translateY(10px) rotate(270deg);transform-origin: center;">High</p>',
+    '<p class="rotate-tick-offset-15">None</p>',
+    '<p class="rotate-tick-offset-10">Low</p>',
+    '<p class="rotate-tick-offset-10">Med</p>',
+    '<p class="rotate-tick-offset-10">High</p>',
   ],
   ticks_snap_bounds: 3,
   value: 0,
@@ -125,12 +117,11 @@ var flavor_hops = new Slider("#flavor_hops", {
 var flavor_bitterness = new Slider("#flavor_bitterness", {
   ticks: [0, 10, 50, 100],
   ticks_positions: [0, 10, 50, 100],
-  //- ticks_labels: ['None','Low','Med','High'],
   ticks_labels: [
-    '<p style="transform: translateY(15px) rotate(270deg);transform-origin: center;">None</p>',
-    '<p style="transform: translateY(10px) rotate(270deg);transform-origin: center;">Low</p>',
-    '<p style="transform: translateY(10px) rotate(270deg);transform-origin: center;">Med</p>',
-    '<p style="transform: translateY(10px) rotate(270deg);transform-origin: center;">High</p>',
+    '<p class="rotate-tick-offset-15">None</p>',
+    '<p class="rotate-tick-offset-10">Low</p>',
+    '<p class="rotate-tick-offset-10">Med</p>',
+    '<p class="rotate-tick-offset-10">High</p>',
   ],
   ticks_snap_bounds: 3,
   value: 0,
@@ -138,12 +129,11 @@ var flavor_bitterness = new Slider("#flavor_bitterness", {
 var flavor_fermentation = new Slider("#flavor_fermentation", {
   ticks: [0, 10, 50, 100],
   ticks_positions: [0, 10, 50, 100],
-  //- ticks_labels: ['None','Low','Med','High'],
   ticks_labels: [
-    '<p style="transform: translateY(15px) rotate(270deg);transform-origin: center;">None</p>',
-    '<p style="transform: translateY(10px) rotate(270deg);transform-origin: center;">Low</p>',
-    '<p style="transform: translateY(10px) rotate(270deg);transform-origin: center;">Med</p>',
-    '<p style="transform: translateY(10px) rotate(270deg);transform-origin: center;">High</p>',
+    '<p class="rotate-tick-offset-15">None</p>',
+    '<p class="rotate-tick-offset-10">Low</p>',
+    '<p class="rotate-tick-offset-10">Med</p>',
+    '<p class="rotate-tick-offset-10">High</p>',
   ],
   ticks_snap_bounds: 3,
   value: 0,
@@ -151,10 +141,9 @@ var flavor_fermentation = new Slider("#flavor_fermentation", {
 var flavor_balance = new Slider("#flavor_balance", {
   ticks: [0, 100],
   ticks_positions: [0, 100],
-  //- ticks_labels: ['None','Low','Med','High'],
   ticks_labels: [
-    '<p style="transform: translateY(15px) rotate(270deg);transform-origin: center;">Hoppy</p>',
-    '<p style="transform: translateY(12px) rotate(270deg);transform-origin: center;">Malty</p>',
+    '<p class="rotate-tick-offset-15">Hoppy</p>',
+    '<p class="rotate-tick-offset-15">Malty</p>',
   ],
   ticks_snap_bounds: 3,
   value: 0,
@@ -162,10 +151,9 @@ var flavor_balance = new Slider("#flavor_balance", {
 var flavor_finish_aftertaste = new Slider("#flavor_finish_aftertaste", {
   ticks: [0, 100],
   ticks_positions: [0, 100],
-  //- ticks_labels: ['None','Low','Med','High'],
   ticks_labels: [
-    '<p style="transform: translateY(7px) rotate(270deg);transform-origin: center;">Dry</p>',
-    '<p style="transform: translateY(12px) rotate(270deg);transform-origin: center;">Sweet</p>',
+    '<p class="rotate-tick-offset-10">Dry</p>',
+    '<p class="rotate-tick-offset-15">Sweet</p>',
   ],
   ticks_snap_bounds: 3,
   value: 0,
@@ -175,12 +163,11 @@ var flavor_finish_aftertaste = new Slider("#flavor_finish_aftertaste", {
 var mouthfeel_body = new Slider("#mouthfeel_body", {
   ticks: [0, 10, 50, 100],
   ticks_positions: [0, 10, 50, 100],
-  //- ticks_labels: ['None','Low','Med','High'],
   ticks_labels: [
-    '<p style="transform: translateY(15px) rotate(270deg);transform-origin: center;">None</p>',
-    '<p style="transform: translateY(10px) rotate(270deg);transform-origin: center;">Thin</p>',
-    '<p style="transform: translateY(10px) rotate(270deg);transform-origin: center;">Med</p>',
-    '<p style="transform: translateY(10px) rotate(270deg);transform-origin: center;">Full</p>',
+    '<p class="rotate-tick-offset-15">None</p>',
+    '<p class="rotate-tick-offset-10">Thin</p>',
+    '<p class="rotate-tick-offset-10">Med</p>',
+    '<p class="rotate-tick-offset-10">Full</p>',
   ],
   ticks_snap_bounds: 3,
   value: 0,
@@ -188,12 +175,11 @@ var mouthfeel_body = new Slider("#mouthfeel_body", {
 var mouthfeel_carbonation = new Slider("#mouthfeel_carbonation", {
   ticks: [0, 10, 50, 100],
   ticks_positions: [0, 10, 50, 100],
-  //- ticks_labels: ['None','Low','Med','High'],
   ticks_labels: [
-    '<p style="transform: translateY(15px) rotate(270deg);transform-origin: center;">None</p>',
-    '<p style="transform: translateY(10px) rotate(270deg);transform-origin: center;">Low</p>',
-    '<p style="transform: translateY(10px) rotate(270deg);transform-origin: center;">Med</p>',
-    '<p style="transform: translateY(10px) rotate(270deg);transform-origin: center;">High</p>',
+    '<p class="rotate-tick-offset-15">None</p>',
+    '<p class="rotate-tick-offset-10">Low</p>',
+    '<p class="rotate-tick-offset-10">Med</p>',
+    '<p class="rotate-tick-offset-10">High</p>',
   ],
   ticks_snap_bounds: 3,
   value: 0,
@@ -201,12 +187,11 @@ var mouthfeel_carbonation = new Slider("#mouthfeel_carbonation", {
 var mouthfeel_warmth = new Slider("#mouthfeel_warmth", {
   ticks: [0, 10, 50, 100],
   ticks_positions: [0, 10, 50, 100],
-  //- ticks_labels: ['None','Low','Med','High'],
   ticks_labels: [
-    '<p style="transform: translateY(15px) rotate(270deg);transform-origin: center;">None</p>',
-    '<p style="transform: translateY(10px) rotate(270deg);transform-origin: center;">Low</p>',
-    '<p style="transform: translateY(10px) rotate(270deg);transform-origin: center;">Med</p>',
-    '<p style="transform: translateY(10px) rotate(270deg);transform-origin: center;">High</p>',
+    '<p class="rotate-tick-offset-15">None</p>',
+    '<p class="rotate-tick-offset-10">Low</p>',
+    '<p class="rotate-tick-offset-10">Med</p>',
+    '<p class="rotate-tick-offset-10">High</p>',
   ],
   ticks_snap_bounds: 3,
   value: 0,
@@ -214,12 +199,11 @@ var mouthfeel_warmth = new Slider("#mouthfeel_warmth", {
 var mouthfeel_creaminess = new Slider("#mouthfeel_creaminess", {
   ticks: [0, 10, 50, 100],
   ticks_positions: [0, 10, 50, 100],
-  //- ticks_labels: ['None','Low','Med','High'],
   ticks_labels: [
-    '<p style="transform: translateY(15px) rotate(270deg);transform-origin: center;">None</p>',
-    '<p style="transform: translateY(10px) rotate(270deg);transform-origin: center;">Low</p>',
-    '<p style="transform: translateY(10px) rotate(270deg);transform-origin: center;">Med</p>',
-    '<p style="transform: translateY(10px) rotate(270deg);transform-origin: center;">High</p>',
+    '<p class="rotate-tick-offset-15">None</p>',
+    '<p class="rotate-tick-offset-10">Low</p>',
+    '<p class="rotate-tick-offset-10">Med</p>',
+    '<p class="rotate-tick-offset-10">High</p>',
   ],
   ticks_snap_bounds: 3,
   value: 0,
@@ -227,12 +211,11 @@ var mouthfeel_creaminess = new Slider("#mouthfeel_creaminess", {
 var mouthfeel_astringency = new Slider("#mouthfeel_astringency", {
   ticks: [0, 10, 50, 100],
   ticks_positions: [0, 10, 50, 100],
-  //- ticks_labels: ['None','Low','Med','High'],
   ticks_labels: [
-    '<p style="transform: translateY(15px) rotate(270deg);transform-origin: center;">None</p>',
-    '<p style="transform: translateY(10px) rotate(270deg);transform-origin: center;">Low</p>',
-    '<p style="transform: translateY(10px) rotate(270deg);transform-origin: center;">Med</p>',
-    '<p style="transform: translateY(10px) rotate(270deg);transform-origin: center;">High</p>',
+    '<p class="rotate-tick-offset-15">None</p>',
+    '<p class="rotate-tick-offset-10">Low</p>',
+    '<p class="rotate-tick-offset-10">Med</p>',
+    '<p class="rotate-tick-offset-10">High</p>',
   ],
   ticks_snap_bounds: 3,
   value: 0,
@@ -243,7 +226,7 @@ var overall_class_example = new Slider("#overall_class_example", {
   ticks: [0, 100],
   ticks_positions: [0, 100],
   ticks_labels: ["Not to Style", "Classic Example"],
-  //- ticks_labels: ['<p style="transform: translateY(15px) rotate(270deg);transform-origin: center;">Classic\nExample</p>', '<p style="transform: translateY(14px) rotate(270deg);transform-origin: center;">Not to\nStyle</p>'],
+  //- ticks_labels: ['<p class="rotate-tick-offset-15">Classic\nExample</p>', '<p style="transform: translateY(14px) rotate(270deg);transform-origin: center;">Not to\nStyle</p>'],
   ticks_snap_bounds: 3,
   value: 50,
 });
@@ -251,7 +234,7 @@ var overall_flawless = new Slider("#overall_flawless", {
   ticks: [0, 100],
   ticks_positions: [0, 100],
   ticks_labels: ["Significant Flaws", "Flawless"],
-  //- ticks_labels: ['<p style="transform: translateY(15px) rotate(270deg);transform-origin: center;">Flawless</p>', '<p style="transform: translateY(18px) rotate(270deg);transform-origin: center;">Significant/nFlaws</p>'],
+  //- ticks_labels: ['<p class="rotate-tick-offset-15">Flawless</p>', '<p style="transform: translateY(18px) rotate(270deg);transform-origin: center;">Significant/nFlaws</p>'],
   ticks_snap_bounds: 3,
   value: 50,
 });
@@ -380,10 +363,15 @@ $(document).ready(function () {
         fDataObject[$(this).attr("id")] = $(this).is(":checked");
       });
 
+      // Explicity set the scoresheetID if it exists
+      fDataObject.id = $("#scoresheetId").val()
+        ? $("#scoresheetId").val()
+        : undefined;
+
       // Submit the updated scoresheet
       $.post("/scoresheet/update", fDataObject, function (data) {
         if (data.update) {
-          $("form#newScoresheet input#id").val(data.id);
+          $("#scoresheetId").val(data.id);
         } else if (data.error) {
         }
       });
@@ -500,7 +488,7 @@ $("#previousTab").on("click", () => {
 });
 
 load_scoresheet_data = () => {
-  const scoresheetId = $("#id").val();
+  const scoresheetId = $("#scoresheetId").val();
   if (!scoresheetId) {
     const flightId = $("#FlightId").val();
 
