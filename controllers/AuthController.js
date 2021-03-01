@@ -70,35 +70,35 @@ userController.home = function (req, res) {
     return;
   }
 
-  const scoresheetPromise = Scoresheet.findAll({
+  Flight.findAll({
     where: {
-      user_id: req.user.id,
+      UserId: req.user.id,
     },
-  });
+  })
+    .then((flights) => {
+      const plainFlights = flights.map((flight) => flight.get({ plain: true }));
 
-  const flightPromise = Flight.findAll({
-    where: {
-      created_by: req.user.id,
-    },
-  });
+      const scoresheetPromises = plainFlights.map((flight) =>
+        Scoresheet.findAll({
+          where: {
+            FlightId: flight.id,
+          },
+        }).then((scoresheets) => {
+          return {
+            ...flight,
+            scoresheets: scoresheets.map((scoresheet) =>
+              scoresheet.get({ plain: true })
+            ),
+          };
+        })
+      );
 
-  Promise.all([scoresheetPromise, flightPromise])
-    .then(([scoresheets, flights]) => {
-      const flightObject = {};
-
-      flights.forEach((flight) => {
-        flightObject[flight.id] = {
-          ...flight.get({ plain: true }),
-          scoresheets: scoresheets
-            .filter((scoresheet) => scoresheet.flight_key === flight.id)
-            .map((scoresheet) => scoresheet.get({ plain: true })),
-        };
-      });
-
-      res.render("index", {
-        user: req.user,
-        title: appConstants.APP_NAME + " - Home",
-        flights: flightObject,
+      Promise.all(scoresheetPromises).then((flightObject) => {
+        res.render("index", {
+          user: req.user,
+          title: appConstants.APP_NAME + " - Home",
+          flights: flightObject,
+        });
       });
     })
     .catch((err) => {
@@ -118,7 +118,7 @@ userController.register = function (req, res) {
 userController.doRegister = function (req, res) {
   const emailRegex = new RegExp(appConstants.EMAIL_REGEX);
   const passwordRegex = new RegExp(appConstants.PASSWORD_REGEX);
-  const email = req.body.email;
+  const email = req.body.email.toLowerCase();
   const password = req.body.password;
   const confirmPassword = req.body.passwordC;
 
@@ -231,6 +231,8 @@ userController.login = function (req, res) {
 
 // Post login
 userController.doLogin = function (req, res) {
+  req.body.email = req.body.email.toLowerCase();
+
   passport.authenticate("passport-sequelize", {
     // Login is bad, try again!
     failureRedirect: "/login",
@@ -258,8 +260,9 @@ userController.editProfile = function (req, res) {
 
 userController.updateEmail = function (req, res) {
   const emailRegex = new RegExp(appConstants.EMAIL_REGEX);
-  const oldEmail = req.body.oldEmail;
-  const newEmail = req.body.newEmail;
+  const oldEmail = req.body.oldEmail.toLowerCase();
+  const newEmail = req.body.newEmail.toLowerCase();
+  const emailVerificationCode = crypto.randomBytes(16).toString("hex");
 
   User.findByPk(req.user.id)
     .then((user) => {
@@ -273,7 +276,11 @@ userController.updateEmail = function (req, res) {
       }
 
       return User.update(
-        { email: newEmail },
+        {
+          email: newEmail,
+          email_verified: false,
+          verification_id: emailVerificationCode,
+        },
         {
           where: {
             id: user.id,
@@ -282,6 +289,7 @@ userController.updateEmail = function (req, res) {
       );
     })
     .then((user) => {
+      emailService.sendUserVerificationEmail(newEmail, emailVerificationCode);
       res.status(200).json(true);
     })
     .catch((err) => {
@@ -348,7 +356,8 @@ userController.saveProfile = function (req, res) {
     plain: true,
   })
     .then((user) => {
-      if (user[1] !== 1) {
+      // Don't log in and re-establish session on admin updates
+      if (!req.body.id && user[1] !== 1) {
         req.login(user[1].get(), (err) => {
           if (err) {
             return Promise.reject(
@@ -417,7 +426,7 @@ userController.requestEmailValidation = function (req, res) {
 // Called when user clicks link in their email inbox to validate their account
 userController.validateEmail = function (req, res) {
   const validationCode = req.query.key;
-  const userId = req.user.id;
+  const userId = req.user ? req.user.id : null;
 
   if (!validationCode) {
     res.redirect("/");
@@ -431,7 +440,6 @@ userController.validateEmail = function (req, res) {
     },
     {
       where: {
-        id: userId,
         verification_id: validationCode,
       },
       returning: true,
@@ -443,7 +451,8 @@ userController.validateEmail = function (req, res) {
         Promise.reject("Could not validate email address. Please try again.");
       }
 
-      if (user[1] !== 1) {
+      // Only log in if we balidate on same browser that has established session
+      if (user[1] !== 1 && user[1].id === userId) {
         req.login(user[1].get(), (err) => {
           if (err) {
             return Promise.reject(err);
@@ -458,7 +467,11 @@ userController.validateEmail = function (req, res) {
     .then((user) => {
       req.flash(
         "success",
-        `Email address ${user ? user.email : ""} successfully validated`
+        `Email address ${user ? user.email : ""} successfully validated. ${
+          user[1].id !== userId
+            ? "(You may need to log out and log back in)"
+            : ""
+        }`
       );
       res.redirect("/");
     })
@@ -606,7 +619,7 @@ userController.unsubscribeForm = function (req, res) {
 };
 
 userController.unsubscribe = function (req, res) {
-  const email = req.body.email;
+  const email = req.body.email.toLowerCase();
   const allowMail = req.body.allow_automated_email;
 
   User.update(

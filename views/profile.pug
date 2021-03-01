@@ -2,14 +2,11 @@ extends layout
 
 block content
   .container.ml-auto.mr-auto(style="max-width:500px;")
-    //- form.form-signin.ml-auto.mr-auto(role='form', action="/profile/edit", method="post", style='max-width: 500px;')
     if typeof(error) !== "undefined" && error.length > 0
       p.text-danger
         strong Error(s)!
         each val in error
           p.text-danger= val
-    //- .form-group
-    //- 	h2.form-profile-heading Edit Profile
     .form-group
       .form-row
         .col-md-3
@@ -18,7 +15,6 @@ block content
           sub.form-text.text-subdued.py-2.float-right (This is also your username)
       .form-row
         label.col-sm-4.col-form-label(for="set_new_username") Current Email
-        //- Passport stores username in an array to use the first element
         .col-sm-8
           .input-group 
             input#set_new_username.form-control(
@@ -33,13 +29,22 @@ block content
                 data-toggle="modal",
                 data-target="#changeEmailModal"
               ) Edit
+      .form-row.mt-1.ml-5
+        .col-sm-4
+        .col-sm-8
+          input#allow_automated_email.form-check-input(
+            type="checkbox",
+            name="allow_automated_email",
+            value="true",
+            checked=user.allow_automated_email
+          )
+          label.form-check-label(for="allow_automated_email") Allow Email Communication
     .form-group
       .form-row
         .col-md-3
           h4 Password
       .form-row
         label.col-sm-4.col-form-label(for="set_new_password") Current Password
-        //- Passport stores username in an array to use the first element
         .col-sm-8
           .input-group 
             input#set_new_password.form-control(
@@ -123,8 +128,6 @@ block content
             option(value="level2", selected=user.cicerone_rank === 'level2') Level 2 - Certified Cicerone
             option(value="level3", selected=user.cicerone_rank === 'level3') Level 3 - Advanced Cicerone
             option(value="level4", selected=user.cicerone_rank === 'level4') Level 4 - Master Cicerone
-      //- input.form-control(type='text', name="bjcp_rank", placeholder='BJCP Rank', value=(typeof user === "undefined" ? "" : user.bjcp_rank))
-      //- input.form-control(type='text', name="cicerone_rank", placeholder='Cicerone Rank', value=(typeof user === "undefined" ? "" : user.cicerone_rank))
       .form-row
         label.col-sm-4.col-form-label(for="pro_brewer_brewery") Pro Brewer
         .col-sm-8
@@ -256,7 +259,8 @@ block content
     			body: JSON.stringify(requestBody)
     		}).then(response => {
     			if (response.status === 200) {
-    				window.alert('Email successfully changed!')
+    				window.alert('Email successfully updated!\n\nYou will need to verify your new email. Please check your inbox and click the link in the verification email.')
+            $('#set_new_username').val(newEmail)
     				$('#changeEmailModal').modal('hide')
     				$('#existingEmail').val('')
     				$('#newEmail').val('')
@@ -330,7 +334,8 @@ block content
     			cicerone_rank : $('#cicerone_rank').val(),
     			pro_brewer_brewery : $('#pro_brewer_brewery').val(),
     			industry_description : $('#industry_description').val(),
-    			judging_years : $('#judging_years').val()
+    			judging_years : $('#judging_years').val(),
+          allow_automated_email : $('#allow_automated_email').is(':checked')
     		}
 
     		fetch('/profile/edit', {
@@ -341,12 +346,11 @@ block content
     			body: JSON.stringify(requestBody)
     		}).then(response => {
     			if (response.status === 200) {
-    				window.alert('Profile updated succesfully')
+    				window.alert('Profile updated succesfully!\n\nYou may need to log out and log back in to see your changes.')
     			} else {
     				window.alert('Error updating. Please try again.')
     				location.reload()
     			}
-    			//- const responseBody = response.json()
     		}).catch(err => {
     			window.alert('Error updating. Please try again.')
     			location.reload()

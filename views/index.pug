@@ -26,25 +26,8 @@ block content
     )
       h3 Verify Email
       p Almost done! Please check your email inbox and verify your account.
-      a.mt-3.btn.btn-primary(type="button", href="/requestvalidation") Resend Validation
-      if locals.messages.success && locals.messages.success.includes('Login Successful')
-        #info-modal.modal.fade(
-          tabindex="-1",
-          role="dialog",
-          aria-labelledby="infoModalLabel",
-          aria-hidden="true"
-        )
-          .modal-dialog
-            .modal-content
-              .modal-header 
-                h5 Email Validation Now Required
-              .modal-body 
-                p Hey guys! We have recently added email functionality to the app. 🎉
-                p This means exciting new features, like self-service password resets and competition email updates. However, this also means <em>we need to make sure your email address works</em>.
-                p Please click the <span class="badge badge-primary">Resend Validation</span> button on the home screen to generate a validation email that will be sent to your email address associated with your account. Once the email arrives, click the <span class="badge badge-info">Verify Email</span> button to verify your account.
-                p If you can't find the email, it may have gone to your spam or junk folder. Let us know <a href="https://discord.gg/jEbfDskCSx">on discord</a> if you have any issues.
-              .modal-footer
-                button.btn.btn-primary(type="button", data-dismiss="modal") Awesome!
+      p If you are having trouble finding the validation email, check your spam or junk folder. You can also request a new validation email using the button below.
+      a.mt-3.btn.btn-primary(type="button", href="/requestvalidation") Resend Validation Email
   else
     .container
       .card
@@ -83,6 +66,10 @@ block content
                         style="background-color: rgba(124,122,120,0.35"
                       )
                         .d-flex.flex-row.justify-content-between.p-0.m-0.panel-title(
+                          flight-id=flight.id,
+                          flight-name=flight.flight_id,
+                          flight-location=flight.location,
+                          flight-date=flight.date,
                           type="button",
                           data-toggle="collapse",
                           data-target='#collapse' + flight.id,
@@ -90,7 +77,16 @@ block content
                           aria-controls="collapseOne",
                           class=isLastFlight ? 'collapsed' : ''
                         ) 
-                          h5.m-0.p-0 <strong>Flight ##{flight.flight_id}</strong> <small>&nbsp; &nbsp; &nbsp; #{new Date(flight.date).toLocaleDateString()} &nbsp; &nbsp; &nbsp; #{flight.location}</small>
+                          h5.my-auto.p-0 <strong>Flight ##{flight.flight_id}</strong> <small>&nbsp; &nbsp; &nbsp; #{new Date(flight.date).toLocaleDateString()} &nbsp; &nbsp; &nbsp; #{flight.location}</small>
+                          div
+                            button.btn.btn-primary.btn-sm.px-1.py-1.mr-2(
+                              onclick=`event.stopPropagation();showEditFlightModal("${flight.id}")`,
+                              title="Edit Flight"
+                            ) <span class="material-icons align-middle" style="font-size: 18px">create</span>
+                            button.btn.btn-danger.btn-sm.px-1.py-1.m-0(
+                              onclick=`event.stopPropagation();showDeleteFlightModal("${flight.id}")`,
+                              title="Delete Flight"
+                            ) <span class="material-icons align-middle" style="font-size: 18px">delete</span>
                       div(
                         id='collapse' + flight.id,
                         aria-labelledby='header' + flight.id,
@@ -155,21 +151,28 @@ block content
                                             checked=Boolean(scoresheet.mini_boss_advanced),
                                             onchange=`updateScoresheet('${scoresheet.id}', 'mini_boss_advanced', this.checked)`
                                           )
-                                    td.text-center
-                                      button.btn.btn-primary(
-                                        onclick=`editEntry('${scoresheet.id}')`
-                                      ) Edit
+                                    td.text-center.d-flex.justify-content-between
+                                      button.btn.btn-primary.btn-sm.px-1.py-1.mr-2(
+                                        onclick=`editEntry('${scoresheet.id}')`,
+                                        title="Edit Scoresheet"
+                                      ) <span class="material-icons align-middle" style="font-size: 18px">create</span>
+                                      button.btn.btn-danger.btn-sm.px-1.py-1.m-0(
+                                        onclick=`showDeleteEntryModal('${scoresheet.id}')`,
+                                        title="Delete Scoresheet"
+                                      ) <span class="material-icons align-middle" style="font-size: 18px">delete</span>
                               else
                                 p.text-center.text-muted No scoresheets in this flight yet. Want to #[a.link-style(onClick=`addEntry('${flight.id}')`) add one]?
 
                           .d-flex.flex-row
                             button.mt-3.mr-2.btn.btn-primary(
                               type="button",
-                              onClick=`addEntry('${flight.id}')`
-                            ) Add Scoresheet
-                            button.mt-3.btn.btn-danger(
+                              onClick=`addEntry('${flight.id}')`,
+                              title="Add Scoresheet"
+                            ) <span class="material-icons align-middle">post_add</span>
+                            button.mt-3.btn.btn-success(
                               type="button",
-                              onClick=`confirmSubmitFlight('${flight.id}')`
+                              onClick=`confirmSubmitFlight('${flight.id}')`,
+                              title="Submit Flight"
                             ) Submit Flight
                 else
                   p.text-center.text-muted No flights to display. Want to #[a.link-style(onClick="showAddFlightModal()") add one]?
@@ -269,7 +272,7 @@ block content
                                     id=`download-${scoresheet.id}`,
                                     type="button",
                                     onclick=`downloadPdf('${scoresheet.id}', '${scoresheet.entry_number}')`
-                                  ) PDF
+                                  ) <span class="material-icons align-middle" style="font-size:20px;">picture_as_pdf</span>
                         .d-flex.flex-row
                           button.mt-3.mr-2.btn.btn-primary(
                             id=`download-all-${flight.id}`,
@@ -288,7 +291,7 @@ block content
       .modal-dialog
         .modal-content
           .modal-header 
-            h5 Add New Flight
+            h5 Flight Information
           .modal-body
             .form-group
               label(for="flightName") Flight ID
@@ -304,12 +307,18 @@ block content
               )
             .form-group
               label(for="flightDate") Session Date
-              - var date = new Date();
-              - var currentDate = date.getUTCFullYear() + '-' + ('0' + (date.getUTCMonth() + 1)).slice(-2) + '-' + ('0' + date.getUTCDate()).slice(-2);
-              input#flightDate.form-control(type="date", value=currentDate)
+              input#flightDate.form-control(type="date")
           .modal-footer
+            input#flight-to-edit(value=null, hidden)
             button.btn.btn-secondary(type="button", data-dismiss="modal") Cancel
-            button.btn.btn-primary(type="button", onclick="addFlight()") Submit
+            button#addFlightButton.btn.btn-primary(
+              type="button",
+              onclick="addFlight()"
+            ) Add Flight
+            button#editFlightButton.btn.btn-primary(
+              type="button",
+              onclick="editFlight()"
+            ) Edit Flight
     #confirm-submit-flight-modal.modal.fade(
       tabindex="-1",
       role="dialog",
@@ -335,202 +344,53 @@ block content
               onclick="clearFlightToSubmit()"
             ) Cancel
             button.btn.btn-primary(type="button", onclick="submitFlight();") Submit Flight
+    #confirm-delete-flight-modal.modal.fade(
+      tabindex="-1",
+      role="dialog",
+      aria-labelledby="confirmDeleteFlightLabel",
+      aria-hidden="true"
+    )
+      .modal-dialog
+        .modal-content
+          .modal-header 
+            h5 Confirm Delete Flight
+          .modal-body 
+            p Are you sure you want to delete this flight? All child scoresheets will also be deleted.
+            p This action <strong>CANNOT BE UNDONE</strong>.
+            .form-check.pt-4
+              input#user_verify_flight_delete.form-check-input(type="checkbox")
+              label.form-check-label(for="user_verify_flight_delete") I understand and want to delete this flight.
+          .modal-footer
+            input#flight-to-delete(value=null, hidden)
+            button.btn.btn-secondary(
+              type="button",
+              data-dismiss="modal",
+              onclick="clearFlightToDelete()"
+            ) Cancel
+            button.btn.btn-danger(type="button", onclick="deleteFlight();") Delete Flight
+    #confirm-delete-entry-modal.modal.fade(
+      tabindex="-1",
+      role="dialog",
+      aria-labelledby="confirmDeleteEntryLabel",
+      aria-hidden="true"
+    )
+      .modal-dialog
+        .modal-content
+          .modal-header 
+            h5 Confirm Delete Scoresheet
+          .modal-body 
+            p Are you sure you want to delete this scoresheet? All data will be permanently lost.
+            p This action <strong>CANNOT BE UNDONE</strong>.
+            .form-check.pt-4
+              input#user_verify_entry_delete.form-check-input(type="checkbox")
+              label.form-check-label(for="user_verify_entry_delete") I understand and want to delete this scoresheet.
+          .modal-footer
+            input#entry-to-delete(value=null, hidden)
+            button.btn.btn-secondary(
+              type="button",
+              data-dismiss="modal",
+              onclick="clearEntryToDelete()"
+            ) Cancel
+            button.btn.btn-danger(type="button", onclick="deleteEntry();") Delete Scoresheet
   script(src="/javascripts/download.js")
-
-  script.
-    const showAddFlightModal = () => {
-    	$('#addFlightModal').modal('show')
-    }
-
-    const addFlight = () => {
-    	const flightName = $('#flightName').val()
-    	const flightLocation = $('#flightLocation').val()
-    	const flightDate = new Date($('#flightDate').val())
-
-    	fetch('/flight/add', {
-    		method: 'POST',
-    		headers: {
-    			'Content-Type': 'application/json'
-    		},
-    		body: JSON.stringify({
-    			flightName : flightName,
-    			flightLocation : flightLocation,
-    			flightDate : flightDate
-    		})
-    	}).then(response => {
-    		if (response.status === 200) {
-    			const body = response.json()
-    			// instead of dynamically moving the flight to the other tab, we will be lazy and just reload the page. 
-    			// This action is infrequent enough it shouldn't break immersion *too* much.
-    			location.reload()
-
-    		} else {
-    			$('#addFlightModal').modal('hide')
-    			// todo: handle errors
-    		}
-    	})
-    }
-
-    const confirmSubmitFlight = (flightId) => {
-    	$('#flight-to-submit').val(flightId)
-    	$('#confirm-submit-flight-modal').modal('show')
-    }
-
-    const clearFlightToSubmit = () => {
-    	$('#flight-to-submit').val(null)
-    	$('#user_verify_flight_submit').prop('checked', false)
-    }
-
-    const submitFlight = () => {
-    	const userVerified = $('#user_verify_flight_submit').prop('checked')
-    	if (!userVerified) return
-
-    	const flightId = $('#flight-to-submit').val()
-    	// To do: Submit flight here
-    	fetch('/flight/submit', {
-    		method: 'POST',
-    		headers: {
-    			'Content-Type': 'application/json'
-    		},
-    		body: JSON.stringify({
-    			flightId: flightId
-    		})
-    	}).then(response => {
-    		$('#confirm-submit-flight-modal').modal('hide')
-    		$('#flight-to-submit').val(null)
-    		$('#user_verify_flight_submit').prop('checked', false)
-
-    		if (response.status === 200) {
-    			const body = response.json()
-
-    			// instead of dynamically moving the flight to the other tab, we will be lazy and just reload the page. 
-    			// This action is infrequent enough it shouldn't break immersion *too* much.
-    			location.reload()
-    		} else {
-    			// todo: handle errors
-    			clearFlightToSubmit()
-    		}
-    	})
-    }
-
-    const updateScoresheet = (scoresheetId, param, newVal) => {
-    	const requestBody = { 
-    		id: scoresheetId,
-    		_ajax: "true"
-    	}
-    	requestBody[param] = newVal
-
-    	fetch('/scoresheet/update/', {
-    		method: 'POST',
-    		headers: {
-    			'Content-Type': 'application/json'
-    		},
-    		body: JSON.stringify(requestBody)
-    	}).then(response => {
-    		//- const responseBody = response.json()
-    	}).catch(err => {
-    		window.alert('Error updating. Please try again.')
-    		location.reload()
-    	})
-    }
-
-    let addEntry = () => {} 
-    let editEntry = () => {}
-    let downloadPdf = () => {}
-
-    $(document).ready(() => {
-      if ($('#info-modal')) {
-        $('#info-modal').modal('show')
-      }
-
-    	// on page load
-    	addEntry = (flightId) => {
-    		window.location.replace(`/scoresheet/edit?flightId=${flightId}`)
-    	}
-
-    	editEntry = (scoresheetId) => {
-    		window.location.replace(`/scoresheet/edit?scoresheetId=${scoresheetId}`)
-    	}
-
-    	downloadPdf = (scoresheetId, scoresheetEntryNumber) => {
-        $(`#download-${scoresheetId}`).prop("disabled", true)
-        $(`#download-${scoresheetId}`).html('<span class="spinner-border spinner-border-sm mr-2" role="status" aria-hidden="true"></span>')
-
-    		fetch('/scoresheet/pdf', {
-    			method: 'POST',
-    			headers: {
-    				'Content-Type': 'application/json'
-    			},
-    			body: JSON.stringify({
-    				scoresheetIds: [scoresheetId]
-    			})
-    		})
-    		.then(res => res.json())
-    		.then(res => {
-          downloadHeartbeat(res.requestId, (blobData) => {
-            download(blobData, `${scoresheetEntryNumber}.pdf`, 'application/pdf')
-            $(`#download-${scoresheetId}`).prop("disabled", false)
-            $(`#download-${scoresheetId}`).html('PDF')
-          })
-    		})
-    	}
-
-    	downloadAll = (scoresheetArray, flightId) => {
-        fetch('/scoresheet/pdf', {
-    			method: 'POST',
-    			headers: {
-    				'Content-Type': 'application/json'
-    			},
-    			body: JSON.stringify({
-    				scoresheetIds: scoresheetArray.map(scoresheet => scoresheet.id),
-    			})
-    		})
-    		.then(res => res.json())
-    		.then(res => {
-          $(`#download-all-${flightId}`).prop("disabled", true)
-          $(`#download-all-${flightId}`).html(`<span class="spinner-border spinner-border-sm mr-2" role="status" aria-hidden="true"></span><span id="${res.requestId}">0%</span> Downloaded`)
-
-          downloadHeartbeat(res.requestId, (blobData) => {
-            if (scoresheetArray.length === 1) {
-              download(blobData, `${scoresheetArray[0].entry_number}.pdf`, 'application/pdf')
-            } else {
-              download(blobData, 'scoresheets.zip', 'application/zip')
-            }
-
-            $(`#download-all-${flightId}`).prop("disabled", false)
-            $(`#download-all-${flightId}`).html('Download All')
-          })
-    		})
-    	}
-
-      downloadHeartbeat = (requestId, completeCallback) => {
-        const downloadHeartbeatIntervalId = setInterval(() => {
-          fetch('/scoresheet/downloadstatus', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-              requestId: requestId
-            })
-          })
-          .then(res => {
-            if (res.status === 202) {
-              // Processing still in progress
-              res.json().then(status => {
-                $(`#${requestId}`).text((100*(status.completed / status.total)).toFixed() + '%')
-              })
-            } else if (res.status === 201) {
-              // Processing complete, recieving file
-              res.blob().then(blobData => {
-                clearInterval(downloadHeartbeatIntervalId)
-                completeCallback(blobData)
-              })
-            } else {
-              // Something went wrong
-              console.error('something went wrong', res.status)
-            }
-          })
-        }, 1000)
-      }
-    })
+  script(src="/javascripts/index.js")

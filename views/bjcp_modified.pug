@@ -95,7 +95,7 @@ body
           span Date
           span.user_input_truncated.display_iblock.lheight_normal.text_center(
             style="width:150px;"
-          ) #{new Date(scoresheet.session_date).toLocaleDateString()}
+          ) #{new Date(flight.date).toLocaleDateString()}
       .row.clearfix
         .entry_information.text_normal.float_left
           .row
@@ -144,7 +144,7 @@ body
             .col.col_40
               span.border_solid_1.display_iblock.height_20p.text_center.text_resize_marker(
                 style="width: 35px;line-height: 20px;font-stretch: var(--fontStretch);font-size: var(--fontSize);"
-              ) #{scoresheet.flight_total}
+              ) #{flight.flight_total}
         .border_solid_1.float_left.text_size_50.mleft_15
           .border_bot_solid_1(style="height: 18px")
             span.display_iblock.text_center.float_left(style="width: 46px;")

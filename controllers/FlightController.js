@@ -14,7 +14,6 @@ function jsonErrorProcessor(err, res) {
       ],
     });
   } else {
-    console.log(err);
     jsonErrorProcessor(err, res);
   }
 }
@@ -23,11 +22,11 @@ const flightController = {};
 
 flightController.getFlightByName = function (req, res) {
   const flightName = req.body.flightName;
+  const userIsAdmin = req.user.user_level;
 
   Flight.findOne({
     where: {
       flight_id: flightName,
-      created_by: req.user.id,
     },
   })
     .then((flight) => {
@@ -36,26 +35,36 @@ flightController.getFlightByName = function (req, res) {
     })
     .catch((err) => {
       jsonErrorProcessor(err, res);
-      console.log(err);
     });
 };
 
 flightController.getFlightById = function (req, res) {
   const flightId = req.body.flightId;
+  const userIsAdmin = req.user.user_level;
 
   Flight.findOne({
     where: {
       id: flightId,
-      created_by: req.user.id,
     },
+    include: User,
   })
-    .then((flight) => {
+    .then(async (flight) => {
+      const numScoresheets = await Scoresheet.findAndCountAll({
+        where: { FlightId: flight.id },
+      }).then((scoresheets) => scoresheets.count);
+
       const flightObject = flight.get({ plain: true });
+      flightObject.flight_total = numScoresheets;
+
+      flightObject.judge_name =
+        flight.User.firstname + " " + flight.User.lastname;
+      flightObject.bjcp_id = flight.User.bjcp_id;
+      flightObject.bjcp_rank = flight.User.bjcp_rank;
+
       res.json(flightObject);
     })
     .catch((err) => {
       jsonErrorProcessor(err, res);
-      console.log(err);
     });
 };
 
@@ -64,7 +73,7 @@ flightController.addFlight = function (req, res) {
     flight_id: req.body.flightName,
     location: req.body.flightLocation,
     date: req.body.flightDate,
-    created_by: req.user.id,
+    UserId: req.user.id,
   };
 
   Flight.create(newFlightParams)
@@ -77,39 +86,33 @@ flightController.addFlight = function (req, res) {
 };
 
 flightController.editFlight = function (req, res) {
+  const userIsAdmin = req.user.user_level;
+
   const flightId = req.body.flightId;
-  const updateFlightParams = {
+  let updateFlightParams = {
     flight_id: req.body.flightName,
     location: req.body.flightLocation,
     date: req.body.flightDate,
-    created_by: req.body.createdBy || req.user.id,
-    submitted: req.user.user_level >= 900 ? req.body.submitted : undefined,
   };
 
+  // Only admins can reassign flights
+  if (req.body.createdBy && userIsAdmin) {
+    updateFlightParams.UserId = req.body.createdBy;
+  }
+
+  // Only admins can unsubmit a flight
+  if (userIsAdmin) {
+    updateFlightParams.submitted = Boolean(req.body.submitted);
+  }
+
+  const searchConditions = { id: flightId };
+  if (!userIsAdmin) {
+    searchConditions.UserId = req.user.id;
+  }
+
   Flight.update(updateFlightParams, {
-    where: {
-      id: flightId,
-    },
+    where: searchConditions,
   })
-    .then((newFlight) => {
-      if (updateFlightParams.submitted !== undefined) {
-        return Scoresheet.update(
-          { scoresheet_submitted: updateFlightParams.submitted },
-          {
-            where: { flight_key: flightId },
-            returning: true,
-          }
-        )
-          .then(() => {
-            return newFlight;
-          })
-          .catch((err) => {
-            jsonErrorProcessor(err, res);
-          });
-      } else {
-        return Promise.resolve(newFlight);
-      }
-    })
     .then((newFlight) => {
       res.json(newFlight);
     })
@@ -121,15 +124,11 @@ flightController.editFlight = function (req, res) {
 flightController.submitFlight = function (req, res) {
   const flightId = req.body.flightId;
 
-  return Scoresheet.update(
-    { scoresheet_submitted: true },
-    {
-      where: { flight_key: flightId },
-      returning: true,
-    }
-  )
+  return Scoresheet.findAndCountAll({
+    where: { FlightId: flightId },
+  })
     .then((scoresheets) => {
-      if (scoresheets[1] === 0 || scoresheets[1].length === 0) {
+      if (scoresheets.count === 0) {
         return Promise.reject("INVALID_FLIGHT_EMPTY");
       }
 
@@ -138,7 +137,7 @@ flightController.submitFlight = function (req, res) {
         {
           where: {
             id: flightId,
-            created_by: req.user.id,
+            UserId: req.user.id,
           },
         }
       );
@@ -148,25 +147,29 @@ flightController.submitFlight = function (req, res) {
     })
     .catch((err) => {
       jsonErrorProcessor(err, res);
-      console.log(err);
     });
 };
 
 flightController.deleteFlight = function (req, res) {
   const flightId = req.body.flightId;
+  const userIsAdmin = req.user.user_level;
+
+  const queryParams = {
+    id: flightId,
+  };
+
+  if (!userIsAdmin) {
+    queryParams.UserId = req.user.id;
+  }
 
   Flight.destroy({
-    where: {
-      id: flightId,
-      created_by: req.user.id,
-    },
+    where: queryParams,
   })
     .then(() => {
-      res.status(200);
+      res.status(200).json(flightId);
     })
     .catch((err) => {
       jsonErrorProcessor(err, res);
-      console.log(err);
     });
 };
 

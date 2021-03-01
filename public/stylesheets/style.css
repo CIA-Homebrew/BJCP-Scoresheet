@@ -67,4 +67,25 @@ body {
   max-height: 70vh;
   overflow-y: auto;
 }
+.red-border {
+  border-color: #f00 !important;
+}
+.modal-xl {
+  max-width: 80% !important;
+}
+.rotate-tick-offset-20 {
+  transform: translateY(20px) rotate(270deg);
+  transform-origin: center;
+  pointer-events: none;
+}
+.rotate-tick-offset-15 {
+  transform: translateY(15px) rotate(270deg);
+  transform-origin: center;
+  pointer-events: none;
+}
+.rotate-tick-offset-10 {
+  transform: translateY(10px) rotate(270deg);
+  transform-origin: center;
+  pointer-events: none;
+}
 /* NOTE! MAKE SURE TO EDIT IN .styl FILE AND NOT .css FILE! */

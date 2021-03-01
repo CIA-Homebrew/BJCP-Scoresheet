@@ -2,18 +2,16 @@ extends layout
 
 block content
   form#newScoresheet(role="form", action="/scoresheet/update", method="post")
-    input#author(type="text", name="author", value=user._id, hidden)
-    input#id(type="text", name="id", hidden value=fingerprint)
-    input#scoresheet_submitted(
+    input#scoresheetId(
       type="text",
-      value="0",
-      name="scoresheet_submitted",
-      hidden
+      name="scoresheetId",
+      hidden,
+      value=scoresheetId
     )
-    input#flight_key(type="text", name="flight_key", hidden, value=flightId)
+    input#FlightId(type="text", name="FlightId", hidden, value=flightId)
     .container
       .card
-        .card-header
+        .card-body
           .row
             .col-md
               h4.card-title BJCP Digital Soresheet
@@ -34,9 +32,7 @@ block content
                     p.small.mb-0.text-center MiniBOS
                   .card-body.text-dark.px-0.py-1.text-center
                     .btn-group-toggle(data-toggle="buttons")
-                      label.btn.btn-outline-success.btn-sm(
-                        class=Boolean(scoresheet ? scoresheet.mini_boss_advanced : false) ? 'active' : ''
-                      ) Advance
+                      label#mini_boss_advanced_label.btn.btn-outline-success.btn-sm Advance
                         input#mini_boss_advanced(
                           type="checkbox",
                           autocomplete="off",
@@ -66,7 +62,7 @@ block content
                 name="btn",
                 onClick="goHome()"
               ) Back to My Flights
-          ul#scoresheet-list.nav.nav-tabs.card-header-tabs(role="tablist")
+          ul#scoresheet-list.nav.nav-tabs.w-100(role="tablist")
             li.nav-item
               a#information-tab.nav-link.active.px-2(
                 data-toggle="tab",
@@ -136,43 +132,26 @@ block content
                   .form-group.col-sm-2.col-form-label Judge
                     label(for="judge_name")
                   .form-group.col-sm-4
-                    input#judge_name.form-control(
-                      type="text",
-                      value=user.firstname + ' ' + user.lastname,
-                      disabled
-                    )
+                    input#judge_name.form-control(type="text", disabled)
                   .form-group.col-sm-1.col-form-label BJCP ID
                     label(for="bjcp_id")
                   .form-group.col-sm-2
-                    input#bjcp_id.form-control(
-                      type="text",
-                      value=user.bjcp_id,
-                      readonly
-                    )
+                    input#bjcp_id.form-control(type="text", readonly)
                   .form-group.col-sm-1.col-form-label Rank
                     label(for="bjcp_rank")
                   .form-group.col-sm-2
-                    input#bjcp_rank.form-control(
-                      type="text",
-                      value=user.bjcp_rank,
-                      readonly
-                    )
+                    input#bjcp_rank.form-control(type="text", readonly)
                 .form-row.py-1
                   .form-group.col-sm-2.col-form-label Session Date
-                    label(for="session_date")
+                    label(for="date")
                   .form-group.col-sm-4
-                    input#session_date.form-control(
-                      type="date",
-                      name="session_date",
-                      value=sess_date
-                    )
+                    input#date.form-control(type="date", name="date", disabled)
                   .form-group.col-sm-2.col-form-label Session Location
-                    label(for="session_location")
+                    label(for="location")
                   .form-group.col-sm-4
-                    input#session_location.form-control(
+                    input#location.form-control(
                       type="text",
-                      name="session_location",
-                      value=session_location,
+                      name="location",
                       disabled
                     )
 
@@ -196,8 +175,7 @@ block content
                     input#flight_position.form-control(
                       type="number",
                       name="flight_position",
-                      min="0",
-                      value=flight_position
+                      min="0"
                     )
                   .form-group.col-sm-1.col-form-label.text-center
                     label(for="flight_total") of
@@ -205,8 +183,7 @@ block content
                     input#flight_total.form-control(
                       type="number",
                       name="flight_total",
-                      min="0",
-                      value=flight_total
+                      disabled
                     )
               .form-group
                 .form-row.py-1
@@ -374,13 +351,12 @@ block content
                       .card-header.py-1
                         p.small.mb-0.text-center Aroma Score
                       .card-body.text-dark.px-0.py-0.text-center
-                        input#aroma_score.form-control.form-control-lg.text-center.mb-0(
+                        input.aroma_score.section-score.form-control.form-control-lg.text-center.mb-0(
                           type="number",
                           name="aroma_score",
                           value=0,
                           min=0,
-                          max=12,
-                          onchange="recalculate_score()"
+                          max=12
                         )
                         p.small.d-flex.align-items-end.flex-row-reverse.my-0.pb-0 /12
             #appearance.tab-pane(
@@ -520,13 +496,12 @@ block content
                       .card-header.py-1.px-0
                         p.small.mb-0.text-center Appearance Score
                       .card-body.text-dark.px-0.py-0.text-center
-                        input#appearance_score.form-control.form-control-lg.text-center.mb-0(
+                        input.appearance_score.section-score.form-control.form-control-lg.text-center.mb-0(
                           type="number",
                           name="appearance_score",
                           value="0",
                           min="0",
-                          max="3",
-                          onchange="recalculate_score()"
+                          max="3"
                         )
                         p.small.d-flex.align-items-end.flex-row-reverse.my-0.pb-0 /3
             #flavor.tab-pane(role="tabpanel", aria-labelledby="flavor-tab")
@@ -726,13 +701,12 @@ block content
                       .card-header.py-1.px-0
                         p.small.mb-0.text-center Flavor Score
                       .card-body.text-dark.px-0.py-0.text-center
-                        input#flavor_score.form-control.form-control-lg.text-center.mb-0(
+                        input.flavor_score.section-score.form-control.form-control-lg.text-center.mb-0(
                           type="number",
                           name="flavor_score",
                           value="0",
                           min="0",
-                          max="20",
-                          onchange="recalculate_score()"
+                          max="20"
                         )
                         p.small.d-flex.align-items-end.flex-row-reverse.my-0.pb-0 /20
             #mouthfeel.tab-pane(
@@ -861,13 +835,12 @@ block content
                       .card-header.py-1.px-0
                         p.small.mb-0.text-center Mouthfeel Score
                       .card-body.text-dark.px-0.py-0.text-center
-                        input#mouthfeel_score.form-control.form-control-lg.text-center.mb-0(
+                        input#mouthfeel_score.section-score.form-control.form-control-lg.text-center.mb-0(
                           type="number",
                           name="mouthfeel_score",
                           value="0",
                           min="0",
-                          max="5",
-                          onchange="recalculate_score()"
+                          max="5"
                         )
                         p.small.d-flex.align-items-end.flex-row-reverse.my-0.pb-0 /5
             #descriptors.tab-pane(
@@ -1216,14 +1189,92 @@ block content
                       .card-header.py-1.px-0
                         p.small.mb-0.text-center Summary Score
                       .card-body.text-dark.px-0.py-0.text-center
-                        input#overall_score.form-control.form-control-lg.text-center.mb-0(
+                        input.overall_score.form-control.section-score.form-control-lg.text-center.mb-0(
                           type="number",
                           name="overall_score",
                           value="0",
                           min="0",
-                          max="10",
-                          onchange="recalculate_score()"
+                          max="10"
                         )
                         p.small.d-flex.align-items-end.flex-row-reverse.my-0.pb-0 /10
+        .card-footer
+          .d-flex.flex-row.justify-content-around
+            // Next Tab
+            .my-auto
+              button#previousTab.btn.btn-outline-primary(disabled) Previous
+
+            // Aroma
+            .card.border-dark(style="width:100px")
+              .card-header.py-1
+                p.small.mb-0.text-center Aroma
+              .card-body.text-dark.px-0.py-0.text-center
+                input.aroma_score.section-score.form-control.form-control-lg.text-center.mb-0(
+                  type="number",
+                  name="aroma_score",
+                  value=0,
+                  min=0,
+                  max=12
+                )
+                p.small.d-flex.align-items-end.flex-row-reverse.my-0.pb-0 /12
+
+            // Appearance
+            .card.border-dark(style="width:100px")
+              .card-header.py-1.px-0
+                p.small.mb-0.text-center Appearance
+              .card-body.text-dark.px-0.py-0.text-center
+                input.appearance_score.section-score.form-control.form-control-lg.text-center.mb-0(
+                  type="number",
+                  name="appearance_score",
+                  value="0",
+                  min="0",
+                  max="3"
+                )
+                p.small.d-flex.align-items-end.flex-row-reverse.my-0.pb-0 /3
+
+            // Flavor
+            .card.border-dark(style="width:100px")
+              .card-header.py-1.px-0
+                p.small.mb-0.text-center Flavor
+              .card-body.text-dark.px-0.py-0.text-center
+                input.flavor_score.section-score.form-control.form-control-lg.text-center.mb-0(
+                  type="number",
+                  name="flavor_score",
+                  value="0",
+                  min="0",
+                  max="20"
+                )
+                p.small.d-flex.align-items-end.flex-row-reverse.my-0.pb-0 /20
+
+            // Mouthfeel
+            .card.border-dark(style="width:100px")
+              .card-header.py-1.px-0
+                p.small.mb-0.text-center Mouthfeel
+              .card-body.text-dark.px-0.py-0.text-center
+                input.mouthfeel_score.section-score.form-control.form-control-lg.text-center.mb-0(
+                  type="number",
+                  name="mouthfeel_score",
+                  value="0",
+                  min="0",
+                  max="5"
+                )
+                p.small.d-flex.align-items-end.flex-row-reverse.my-0.pb-0 /5
+
+            // Overall
+            .card.border-dark(style="width:100px;")
+              .card-header.py-1.px-0
+                p.small.mb-0.text-center Summary
+              .card-body.text-dark.px-0.py-0.text-center
+                input.overall_score.section-score.form-control.form-control-lg.text-center.mb-0(
+                  type="number",
+                  name="overall_score",
+                  value="0",
+                  min="0",
+                  max="10"
+                )
+                p.small.d-flex.align-items-end.flex-row-reverse.my-0.pb-0 /10
+
+            // Next Tab
+            .my-auto
+              button#nextTab.btn.btn-outline-primary Next
 
   script(src="/javascripts/scoresheet.js")

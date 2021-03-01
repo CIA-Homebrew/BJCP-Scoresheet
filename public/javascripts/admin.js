@@ -165,21 +165,17 @@ const getDataValueByKey = (listItem, key) => {
   // Overrides for database key values
   let value = listItem[key];
 
-  if (key === "created_by" || key === "user_id") {
-    const userId = listItem[key];
+  if (key === "created_by" || key === "UserId") {
+    let userId = listItem[key];
+    if (!userId && listItem.FlightId) {
+      userId = Flights[listItem.FlightId].UserId;
+    }
     value = `<a role="button" class="link-style" onclick="openDataModal('#judges','${userId}')">${Users[userId]?.firstname} ${Users[userId]?.lastname}</a>`;
-  } else if (key === "flight_key") {
+  } else if (key === "FlightId") {
     const flightId = listItem[key];
     value = `<a role="button" class="link-style" onclick="openDataModal('#flights','${flightId}')">${Flights[flightId].flight_id}</a>`;
-  } else if (key === "mini_boss_advanced") {
-    const minibos = listItem[key] === "on";
-    value = `
-		<div class="form-check">
-			<input class="form-check-input position-static" type="checkbox" ${
-        minibos ? "checked" : ""
-      } disabled>
-		</div>
-		`;
+  } else if (key === "mini_boss_advanced" || key === "submitted") {
+    value = listItem[key] ? "✓" : "";
   } else if (key === "place" || key === "place_first") {
     const placeCode = listItem[key];
     const placeValues = ["Adv.", "1st", "2nd", "3rd"];
@@ -187,18 +183,26 @@ const getDataValueByKey = (listItem, key) => {
   } else if (key === "numFlightEntries") {
     const flightId = listItem.id;
     value = Object.values(Scoresheets).filter(
-      (scoresheet) => scoresheet.flight_key === flightId
+      (scoresheet) => scoresheet.FlightId === flightId
     ).length;
   } else if (key === "numUserFlights") {
     const userId = listItem.id;
-    value = Object.values(Flights).filter(
-      (flight) => flight.created_by === userId
-    ).length;
+    value = Object.values(Flights).filter((flight) => flight.UserId === userId)
+      .length;
   } else if (key === "numUserScoresheets") {
     const userId = listItem.id;
-    value = Object.values(Scoresheets).filter(
-      (flight) => flight.user_id === userId
-    ).length;
+    const allFlightIds = Object.values(Flights)
+      .filter((flight) => flight.UserId === userId)
+      .map((flight) => flight.id);
+
+    value = Object.values(Scoresheets)
+      .map((scoresheet) => scoresheet.FlightId)
+      .reduce((acc, val) => {
+        if (allFlightIds.includes(val)) {
+          acc += 1;
+        }
+        return acc;
+      }, 0);
   } else if (key === "date") {
     value = new Date(listItem[key]).toLocaleDateString();
   } else if (key === "numEntryScoresheets") {
@@ -213,7 +217,10 @@ const getDataValueByKey = (listItem, key) => {
         entryNumber
       ][prop]
         .map((val, idx) => {
-          const user = Users[Entries[entryNumber].scoresheets[idx].user_id];
+          const user =
+            Users[
+              Flights[Entries[entryNumber].scoresheets[idx].FlightId].UserId
+            ];
           const scoresheet = Entries[entryNumber].scoresheets[idx];
 
           return (
@@ -249,6 +256,36 @@ const openDataModal = (tableId, id) => {
   }
 };
 
+const showDeleteScoresheetModal = (id) => {
+  const scoresheetId = id || $("#scoresheetModalScoresheetId").val();
+
+  if (!scoresheetId) return;
+
+  $("#scoresheet-to-delete").val(scoresheetId);
+  $("#user_verify_scoresheet_delete").prop("checked", false);
+  $("#confirm-delete-scoresheet-modal").modal("show");
+};
+
+const clearScoresheetToDelete = () => {
+  $("#scoresheet-to-delete").val(null);
+  $("#user_verify_scoresheet_delete").prop("checked", false);
+};
+
+const showDeleteFlightModal = (id) => {
+  const flightId = id || $("#flightModalName").attr("flight-id");
+
+  if (!flightId) return;
+
+  $("#flight-to-delete").val(flightId);
+  $("#user_verify_flight_delete").prop("checked", false);
+  $("#confirm-delete-flight-modal").modal("show");
+};
+
+const clearFlightToDelete = () => {
+  $("#flight-to-delete").val(null);
+  $("#user_verify_flight_delete").prop("checked", false);
+};
+
 const closeAllModals = () => {
   $("#flightDataModal").modal("hide");
   $("#scoresheetDataModal").modal("hide");
@@ -266,8 +303,8 @@ $(() => {
     closeAllModals();
 
     const flightScoresheetsHtml = Object.values(Scoresheets)
-      .filter((scoresheet) => scoresheet.flight_key === flightId)
-      .map((scoresheet) => generateScoresheetModalTableRow(scoresheet))
+      .filter((scoresheet) => scoresheet.FlightId === flightId)
+      .map((scoresheet) => generateScoresheetModalTableRow(scoresheet, flight))
       .join("");
 
     $("#flightModalName").val(flight.flight_id);
@@ -276,7 +313,7 @@ $(() => {
     $("#flightModalLocation").prop("disabled", flight.submitted);
     $("#flightModalDate").val(flight.date.slice(0, 10));
     $("#flightModalDate").prop("disabled", flight.submitted);
-    $("#flightModalUser").val(flight.created_by);
+    $("#flightModalUser").val(flight.UserId);
     $("#flightModalUser").prop("disabled", flight.submitted);
     $("#flighModalSubmitted").prop("checked", flight.submitted);
     $("#flightModalEntries").html(flightScoresheetsHtml);
@@ -304,13 +341,14 @@ $(() => {
       (flight) => flight.created_by === userId
     );
     const scoresheets = Object.values(Scoresheets).filter(
-      (scoresheet) => scoresheet.user_id === userId
+      (scoresheet) => Flights[scoresheet.FlightId].UserId === userId
     );
     $("#userModalResetPasswordButton").off("click");
 
     closeAllModals();
 
     $("#userModalEmail").val(user.email);
+    $("#userModalEmailVerified").prop("checked", user.email_verified);
     $("#userModalFirstName").val(user.firstname);
     $("#userModalLastName").val(user.lastname);
     $("#userModalBjcpId").val(user.bjcp_id);
@@ -344,7 +382,9 @@ $(() => {
     $("#entryModalEntryContested").attr("hidden", !contested);
 
     const flightScoresheetsHtml = Entries[entryNumber].scoresheets
-      .map((scoresheet) => generateEntryTableRow(scoresheet))
+      .map((scoresheet) =>
+        generateEntryTableRow(scoresheet, Flights[scoresheet.FlightId])
+      )
       .join("");
     $("#entryModalEntryNumber").val(entry.id);
     $("#entryModalCategory").val(entry.scoresheets_first.category);
@@ -368,6 +408,7 @@ $(() => {
     ) {
       const updatedUserData = {
         id: upateUserId,
+        email_verified: $("#userModalEmailVerified").prop("checked"),
         firstname: $("#userModalFirstName").val(),
         lastname: $("#userModalLastName").val(),
         bjcp_id: $("#userModalBjcpId").val(),
@@ -400,7 +441,8 @@ $(() => {
   resetUserPassword = (userId) => {
     if (
       window.confirm(
-        `Do you really want to reset the password for user "${Users[userId].email}" (${Users[userId].firstname} ${Users[userId].lastname})?`
+        `Do you really want to reset the password for user "${Users[userId].email}" (${Users[userId].firstname} ${Users[userId].lastname})? This action is unrevokable.
+        `
       )
     ) {
       fetch("/admin/resetpassword/", {
@@ -416,7 +458,7 @@ $(() => {
         .then((data) => {
           navigator.clipboard.writeText(data.updatedPassword).then(() => {
             window.alert(
-              `Reset password for user "${Users[userId].email}" (${Users[userId].firstname} ${Users[userId].lastname}) to:\n\n${data.updatedPassword}\n\nThis password has been copied to the clipboard.`
+              `Reset password for user "${Users[userId].email}" (${Users[userId].firstname} ${Users[userId].lastname}) to:\n\n${data.updatedPassword}\n\nThis password has been copied to the clipboard - YOU WILL NEED TO GIVE IT TO THE USER.`
             );
           });
         })
@@ -433,7 +475,7 @@ $(() => {
     const updatedFlightData = {
       flightId: $("#flightModalName").attr("flight-id"),
       flightName: $("#flightModalName").val(),
-      submitted: $("#flighModalSubmitted").prop("checked"),
+      submitted: Boolean($("#flighModalSubmitted").prop("checked")),
       flightDate: new Date($("#flightModalDate").val()),
       createdBy: $("#flightModalUser").val(),
       flightLocation: $("#flightModalLocation").val(),
@@ -451,6 +493,35 @@ $(() => {
       })
       .catch((err) => {
         console.error("Could not update flight #" + updatedFlightData.flightId);
+      });
+  };
+
+  deleteFlight = () => {
+    const flightId = $("#flight-to-delete").val();
+    const userVerifiedDelete = $("#user_verify_flight_delete").prop("checked");
+
+    $("#flight-to-delete").val(null);
+    $("#user_verify_flight_delete").prop("checked", false);
+    $("#confirm-delete-flight-modal").modal("hide");
+
+    if (!userVerifiedDelete) return;
+
+    fetch("/flight/delete/", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ flightId: flightId }),
+    })
+      .then((response) => response.json())
+      .then((deletedFlightId) => {
+        delete Flights[deletedFlightId];
+        closeAllModals();
+        updateAllTables();
+      })
+      .catch((err) => {
+        // TODO: Error handling here
+        window.alert("Error deleting. Please try again later.");
       });
   };
 
@@ -522,6 +593,37 @@ $(() => {
       });
   };
 
+  deleteScoresheet = () => {
+    const scoresheetId = $("#scoresheet-to-delete").val();
+    const userVerifiedDelete = $("#user_verify_scoresheet_delete").prop(
+      "checked"
+    );
+
+    $("#scoresheet-to-delete").val(null);
+    $("#user_verify_scoresheet_delete").prop("checked", false);
+    $("#confirm-delete-scoresheet-modal").modal("hide");
+
+    if (!userVerifiedDelete) return;
+
+    fetch("/scoresheet/delete/", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ scoresheetId: scoresheetId }),
+    })
+      .then((response) => response.json())
+      .then((deletedScoresheetId) => {
+        delete Scoresheets[deletedScoresheetId];
+        closeAllModals();
+        updateAllTables();
+      })
+      .catch((err) => {
+        // TODO: Error handling here
+        window.alert("Error deleting. Please try again later.");
+      });
+  };
+
   updateEntryData = () => {
     const updatedEntryData = {
       entry_number: $("#entryModalEntryNumber").val(),
@@ -575,7 +677,7 @@ $(() => {
       });
   };
 
-  const generateScoresheetModalTableRow = (scoresheet) => {
+  const generateScoresheetModalTableRow = (scoresheet, flight) => {
     return `
 		<tr class="flight-modal-scoresheet-row" scoresheet-id="${scoresheet.id}">
 			<td scope="row">
@@ -592,11 +694,11 @@ $(() => {
 			<td class="text-center">
 				<input class="form-control form-control-sm text-center flight-modal-consensus" type="number" value="${
           scoresheet.consensus_score
-        }"  ${scoresheet.scoresheet_submitted ? "disabled" : ""}/>
+        }"  ${flight.submitted ? "disabled" : ""}/>
 			</td>
 			<td class="text-center">
 				<select class="form-control form-control-sm flight-modal-place"  ${
-          scoresheet.scoresheet_submitted ? "disabled" : ""
+          flight.submitted ? "disabled" : ""
         }>
 					<option>-</option>
 					<option value="0" ${scoresheet.place === 0 ? "selected" : ""}>Advance</option>
@@ -608,11 +710,11 @@ $(() => {
 			<td class="text-center">
 				<input class="form-check-input position-static m-0 flight-modal-bos-advance" type="checkbox" autocomplete="off" ${
           scoresheet.mini_boss_advanced ? "checked" : ""
-        }  ${scoresheet.scoresheet_submitted ? "disabled" : ""}/>
+        }  ${flight.submitted ? "disabled" : ""}/>
 			</td>
 			<td class="text-center">
 				<button class="btn btn-success btn-sm flight-modal-download-button" type="button"  ${
-          !scoresheet.scoresheet_submitted ? "disabled" : ""
+          !flight.submitted ? "disabled" : ""
         } onclick="downloadPdf('${scoresheet.id}')">📄</button>
 			</td>
 		</tr>
@@ -625,44 +727,44 @@ $(() => {
 			<td scope="row">
 				<a role="button" class="link-style" onclick=openFlightDataModal("${
           flight.id
-        }")>${flight.flight_id}</a>
+        }")>${flight.FlightId}</a>
 			</td>
 			<td>${new Date(flight.date).toLocaleDateString()}</td>
 			<td>${flight.location}</td>
 			<td>${
         Object.values(Scoresheets).filter(
-          (scoresheet) => scoresheet.flight_key === flight.id
+          (scoresheet) => scoresheet.FlightId === flight.id
         ).length
       }</td>
 		</tr>
 		`;
   };
 
-  const generateEntryTableRow = (scoresheet) => {
+  const generateEntryTableRow = (scoresheet, flight) => {
+    const userId = Flights[scoresheet.FlightId].UserId;
+
     return `
     <tr data-scoresheet-id="${scoresheet.id}">
       <td scope="row">
-        <a role="button" class="link-style" onclick=openUserDataModal("${
-          scoresheet.user_id
-        }")>${Users[scoresheet.user_id].firstname} ${
-      Users[scoresheet.user_id].lastname
-    }</a>
+        <a role="button" class="link-style" onclick=openUserDataModal("${userId}")>${
+      Users[userId].firstname
+    } ${Users[userId].lastname}</a>
       </td>
       <td>
         <a role="button" class="link-style" onclick=openFlightDataModal("${
-          scoresheet.flight_key
-        }")>${Flights[scoresheet.flight_key].flight_id}</a>
+          scoresheet.FlightId
+        }")>${Flights[scoresheet.FlightId].flight_id}</a>
       </td>
       <td>${scoresheet.category}${scoresheet.sub}-${scoresheet.subcategory}</td>
       <td>${scoresheet.judge_total}</td>
       <td class="text-center">
 				<input class="form-control form-control-sm text-center entry-modal-consensus" type="number" value="${
           scoresheet.consensus_score
-        }"  ${scoresheet.scoresheet_submitted ? "disabled" : ""}/>
+        }"  ${flight.submitted ? "disabled" : ""}/>
 			</td>
 			<td class="text-center">
 				<select class="form-control form-control-sm entry-modal-place"  ${
-          scoresheet.scoresheet_submitted ? "disabled" : ""
+          flight.submitted ? "disabled" : ""
         }>
 					<option>-</option>
 					<option value="0" ${scoresheet.place === 0 ? "selected" : ""}>Advance</option>
@@ -674,11 +776,11 @@ $(() => {
 			<td class="text-center">
 				<input class="form-check-input position-static m-0 entry-modal-bos-advance" type="checkbox" autocomplete="off" ${
           scoresheet.mini_boss_advanced ? "checked" : ""
-        }  ${scoresheet.scoresheet_submitted ? "disabled" : ""}/>
+        }  ${flight.submitted ? "disabled" : ""}/>
 			</td>
 			<td class="text-center">
 				<button class="btn btn-success btn-sm entry-modal-download-button" type="button"  ${
-          !scoresheet.scoresheet_submitted ? "disabled" : ""
+          !flight.submitted ? "disabled" : ""
         } onclick="downloadPdf('${scoresheet.id}')">📄</button>
 			</td>
     </tr>
@@ -794,8 +896,8 @@ $(() => {
 
   getRawDataDump = () => {
     const rawDataRows = Object.values(Scoresheets).map((scoresheet) => {
-      const flightId = scoresheet.flight_key;
-      const userId = scoresheet.user_id;
+      const flightId = scoresheet.FlightId;
+      const userId = Flights[scoresheet.FlightId].UserId;
 
       const row = {
         ...scoresheet,
@@ -804,8 +906,7 @@ $(() => {
       };
 
       delete row.id;
-      delete row.flight_key;
-      delete row.user_id;
+      delete row.FlightId;
       delete row.user_level;
       delete row.created_by;
 
