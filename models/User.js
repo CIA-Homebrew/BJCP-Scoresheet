@@ -59,6 +59,7 @@ module.exports = (sequelize, DataTypes) => {
       },
     },
     {
+      paranoid: true,
       hooks: {
         beforeCreate: (user, options) => {
           user.password = bcrypt.hashSync(
@@ -70,6 +71,7 @@ module.exports = (sequelize, DataTypes) => {
       },
       createdAt: "created_at",
       updatedAt: "updated_at",
+      deletedAt: "deleted_at",
     }
   );
 
@@ -101,6 +103,7 @@ module.exports = (sequelize, DataTypes) => {
   User.associate = function (models) {
     // associations can be defined here
     User.hasMany(models.Flight);
+    User.belongsToMany(models.Competition, { through: models.UserCompetition });
   };
 
   return User;

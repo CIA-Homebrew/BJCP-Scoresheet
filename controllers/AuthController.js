@@ -70,6 +70,8 @@ userController.home = function (req, res) {
     return;
   }
 
+  console.log("got here");
+
   Flight.findAll({
     where: {
       UserId: req.user.id,
