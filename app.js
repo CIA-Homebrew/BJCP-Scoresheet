@@ -19,6 +19,8 @@ const db = require("./models/index");
 
 let coreRouter = require("./routes/core");
 
+// db.sequelize.sync({ force: true })
+
 // Clear temporary files on app process exit
 tmp.setGracefulCleanup();
 

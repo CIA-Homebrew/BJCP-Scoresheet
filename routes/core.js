@@ -158,5 +158,10 @@ router.post(
   authMiddle.isAuthenticated,
   flightController.deleteFlight
 );
+router.post(
+  "/flight/incompleteScoresheets",
+  authMiddle.isAuthenticated,
+  scoresheetController.getIncompleteScoresheetsInFlight
+);
 
 module.exports = router;

@@ -29,11 +29,16 @@ const fetchAllData = () => {
         Flights[flight.id] = flight;
       });
       scoresheets.forEach((scoresheet) => {
+        if (!flights.find((flight) => flight.id === scoresheet.FlightId))
+          return;
         Scoresheets[scoresheet.id] = scoresheet;
       });
 
       // Entries are scoresheets indexed against entry_number. Multiple scoresheets can have same entry number so we capture arrays here
       Entries = scoresheets.reduce((acc, scoresheet) => {
+        if (!flights.find((flight) => flight.id === scoresheet.FlightId))
+          return acc;
+
         acc[scoresheet.entry_number] = acc[scoresheet.entry_number] || {
           scoresheets: [],
           category: [],

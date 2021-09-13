@@ -138,8 +138,38 @@ const editFlight = () => {
 };
 
 const confirmSubmitFlight = (flightId) => {
-  $("#flight-to-submit").val(flightId);
-  $("#confirm-submit-flight-modal").modal("show");
+  $("#confirm-submit-flight-modal-zero-score-entry-container").prop(
+    "hidden",
+    true
+  );
+  $("#confirm-submit-flight-modal-zero-score-entry-list").html("");
+
+  fetch("/flight/incompleteScoresheets", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      flightId: flightId,
+    }),
+  })
+    .then((res) => res.json())
+    .then((scoresheets) => {
+      if (scoresheets.length) {
+        $("#confirm-submit-flight-modal-zero-score-entry-container").prop(
+          "hidden",
+          false
+        );
+        scoresheets.forEach((scoresheet) => {
+          $("#confirm-submit-flight-modal-zero-score-entry-list").append(
+            `<li>${scoresheet}</li>`
+          );
+        });
+      }
+
+      $("#flight-to-submit").val(flightId);
+      $("#confirm-submit-flight-modal").modal("show");
+    });
 };
 
 const confirmDeleteFlight = (flightId) => {
@@ -207,7 +237,38 @@ const updateScoresheet = (scoresheetId, param, newVal) => {
     body: JSON.stringify(requestBody),
   })
     .then((response) => {
-      //- const responseBody = response.json()
+      // Don't allow 2nd round advance and placement simultaneously
+      if (param === "mini_boss_advanced" && newVal) {
+        $(`#${scoresheetId}_row`)
+          .closest(".flight-table")
+          .find(".place-selector")
+          .prop("disabled", true);
+      } else if (param === "place" && newVal != -1) {
+        $(`#${scoresheetId}_row`)
+          .closest(".flight-table")
+          .find(".mini-boss-selector")
+          .prop("disabled", true);
+        $(`#${scoresheetId}_row`)
+          .closest(".flight-table")
+          .find(".advance-button-wrapper")
+          .removeClass("btn-outline-success")
+          .addClass("btn-outline-secondary");
+      } else if (param === "mini_boss_advanced" && !newVal) {
+        $(`#${scoresheetId}_row`)
+          .closest(".flight-table")
+          .find(".place-selector")
+          .prop("disabled", false);
+      } else if (param === "place" && newVal == -1) {
+        $(`#${scoresheetId}_row`)
+          .closest(".flight-table")
+          .find(".mini-boss-selector")
+          .prop("disabled", false);
+        $(`#${scoresheetId}_row`)
+          .closest(".flight-table")
+          .find(".advance-button-wrapper")
+          .removeClass("btn-outline-secondary")
+          .addClass("btn-outline-success");
+      }
     })
     .catch((err) => {
       window.alert("Error updating. Please try again.");
