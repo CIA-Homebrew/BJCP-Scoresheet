@@ -13,7 +13,7 @@
     "debug": "nodemon --inspect ./bin/www",
     "migrate": "npx sequelize-cli db:migrate && npx sequelize-cli db:migrate --url postgres://user:password@localhost:5432/bjcp-scoresheet",
     "seed": "npx sequelize-cli db:seed",
-    "staging": "NODE_ENV=staging npm start"
+    "staging": "npm start"
   },
   "dependencies": {
     "archiver": "^5.0.2",

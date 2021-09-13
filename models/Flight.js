@@ -18,15 +18,18 @@ module.exports = (sequelize, DataTypes) => {
     },
     {
       sequelize,
+      paranoid: true,
       modelName: "Flight",
       createdAt: "created_at",
       updatedAt: "updated_at",
+      deletedAt: "deleted_at",
     }
   );
 
   Flight.associate = function (models) {
     Flight.hasMany(models.Scoresheet, { onDelete: "CASCADE", hooks: true });
     Flight.belongsTo(models.User);
+    Flight.belongsTo(models.Competition);
   };
 
   return Flight;

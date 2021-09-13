@@ -127,6 +127,34 @@ scoresheetController.getScoresheetData = function (req, res) {
   });
 };
 
+scoresheetController.getIncompleteScoresheetsInFlight = function (req, res) {
+  const flightId = req.body.flightId;
+  // TODO: limit to admin
+  const userId = req.user.id;
+
+  Scoresheet.findAll({
+    where: {
+      FlightId: flightId,
+    },
+  }).then(async (scoresheetData) => {
+    if (!scoresheetData) throw new Error("No scoresheet found!");
+
+    const scoresheetsWithZeroScoreEntries = scoresheetData
+      .filter((scoresheet) => {
+        return [
+          "aroma_score",
+          "appearance_score",
+          "flavor_score",
+          "mouthfeel_score",
+          "overall_score",
+        ].filter((key) => scoresheet[key] == 0).length;
+      })
+      .map((scoresheet) => scoresheet.entry_number);
+
+    res.json(scoresheetsWithZeroScoreEntries);
+  });
+};
+
 scoresheetController.deleteScoresheet = function (req, res) {
   const scoresheetId = req.body.scoresheetId;
   const userId = req.user.id;

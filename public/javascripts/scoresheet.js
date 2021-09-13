@@ -333,6 +333,23 @@ $(document).ready(function () {
     }
   };
 
+  set_place_bos = () => {
+    $("#place").prop("disabled", false);
+    $("#mini_boss_advanced").prop("disabled", false);
+    $("#mini_boss_advanced_label")
+      .removeClass("btn-outline-secondary")
+      .addClass("btn-outline-success");
+
+    if ($("#place").val() != -1) {
+      $("#mini_boss_advanced").prop("disabled", true);
+      $("#mini_boss_advanced_label")
+        .removeClass("btn-outline-success")
+        .addClass("btn-outline-secondary");
+    } else if ($("#mini_boss_advanced").prop("checked")) {
+      $("#place").prop("disabled", true);
+    }
+  };
+
   // post scoresheet as-is to db without submitting
   update_scoresheet = () => {
     var fData = $("form#newScoresheet").serialize();
@@ -372,6 +389,7 @@ $(document).ready(function () {
       $.post("/scoresheet/update", fDataObject, function (data) {
         if (data.update) {
           $("#scoresheetId").val(data.id);
+          set_place_bos();
         } else if (data.error) {
         }
       });
@@ -383,6 +401,29 @@ $(document).ready(function () {
   // Save and quit
   goHome = () => {
     update_scoresheet();
+
+    const zeroSectionScores = [
+      "aroma_score",
+      "appearance_score",
+      "flavor_score",
+      "mouthfeel_score",
+      "overall_score",
+    ]
+      .filter((key) => $(`.${key}`).first().val() == 0)
+      .map((key) => key.replace("_score", ""));
+
+    if (zeroSectionScores.length) {
+      const confirmation = window.confirm(
+        `The following sections have a score of 0: 
+        \n${zeroSectionScores
+          .map((word) => "- " + word.toUpperCase())
+          .join("\n")} 
+        \nAre you sure you would like to continue?`
+      );
+
+      if (!confirmation) return;
+    }
+
     window.location.replace("/");
   };
 
@@ -608,6 +649,7 @@ load_scoresheet_data = () => {
           $("#judge_name").val(`${user.firstname} ${user.lastname}`);
         }
 
+        set_place_bos();
         update_tooltips();
         const totalScore = scoreFields.reduce((acc, val) => {
           acc += Number($(`.${val}`).first().val());

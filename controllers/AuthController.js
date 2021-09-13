@@ -468,7 +468,7 @@ userController.validateEmail = function (req, res) {
       req.flash(
         "success",
         `Email address ${user ? user.email : ""} successfully validated. ${
-          user[1].id !== userId
+          user && user[1] && user[1].id !== userId
             ? "(You may need to log out and log back in)"
             : ""
         }`

@@ -142,11 +142,18 @@ div#primary_header {
   padding-left: 1%;
   padding-right: 1%;
   border-bottom: 2px solid black;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
 }
 div.bjcp_badge,
 div.aha_badge {
   height: 85%;
-  float: left;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
 }
 div.bjcp_badge img,
 div.aha_badge img {

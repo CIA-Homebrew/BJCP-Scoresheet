@@ -15,7 +15,7 @@ block content
           height="400px"
         )
       h1.text-center Welcome!
-      p.text-center Welcome to the Cane Island Alers Digital Scoresheet Manager. Please use the menu above to navigate to your desired action.
+      p.text-center Welcome to the BJCP-Scoresheets Digital Scoresheet Manager. Please use the menu above to navigate to your desired action.
   else if !user.email_verified
     .container.d-flex.flex-column.justify-content-center.mt-5(
       style="width: 450px;"
@@ -100,10 +100,12 @@ block content
                                 th.text-center(scope="col") Place / Advance
                                 th.text-center(scope="col") MiniBOS Advance
                                 th(scope="col")
-                            tbody
+                            tbody.flight-table
                               if flight.scoresheets.length
+                                - var hasPlacesSet = flight.scoresheets.filter((scoresheet) => Number(scoresheet.place > 0)).length > 0;
+                                - var hasAdvancesSet = flight.scoresheets.filter((scoresheet) => Boolean(scoresheet.mini_boss_advanced)).length > 0;
                                 each scoresheet in flight.scoresheets
-                                  tr
+                                  tr(id=`${scoresheet.id}_row`)
                                     td(scope="row") #{scoresheet.entry_number}
                                     td #{scoresheet.category + scoresheet.sub} - #{scoresheet.subcategory}
                                     td.text-center
@@ -119,10 +121,12 @@ block content
                                         onchange=`updateScoresheet('${scoresheet.id}', 'consensus_score', this.value)`
                                       )
                                     td.text-center
-                                      select.form-control(
-                                        onchange=`updateScoresheet('${scoresheet.id}', 'place', this.value)`
+                                      select.form-control.place-selector(
+                                        onchange=`updateScoresheet('${scoresheet.id}', 'place', this.value)`,
+                                        id=`${scoresheet.id}_place_selector`,
+                                        disabled=hasAdvancesSet
                                       )
-                                        option -
+                                        option(value=-1) -
                                         option(
                                           value=1,
                                           selected=scoresheet.place === 1
@@ -137,15 +141,17 @@ block content
                                         ) 3rd
                                     td.text-center 
                                       .btn-group-toggle(data-toggle="buttons")
-                                        label.btn.btn-outline-success(
-                                          class=Boolean(scoresheet.mini_boss_advanced) ? 'active' : ''
+                                        label.btn.advance-button-wrapper(
+                                          class=Boolean(scoresheet.mini_boss_advanced) ? 'btn-outline-success active' : hasPlacesSet ? 'btn-outline-secondary' : 'btn-outline-success'
                                         ) Advance
-                                          input#mini_boss_advanced(
+                                          input.mini-boss-selector(
+                                            id=`${scoresheet.id}_mini_boss_selector`,
                                             type="checkbox",
                                             autocomplete="off",
                                             name="mini_boss_advanced",
                                             checked=Boolean(scoresheet.mini_boss_advanced),
-                                            onchange=`updateScoresheet('${scoresheet.id}', 'mini_boss_advanced', this.checked)`
+                                            onchange=`updateScoresheet('${scoresheet.id}', 'mini_boss_advanced', this.checked)`,
+                                            disabled=hasPlacesSet
                                           )
                                     td.text-center.d-flex.justify-content-between
                                       button.btn.btn-primary.btn-sm.px-1.py-1.mr-2(
@@ -329,6 +335,13 @@ block content
             p Please take a moment to review your scoresheets, placings, consensus scores, and best of show submissions.
             p <strong>Once you click submit, you may no longer edit the flight or any of its scoresheets!</strong>
             p Are you sure you want to complete this flight?
+            #confirm-submit-flight-modal-zero-score-entry-container(
+              hidden,
+              style="color:red;"
+            )
+              span(style="font-weight:900;") WARNING: The following entries contain section scores of zero:
+              ul#confirm-submit-flight-modal-zero-score-entry-list
+              span(style="font-weight:900;") Please verify these section scores are correct before submitting!
             .form-check.pt-4
               input#user_verify_flight_submit.form-check-input(type="checkbox")
               label.form-check-label(for="user_verify_flight_submit") I confirm I have verified all flight information and am ready to submit
