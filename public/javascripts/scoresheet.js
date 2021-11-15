@@ -131,10 +131,16 @@ $(document).ready(function () {
         fDataObject[$(this).attr("id")] = $(this).is(":checked");
       });
 
+      // Populate radio boxes (for mead)
+      $('input[type="radio"]:checked').each(function () {
+        const key = $(this).attr("name");
+        const val = $(this).val();
+        fDataObject[key] = val;
+      });
+
       // Explicity set the scoresheetID if it exists
-      fDataObject.id = $("#scoresheetId").val()
-        ? $("#scoresheetId").val()
-        : undefined;
+      const scoresheetId = $("#scoresheetId").val();
+      fDataObject.id = scoresheetId ? $("#scoresheetId").val() : undefined;
 
       // Submit the updated scoresheet
       $.post("/scoresheet/update", fDataObject, function (data) {
@@ -243,6 +249,9 @@ $(document).ready(function () {
   //- This triggers when checkboxes are changed
   $("form#newScoresheet :checkbox").change(update_scoresheet);
 
+  //- This triggers when radio buttons are changed
+  $("form#newScoresheet :radio").change(update_scoresheet);
+
   // Since sliders don't trigger on focusout, we toggle those differently using mouseUp
   $(".slider-handle, .slider-tick-label").mouseup(update_scoresheet);
 
@@ -304,6 +313,7 @@ load_scoresheet_data = () => {
   const scoresheetId = $("#scoresheetId").val();
   if (!scoresheetId) {
     const flightId = $("#FlightId").val();
+    update_scoresheet();
 
     fetch("/flight/getById", {
       method: "POST",
@@ -348,6 +358,11 @@ load_scoresheet_data = () => {
         });
       });
 
+    if ($("#entry_number").val()) {
+      validatorHandler($("#entry_number"));
+      update_scoresheet();
+    }
+
     return;
   }
 
@@ -377,6 +392,20 @@ load_scoresheet_data = () => {
             $(`.${fieldId}`).closest(".card").addClass("red-border");
           } else {
             $(`.${fieldId}`).closest(".card").removeClass("red-border");
+          }
+        }
+
+        // Populate mead radios
+        if ($("#scoresheetType").val() === "mead") {
+          if (fieldId === "appearance_head_other") {
+            const carbonation = scoresheet[fieldId];
+            $(`#carbonation_${carbonation}`).prop("checked", true);
+          } else if (fieldId === "mouthfeel_creaminess") {
+            const sweetness = scoresheet[fieldId];
+            $(`#sweetness_${sweetness}`).prop("checked", true);
+          } else if (fieldId === "mouthfeel_warmth") {
+            const strength = scoresheet[fieldId];
+            $(`#strength_${strength}`).prop("checked", true);
           }
         }
 

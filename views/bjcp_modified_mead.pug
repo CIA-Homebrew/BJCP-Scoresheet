@@ -3,7 +3,7 @@
   we have to re-map some mead fields into "non-relevant" beer fields. The mappings are as follows:
 
   Info:
-  Carbonation appearance_texture_comment
+  Carbonation appearance_head_other
   Sweetness	mouthfeel_creaminess
   Strength	mouthfeel_warmth
   Honey Varietal	appearance_texture_comment
@@ -227,7 +227,7 @@ body
           //- ) #{scoresheet.bottle_inspection_check ? 'X' : ' '}
           span.text_bold.display_iblock(
             style="margin-right: 8px;margin-left:8px;width: 200px;"
-          ) #{scoresheet.appearance_texture_comment == 0 ? "Still" : scoresheet.appearance_texture_comment == 2 ? "Sparkling" : "Petillant"}
+          ) #{scoresheet.appearance_head_other == 0 ? "Still" : scoresheet.appearance_head_other == 2 ? "Sparkling" : "Petillant"}
           //- span(style="margin-right: 3px;") Comments:
           //- span.user_input_truncated.display_iblock(style="width: 200px;") #{scoresheet.mouthfeel_other_comment}
 

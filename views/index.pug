@@ -411,22 +411,32 @@ block content
         .modal-content
           .modal-header 
             h5 Select Scoresheet Type
-          .modal-body 
-            .form-check.pt-4
-              input#scoresheetTypeBeer.form-check-input(
-                type="radio",
-                value="beer",
-                name="scoresheetType",
-                checked
-              )
-              label.form-check-label(for="scoresheetTypeBeer") Beer
-            .form-check.pt-4 
-              input#scoresheetTypeMead.form-check-input(
-                type="radio",
-                value="mead",
-                name="scoresheetType"
-              )
-              label.form-check-label(for="scoresheetTypeMead") Mead
+          .modal-body
+            .form-group
+              label(for="addFlightModalEntryNumber") Entry Number
+              input#addFlightModalEntryNumber.form-control(
+                type="text",
+                placeholder="Entry Number",
+                maxlength="6"
+              ) 
+            .form-group
+              label Entry Type
+              br
+              .form-check.form-check-inline
+                input#scoresheetTypeBeer.form-check-input(
+                  type="radio",
+                  value="beer",
+                  name="scoresheetType",
+                  checked
+                )
+                label.form-check-label(for="scoresheetTypeBeer") Beer
+              .form-check.form-check-inline
+                input#scoresheetTypeMead.form-check-input(
+                  type="radio",
+                  value="mead",
+                  name="scoresheetType"
+                )
+                label.form-check-label(for="scoresheetTypeMead") Mead
           .modal-footer
             input#currentFlight(value=null, hidden)
             button.btn.btn-secondary(

@@ -32,14 +32,13 @@ function jsonErrorProcessor(err, res) {
 
 scoresheetController.initScoresheet = function (req, res) {
   const scoresheetType = req.body.scoresheetType || req.query.scoresheetType;
+  const entryNumber = req.body.entryNumber || req.query.entryNumber;
 
   const template = scoresheetType === "mead" ? "scoresheet_mead" : "scoresheet";
 
   if (req.body.scoresheetId || req.query.scoresheetId) {
     // Load scoresheet directly from id
-    const scoresheetId = req.body.scoresheetId
-      ? req.body.scoresheetId
-      : req.query.scoresheetId;
+    const scoresheetId = req.body.scoresheetId || req.query.scoresheetId;
 
     res.render(template, {
       scoresheetId: scoresheetId,
@@ -47,11 +46,14 @@ scoresheetController.initScoresheet = function (req, res) {
     });
   } else if (req.body.flightId || req.query.flightId) {
     // Create a new scoresheet in a flight
-    const flightId = req.body.flightId ? req.body.flightId : req.query.flightId;
+    const flightId = req.body.flightId || req.query.flightId;
+
+    if (!entryNumber) throw new Error("Entry number not provided!");
 
     res.render(template, {
       flightId: flightId,
       title: appConstants.APP_NAME + " - Scoresheet",
+      entryNumber: entryNumber,
     });
   } else {
     throw new Error("No scoresheet or flight found!");
