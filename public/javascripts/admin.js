@@ -343,7 +343,7 @@ $(() => {
     const user = Users[userId];
     if (!user) return;
     const flights = Object.values(Flights).filter(
-      (flight) => flight.created_by === userId
+      (flight) => flight.UserId === userId
     );
     const scoresheets = Object.values(Scoresheets).filter(
       (scoresheet) => Flights[scoresheet.FlightId].UserId === userId
@@ -732,7 +732,7 @@ $(() => {
 			<td scope="row">
 				<a role="button" class="link-style" onclick=openFlightDataModal("${
           flight.id
-        }")>${flight.FlightId}</a>
+        }")>${flight.flight_id}</a>
 			</td>
 			<td>${new Date(flight.date).toLocaleDateString()}</td>
 			<td>${flight.location}</td>
@@ -913,7 +913,7 @@ $(() => {
       delete row.id;
       delete row.FlightId;
       delete row.user_level;
-      delete row.created_by;
+      delete row.UserId;
 
       return row;
     });
