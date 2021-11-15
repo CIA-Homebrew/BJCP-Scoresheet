@@ -14,6 +14,7 @@ function jsonErrorProcessor(err, res) {
       ],
     });
   } else {
+    console.log(err);
     jsonErrorProcessor(err, res);
   }
 }
