@@ -157,14 +157,6 @@ block content
                 aria-controls="flavor",
                 aria-selected="false"
               ) Flavor
-            //- li.nav-item
-            //-   a#mouthfeel-tab.nav-link.px-2(
-            //-     data-toggle="tab",
-            //-     href="#mouthfeel",
-            //-     role="tab",
-            //-     aria-controls="mouthfeel",
-            //-     aria-selected="false"
-            //-   ) Mouthfeel
             li.nav-item
               a#descriptors-tab.nav-link.px-2(
                 data-toggle="tab",
@@ -227,7 +219,8 @@ block content
                       type="text",
                       placeholder="Entry Number",
                       name="entry_number",
-                      maxlength="6"
+                      maxlength="6",
+                      value=entryNumber
                     )
                     small#entry_number_help.form-text.text-muted Enter <span style="font-family: Courier, monospace;">NONE</span> for non-competition judging sessions
                     .invalid-feedback Missing or duplicate value.
@@ -276,88 +269,85 @@ block content
               .form-group
                 .form-row.py-1 
                   .form-group.col-sm-2.col-form-label
-                    label(for="carbonation") Carbonation
+                    label(for="appearance_head_other") Carbonation
                   .form-group.col-sm-2.col-form-label
                     .form-check
-                      input#carbonation_still.form-check-input(
+                      input#carbonation_0.form-check-input(
                         type="radio",
-                        name="carbonation",
+                        name="appearance_head_other",
                         value="0"
                       )
-                      label.form-check-label(for="carbonation_still") Still
+                      label.form-check-label(for="carbonation_0") Still
                   .form-group.col-sm-2.col-form-label
                     .form-check
-                      input#carbonation_petillant.form-check-input(
+                      input#carbonation_1.form-check-input(
                         type="radio",
-                        name="carbonation",
-                        value="1",
-                        checked
+                        name="appearance_head_other",
+                        value="1"
                       )
-                      label.form-check-label(for="carbonation_petillant") Petillant
+                      label.form-check-label(for="carbonation_1") Petillant
                   .form-group.col-sm-2.col-form-label
                     .form-check
-                      input#carbonation_sparkling.form-check-input(
+                      input#carbonation_2.form-check-input(
                         type="radio",
-                        name="carbonation",
+                        name="appearance_head_other",
                         value="2"
                       )
-                      label.form-check-label(for="carbonation_sparkling") Sparkling
+                      label.form-check-label(for="carbonation_2") Sparkling
                 .form-row.py-1 
                   .form-group.col-sm-2.col-form-label
-                    label(for="sweetness") Sweetness
+                    label(for="mouthfeel_creaminess") Sweetness
                   .form-group.col-sm-2.col-form-label
                     .form-check
-                      input#sweetness_dry.form-check-input(
+                      input#sweetness_0.form-check-input(
                         type="radio",
-                        name="sweetness",
+                        name="mouthfeel_creaminess",
                         value=0
                       )
-                      label.form-check-label(for="sweetness_dry") Dry
+                      label.form-check-label(for="sweetness_0") Dry
                   .form-group.col-sm-2.col-form-label
                     .form-check
-                      input#sweetness_medium.form-check-input(
+                      input#sweetness_1.form-check-input(
                         type="radio",
-                        name="sweetness",
-                        value=1,
-                        checked
+                        name="mouthfeel_creaminess",
+                        value=1
                       )
-                      label.form-check-label(for="sweetness_medium") Medium
+                      label.form-check-label(for="sweetness_1") Medium
                   .form-group.col-sm-2.col-form-label
                     .form-check
-                      input#sweetness_sweet.form-check-input(
+                      input#sweetness_2.form-check-input(
                         type="radio",
-                        name="sweetness",
+                        name="mouthfeel_creaminess",
                         value=2
                       )
-                      label.form-check-label(for="sweetness_sweet") Sweet
+                      label.form-check-label(for="sweetness_2") Sweet
                 .form-row.py-1 
                   .form-group.col-sm-2.col-form-label
-                    label(for="strength") Strength
+                    label(for="mouthfeel_warmth") Strength
                   .form-group.col-sm-2.col-form-label
                     .form-check
-                      input#strength_hydromel.form-check-input(
+                      input#strength_0.form-check-input(
                         type="radio",
-                        name="strength",
+                        name="mouthfeel_warmth",
                         value=0
                       )
-                      label.form-check-label(for="strength_hydromel") Hydromel
+                      label.form-check-label(for="strength_0") Hydromel
                   .form-group.col-sm-2.col-form-label
                     .form-check
-                      input#strength_standard.form-check-input(
+                      input#strength_1.form-check-input(
                         type="radio",
-                        name="strength",
-                        value=1,
-                        checked
+                        name="mouthfeel_warmth",
+                        value=1
                       )
                       label.form-check-label(for="strength_petillant") Standard
-                  .form-group.col-sm-2.col-form-strength_standard
+                  .form-group.col-sm-2.col-form-strength_1
                     .form-check
-                      input#strength_sack.form-check-input(
+                      input#strength_2.form-check-input(
                         type="radio",
-                        name="strength",
+                        name="mouthfeel_warmth",
                         value=2
                       )
-                      label.form-check-label(for="strength_sack") Sack
+                      label.form-check-label(for="strength_2") Sack
 
               .form-group
                 .form-row.py-1

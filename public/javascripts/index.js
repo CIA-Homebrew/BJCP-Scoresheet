@@ -289,21 +289,28 @@ $(document).ready(() => {
   // on page load
   addEntry = (flightId) => {
     $("#currentFlight").val(flightId);
+    $("#addFlightModalEntryNumber").val(null);
     $("#scoresheet-type-selector-modal").modal("show");
   };
 
   initScoresheet = () => {
     const flightId = $("#currentFlight").val();
     const scoresheetType = $('input[name="scoresheetType"]:checked').val();
+    const entryNumber = $("#addFlightModalEntryNumber").val();
+
+    if (!entryNumber) {
+      window.alert("Please provide an entry number!");
+      return;
+    }
 
     window.location.replace(
-      `/scoresheet/edit?flightId=${flightId}&scoresheetType=${scoresheetType}`
+      `/scoresheet/edit?flightId=${flightId}&scoresheetType=${scoresheetType}&entryNumber=${entryNumber}`
     );
   };
 
   editEntry = (scoresheetId, scoresheetType) => {
     window.location.replace(
-      `/scoresheet/edit?scoresheetId=${scoresheetId}?&scoresheetType=${scoresheetType}`
+      `/scoresheet/edit?scoresheetId=${scoresheetId}&scoresheetType=${scoresheetType}`
     );
   };
 
