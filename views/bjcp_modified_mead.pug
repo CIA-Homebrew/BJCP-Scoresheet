@@ -494,8 +494,8 @@ body
             span.display_iblock.border_solid_1.text_center(
               style="width: 8px; height: 8px; background-color: white;"
             ) #{scoresheet.appearance_head_inappropriate ? 'X' : ' '}
-          .display_iblock(style="margin-left: 10px;")
-            span.display_iblock.user_input_truncated(style="width:125px;") #{scoresheet.appearance_head_other}
+          //- .display_iblock(style="margin-left: 10px;")
+          //-   span.display_iblock.user_input_truncated(style="width:125px;") #{scoresheet.appearance_head_other}
         .row(style="margin-left: 25px;")
           span.text_bold.text_right.display_iblock(style="width: 68px;") Clarity
           .slider_parent.display_iblock(
@@ -1264,7 +1264,7 @@ body
     	'aroma - other': scoresheet.aroma_other_comment.slice(126, -1),
 
     	'appearance - color': scoresheet.appearance_color_other.slice(30, -1),
-    	'appearance - head': scoresheet.appearance_head_other ? scoresheet.appearance_head_other.slice(30, -1) : '',
+    	//- 'appearance - head': scoresheet.appearance_head_other ? scoresheet.appearance_head_other.slice(30, -1) : '',
     	'appearance - other': scoresheet.appearance_other_comment.slice(57, -1),
     	'appearance - texture': scoresheet.appearance_texture_comment ? scoresheet.appearance_texture_comment.slice(57, -1) : '',
 
