@@ -1,252 +1,3 @@
-//- Aroma Sliders
-var aroma_malt = new Slider("#aroma_malt", {
-  ticks: [0, 10, 50, 100],
-  ticks_positions: [0, 10, 50, 100],
-  ticks_labels: [
-    '<p class="rotate-tick-offset-15">None</p>',
-    '<p class="rotate-tick-offset-10">Low</p>',
-    '<p class="rotate-tick-offset-10">Med</p>',
-    '<p class="rotate-tick-offset-10">High</p>',
-  ],
-  ticks_snap_bounds: 3,
-  value: 0,
-});
-var aroma_hops = new Slider("#aroma_hops", {
-  ticks: [0, 10, 50, 100],
-  ticks_positions: [0, 10, 50, 100],
-  ticks_labels: [
-    '<p class="rotate-tick-offset-15">None</p>',
-    '<p class="rotate-tick-offset-10">Low</p>',
-    '<p class="rotate-tick-offset-10">Med</p>',
-    '<p class="rotate-tick-offset-10">High</p>',
-  ],
-  ticks_snap_bounds: 3,
-  value: 0,
-});
-var aroma_fermentation = new Slider("#aroma_fermentation", {
-  ticks: [0, 10, 50, 100],
-  ticks_positions: [0, 10, 50, 100],
-  ticks_labels: [
-    '<p class="rotate-tick-offset-15">None</p>',
-    '<p class="rotate-tick-offset-10">Low</p>',
-    '<p class="rotate-tick-offset-10">Med</p>',
-    '<p class="rotate-tick-offset-10">High</p>',
-  ],
-  ticks_snap_bounds: 3,
-  value: 0,
-});
-
-//- Appearance Sliders
-var appearance_color = new Slider("#appearance_color", {
-  ticks: [0, 17, 33, 50, 67, 83, 100],
-  ticks_positions: [0, 17, 33, 50, 67, 83, 100],
-  ticks_labels: [
-    '<p class="rotate-tick-offset-15">Straw</p>',
-    '<p class="rotate-tick-offset-15">Yellow</p>',
-    '<p class="rotate-tick-offset-10">Gold</p>',
-    '<p class="rotate-tick-offset-15">Amber</p>',
-    '<p class="rotate-tick-offset-15">Copper</p>',
-    '<p class="rotate-tick-offset-15">Brown</p>',
-    '<p class="rotate-tick-offset-10">Black</p>',
-  ],
-  ticks_snap_bounds: 3,
-  value: 0,
-});
-var appearance_clarity = new Slider("#appearance_clarity", {
-  ticks: [0, 50, 100],
-  ticks_positions: [0, 50, 100],
-  ticks_labels: [
-    '<p class="rotate-tick-offset-20">Brilliant</p>',
-    '<p class="rotate-tick-offset-10">Hazy</p>',
-    '<p class="rotate-tick-offset-15">Opaque</p>',
-  ],
-  ticks_snap_bounds: 3,
-  value: 0,
-});
-var appearance_head = new Slider("#appearance_head", {
-  ticks: [0, 25, 50, 75, 100],
-  ticks_positions: [0, 25, 50, 75, 100],
-  ticks_labels: [
-    '<p class="rotate-tick-offset-15">White</p>',
-    '<p class="rotate-tick-offset-15">Ivory</p>',
-    '<p class="rotate-tick-offset-15">Beige</p>',
-    '<p class="rotate-tick-offset-10">Tan</p>',
-    '<p class="rotate-tick-offset-15">Brown</p>',
-  ],
-  ticks_snap_bounds: 3,
-  value: 0,
-});
-var appearance_retention = new Slider("#appearance_retention", {
-  ticks: [0, 10, 50, 100],
-  ticks_positions: [0, 10, 50, 100],
-  ticks_labels: [
-    '<p class="rotate-tick-offset-15">None</p>',
-    '<p class="rotate-tick-offset-10">Low</p>',
-    '<p class="rotate-tick-offset-10">Med</p>',
-    '<p class="rotate-tick-offset-10">High</p>',
-  ],
-  ticks_snap_bounds: 3,
-  value: 0,
-});
-
-//- Flavor Sliders
-var flavor_malt = new Slider("#flavor_malt", {
-  ticks: [0, 10, 50, 100],
-  ticks_positions: [0, 10, 50, 100],
-  ticks_labels: [
-    '<p class="rotate-tick-offset-15">None</p>',
-    '<p class="rotate-tick-offset-10">Low</p>',
-    '<p class="rotate-tick-offset-10">Med</p>',
-    '<p class="rotate-tick-offset-10">High</p>',
-  ],
-  ticks_snap_bounds: 3,
-  value: 0,
-});
-var flavor_hops = new Slider("#flavor_hops", {
-  ticks: [0, 10, 50, 100],
-  ticks_positions: [0, 10, 50, 100],
-  ticks_labels: [
-    '<p class="rotate-tick-offset-15">None</p>',
-    '<p class="rotate-tick-offset-10">Low</p>',
-    '<p class="rotate-tick-offset-10">Med</p>',
-    '<p class="rotate-tick-offset-10">High</p>',
-  ],
-  ticks_snap_bounds: 3,
-  value: 0,
-});
-var flavor_bitterness = new Slider("#flavor_bitterness", {
-  ticks: [0, 10, 50, 100],
-  ticks_positions: [0, 10, 50, 100],
-  ticks_labels: [
-    '<p class="rotate-tick-offset-15">None</p>',
-    '<p class="rotate-tick-offset-10">Low</p>',
-    '<p class="rotate-tick-offset-10">Med</p>',
-    '<p class="rotate-tick-offset-10">High</p>',
-  ],
-  ticks_snap_bounds: 3,
-  value: 0,
-});
-var flavor_fermentation = new Slider("#flavor_fermentation", {
-  ticks: [0, 10, 50, 100],
-  ticks_positions: [0, 10, 50, 100],
-  ticks_labels: [
-    '<p class="rotate-tick-offset-15">None</p>',
-    '<p class="rotate-tick-offset-10">Low</p>',
-    '<p class="rotate-tick-offset-10">Med</p>',
-    '<p class="rotate-tick-offset-10">High</p>',
-  ],
-  ticks_snap_bounds: 3,
-  value: 0,
-});
-var flavor_balance = new Slider("#flavor_balance", {
-  ticks: [0, 100],
-  ticks_positions: [0, 100],
-  ticks_labels: [
-    '<p class="rotate-tick-offset-15">Hoppy</p>',
-    '<p class="rotate-tick-offset-15">Malty</p>',
-  ],
-  ticks_snap_bounds: 3,
-  value: 0,
-});
-var flavor_finish_aftertaste = new Slider("#flavor_finish_aftertaste", {
-  ticks: [0, 100],
-  ticks_positions: [0, 100],
-  ticks_labels: [
-    '<p class="rotate-tick-offset-10">Dry</p>',
-    '<p class="rotate-tick-offset-15">Sweet</p>',
-  ],
-  ticks_snap_bounds: 3,
-  value: 0,
-});
-
-//- Mouthfeel Sliders
-var mouthfeel_body = new Slider("#mouthfeel_body", {
-  ticks: [0, 10, 50, 100],
-  ticks_positions: [0, 10, 50, 100],
-  ticks_labels: [
-    '<p class="rotate-tick-offset-15">None</p>',
-    '<p class="rotate-tick-offset-10">Thin</p>',
-    '<p class="rotate-tick-offset-10">Med</p>',
-    '<p class="rotate-tick-offset-10">Full</p>',
-  ],
-  ticks_snap_bounds: 3,
-  value: 0,
-});
-var mouthfeel_carbonation = new Slider("#mouthfeel_carbonation", {
-  ticks: [0, 10, 50, 100],
-  ticks_positions: [0, 10, 50, 100],
-  ticks_labels: [
-    '<p class="rotate-tick-offset-15">None</p>',
-    '<p class="rotate-tick-offset-10">Low</p>',
-    '<p class="rotate-tick-offset-10">Med</p>',
-    '<p class="rotate-tick-offset-10">High</p>',
-  ],
-  ticks_snap_bounds: 3,
-  value: 0,
-});
-var mouthfeel_warmth = new Slider("#mouthfeel_warmth", {
-  ticks: [0, 10, 50, 100],
-  ticks_positions: [0, 10, 50, 100],
-  ticks_labels: [
-    '<p class="rotate-tick-offset-15">None</p>',
-    '<p class="rotate-tick-offset-10">Low</p>',
-    '<p class="rotate-tick-offset-10">Med</p>',
-    '<p class="rotate-tick-offset-10">High</p>',
-  ],
-  ticks_snap_bounds: 3,
-  value: 0,
-});
-var mouthfeel_creaminess = new Slider("#mouthfeel_creaminess", {
-  ticks: [0, 10, 50, 100],
-  ticks_positions: [0, 10, 50, 100],
-  ticks_labels: [
-    '<p class="rotate-tick-offset-15">None</p>',
-    '<p class="rotate-tick-offset-10">Low</p>',
-    '<p class="rotate-tick-offset-10">Med</p>',
-    '<p class="rotate-tick-offset-10">High</p>',
-  ],
-  ticks_snap_bounds: 3,
-  value: 0,
-});
-var mouthfeel_astringency = new Slider("#mouthfeel_astringency", {
-  ticks: [0, 10, 50, 100],
-  ticks_positions: [0, 10, 50, 100],
-  ticks_labels: [
-    '<p class="rotate-tick-offset-15">None</p>',
-    '<p class="rotate-tick-offset-10">Low</p>',
-    '<p class="rotate-tick-offset-10">Med</p>',
-    '<p class="rotate-tick-offset-10">High</p>',
-  ],
-  ticks_snap_bounds: 3,
-  value: 0,
-});
-
-//- Summary Sliders
-var overall_class_example = new Slider("#overall_class_example", {
-  ticks: [0, 100],
-  ticks_positions: [0, 100],
-  ticks_labels: ["Not to Style", "Classic Example"],
-  //- ticks_labels: ['<p class="rotate-tick-offset-15">Classic\nExample</p>', '<p style="transform: translateY(14px) rotate(270deg);transform-origin: center;">Not to\nStyle</p>'],
-  ticks_snap_bounds: 3,
-  value: 50,
-});
-var overall_flawless = new Slider("#overall_flawless", {
-  ticks: [0, 100],
-  ticks_positions: [0, 100],
-  ticks_labels: ["Significant Flaws", "Flawless"],
-  //- ticks_labels: ['<p class="rotate-tick-offset-15">Flawless</p>', '<p style="transform: translateY(18px) rotate(270deg);transform-origin: center;">Significant/nFlaws</p>'],
-  ticks_snap_bounds: 3,
-  value: 50,
-});
-var overall_wonderful = new Slider("#overall_wonderful", {
-  ticks: [0, 100],
-  ticks_positions: [0, 100],
-  ticks_labels: ["Lifeless", "Wonderful"],
-  //- ticks_labels: ['<p style="transform: translateY(16px) rotate(270deg);transform-origin: center;">Wonderful</p>', '<p style="transform: translateY(16px) rotate(270deg);transform-origin: center;">Lifeless</p>'],
-  ticks_snap_bounds: 3,
-  value: 50,
-});
-
 //- Universal data validator handler
 function validatorHandler(_this) {
   // Simple validation to alert user to empty text fields
@@ -402,13 +153,24 @@ $(document).ready(function () {
   goHome = () => {
     update_scoresheet();
 
-    const zeroSectionScores = [
+    let scoreSections = [
       "aroma_score",
       "appearance_score",
       "flavor_score",
       "mouthfeel_score",
       "overall_score",
-    ]
+    ];
+
+    if ($("#scoresheetType").val() === "mead") {
+      scoreSections = [
+        "aroma_score",
+        "appearance_score",
+        "flavor_score",
+        "overall_score",
+      ];
+    }
+
+    const zeroSectionScores = scoreSections
       .filter((key) => $(`.${key}`).first().val() == 0)
       .map((key) => key.replace("_score", ""));
 
@@ -486,13 +248,23 @@ $(document).ready(function () {
 
   // Sync all score blocks and fire event when changed
   $(".section-score").change((evt) => {
-    const maxScore = {
+    let maxScore = {
       aroma_score: 12,
       appearance_score: 3,
       flavor_score: 20,
       mouthfeel_score: 5,
       overall_score: 10,
     };
+
+    if ($("#scoresheetType").val() === "mead") {
+      maxScore = {
+        aroma_score: 10,
+        appearance_score: 6,
+        flavor_score: 24,
+        mouthfeel_score: 0,
+        overall_score: 10,
+      };
+    }
 
     const key = evt.target.name;
     const val =
@@ -662,60 +434,61 @@ load_scoresheet_data = () => {
 };
 
 load_bjcp_data = () => {
+  const scoresheetType = $("#scoresheetType").val();
+
   return fetch("/bjcp2015.json")
     .then((data) => data.json())
     .then(([beer_data, mead_data, cider_data]) => {
-      const INCLUDE_BEER = true;
-      const INCLUDE_CIDER = true;
-      const INCLUDE_MEAD = true;
+      const beerCategories =
+        scoresheetType === "beer"
+          ? beer_data.reduce((acc, val) => {
+              acc[val.id] = val.subcategory.reduce((acc, subcatInfo) => {
+                const sub_id = subcatInfo.id.slice(-1);
 
-      const beerCategories = INCLUDE_BEER
-        ? beer_data.reduce((acc, val) => {
-            acc[val.id] = val.subcategory.reduce((acc, subcatInfo) => {
-              const sub_id = subcatInfo.id.slice(-1);
+                acc[sub_id] = {
+                  sub_id,
+                  ...subcatInfo,
+                };
 
-              acc[sub_id] = {
-                sub_id,
-                ...subcatInfo,
-              };
-
+                return acc;
+              }, {});
               return acc;
-            }, {});
-            return acc;
-          }, {})
-        : {};
+            }, {})
+          : {};
 
-      const ciderCategories = INCLUDE_CIDER
-        ? cider_data.category.reduce((acc, val) => {
-            acc[val.id] = val.subcategory.reduce((acc, subcatInfo) => {
-              const sub_id = subcatInfo.id.slice(-1);
+      const ciderCategories =
+        scoresheetType === "cider"
+          ? cider_data.category.reduce((acc, val) => {
+              acc[val.id] = val.subcategory.reduce((acc, subcatInfo) => {
+                const sub_id = subcatInfo.id.slice(-1);
 
-              acc[sub_id] = {
-                sub_id,
-                ...subcatInfo,
-              };
+                acc[sub_id] = {
+                  sub_id,
+                  ...subcatInfo,
+                };
 
+                return acc;
+              }, {});
               return acc;
-            }, {});
-            return acc;
-          }, {})
-        : {};
+            }, {})
+          : {};
 
-      const meadCategories = INCLUDE_MEAD
-        ? mead_data.category.reduce((acc, val) => {
-            acc[val.id] = val.subcategory.reduce((acc, subcatInfo) => {
-              const sub_id = subcatInfo.id.slice(-1);
+      const meadCategories =
+        scoresheetType === "mead"
+          ? mead_data.category.reduce((acc, val) => {
+              acc[val.id] = val.subcategory.reduce((acc, subcatInfo) => {
+                const sub_id = subcatInfo.id.slice(-1);
 
-              acc[sub_id] = {
-                sub_id,
-                ...subcatInfo,
-              };
+                acc[sub_id] = {
+                  sub_id,
+                  ...subcatInfo,
+                };
 
+                return acc;
+              }, {});
               return acc;
-            }, {});
-            return acc;
-          }, {})
-        : {};
+            }, {})
+          : {};
 
       return { ...beerCategories, ...ciderCategories, ...meadCategories };
     });

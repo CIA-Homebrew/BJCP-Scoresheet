@@ -31,13 +31,17 @@ function jsonErrorProcessor(err, res) {
 }
 
 scoresheetController.initScoresheet = function (req, res) {
+  const scoresheetType = req.body.scoresheetType || req.query.scoresheetType;
+
+  const template = scoresheetType === "mead" ? "scoresheet_mead" : "scoresheet";
+
   if (req.body.scoresheetId || req.query.scoresheetId) {
     // Load scoresheet directly from id
     const scoresheetId = req.body.scoresheetId
       ? req.body.scoresheetId
       : req.query.scoresheetId;
 
-    res.render("scoresheet", {
+    res.render(template, {
       scoresheetId: scoresheetId,
       title: appConstants.APP_NAME + " - Scoresheet",
     });
@@ -45,7 +49,7 @@ scoresheetController.initScoresheet = function (req, res) {
     // Create a new scoresheet in a flight
     const flightId = req.body.flightId ? req.body.flightId : req.query.flightId;
 
-    res.render("scoresheet", {
+    res.render(template, {
       flightId: flightId,
       title: appConstants.APP_NAME + " - Scoresheet",
     });
@@ -141,13 +145,17 @@ scoresheetController.getIncompleteScoresheetsInFlight = function (req, res) {
 
     const scoresheetsWithZeroScoreEntries = scoresheetData
       .filter((scoresheet) => {
-        return [
-          "aroma_score",
-          "appearance_score",
-          "flavor_score",
-          "mouthfeel_score",
-          "overall_score",
-        ].filter((key) => scoresheet[key] == 0).length;
+        const categories = scoresheet.category.includes("M")
+          ? ["aroma_score", "appearance_score", "flavor_score", "overall_score"]
+          : [
+              "aroma_score",
+              "appearance_score",
+              "flavor_score",
+              "mouthfeel_score",
+              "overall_score",
+            ];
+
+        return categories.filter((key) => scoresheet[key] == 0).length;
       })
       .map((scoresheet) => scoresheet.entry_number);
 

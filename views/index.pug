@@ -155,7 +155,7 @@ block content
                                           )
                                     td.text-center.d-flex.justify-content-between
                                       button.btn.btn-primary.btn-sm.px-1.py-1.mr-2(
-                                        onclick=`editEntry('${scoresheet.id}')`,
+                                        onclick=`editEntry('${scoresheet.id}', '${scoresheet.category.includes('M') ? 'mead' : 'beer'}')`,
                                         title="Edit Scoresheet"
                                       ) <span class="material-icons align-middle" style="font-size: 18px">create</span>
                                       button.btn.btn-danger.btn-sm.px-1.py-1.m-0(
@@ -401,5 +401,39 @@ block content
               onclick="clearEntryToDelete()"
             ) Cancel
             button.btn.btn-danger(type="button", onclick="deleteEntry();") Delete Scoresheet
+    #scoresheet-type-selector-modal.modal.fade(
+      tabindex="-1",
+      role="dialog",
+      aria-labelledby="selectScoresheetTypeLabel",
+      aria-hidden="true"
+    )
+      .modal-dialog
+        .modal-content
+          .modal-header 
+            h5 Select Scoresheet Type
+          .modal-body 
+            .form-check.pt-4
+              input#scoresheetTypeBeer.form-check-input(
+                type="radio",
+                value="beer",
+                name="scoresheetType",
+                checked
+              )
+              label.form-check-label(for="scoresheetTypeBeer") Beer
+            .form-check.pt-4 
+              input#scoresheetTypeMead.form-check-input(
+                type="radio",
+                value="mead",
+                name="scoresheetType"
+              )
+              label.form-check-label(for="scoresheetTypeMead") Mead
+          .modal-footer
+            input#currentFlight(value=null, hidden)
+            button.btn.btn-secondary(
+              type="button",
+              data-dismiss="modal",
+              onclick="clearEntryToDelete()"
+            ) Cancel
+            button.btn.btn-primary(type="button", onclick="initScoresheet();") Continue
   script(src="/javascripts/download.js")
   script(src="/javascripts/index.js")

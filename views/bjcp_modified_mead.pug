@@ -1,0 +1,1322 @@
+//-
+  Ok, this is really dumb, but because we have a sql database with fields set up for beer,
+  we have to re-map some mead fields into "non-relevant" beer fields. The mappings are as follows:
+
+  Info:
+  Carbonation appearance_texture_comment
+  Sweetness	mouthfeel_creaminess
+  Strength	mouthfeel_warmth
+  Honey Varietal	appearance_texture_comment
+
+  Aroma:
+  Honey		aroma_malt
+  Alcohol		aroma_hops
+  Fermentation	aroma_fermentation
+  Complexity	mouthfeel_astringency		
+
+  Appearance:
+  Color		appearance_color
+  Clarity		appearance_clarity
+  Legs		appearance_head
+  Carbonation	appearance_retention
+
+  Flavor:
+  Honey		flavor_malt
+  Sweetness	flavor_hops
+  Acidity		flavor_bitterness
+  Tannin		flavor_fermentation
+  Alcohol		flavor_balance
+  Carbonation	mouthfeel_carbonation
+  Body		mouthfeel_body / mouthfeel_other_comment
+  Aftertaste	flavor_finish_aftertaste
+
+  Descriptors:
+  Acetic 		descriptor_acetaldehyde
+  Acidic 		descriptor_alcoholic
+  Alcohol 	descriptor_astringent
+  Cardboard 	descriptor_brettanomyces
+  Chemical 	descriptor_diacetyl
+  Cloudy 		descriptor_dms
+  Cloying 	descriptor_estery
+  floral 		descriptor_grassy
+  Fruity/Estery descriptor_lightstruck
+  Harsh 		descriptor_metallic
+  Metallic 	descriptor_musty
+  Moldy 		descriptor_oxidized
+  Phenolic 	descriptor_phenolic
+  Sherry 		descriptor_solvent
+  Solvent 	descriptor_smoky
+  Sulfury 	descriptor_sour
+  Sweet 		descriptor_spicy
+  Tannic 		descriptor_sulfur
+  Thin 		descriptor_vegetal
+  Vegetal 	mouthfeel_body_inappropriate
+  Waxy 		mouthfeel_carbonation_inappropriate
+  Yeasty 		descriptor_yeasty
+
+doctype html
+head
+  meta(charset="UTF-8")
+  title Mead Scoresheet
+  style
+    include ../public/stylesheets/cia_scoresheet.css
+body
+  .first-page
+    #primary_header
+      .bjcp_badge
+        img(alt="Homebrew Club", src=images.club_logo)
+      .header_content
+        .text_bold.text_italic.text_arial_black.text_larger MEAD SCORESHEET
+        .text_color_gray.text_center.text_size_70 AHA/BJCP Sanctioned Competition Program
+        .text_center.text_size_70 Modified Version
+      .aha_badge
+        img(alt="Competition", src=images.comp_logo)
+    #information_row
+      .judge_information.text_normal
+        .dashed_box.padAll_5
+          .row.row_height_25
+            .col.col_20
+              | Judge Name
+            .col
+              span.user_input_truncated.display_iblock.lheight_normal.text_center.span_width_165 #{judge.firstname} #{judge.lastname}
+          .row.row_height_25
+            .col.col_20
+              | BJCP ID &amp; Rank
+            .col
+              span.user_input_truncated.display_iblock.lheight_normal.text_center.span_width_165 #{judge.bjcp_id} #{judge.bjcp_rank}
+          .row.row_height_25
+            .col.col_20
+              br
+              | &#x9;&#x9;&#x9;&#x9;&#x9;Email
+            .col
+              span.user_input_truncated.display_iblock.lheight_normal.text_center.span_width_165 #{judge.email}
+        .text_size_85
+          .row.text_bold.pbot_5.mtop_5
+            | Non-BJCP Qualifications:
+          .row.pbot_5
+            .col.col_25.text_right
+              | Cicerone
+            .col
+              span.display_iblock.border_solid_1.mleft_5.text_center(
+                style="width: 8px; height: 8px; background-color: white;"
+              ) #{!judge.cicerone_rank || judge.cicerone_rank === "N/A" ? ' ' : 'X'}
+            .col.col_20.text_right
+              | Rank
+            .col.col_40
+              span.user_input_truncated.display_iblock.text_center.width_100 #{!judge.cicerone_rank || judge.cicerone_rank === "N/A" ? ' ' : judge.cicerone_rank}
+          .row.pbot_5
+            .col.col_25.text_right
+              | Pro Brewer
+            .col
+              span.display_iblock.border_solid_1.mleft_5.text_center(
+                style="width: 8px; height: 8px; background-color: white;"
+              ) #{judge.pro_brewer_brewery ? 'X' : ' '}
+            .col.col_20.text_right
+              | Brewery
+            .col.col_40
+              span.user_input_truncated.display_iblock.text_center.width_100 #{judge.pro_brewer_brewery ? judge.pro_brewer_brewery : ''}
+          .row.pbot_5
+            .col.col_25.text_right
+              | Industry
+            .col
+              span.display_iblock.border_solid_1.mleft_5.text_center(
+                style="width: 8px; height: 8px; background-color: white;"
+              ) #{judge.industry_description ? 'X' : ' '}
+            .col.col_20.text_right
+              | Describe
+            .col.col_40
+              span.user_input_truncated.display_iblock.text_center.width_100 #{judge.industry_description ? judge.industry_description : ''}
+          .row.pbot_5
+            .col.col_25.text_right
+              | Judging
+            .col
+              span.display_iblock.border_solid_1.mleft_5.text_center(
+                style="width: 8px; height: 8px; background-color: white;"
+              ) #{judge.judging_years ? 'X' : ' '}
+            .col.col_20.text_right
+              | Years
+            .col.col_40
+              span.user_input_truncated.display_iblock.text_center.width_100 #{judge.judging_years ? judge.judging_years : ''}
+      .location_information.text_normal.lheight_large
+        .row
+          span Flight Location
+          span.user_input_truncated.display_iblock.lheight_normal.text_center(
+            style="width:150px; margin-right: 5px;"
+          ) #{flight.location}
+          span Date
+          span.user_input_truncated.display_iblock.lheight_normal.text_center(
+            style="width:150px;"
+          ) #{new Date(flight.date).toLocaleDateString()}
+      .row.clearfix
+        .entry_information.text_normal.float_left
+          .row
+            .col.col_40.float_left
+              .row.width_100.row_height_15
+                .col
+                  | Category #
+                .col(style="width: 49%")
+                  span.user_input_truncated.display_iblock.lheight_normal.text_center.width_100 #{scoresheet.category}
+              .row.width_100.row_height_15
+                .col
+                  | Sub (a-f)
+                .col.float_right(style="width: 49%")
+                  span.user_input_truncated.display_iblock.lheight_normal.text_center.width_100 #{scoresheet.sub}
+            .col.col_40.float_right
+              .row.entry_number(style="height: 28px;")
+                .part2.text_bold Entry #
+                .border_solid_1.float_left.text_center.text_resize_marker(
+                  style="width: 87%; height: 100%;line-height: 27px;font-stretch: var(--fontStretch);font-size: var(--fontSize);",
+                  data-min-text-size="18"
+                ) #{scoresheet.entry_number}
+          .row.width_100.row_height_15.float_left
+            .col
+              | Subcategory
+            .col(style="width: 73%")
+              span.user_input_truncated.display_iblock.lheight_normal.text_center.width_100 #{scoresheet.subcategory}
+          .row.width_100.row_height_15.float_left
+            .col
+              | Special Ingredients
+            .col(style="width: 60%")
+              span.user_input_truncated.display_iblock.lheight_normal.text_center.width_100 #{scoresheet.special_ingredients}
+        .border_solid_1.mleft_15.float_left.text_normal(
+          style="height: 75px; width: 65px; padding: 3px; "
+        )
+          div Position in flight
+          .row(style="margin-bottom: 3px")
+            .col.col_40.text_size_70.text_center
+              | Entry
+            .col.col_40
+              span.border_solid_1.display_iblock.width_100.height_20p.mtop_5.text_center.text_resize_marker(
+                style="width: 35px;line-height: 20px;font-stretch: var(--fontStretch);font-size: var(--fontSize);"
+              ) #{scoresheet.flight_position}
+          .row
+            .col.col_40.text_size_70.text_center
+              | Of
+            .col.col_40
+              span.border_solid_1.display_iblock.height_20p.text_center.text_resize_marker(
+                style="width: 35px;line-height: 20px;font-stretch: var(--fontStretch);font-size: var(--fontSize);"
+              ) #{flight.flight_total}
+        .border_solid_1.float_left.text_size_50.mleft_15
+          .border_bot_solid_1(style="height: 18px")
+            span.display_iblock.text_center.float_left(style="width: 46px;")
+              | Advanced to
+              span.text_bold MINI-BOS
+            span.border_solid_1.display_iblock.float_left.text_center.text_resize_marker(
+              style="width: 12px; height: 90%; border-left: 2px solid black; line-height: 18px;"
+            ) #{scoresheet.mini_boss_advanced ? 'X' : ' '}
+          .background_lgray
+            span.border_solid_1.display_iblock.height_20p.text_resize_marker(
+              style="margin: 1px; width: 93%; text-align: center; line-height: 20px; font-stretch: var(--fontStretch);font-size: var(--fontSize);"
+            ) #{scoresheet.place > 0 ? ['1st', '2nd', '3rd'][scoresheet.place - 1] : ''}
+          .text_bold.text_center
+            | PLACE
+        .float_left
+          span.border_solid_4_gray.display_iblock.text_center(
+            style="height: 45px; width: 55px; margin-left: 14px; padding-top: 7px; font-size:calc(100% + 2vw);"
+          ) #{scoresheet.consensus_score ? scoresheet.consensus_score : scoresheet.judge_total}
+        .float_right.text_center(
+          style="width: 140px; height: 17px; background-color: #5a5a5a; color: white; padding-top: 6px; font-size: 12px; margin-right: 2.5px;"
+        ) #{scoresheet.consensus_score ? 'CONSENSUS SCORE' : 'JUDGE SCORE'}
+
+        .float_left.text_normal.mtop_5(
+          style="margin-left: 35px; margin-right: 5px"
+        )
+          | Carbonation
+          //- span.display_iblock.border_solid_2.text_bold.text_center(
+          //-   style="height: 8px; width: 8px; margin-left: 8px;"
+          //- ) #{scoresheet.bottle_inspection_check ? 'X' : ' '}
+          span.text_bold.display_iblock(
+            style="margin-right: 8px;margin-left:8px;width: 200px;"
+          ) #{scoresheet.appearance_texture_comment == 0 ? "Still" : scoresheet.appearance_texture_comment == 2 ? "Sparkling" : "Petillant"}
+          //- span(style="margin-right: 3px;") Comments:
+          //- span.user_input_truncated.display_iblock(style="width: 200px;") #{scoresheet.mouthfeel_other_comment}
+
+        .float_left.text_normal.mtop_5(
+          style="margin-left: 35px; margin-right: 5px"
+        )
+          | Sweetness
+          //- span.display_iblock.border_solid_2.text_bold.text_center(
+          //-   style="height: 8px; width: 8px; margin-left: 8px;"
+          //- ) #{scoresheet.bottle_inspection_check ? 'X' : ' '}
+          span.text_bold.display_iblock(
+            style="margin-right: 8px;margin-left:8px;width: 200px;"
+          ) #{scoresheet.mouthfeel_creaminess == 0 ? "Dry" : scoresheet.mouthfeel_creaminess == 2 ? "Sweet" : "Medium"}
+          //- span(style="margin-right: 3px;") Comments:
+          //- span.user_input_truncated.display_iblock(style="width: 200px;") #{scoresheet.mouthfeel_other_comment}
+
+        .float_left.text_normal.mtop_5(
+          style="margin-left: 35px; margin-right: 5px"
+        )
+          | Strength
+          //- span.display_iblock.border_solid_2.text_bold.text_center(
+          //-   style="height: 8px; width: 8px; margin-left: 8px;"
+          //- ) #{scoresheet.bottle_inspection_check ? 'X' : ' '}
+          span.text_bold.display_iblock(
+            style="margin-right: 8px;margin-left:8px;width: 200px;"
+          ) #{scoresheet.mouthfeel_warmth == 0 ? "Hydromel" : scoresheet.mouthfeel_warmth == 2 ? "Sack" : "Standard"}
+          //- span(style="margin-right: 3px;") Comments:
+          //- span.user_input_truncated.display_iblock(style="width: 200px;") #{scoresheet.mouthfeel_other_comment}
+
+        .float_left.text_normal.mtop_5(
+          style="margin-left: 35px; margin-right: 5px"
+        )
+          | Honey Varietal
+          //- span.display_iblock.border_solid_2.text_bold.text_center(
+          //-   style="height: 8px; width: 8px; margin-left: 8px;"
+          //- ) #{scoresheet.bottle_inspection_check ? 'X' : ' '}
+          //- span.text_bold(style="margin-right: 8px;") OK
+          span(style="margin-right: 3px; margin-left:8px;") &nbsp;
+          span.user_input_truncated.display_iblock(style="width: 200px;") #{scoresheet.appearance_texture_comment || ""}
+
+        .float_left.text_normal.mtop_5(
+          style="margin-left: 35px; margin-right: 5px"
+        )
+          | Bottle Inspection
+          span.display_iblock.border_solid_2.text_bold.text_center(
+            style="height: 8px; width: 8px; margin-left: 8px;"
+          ) #{scoresheet.bottle_inspection_check ? 'X' : ' '}
+          span.text_bold(style="margin-right: 8px;") OK
+          span(style="margin-right: 3px;") Comments:
+          span.user_input_truncated.display_iblock(style="width: 200px;") #{scoresheet.bottle_inspection_comment}
+
+    #column_container.text_normal
+      //
+        Aroma Section
+        Color slider range: 8-94
+      .aroma_section.ptop_5(style="position: relative; ")
+        .flag_window(style="margin-left: 20px;")
+          .flag_label
+            .left_spacer &nbsp;
+            .left_point &nbsp;
+            .main_flag Aroma
+            .flag_point &nbsp;
+        span.display_iblock.text_size_70.text_bold(
+          style="background-color: lightgrey; padding: 1px 5px 2px 5px; position: relative; left: 0; top: 0;"
+        ) Inappropriate
+        .row(style="margin-left: 97px;")
+          .col(style="position: relative; width: 16%;")
+          span.display_iblock(
+            style="width: 20px; background-color: lightgrey;"
+          ) &nbsp;
+        .row(style="margin-left: 25px;")
+          span.text_bold.text_right.display_iblock(style="width: 68px;") Honey
+          .slider_parent.display_iblock(
+            style="position: relative; line-height: 8px; z-index: 99; "
+          )
+            .sliver_mainline.border_bot_solid_1.display_iblock(
+              style="width: 89px; margin-left: 10px; position: relative; z-index: 100;"
+            )
+              span.display_iblock(
+                style=`width: 8px; height: 8px; background-color: black; border-radius: 50%; position: absolute; z-index: 2000; left:calc(${scoresheet.aroma_malt}% - 4px); top: 4px;`
+              ) &nbsp;
+              span.display_iblock(style="position: relative; left:0%;") |
+              span.display_iblock(style="position: relative; left:7%;") |
+              span.display_iblock(style="position: relative; left:44%;") |
+              span.display_iblock(style="position: relative; left:91%") |
+              span.text_size_40.text_bold(
+                style="position: absolute; left:-13px; bottom: 15px;"
+              ) None
+              span.text_size_50.text_bold(
+                style="position: absolute; left:8px; bottom: 15px;"
+              ) L
+              span.text_size_50.text_bold(
+                style="position: absolute; left:42px; bottom: 15px;"
+              ) M
+              span.text_size_50.text_bold(
+                style="position: absolute; left:87px; bottom: 15px;"
+              ) H
+          .display_iblock(
+            style="width: 15px; background-color: lightgrey; margin-left: 8.5px; padding-left: 5px; height: 13px; padding-top: 7px;"
+          )
+            span.display_iblock.border_solid_1.text_center(
+              style="width: 8px; height: 8px; background-color: white;"
+            ) #{scoresheet.aroma_malt_inappropriate ? 'X' : ' '}
+          .display_iblock(style="margin-left: 10px;")
+            span.display_iblock.user_input_truncated(style="width:430px;") #{scoresheet.aroma_malt_comment}
+        .row(style="margin-left: 25px;")
+          span.text_bold.text_right.display_iblock(style="width: 68px;") Alcohol
+          .slider_parent.display_iblock(
+            style="position: relative; line-height: 8px; z-index: 99; "
+          )
+            .sliver_mainline.border_bot_solid_1.display_iblock(
+              style="width: 89px; margin-left: 10px; position: relative; z-index: 100;"
+            )
+              span.display_iblock(
+                style=`width: 8px; height: 8px; background-color: black; border-radius: 50%; position: absolute; z-index: 2000; left:calc(${scoresheet.aroma_hops}% - 4px); top: 4px;`
+              ) &nbsp;
+              span.display_iblock(style="position: relative; left:0%;") |
+              span.display_iblock(style="position: relative; left:7%;") |
+              span.display_iblock(style="position: relative; left:44%;") |
+              span.display_iblock(style="position: relative; left:91%") |
+          .display_iblock(
+            style="width: 15px; background-color: lightgrey; margin-left: 8.5px; padding-left: 5px; height: 13px; padding-top: 7px;"
+          )
+            span.display_iblock.border_solid_1.text_center(
+              style="width: 8px; height: 8px; background-color: white;"
+            ) #{scoresheet.aroma_hops_inappropriate ? 'X' : ' '}
+          .display_iblock(style="margin-left: 10px;")
+            span.display_iblock.user_input_truncated(style="width:430px;") #{scoresheet.aroma_hops_comment}
+        .row(style="margin-left: 25px;")
+          span.text_bold.text_right.display_iblock(style="width: 68px;") Fermentation
+          .slider_parent.display_iblock(
+            style="position: relative; line-height: 8px; z-index: 99; "
+          )
+            .sliver_mainline.border_bot_solid_1.display_iblock(
+              style="width: 89px; margin-left: 10px; position: relative; z-index: 100;"
+            )
+              span.display_iblock(
+                style=`width: 8px; height: 8px; background-color: black; border-radius: 50%; position: absolute; z-index: 2000; left:calc(${scoresheet.aroma_fermentation}% - 4px); top: 4px;`
+              ) &nbsp;
+              span.display_iblock(style="position: relative; left:0%;") |
+              span.display_iblock(style="position: relative; left:7%;") |
+              span.display_iblock(style="position: relative; left:44%;") |
+              span.display_iblock(style="position: relative; left:91%") |
+          .display_iblock(
+            style="width: 15px; background-color: lightgrey; margin-left: 8.5px; padding-left: 5px; height: 13px; padding-top: 7px;"
+          )
+            span.display_iblock.border_solid_1.text_center(
+              style="width: 8px; height: 8px; background-color: white;"
+            ) #{scoresheet.aroma_fermentation_inappropriate ? 'X' : ' '}
+          .display_iblock(style="margin-left: 10px;")
+            span.display_iblock.user_input_truncated(style="width:430px;") #{scoresheet.aroma_fermentation_comment}
+        .row(style="margin-left: 25px; height: 13px; padding-top: 7px;")
+          span.text_bold.text_right.display_iblock(style="width: 68px;") Other
+          .display_iblock(style="margin-left: 11px;")
+            span.display_iblock.user_input_truncated(style="width:562px;") #{scoresheet.aroma_other_comment}
+        .total.display_iblock.border_solid_1(
+          style="height: 50px; width: 50px; position: absolute; top: 50px; right: 5px; "
+        )
+          .text_center(
+            style="height: 64%; padding-top: 7px; width: 100%; background-color: lightgrey; font-size:calc(100% + 2vw);"
+          ) #{scoresheet.aroma_score}
+          .text_right
+            span.display_iblock(
+              style="border-left: 1px solid black; border-top: 1px solid black; width: 12px;"
+            )
+              | 10
+      //
+        Appearance Section
+      .appearance_section.ptop_5(style="position: relative; ")
+        .flag_window(style="margin-left: 20px;")
+          .flag_label
+            .left_spacer &nbsp;
+            .left_point &nbsp;
+            .main_flag Appearance
+            .flag_point &nbsp;
+        span.display_iblock.text_size_70.text_bold(
+          style="background-color: lightgrey; padding: 1px 5px 2px 5px; position: relative; right: 35px; top: 0;"
+        ) Inappropriate
+        span.display_iblock.text_size_70.text_bold(
+          style="background-color: lightgrey; padding: 1px 5px 2px 5px; position: relative; left: 210px; top: 0;"
+        ) Inappropriate
+        div(
+          style="width: 20px; background-color: lightgrey; position: relative; bottom: 0; left: 27%;"
+        ) &nbsp;
+        .row(style="margin-left: 25px;")
+          span.text_bold.text_right.display_iblock(style="width: 68px;") Color
+          .slider_parent.display_iblock(
+            style="position: relative; line-height: 8px; z-index: 99; "
+          )
+            .sliver_mainline.border_bot_solid_1.display_iblock(
+              style="width: 89px; margin-left: 10px; position: relative; z-index: 100;"
+            )
+              span.display_iblock(
+                style=`width: 8px; height: 8px; background-color: black; border-radius: 50%; position: absolute; z-index: 2000; left:calc(${scoresheet.appearance_color}% - 4px); top: 4px;`
+              ) &nbsp;
+              span.display_iblock(style="position: relative; left:0%;") |
+              span.display_iblock(style="position: relative; left:17%;") |
+              span.display_iblock(style="position: relative; left:35%;") |
+              span.display_iblock(style="position: relative; left:52%;") |
+              span.display_iblock(style="position: relative; left:69%;") |
+              span.display_iblock(style="position: relative; left:86%;") |
+              span.text_size_50.text_bold.vertText(
+                style="position: absolute; left:-3px; bottom: 8px;"
+              ) Clear
+              span.text_size_50.text_bold.vertText(
+                style="position: absolute; left:14px; bottom: 8px;"
+              ) Straw
+              span.text_size_50.text_bold.vertText(
+                style="position: absolute; left:32px; bottom: 8px;"
+              ) Yellow
+              span.text_size_50.text_bold.vertText(
+                style="position: absolute; left:50px; bottom: 8px;"
+              ) Gold
+              span.text_size_50.text_bold.vertText(
+                style="position: absolute; left:67px; bottom: 8px;"
+              ) Amber
+              span.text_size_50.text_bold.vertText(
+                style="position: absolute; left:85px; bottom: 8px;"
+              ) Brown
+          .display_iblock(
+            style="width: 15px; background-color: lightgrey; margin-left: 8.5px; padding-left: 5px; height: 13px; padding-top: 7px;"
+          )
+            span.display_iblock.border_solid_1.text_center(
+              style="width: 8px; height: 8px; background-color: white;"
+            ) #{scoresheet.appearance_color_inappropriate ? 'X' : ' '}
+          .display_iblock(style="margin-left: 10px;")
+            span.display_iblock.user_input_truncated(style="width:125px;") #{scoresheet.appearance_color_other}
+          span.text_bold.text_right.display_iblock(style="width: 30px;") Legs
+          .slider_parent.display_iblock(
+            style="position: relative; line-height: 8px; z-index: 99; "
+          )
+            .sliver_mainline.border_bot_solid_1.display_iblock(
+              style="width: 89px; margin-left: 10px; position: relative; z-index: 100;"
+            )
+              span.display_iblock(
+                style=`width: 8px; height: 8px; background-color: black; border-radius: 50%; position: absolute; z-index: 2000; left:calc(${scoresheet.appearance_head}% - 4px); top: 4px;`
+              ) &nbsp;
+              span.display_iblock(style="position: relative; left:0%;") |
+              span.display_iblock(style="position: relative; left:22%;") |
+              span.display_iblock(style="position: relative; left:44%;") |
+              span.display_iblock(style="position: relative; left:66%;") |
+              span.display_iblock(style="position: relative; left:88%;") |
+              span.display_iblock.text_size_50.text_bold.vertText(
+                style="position: absolute; left:-3px; bottom: 8px;"
+              ) Thin
+              span.display_iblock.text_size_50.text_bold.vertText(
+                style="position: absolute; left:19px; bottom: 8px;"
+              ) &nbsp;
+              span.display_iblock.text_size_50.text_bold.vertText(
+                style="position: absolute; left:41px; bottom: 8px;"
+              ) Medium
+              span.display_iblock.text_size_50.text_bold.vertText(
+                style="position: absolute; left:62px; bottom: 8px;"
+              ) &nbsp;
+              span.display_iblock.text_size_50.text_bold.vertText(
+                style="position: absolute; left:84px; bottom: 8px;"
+              ) Viscous
+          .display_iblock(
+            style="width: 20px; background-color: lightgrey; position: absolute; top: 37px; right: 229px;"
+          ) &nbsp;
+          .display_iblock(
+            style="width: 15px; background-color: lightgrey; margin-left: 8.5px; padding-left: 5px; height: 13px; padding-top: 7px;"
+          )
+            span.display_iblock.border_solid_1.text_center(
+              style="width: 8px; height: 8px; background-color: white;"
+            ) #{scoresheet.appearance_head_inappropriate ? 'X' : ' '}
+          .display_iblock(style="margin-left: 10px;")
+            span.display_iblock.user_input_truncated(style="width:125px;") #{scoresheet.appearance_head_other}
+        .row(style="margin-left: 25px;")
+          span.text_bold.text_right.display_iblock(style="width: 68px;") Clarity
+          .slider_parent.display_iblock(
+            style="position: relative; line-height: 8px; z-index: 99; "
+          )
+            .sliver_mainline.border_bot_solid_1.display_iblock(
+              style="width: 89px; margin-left: 10px; position: relative; z-index: 100;"
+            )
+              span.display_iblock(
+                style=`width: 8px; height: 8px; background-color: black; border-radius: 50%; position: absolute; z-index: 2000; left:calc(${scoresheet.appearance_clarity}% - 4px); top: 4px;`
+              ) &nbsp;
+              span.display_iblock(style="position: relative; left:0px;") |
+              span.display_iblock(style="position: relative; left:30%;") |
+              span.display_iblock(style="position: relative; left:60%;") |
+              span.display_iblock(style="position: relative; left:91%;") |
+              span.display_iblock.text_size_50.text_bold(
+                style="position: absolute; left:0px; bottom: 8px;"
+              ) Brilliant
+              span.display_iblock.text_size_50.text_bold(
+                style="position: absolute; left:38px; bottom: 8px;"
+              ) Hazy
+              span.display_iblock.text_size_50.text_bold(
+                style="position: absolute; left:67px; bottom: 8px;"
+              ) Opaque
+          .display_iblock(
+            style="width: 15px; background-color: lightgrey; margin-left: 8.5px; padding-left: 5px; height: 13px; padding-top: 8.5px;"
+          )
+            span.display_iblock.border_solid_1.text_center(
+              style="width: 8px; height: 8px; background-color: white;"
+            ) #{scoresheet.appearance_clarity_inappropriate ? 'X' : ' '}
+          .display_iblock.text_size_40(
+            style="margin-left: 10px; width:111px; position: relative; bottom: 13px; "
+          ) Other
+          span.text_bold.text_right.display_iblock(style="width: 44px;") Carbonation
+          .slider_parent.display_iblock(
+            style="position: relative; line-height: 8px; z-index: 99; "
+          )
+            .sliver_mainline.border_bot_solid_1.display_iblock(
+              style="width: 89px; margin-left: 10px; position: relative; z-index: 100;"
+            )
+              span.display_iblock(
+                style=`width: 8px; height: 8px; background-color: black; border-radius: 50%; position: absolute; z-index: 2000; left:calc(${scoresheet.appearance_retention}% - 4px); top: 4px;`
+              ) &nbsp;
+              span.display_iblock(style="position: relative; left:0%;") |
+              span.display_iblock(style="position: relative; left:95%; ") |
+              span.display_iblock.text_size_50.text_bold(
+                style="position: absolute; left:9px; bottom: 9px;"
+              ) Low
+              span.display_iblock.text_size_50.text_bold(
+                style="position: absolute; left:65px; bottom: 9px;"
+              ) High
+          .display_iblock(
+            style="width: 20px; background-color: lightgrey; position: absolute; top: 34px; right: 229px;"
+          ) &nbsp;
+          .display_iblock(
+            style="width: 15px; background-color: lightgrey; margin-left: 8.5px; padding-left: 5px; height: 13px; padding-top: 8.5px;"
+          )
+            span.display_iblock.border_solid_1.text_center(
+              style="width: 8px; height: 8px; background-color: white;"
+            ) #{scoresheet.appearance_retention_inappropriate ? 'X' : ' '}
+          .display_iblock.text_size_40(
+            style="margin-left: 10px; width:111px; position: relative; bottom: 13px; "
+          ) Other
+        .row(style="margin-left: 25px; height: 13px; padding-top: 7px;")
+          span.text_bold.text_right.display_iblock(style="width: 68px;") Other
+          .display_iblock(style="margin-left: 11px;")
+            span.display_iblock.user_input_truncated(style="width:253px;") #{scoresheet.appearance_other_comment}
+          //- span.text_bold.text_right.display_iblock(style="width: 31px;") Texture
+          //- .display_iblock(style="margin-left: 11px;")
+          //-   span.display_iblock.user_input_truncated(style="width:259px;") #{scoresheet.appearance_texture_comment}
+        .total.display_iblock.border_solid_1(
+          style="height: 50px; width: 50px; position: absolute; top: 50px; right: 5px; "
+        )
+          .text_center(
+            style="height: 64%; padding-top: 7px; width: 100%; background-color: lightgrey; font-size:calc(100% + 2vw);"
+          ) #{scoresheet.appearance_score}
+          .text_right
+            span.display_iblock(
+              style="border-left: 1px solid black; border-top: 1px solid black; width: 12px;"
+            )
+              | 6
+      //
+        Flavor Section
+      .flavor_section.ptop_5(style="position: relative; ")
+        .flag_window(style="margin-left: 20px;")
+          .flag_label
+            .left_spacer &nbsp;
+            .left_point &nbsp;
+            .main_flag Flavor
+            .flag_point &nbsp;
+        span.display_iblock.text_size_70.text_bold(
+          style="background-color: lightgrey; padding: 1px 5px 2px 5px; position: relative; left: 2px; top: 0;"
+        ) Inappropriate
+        .row(style="margin-left: 100.5px;")
+          .col(style="position: relative; width: 16%;")
+          span.display_iblock(
+            style="width: 20px; background-color: lightgrey; position: relative; right: 2.5px;"
+          ) &nbsp;
+        .row(style="margin-left: 25px;")
+          span.text_bold.text_right.display_iblock(style="width: 68px;") Honey
+          .slider_parent.display_iblock(
+            style="position: relative; line-height: 8px; z-index: 99; "
+          )
+            .sliver_mainline.border_bot_solid_1.display_iblock(
+              style="width: 89px; margin-left: 10px; position: relative; z-index: 100;"
+            )
+              span.display_iblock(
+                style=`width: 8px; height: 8px; background-color: black; border-radius: 50%; position: absolute; z-index: 2000; left:calc(${scoresheet.flavor_malt}% - 4px); top: 4px;`
+              ) &nbsp;
+              span.display_iblock(style="position: relative; left:0%;") |
+              span.display_iblock(style="position: relative; left:7%;") |
+              span.display_iblock(style="position: relative; left:44%;") |
+              span.display_iblock(style="position: relative; left:91%") |
+              span.text_size_40.text_bold(
+                style="position: absolute; left:-13px; bottom: 15px;"
+              ) None
+              span.text_size_50.text_bold(
+                style="position: absolute; left:8px; bottom: 15px;"
+              ) L
+              span.text_size_50.text_bold(
+                style="position: absolute; left:42px; bottom: 15px;"
+              ) M
+              span.text_size_50.text_bold(
+                style="position: absolute; left:87px; bottom: 15px;"
+              ) H
+          .display_iblock(
+            style="width: 15px; background-color: lightgrey; margin-left: 8.5px; padding-left: 5px; height: 13px; padding-top: 7px;"
+          )
+            span.display_iblock.border_solid_1.text_center(
+              style="width: 8px; height: 8px; background-color: white;"
+            ) #{scoresheet.flavor_malt_inappropriate ? 'X' : ' '}
+          .display_iblock(style="margin-left: 10px;")
+            span.display_iblock.user_input_truncated(style="width:430px;") #{scoresheet.flavor_malt_comment}
+        .row(style="margin-left: 25px;")
+          span.text_bold.text_right.display_iblock(style="width: 68px;") Sweetness
+          .slider_parent.display_iblock(
+            style="position: relative; line-height: 8px; z-index: 99; "
+          )
+            .sliver_mainline.border_bot_solid_1.display_iblock(
+              style="width: 89px; margin-left: 10px; position: relative; z-index: 100;"
+            )
+              span.display_iblock(
+                style=`width: 8px; height: 8px; background-color: black; border-radius: 50%; position: absolute; z-index: 2000; left:calc(${scoresheet.flavor_hops}% - 4px); top: 4px;`
+              ) &nbsp;
+              span.display_iblock(style="position: relative; left:0%;") |
+              span.display_iblock(style="position: relative; left:7%;") |
+              span.display_iblock(style="position: relative; left:44%;") |
+              span.display_iblock(style="position: relative; left:91%") |
+          .display_iblock(
+            style="width: 15px; background-color: lightgrey; margin-left: 8.5px; padding-left: 5px; height: 13px; padding-top: 7px;"
+          )
+            span.display_iblock.border_solid_1.text_center(
+              style="width: 8px; height: 8px; background-color: white;"
+            ) #{scoresheet.flavor_hops_inappropriate ? 'X' : ' '}
+          .display_iblock(style="margin-left: 10px;")
+            span.display_iblock.user_input_truncated(style="width:430px;") #{scoresheet.flavor_hops_comment}
+        .row(style="margin-left: 25px;")
+          span.text_bold.text_right.display_iblock(style="width: 68px;") Acidity
+          .slider_parent.display_iblock(
+            style="position: relative; line-height: 8px; z-index: 99; "
+          )
+            .sliver_mainline.border_bot_solid_1.display_iblock(
+              style="width: 89px; margin-left: 10px; position: relative; z-index: 100;"
+            )
+              span.display_iblock(
+                style=`width: 8px; height: 8px; background-color: black; border-radius: 50%; position: absolute; z-index: 2000; left:calc(${scoresheet.flavor_bitterness}% - 4px); top: 4px;`
+              ) &nbsp;
+              span.display_iblock(style="position: relative; left:0%;") |
+              span.display_iblock(style="position: relative; left:7%;") |
+              span.display_iblock(style="position: relative; left:44%;") |
+              span.display_iblock(style="position: relative; left:91%") |
+          .display_iblock(
+            style="width: 15px; background-color: lightgrey; margin-left: 8.5px; padding-left: 5px; height: 13px; padding-top: 7px;"
+          )
+            span.display_iblock.border_solid_1.text_center(
+              style="width: 8px; height: 8px; background-color: white;"
+            ) #{scoresheet.flavor_bitterness_inappropriate ? 'X' : ' '}
+          .display_iblock(style="margin-left: 10px;")
+            span.display_iblock.user_input_truncated(style="width:430px;") #{scoresheet.flavor_bitterness_comment}
+        .row(style="margin-left: 25px;")
+          span.text_bold.text_right.display_iblock(style="width: 68px;") Tannin
+          .slider_parent.display_iblock(
+            style="position: relative; line-height: 8px; z-index: 99; "
+          )
+            .sliver_mainline.border_bot_solid_1.display_iblock(
+              style="width: 89px; margin-left: 10px; position: relative; z-index: 100;"
+            )
+              span.display_iblock(
+                style=`width: 8px; height: 8px; background-color: black; border-radius: 50%; position: absolute; z-index: 2000; left:calc(${scoresheet.flavor_fermentation}% - 4px); top: 4px;`
+              ) &nbsp;
+              span.display_iblock(style="position: relative; left:0%;") |
+              span.display_iblock(style="position: relative; left:7%;") |
+              span.display_iblock(style="position: relative; left:44%;") |
+              span.display_iblock(style="position: relative; left:91%") |
+          .display_iblock(
+            style="width: 15px; background-color: lightgrey; margin-left: 8.5px; padding-left: 5px; height: 13px; padding-top: 7px;"
+          )
+            span.display_iblock.border_solid_1.text_center(
+              style="width: 8px; height: 8px; background-color: white;"
+            ) #{scoresheet.flavor_fermentation_inappropriate ? 'X' : ' '}
+          .display_iblock(style="margin-left: 10px;")
+            span.display_iblock.user_input_truncated(style="width:430px;") #{scoresheet.flavor_fermentation_comment}
+        .row(style="margin-left: 25px;")
+          span.text_bold.text_right.display_iblock(style="width: 68px;") Alcohol
+          .slider_parent.display_iblock(
+            style="position: relative; line-height: 8px; z-index: 99; "
+          )
+            .sliver_mainline.border_bot_solid_1.display_iblock(
+              style="width: 89px; margin-left: 10px; position: relative; z-index: 100;"
+            )
+              span.display_iblock(
+                style=`width: 8px; height: 8px; background-color: black; border-radius: 50%; position: absolute; z-index: 2000; left:calc(${scoresheet.flavor_balance}% - 4px); top: 4px;`
+              ) &nbsp;
+              span.display_iblock(style="position: relative; left:0%;") |
+              span.display_iblock(style="position: relative; left:7%;") |
+              span.display_iblock(style="position: relative; left:44%;") |
+              span.display_iblock(style="position: relative; left:91%") |
+          .display_iblock(
+            style="width: 15px; background-color: lightgrey; margin-left: 8.5px; padding-left: 5px; height: 13px; padding-top: 7px;"
+          )
+            span.display_iblock.border_solid_1.text_center(
+              style="width: 8px; height: 8px; background-color: white;"
+            ) #{scoresheet.flavor_balance_inappropriate ? 'X' : ' '}
+          .display_iblock(style="margin-left: 10px;")
+            span.display_iblock.user_input_truncated(style="width:430px;") #{scoresheet.flavor_balance_comment}
+
+        .row(style="margin-left: 25px;")
+          span.text_bold.text_right.display_iblock(style="width: 68px;") Carbonation
+          .slider_parent.display_iblock(
+            style="position: relative; line-height: 8px; z-index: 99; "
+          )
+            .sliver_mainline.border_bot_solid_1.display_iblock(
+              style="width: 89px; margin-left: 10px; position: relative; z-index: 100;"
+            )
+              span.display_iblock(
+                style=`width: 8px; height: 8px; background-color: black; border-radius: 50%; position: absolute; z-index: 2000; left:calc(${scoresheet.mouthfeel_carbonation}% - 4px); top: 4px;`
+              ) &nbsp;
+              span.display_iblock(style="position: relative; left:0%;") |
+              span.display_iblock(style="position: relative; left:7%;") |
+              span.display_iblock(style="position: relative; left:44%;") |
+              span.display_iblock(style="position: relative; left:91%") |
+          .display_iblock(
+            style="width: 15px; background-color: lightgrey; margin-left: 8.5px; padding-left: 5px; height: 13px; padding-top: 7px;"
+          )
+            span.display_iblock.border_solid_1.text_center(
+              style="width: 8px; height: 8px; background-color: white;"
+            ) #{scoresheet.mouthfeel_carbonation_inappropriate ? 'X' : ' '}
+          //- .display_iblock(style="margin-left: 10px;")
+          //-   span.display_iblock.user_input_truncated(style="width:430px;") #{scoresheet.mouthfeel_carbonation_comment}
+
+        .row(style="margin-left: 25px;")
+          span.text_bold.text_right.display_iblock(style="width: 68px;") Body
+          .slider_parent.display_iblock(
+            style="position: relative; line-height: 8px; z-index: 99; "
+          )
+            .sliver_mainline.border_bot_solid_1.display_iblock(
+              style="width: 89px; margin-left: 10px; position: relative; z-index: 100;"
+            )
+              span.display_iblock(
+                style=`width: 8px; height: 8px; background-color: black; border-radius: 50%; position: absolute; z-index: 2000; left:calc(${scoresheet.mouthfeel_body}% - 4px); top: 4px;`
+              ) &nbsp;
+              span.display_iblock(style="position: relative; left:0%;") |
+              span.display_iblock(style="position: relative; left:95%; ") |
+              span.display_iblock.text_size_50.text_bold(
+                style="position: absolute; left:0px; bottom: 7px;"
+              ) Thin
+              span.display_iblock.text_size_50.text_bold(
+                style="position: absolute; left:74px; bottom: 7px;"
+              ) Full
+          .display_iblock(
+            style="width: 15px; background-color: lightgrey; margin-left: 8.5px; padding-left: 5px; height: 13px; padding-top: 7px;"
+          )
+            span.display_iblock.border_solid_1.text_center(
+              style="width: 8px; height: 8px; background-color: white;"
+            ) #{scoresheet.mouthfeel_body_inappropriate ? 'X' : ' '}
+          .display_iblock(style="margin-left: 10px;")
+            span.display_iblock.user_input_truncated(style="width:430px;") #{scoresheet.mouthfeel_other_comment}
+
+        .row(style="margin-left: 25px;")
+          span.text_bold.text_right.display_iblock(style="width: 68px;") Finish/Aftertaste
+          .slider_parent.display_iblock(
+            style="position: relative; line-height: 8px; z-index: 99; "
+          )
+            .sliver_mainline.border_bot_solid_1.display_iblock(
+              style="width: 89px; margin-left: 10px; position: relative; z-index: 100;"
+            )
+              span.display_iblock(
+                style=`width: 8px; height: 8px; background-color: black; border-radius: 50%; position: absolute; z-index: 2000; left:calc(${scoresheet.flavor_finish_aftertaste}% - 4px); top: 4px;`
+              ) &nbsp;
+              span.display_iblock(style="position: relative; left:0%;") |
+              span.display_iblock(style="position: relative; left:95%; ") |
+              span.display_iblock.text_size_50.text_bold(
+                style="position: absolute; left:0px; bottom: 7px;"
+              ) Quick
+              span.display_iblock.text_size_50.text_bold(
+                style="position: absolute; left:72px; bottom: 7px;"
+              ) Lasting
+          .display_iblock(
+            style="width: 15px; background-color: lightgrey; margin-left: 8.5px; padding-left: 5px; height: 13px; padding-top: 7px;"
+          )
+            span.display_iblock.border_solid_1.text_center(
+              style="width: 8px; height: 8px; background-color: white;"
+            ) #{scoresheet.flavor_finish_aftertaste_inappropriate ? 'X' : ' '}
+          .display_iblock(style="margin-left: 10px;")
+            span.display_iblock.user_input_truncated(style="width:430px;") #{scoresheet.flavor_finish_aftertaste_comment}
+        .row(style="margin-left: 25px; height: 13px; padding-top: 7px;")
+          span.text_bold.text_right.display_iblock(style="width: 68px;") Other
+          .display_iblock(style="margin-left: 11px;")
+            span.display_iblock.user_input_truncated(style="width:562px;") #{scoresheet.flavor_other_comment}
+        .total.display_iblock.border_solid_1(
+          style="height: 50px; width: 50px; position: absolute; top: 97px; right: 5px; "
+        )
+          .text_center(
+            style="height: 64%; padding-top: 7px; width: 100%; background-color: lightgrey; font-size:calc(100% + 2vw);"
+          ) #{scoresheet.flavor_score}
+          .text_right
+            span.display_iblock(
+              style="border-left: 1px solid black; border-top: 1px solid black; width: 12px;"
+            )
+              | 24
+      //
+        Flows Section and scoring guide
+      .flaws_scoring_section.float_left(style="width: 31%")
+        .mbot_5.mtop_5
+          span.text_bold.text_larger Flaws for style
+          span.text_small (mark L-M-H for all that apply)
+        .flaws_table.mleft_15.float_left
+          .row
+            div
+              | Acetic
+            div
+              span #{scoresheet.descriptor_acetaldehyde ? 'X' : ' '}
+            div
+              | Moldy
+            div
+              span #{scoresheet.descriptor_oxidized ? 'X' : ' '}
+          .row
+            div
+              | Acidic
+            div
+              span #{scoresheet.descriptor_alcoholic ? 'X' : ' '}
+            div
+              | Phenolic
+            div
+              span #{scoresheet.descriptor_phenolic ? 'X' : ' '}
+          .row
+            div
+              | Alcohol
+            div
+              span #{scoresheet.descriptor_astringent ? 'X' : ' '}
+            div
+              | Sherry
+            div
+              span #{scoresheet.descriptor_solvent ? 'X' : ' '}
+          .row
+            div
+              | Cardboard
+            div
+              span #{scoresheet.descriptor_brettanomyces ? 'X' : ' '}
+            div
+              | Solvent
+            div
+              span #{scoresheet.descriptor_smoky ? 'X' : ' '}
+          .row
+            div
+              | Chemical
+            div
+              span #{scoresheet.descriptor_diacetyl ? 'X' : ' '}
+            div
+              | Sulfury
+            div
+              span #{scoresheet.descriptor_sour ? 'X' : ' '}
+          .row
+            div
+              | Cloudy
+            div
+              span #{scoresheet.descriptor_dms ? 'X' : ' '}
+            div
+              | Sweet
+            div
+              span #{scoresheet.descriptor_spicy ? 'X' : ' '}
+          .row
+            div
+              | Cloying
+            div
+              span #{scoresheet.descriptor_estery ? 'X' : ' '}
+            div
+              | Tannic
+            div
+              span #{scoresheet.descriptor_sulfur ? 'X' : ' '}
+          .row
+            div
+              | Floral
+            div
+              span #{scoresheet.descriptor_grassy ? 'X' : ' '}
+            div
+              | Thin
+            div
+              span #{scoresheet.descriptor_vegetal ? 'X' : ' '}
+          .row
+            div
+              | Fruity/Estery
+            div
+              span #{scoresheet.descriptor_lightstruck ? 'X' : ' '}
+            div
+              | Vegetal
+            div
+              span #{scoresheet.mouthfeel_body_inappropriate ? 'X' : ' '}
+          .row
+            div
+              | Harsh
+            div
+              span #{scoresheet.descriptor_metallic ? 'X' : ' '}
+            div
+              | Waxy
+            div
+              span #{scoresheet.mouthfeel_carbonation_inappropriate ? 'X' : ' '}
+          .row
+            div
+              | Metallic
+            div
+              span #{scoresheet.descriptor_musty ? 'X' : ' '}
+            div
+              | Yeasty
+            div
+              span #{scoresheet.descriptor_yeasty ? 'X' : ' '}
+        .scoring_guide_table.mleft_15.mtop_15.float_left(
+          style="width: 211px; "
+        )
+          span.display_iblock.vertText.float_left.text_center.text_bold(
+            style="height: 42px; background-color: black; color: white; "
+          ) Scoring Guide
+          .row
+            div
+              | Outstanding
+            .background_lgray
+              | 45-50
+            div
+              | World-class example of style.
+          .row
+            div
+              | Excellent
+            .background_lgray
+              | 38-44
+            div
+              | Exemplifies style well, requires minor fine-tuning.
+          .row
+            div
+              | Very Good
+            .background_lgray
+              | 30-37
+            div
+              | Generally within style parameters, minor flaws.
+          .row
+            div
+              | Good
+            .background_lgray
+              | 21-29
+            div
+              | Misses the mark on style and/or minor flaws.
+          .row
+            div
+              | Fair
+            .background_lgray
+              | 14-20
+            div
+              | Off flavors/aromas or major style deficiencies.
+          .row
+            div
+              | Problematic
+            .background_lgray
+              | 0-13
+            div
+              | Major off flavors and aromas dominate.
+      //- //
+      //-   Mouthfeel Section
+      //- .mouthfeel_section.ptop_5.float_left(
+      //-   style="position: relative; width: 69%; "
+      //- )
+      //-   .flag_window.mleft_15(
+      //-     style="position: relative; bottom: 6px; left: 0;"
+      //-   )
+      //-     .flag_label
+      //-       .left_spacer &nbsp;
+      //-       .left_point &nbsp;
+      //-       .main_flag Mouthfeel
+      //-       .flag_point &nbsp;
+      //-   span.display_iblock.text_size_70.text_bold(
+      //-     style="background-color: lightgrey; padding: 1px 5px 2px 5px; position: relative; right: 40px; bottom: 8px;"
+      //-   ) Inappropriate
+      //-   span.display_iblock(
+      //-     style="width: 20px; background-color: lightgrey; position: relative; top: 2px; right: 76px;"
+      //-   ) &nbsp;
+      //-   span.display_iblock.text_size_70.text_bold(
+      //-     style="background-color: lightgrey; padding: 1px 5px 2px 5px; position: relative; left: 85px; bottom: 8px;"
+      //-   ) Inappropriate
+      //-   .row
+      //-     span.text_bold.text_right.display_iblock(style="width: 68px;") Body
+      //-     .slider_parent.display_iblock(
+      //-       style="position: relative; line-height: 8px; z-index: 99; "
+      //-     )
+      //-       .sliver_mainline.border_bot_solid_1.display_iblock(
+      //-         style="width: 89px; margin-left: 10px; position: relative; z-index: 100;"
+      //-       )
+      //-         span.display_iblock(
+      //-           style=`width: 8px; height: 8px; background-color: black; border-radius: 50%; position: absolute; z-index: 2000; left:calc(${scoresheet.mouthfeel_body}% - 4px); top: 4px;`
+      //-         ) &nbsp;
+      //-         span.display_iblock(style="position: relative; left:0px;") |
+      //-         span.display_iblock(style="position: relative; left:46%;") |
+      //-         span.display_iblock(style="position: relative; left:93%;") |
+      //-         span.text_size_50.text_bold(
+      //-           style="position: absolute; left:-1px; bottom: 8px;"
+      //-         ) Thin
+      //-         span.text_size_50.text_bold(
+      //-           style="position: absolute; left:42px; bottom: 8px;"
+      //-         ) M
+      //-         span.text_size_50.text_bold(
+      //-           style="position: absolute; left:78px; bottom: 8px;"
+      //-         ) Full
+      //-     .display_iblock(
+      //-       style="width: 15px; background-color: lightgrey; margin-left: 8.5px; padding-left: 5px; height: 13px; padding-top: 7px;"
+      //-     )
+      //-       span.display_iblock.border_solid_1(
+      //-         style="width: 8px; height: 8px; background-color: white;"
+      //-       ) #{scoresheet.mouthfeel_body_inappropriate ? 'X' : ' '}
+      //-     span.text_bold.text_right.display_iblock(style="width: 68px;") Creaminess
+      //-     .slider_parent.display_iblock(
+      //-       style="position: relative; line-height: 8px; z-index: 99; "
+      //-     )
+      //-       .sliver_mainline.border_bot_solid_1.display_iblock(
+      //-         style="width: 89px; margin-left: 10px; position: relative; z-index: 100;"
+      //-       )
+      //-         span.display_iblock(
+      //-           style=`width: 8px; height: 8px; background-color: black; border-radius: 50%; position: absolute; z-index: 2000; left:calc(${scoresheet.mouthfeel_creaminess}% - 4px); top: 4px;`
+      //-         ) &nbsp;
+      //-         span.display_iblock(style="position: relative; left:0%;") |
+      //-         span.display_iblock(style="position: relative; left:7%;") |
+      //-         span.display_iblock(style="position: relative; left:44%;") |
+      //-         span.display_iblock(style="position: relative; left:91%") |
+      //-         span.text_size_40.text_bold(
+      //-           style="position: absolute; left:-13px; bottom: 8px;"
+      //-         ) None
+      //-         span.text_size_50.text_bold(
+      //-           style="position: absolute; left:8px; bottom: 8px;"
+      //-         ) L
+      //-         span.text_size_50.text_bold(
+      //-           style="position: absolute; left:42px; bottom: 8px;"
+      //-         ) M
+      //-         span.text_size_50.text_bold(
+      //-           style="position: absolute; left:87px; bottom: 8px;"
+      //-         ) H
+      //-     .display_iblock(
+      //-       style="width: 15px; background-color: lightgrey; margin-left: 8.5px; padding-left: 5px; height: 13px; padding-top: 7px;"
+      //-     )
+      //-       span.display_iblock.border_solid_1(
+      //-         style="width: 8px; height: 8px; background-color: white;"
+      //-       ) #{scoresheet.mouthfeel_creaminess_inappropriate ? 'X' : ' '}
+      //-     span.display_iblock(
+      //-       style="width: 20px; background-color: lightgrey; position: relative; bottom: 19px; right: 20px; "
+      //-     ) &nbsp;
+      //-   .row
+      //-     span.text_bold.text_right.display_iblock(style="width: 68px;") Carbonation
+      //-     .slider_parent.display_iblock(
+      //-       style="position: relative; line-height: 8px; z-index: 99; "
+      //-     )
+      //-       .sliver_mainline.border_bot_solid_1.display_iblock(
+      //-         style="width: 89px; margin-left: 10px; position: relative; z-index: 100;"
+      //-       )
+      //-         span.display_iblock(
+      //-           style=`width: 8px; height: 8px; background-color: black; border-radius: 50%; position: absolute; z-index: 2000; left:calc(${scoresheet.mouthfeel_carbonation}% - 4px); top: 4px;`
+      //-         ) &nbsp;
+      //-         span.display_iblock(style="position: relative; left:0%;") |
+      //-         span.display_iblock(style="position: relative; left:7%;") |
+      //-         span.display_iblock(style="position: relative; left:44%;") |
+      //-         span.display_iblock(style="position: relative; left:91%") |
+      //-         span.text_size_40.text_bold(
+      //-           style="position: absolute; left:-13px; bottom: 8px;"
+      //-         ) None
+      //-         span.text_size_50.text_bold(
+      //-           style="position: absolute; left:8px; bottom: 8px;"
+      //-         ) L
+      //-         span.text_size_50.text_bold(
+      //-           style="position: absolute; left:42px; bottom: 8px;"
+      //-         ) M
+      //-         span.text_size_50.text_bold(
+      //-           style="position: absolute; left:87px; bottom: 8px;"
+      //-         ) H
+      //-     .display_iblock(
+      //-       style="width: 15px; background-color: lightgrey; margin-left: 8.5px; padding-left: 5px; height: 13px; padding-top: 7px;"
+      //-     )
+      //-       span.display_iblock.border_solid_1(
+      //-         style="width: 8px; height: 8px; background-color: white;"
+      //-       ) #{scoresheet.mouthfeel_carbonation_inappropriate ? 'X' : ' '}
+      //-     span.text_bold.text_right.display_iblock(style="width: 68px;") Astringency
+      //-     .slider_parent.display_iblock(
+      //-       style="position: relative; line-height: 8px; z-index: 99; "
+      //-     )
+      //-       .sliver_mainline.border_bot_solid_1.display_iblock(
+      //-         style="width: 89px; margin-left: 10px; position: relative; z-index: 100;"
+      //-       )
+      //-         span.display_iblock(
+      //-           style=`width: 8px; height: 8px; background-color: black; border-radius: 50%; position: absolute; z-index: 2000; left:calc(${scoresheet.mouthfeel_astringency}% - 4px); top: 4px;`
+      //-         ) &nbsp;
+      //-         span.display_iblock(style="position: relative; left:0%;") |
+      //-         span.display_iblock(style="position: relative; left:7%;") |
+      //-         span.display_iblock(style="position: relative; left:44%;") |
+      //-         span.display_iblock(style="position: relative; left:91%") |
+      //-     .display_iblock(
+      //-       style="width: 15px; background-color: lightgrey; margin-left: 8.5px; padding-left: 5px; height: 13px; padding-top: 7px;"
+      //-     )
+      //-       span.display_iblock.border_solid_1(
+      //-         style="width: 8px; height: 8px; background-color: white;"
+      //-       ) #{scoresheet.mouthfeel_astringency_inappropriate ? 'X' : ' '}
+      //-   .row
+      //-     span.text_bold.text_right.display_iblock(style="width: 68px;") Warmth
+      //-     .slider_parent.display_iblock(
+      //-       style="position: relative; line-height: 8px; z-index: 99; "
+      //-     )
+      //-       .sliver_mainline.border_bot_solid_1.display_iblock(
+      //-         style="width: 89px; margin-left: 10px; position: relative; z-index: 100;"
+      //-       )
+      //-         span.display_iblock(
+      //-           style=`width: 8px; height: 8px; background-color: black; border-radius: 50%; position: absolute; z-index: 2000; left:calc(${scoresheet.mouthfeel_warmth}% - 4px); top: 4px;`
+      //-         ) &nbsp;
+      //-         span.display_iblock(style="position: relative; left:0px;") |
+      //-         span.display_iblock(style="position: relative; left:46%;") |
+      //-         span.display_iblock(style="position: relative; left:93%;") |
+      //-     .display_iblock(
+      //-       style="width: 15px; background-color: lightgrey; margin-left: 8.5px; padding-left: 5px; height: 13px; padding-top: 7px;"
+      //-     )
+      //-       span.display_iblock.border_solid_1(
+      //-         style="width: 8px; height: 8px; background-color: white;"
+      //-       ) #{scoresheet.mouthfeel_warmth_inappropriate ? 'X' : ' '}
+      //-     span.text_bold.text_right.display_iblock(style="width: 68px;") Other
+      //-     .display_iblock(style="margin-left: 11px;")
+      //-       span.display_iblock.user_input_truncated(style="width:150px;") #{scoresheet.mouthfeel_other_comment}
+      //-   .total.display_iblock.border_solid_1(
+      //-     style="height: 50px; width: 50px; position: absolute; top: 25px; right: 5px; "
+      //-   )
+      //-     .text_center(
+      //-       style="height: 64%; padding-top: 7px; width: 100%; background-color: lightgrey; font-size:calc(100% + 2vw);"
+      //-     ) #{scoresheet.mouthfeel_score}
+      //-     .text_right
+      //-       span.display_iblock(
+      //-         style="border-left: 1px solid black; border-top: 1px solid black; width: 12px;"
+      //-       )
+      //-         | 5
+
+      //  Overall Section
+      .overall_section.float_left(style="position: relative; width: 69%; ")
+        .flag_window.mleft_15(style="position: relative; top: 10px; left: 0;")
+          .flag_label
+            .left_spacer &nbsp;
+            .left_point &nbsp;
+            .main_flag Overall
+            .flag_point &nbsp;
+        .row.mbot_5(style="margin-left: 78px; ")
+          span.text_bold.text_right.display_iblock.text_small(
+            style="width: 77px;"
+          ) Not to Style
+          .slider_parent.display_iblock(
+            style="position: relative; line-height: 8px; z-index: 99; "
+          )
+            .sliver_mainline.border_bot_solid_1.display_iblock(
+              style="width: 173px; margin-left: 10px; position: relative; z-index: 100;"
+            )
+              span.display_iblock(
+                style=`width: 8px; height: 8px; background-color: black; border-radius: 50%; position: absolute; z-index: 2000; left:calc(${scoresheet.overall_class_example}% - 4px); top: 4px;`
+              ) &nbsp;
+              span.display_iblock(style="position: relative; left:0%;") |
+              span.display_iblock(style="position: relative; left:31px;") |
+              span.display_iblock(style="position: relative; left:64px;") |
+              span.display_iblock(style="position: relative; left:96px;") |
+              span.display_iblock(style="position: relative; left:129px;") |
+              span.display_iblock(style="position: relative; left:93%;") |
+          span.text_bold.text_left.display_iblock.text_small(
+            style="width: 68px; margin-left:10px;"
+          ) Classic Example
+        .row.mbot_5(style="margin-left: 78px; ")
+          span.text_bold.text_right.display_iblock.text_small(
+            style="width: 77px;"
+          ) Significant Flaws
+          .slider_parent.display_iblock(
+            style="position: relative; line-height: 8px; z-index: 99; "
+          )
+            .sliver_mainline.border_bot_solid_1.display_iblock(
+              style="width: 173px; margin-left: 10px; position: relative; z-index: 100;"
+            )
+              span.display_iblock(
+                style=`width: 8px; height: 8px; background-color: black; border-radius: 50%; position: absolute; z-index: 2000; left:calc(${scoresheet.overall_flawless}% - 4px); top: 4px;`
+              ) &nbsp;
+              span.display_iblock(style="position: relative; left:0%;") |
+              span.display_iblock(style="position: relative; left:31px;") |
+              span.display_iblock(style="position: relative; left:64px;") |
+              span.display_iblock(style="position: relative; left:96px;") |
+              span.display_iblock(style="position: relative; left:129px;") |
+              span.display_iblock(style="position: relative; left:93%;") |
+          span.text_bold.text_left.display_iblock.text_small(
+            style="width: 93px; margin-left:10px;"
+          ) Flawless
+        .row(style="margin-left: 78px; ")
+          span.text_bold.text_right.display_iblock.text_small(
+            style="width: 77px;"
+          ) Lifeless
+          .slider_parent.display_iblock(
+            style="position: relative; line-height: 8px; z-index: 99; "
+          )
+            .sliver_mainline.border_bot_solid_1.display_iblock(
+              style="width: 173px; margin-left: 10px; position: relative; z-index: 100;"
+            )
+              span.display_iblock(
+                style=`width: 8px; height: 8px; background-color: black; border-radius: 50%; position: absolute; z-index: 2000; left:calc(${scoresheet.overall_wonderful}% - 4px); top: 4px;`
+              ) &nbsp;
+              span.display_iblock(style="position: relative; left:0%;") |
+              span.display_iblock(style="position: relative; left:31px;") |
+              span.display_iblock(style="position: relative; left:64px;") |
+              span.display_iblock(style="position: relative; left:96px;") |
+              span.display_iblock(style="position: relative; left:129px;") |
+              span.display_iblock(style="position: relative; left:93%;") |
+          span.text_bold.text_left.display_iblock.text_small(
+            style="width: 68px; margin-left:10px;"
+          ) Wonderful
+        .total.display_iblock.border_solid_1(
+          style="height: 50px; width: 50px; position: absolute; top: 25px; right: 5px; "
+        )
+          .text_center(
+            style="height: 64%; padding-top: 7px; width: 100%; background-color: lightgrey; font-size:calc(100% + 2vw);"
+          ) #{scoresheet.overall_score}
+          .text_right
+            span.display_iblock(
+              style="border-left: 1px solid black; border-top: 1px solid black; width: 12px;"
+            )
+              | 10
+      //
+        Feedback Section
+      .feedback_section.ptop_5.float_left(
+        style="position: relative; width: 69%; "
+      )
+        span.display_iblock.text_bold.mleft_15 Feedback
+        span.text_size_70.mleft_5
+          | Provide comments on style, recipe, process, and drinking pleasure. Include helpful suggestions to the brewer.
+        .background_lgray.border_solid_1.mleft_5.entry_text_box(
+          style="width: 430px; height: 100px;"
+        ) #{scoresheet.feedback_comment}
+        span.display_iblock.text_bold.text_larger(
+          style="position: relative; left: 384px; top: 11px;"
+        ) Judge Total
+        .total.display_iblock.border_solid_1(
+          style="height: 50px; width: 50px; position: absolute; top: 88px; right: 5px; "
+        )
+          .text_center(
+            style="height: 64%; padding-top: 7px; width: 100%; background-color: lightgrey; font-size:calc(100% + 2vw);"
+          ) #{scoresheet.judge_total}
+          .text_right
+            span.display_iblock(
+              style="border-left: 1px solid black; border-top: 1px solid black; width: 12px;"
+            )
+              | 50
+  -
+    var allOverflow = {
+    	'special ingredient': scoresheet.special_ingredients ? scoresheet.special_ingredients.slice(30, -1) : '',
+    	'bottle inspection': scoresheet.bottle_inspection_comment.slice(45, -1),
+    	'aroma - malt': scoresheet.aroma_malt_comment.slice(96, -1),
+    	'aroma - hops': scoresheet.aroma_hops_comment.slice(96, -1),
+    	'aroma - fermentation': scoresheet.aroma_fermentation_comment.slice(96, -1),
+    	'aroma - other': scoresheet.aroma_other_comment.slice(126, -1),
+
+    	'appearance - color': scoresheet.appearance_color_other.slice(30, -1),
+    	'appearance - head': scoresheet.appearance_head_other ? scoresheet.appearance_head_other.slice(30, -1) : '',
+    	'appearance - other': scoresheet.appearance_other_comment.slice(57, -1),
+    	'appearance - texture': scoresheet.appearance_texture_comment ? scoresheet.appearance_texture_comment.slice(57, -1) : '',
+
+    	'flavor - malt': scoresheet.flavor_malt_comment.slice(96, -1),
+    	'flavor - hops': scoresheet.flavor_hops_comment.slice(96, -1),
+    	'flavor - fermentation': scoresheet.flavor_fermentation_comment.slice(96, -1),
+    	'flavor - bitterness': scoresheet.flavor_bitterness_comment.slice(96, -1),
+    	'flavor - balance': scoresheet.flavor_balance_comment.slice(96, -1),
+    	'flavor - finish/aftertaste': scoresheet.flavor_finish_aftertaste_comment.slice(96, -1),
+    	'flavor - other': scoresheet.flavor_other_comment.slice(126, -1),
+
+    	'mouthfeel - other': scoresheet.mouthfeel_other_comment.slice(36, -1),
+
+    	'overall feedback': scoresheet.feedback_comment.slice(620, -1)
+    };
+  - var generateSecondPage = Object.values(allOverflow).map(value => value.length > 0).reduce((acc,val) => (val || acc), false)
+  if generateSecondPage
+    .second-page
+      .overflow-pg2-container
+        h3(style="margin-bottom: 10px;") Continued from page 1:
+        mixin overflow(key, value)
+          .overflow-box
+            h5= key.toUpperCase()
+            p= '...' + value
+
+        each val, key in allOverflow
+          if val.length > 0
+            +overflow(key, val)
+
+  script.
+    // get each element that needs to be resized
+    let resizeThese = document.getElementsByClassName("text_resize_marker");
+    Array.prototype.forEach.call(resizeThese, function (ele) {
+    	calcTextWidth(ele);
+    	calcTextSize(ele);
+    });
+
+    function calcTextWidth(ele) {
+    	const parentContainerWidth = ele.parentNode.clientWidth;
+
+    	const currentTextWidth = ele.scrollWidth;
+    	const currentFontStretch = parseInt(window.getComputedStyle(ele).fontStretch);
+    	const newValue = Math.min(Math.max(250, (parentContainerWidth / currentTextWidth) * currentFontStretch), 500)
+
+    	ele.style.setProperty('--fontStretch', newValue + '%');
+    }
+
+    function calcTextSize(ele) {
+    	const parentContainerWidth = ele.parentNode.clientWidth;
+    	const currentTextWidth = ele.scrollWidth;
+    	const currentFontSize = parseInt(window.getComputedStyle(ele).fontSize);
+    	const newValue = Math.min(Math.max(ele.dataset.minTextSize ? ele.dataset.minTextSize : 14, (parentContainerWidth / currentTextWidth) * currentFontSize), 500)
+
+    	ele.style.setProperty('--fontSize', newValue + 'px');
+    }
