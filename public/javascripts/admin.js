@@ -178,7 +178,9 @@ const getDataValueByKey = (listItem, key) => {
     value = `<a role="button" class="link-style" onclick="openDataModal('#judges','${userId}')">${Users[userId]?.firstname} ${Users[userId]?.lastname}</a>`;
   } else if (key === "FlightId") {
     const flightId = listItem[key];
-    value = `<a role="button" class="link-style" onclick="openDataModal('#flights','${flightId}')">${Flights[flightId].flight_id}</a>`;
+    value = `<a role="button" class="link-style" onclick="openDataModal('#flights','${flightId}')">${
+      Flights[flightId].flight_id || "<em>Missing ID</em>"
+    }</a>`;
   } else if (key === "mini_boss_advanced" || key === "submitted") {
     value = listItem[key] ? "✓" : "";
   } else if (key === "place" || key === "place_first") {
@@ -244,6 +246,8 @@ const getDataValueByKey = (listItem, key) => {
     } else {
       value = "";
     }
+  } else if (key === "flight_id") {
+    return value || "<em>Missing ID</em>";
   }
 
   return value;
