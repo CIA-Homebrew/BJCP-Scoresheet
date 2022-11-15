@@ -358,6 +358,7 @@ $(() => {
 
     $("#userModalEmail").val(user.email);
     $("#userModalEmailVerified").prop("checked", user.email_verified);
+    $("#userModalIsAdmin").prop("checked", user.user_level > 0);
     $("#userModalFirstName").val(user.firstname);
     $("#userModalLastName").val(user.lastname);
     $("#userModalBjcpId").val(user.bjcp_id);
@@ -426,6 +427,7 @@ $(() => {
         pro_brewer_brewery: $("#userModalProBrewer").val(),
         industry_description: $("#userModalIndustry").val(),
         judging_years: $("#userModalJudgingYears").val(),
+        user_level: $("#userModalIsAdmin").prop("checked") ? 1 : 0,
       };
 
       fetch("/profile/edit/", {
