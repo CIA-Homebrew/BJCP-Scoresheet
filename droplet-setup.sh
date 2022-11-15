@@ -1,6 +1,7 @@
 #!/bin/bash
 
-## Set these environmental variables in your droplet
+## Uncomment and set these environmental variables in your droplet
+
 # export ADMIN_EMAIL=your.email@example.com
 # export PG_USER=admin
 # export PG_PASSWORD=password
@@ -8,8 +9,10 @@
 # export EMAIL_HOST=email.server.host.com
 # export EMAIL_USER=email_username
 # export EMAIL_PASSWORD=email_password
-export EMAIL_PORT=465
-export EMAIL_SECURE=true
+# export EMAIL_PORT=465
+# export EMAIL_SECURE=true
+
+if [ -z ${DOMAIN+x} ]; then echo "Please uncomment and set the variables above before proceeding" && exit 1
 
 ## Set a random database password if an env variable is not set
 RANDOM_PW=$(tr -dc A-Za-z0-9 </dev/urandom | head -c 12 ; echo '')
@@ -47,7 +50,7 @@ cat > /etc/nginx/sites-available/default << EOF
 server {
   listen 80;
   server_name $DOMAIN;
-  return 301 https://$host$request_uri;
+  return 301 https://\$host\$request_uri;
 }
 
 server {
@@ -67,7 +70,7 @@ server {
 EOF
 
 ## Install Docker (via https://docs.docker.com/engine/install/ubuntu/)
-sudo apt-get install \
+sudo apt-get install -y \
   ca-certificates \
   curl \
   gnupg \
@@ -80,9 +83,9 @@ echo \
   "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu \
   $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
 
-sudo apt-get update
+sudo apt-get update -y
 
-sudo apt-get install docker-ce docker-ce-cli containerd.io docker-compose-plugin
+sudo apt-get install -y docker-ce docker-ce-cli containerd.io docker-compose-plugin
 
 ## Install and start Postgres
 docker pull postgres
