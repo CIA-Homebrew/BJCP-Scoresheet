@@ -12,7 +12,7 @@
 # export EMAIL_PORT=465
 # export EMAIL_SECURE=true
 
-if [ -z ${DOMAIN+x} ]; then echo "Please uncomment and set the variables above before proceeding" && exit 1
+if [ -z ${DOMAIN+x} ]; then echo "Please uncomment and set the variables above before proceeding" && exit 1; fi;
 
 ## Set a random database password if an env variable is not set
 RANDOM_PW=$(tr -dc A-Za-z0-9 </dev/urandom | head -c 12 ; echo '')
