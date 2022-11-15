@@ -192,6 +192,7 @@ userController.doRegister = function (req, res) {
         allow_automated_email: req.body.allow_automated_email || false,
         email_verified: false,
         verification_id: emailVerificationCode,
+        user_level: process.env["ADMIN_EMAIL"] === email ? 999 : 0,
       }).then(function (user) {
         req.login(user, (err) => {
           if (err) {
@@ -340,9 +341,16 @@ userController.updatePassword = function (req, res) {
 };
 
 userController.saveProfile = function (req, res) {
+  const requestFromSuperAdmin = req.user.user_level >= 90;
+
   const updatedParams = req.body;
   if (!req.user.user_level) {
     delete req.body.id;
+  }
+
+  if (requestFromSuperAdmin && req.body.id === req.user.id) {
+    // Superadmins should not be able to remove their admin status
+    delete req.body.user_level;
   }
 
   delete req.body.password;
