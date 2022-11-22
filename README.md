@@ -111,7 +111,20 @@ Setting up a development enviroment is relatively easy and only requires node an
 <details>
 <summary>Deployment Instructions</summary>
 
-Currently, the application is set up to be painlessly deployed to Heroku through github integration. Simply fork the repository, connect your Github account, and deploy the master branch. At least one full-time dyno and one webworker is recommended at a minimum for optimal performance.
+The easiest way to deploy the application is via the pre-built docker container alongside a Postgres deployment. 
+
+[This script](https://github.com/CIA-Homebrew/BJCP-Scoresheet/blob/master/droplet-setup.sh) can be used as a starting point to deploy BJCP-Scoresheets in a web VM (such as a Digital Ocean Droplet).
+
+The following environmental variables will need to be passed into the `bjcp-scoresheets` container at runtime:
+
+* `DOMAIN` - the domain at which the BJCP Scoresheets instance will be hosted. Example: `scoresheets.domain.com`
+* `ADMIN_EMAIL` - the email of a user that will have admin access in the instance by default. Example: `some_admin_user@gmail.com`
+* `EMAIL_HOST` - URL of email service provider. Used for account validation and password resets. Example: `emailserver.host.com`
+* `EMAIL_PORT` - The port `EMAIL_HOST` connects on (usually `465`)
+* `EMAIL_SECURE` - Boolean if SSL is enabled on `EMAIL_HOST` (usually `true`)
+* `EMAIL_USER` - Email account used to send emails on `EMAIL_HOST`
+* `EMAIL_PASSWORD` - The password for `EMAIL_USER`
+* `DATABASE_URL` - Postgres Database connection string for scoresheets database. Example: `postgres://ADMIN_USER:ADMIN_PASSWORD@DATABSE_IP:5432/postgres`
 
 </details>
 
