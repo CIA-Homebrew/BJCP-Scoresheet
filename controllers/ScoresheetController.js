@@ -7,6 +7,7 @@ const tmp = require("tmp");
 const Scoresheet = require("../models").Scoresheet;
 const User = require("../models").User;
 const Flight = require("../models").Flight;
+const Competition = require("../models").Competition;
 
 const pdfService = require("../services/pdf.service");
 const appConstants = require("../helpers/appConstants");
@@ -30,7 +31,7 @@ function jsonErrorProcessor(err, res) {
   }
 }
 
-scoresheetController.initScoresheet = function (req, res) {
+scoresheetController.initScoresheet = async function (req, res) {
   const scoresheetType = req.body.scoresheetType || req.query.scoresheetType;
   const entryNumber = req.body.entryNumber || req.query.entryNumber;
 
@@ -39,6 +40,19 @@ scoresheetController.initScoresheet = function (req, res) {
   if (req.body.scoresheetId || req.query.scoresheetId) {
     // Load scoresheet directly from id
     const scoresheetId = req.body.scoresheetId || req.query.scoresheetId;
+    const compSlug = await Scoresheet.findOne({
+      where: {
+        id: scoresheetId,
+      },
+      include: {
+        model: Flight,
+        include: Competition,
+      },
+    }).then(async (scoresheetData) => {
+      const simpleScoresheetData = scoresheetData.get({ plain: true });
+      const compData = simpleScoresheetData.Flight.Competition;
+      return compData.slug;
+    });
 
     res.render(template, {
       scoresheetId: scoresheetId,
@@ -50,10 +64,22 @@ scoresheetController.initScoresheet = function (req, res) {
 
     if (!entryNumber) throw new Error("Entry number not provided!");
 
+    const compSlug = await Flight.findOne({
+      where: {
+        id: flightId,
+      },
+      include: Competition,
+    }).then(async (flightData) => {
+      const simpleFlightData = flightData.get({ plain: true });
+      const compData = simpleFlightData.Competition;
+      return compData.slug;
+    });
+
     res.render(template, {
       flightId: flightId,
       title: appConstants.APP_NAME + " - Scoresheet",
       entryNumber: entryNumber,
+      compSlug: compSlug,
     });
   } else {
     throw new Error("No scoresheet or flight found!");
@@ -209,26 +235,43 @@ scoresheetController.previewPDF = function (req, res) {
           id: scoresheet.FlightId,
         },
       }).then((flight) => {
-        return User.findOne({
+        const compPromise = Competition.findOne({
+          where: {
+            id: flight.CompetitionId,
+          },
+        });
+
+        const userPromise = User.findOne({
           where: {
             id: flight.UserId,
           },
-        }).then((user) => {
+        });
+
+        return Promise.all([userPromise, compPromise]).then(([user, comp]) => {
           return [
             scoresheet.get({ plain: true }),
             user.get({ plain: true }),
             flight.get({ plain: true }),
+            comp.get({ plain: true }),
           ];
         });
       });
     })
-    .then(async ([scoresheet, user, flight]) => {
+    .then(async ([scoresheet, user, flight, comp]) => {
       // These need to be STATIC and not relative! They also MUST be png files.
       const static_image_paths = {
-        bjcp_logo: "public/images/scoresheet-logos/bjcp-logo.png",
-        aha_logo: "public/images/scoresheet-logos/aha-logo.png",
-        club_logo: "public/images/scoresheet-logos/club-logo.png",
-        comp_logo: "public/images/scoresheet-logos/comp-logo.png",
+        bjcp_logo: comp.show_bjcp_logo
+          ? "public/images/scoresheet-logos/bjcp-logo.png"
+          : "public/images/scoresheet-logos/empty.png",
+        aha_logo: comp.show_aha_logo
+          ? "public/images/scoresheet-logos/aha-logo.png"
+          : "public/images/scoresheet-logos/empty.png",
+        club_logo: comp.clubLogo.includes(".png")
+          ? comp.clubLogo
+          : "public/images/scoresheet-logos/club-logo.png",
+        comp_logo: comp.compLogo.includes(".png")
+          ? comp.compLogo
+          : "public/images/scoresheet-logos/comp-logo.png",
       };
 
       pdfService
@@ -254,12 +297,12 @@ scoresheetController.generatePDF = function (req, res) {
   const userIsAdmin = req.user.user_level;
   const requestId = crypto.randomBytes(16).toString("hex");
 
-  const static_image_paths = {
-    bjcp_logo: "public/images/scoresheet-logos/bjcp-logo.png",
-    aha_logo: "public/images/scoresheet-logos/aha-logo.png",
-    club_logo: "public/images/scoresheet-logos/club-logo.png",
-    comp_logo: "public/images/scoresheet-logos/comp-logo.png",
-  };
+  // const static_image_paths = {
+  //   bjcp_logo: "public/images/scoresheet-logos/bjcp-logo.png",
+  //   aha_logo: "public/images/scoresheet-logos/aha-logo.png",
+  //   club_logo: "public/images/scoresheet-logos/club-logo.png",
+  //   comp_logo: "public/images/scoresheet-logos/comp-logo.png",
+  // };
 
   let scoresheetsDbPromise = null;
 
@@ -271,7 +314,7 @@ scoresheetController.generatePDF = function (req, res) {
       },
       include: {
         model: Flight,
-        include: User,
+        include: [User, Competition],
       },
     });
     scoresheetIds = null;
@@ -288,7 +331,7 @@ scoresheetController.generatePDF = function (req, res) {
       include: {
         model: Flight,
         where: selectorQueries,
-        include: User,
+        include: [User, Competition],
       },
     });
     entryNumbers = null;
@@ -333,6 +376,7 @@ scoresheetController.generatePDF = function (req, res) {
             scoresheet,
             flight: flight,
             user: scoresheet.Flight.User,
+            competition: scoresheet.Flight.Competition,
           };
         });
       });
@@ -348,6 +392,20 @@ scoresheetController.generatePDF = function (req, res) {
       // If there's only one scoresheet being requested, we don't need to make an archive - just send the pdf
       if (Object.keys(scoresheetObject).length === 1) {
         const scoresheetData = Object.values(scoresheetObject)[0];
+        const static_image_paths = {
+          bjcp_logo: scoresheetData.competition.show_bjcp_logo
+            ? "public/images/scoresheet-logos/bjcp-logo.png"
+            : "public/images/scoresheet-logos/empty.png",
+          aha_logo: scoresheetData.competition.show_aha_logo
+            ? "public/images/scoresheet-logos/aha-logo.png"
+            : "public/images/scoresheet-logos/empty.png",
+          club_logo: scoresheetData.competition.clubLogo.includes(".png")
+            ? scoresheetData.competition.clubLogo
+            : "public/images/scoresheet-logos/club-logo.png",
+          comp_logo: scoresheetData.competition.compLogo.includes(".png")
+            ? scoresheetData.competition.compLogo
+            : "public/images/scoresheet-logos/comp-logo.png",
+        };
 
         return pdfService
           .generateScoresheet("views/bjcp_modified.pug", {
@@ -387,12 +445,29 @@ scoresheetController.generatePDF = function (req, res) {
           });
       } else if (entryNumbers && [...new Set(entryNumbers)].length === 1) {
         const pdfGenInputData = Object.values(scoresheetObject).map(
-          (scoresheetData) => ({
-            scoresheet: scoresheetData.scoresheet,
-            flight: scoresheetData.flight,
-            judge: scoresheetData.user,
-            images: static_image_paths,
-          })
+          (scoresheetData) => {
+            const static_image_paths = {
+              bjcp_logo: scoresheetData.competition.show_bjcp_logo
+                ? "public/images/scoresheet-logos/bjcp-logo.png"
+                : "public/images/scoresheet-logos/empty.png",
+              aha_logo: scoresheetData.competition.show_aha_logo
+                ? "public/images/scoresheet-logos/aha-logo.png"
+                : "public/images/scoresheet-logos/empty.png",
+              club_logo: scoresheetData.competition.clubLogo.includes(".png")
+                ? scoresheetData.competition.clubLogo
+                : "public/images/scoresheet-logos/club-logo.png",
+              comp_logo: scoresheetData.competition.compLogo.includes(".png")
+                ? scoresheetData.competition.compLogo
+                : "public/images/scoresheet-logos/comp-logo.png",
+            };
+
+            return {
+              scoresheet: scoresheetData.scoresheet,
+              flight: scoresheetData.flight,
+              judge: scoresheetData.user,
+              images: static_image_paths,
+            };
+          }
         );
 
         return pdfService
@@ -468,12 +543,33 @@ scoresheetController.generatePDF = function (req, res) {
         const sendPromises = Object.entries(groupedByEntryNumber).map(
           ([entry_number, scoresheet_data_array], idx) => {
             const pdfGenInputData = scoresheet_data_array.map(
-              (scoresheetData) => ({
-                scoresheet: scoresheetData.scoresheet,
-                flight: scoresheetData.flight,
-                judge: scoresheetData.user,
-                images: static_image_paths,
-              })
+              (scoresheetData) => {
+                const static_image_paths = {
+                  bjcp_logo: scoresheetData.competition.show_bjcp_logo
+                    ? "public/images/scoresheet-logos/bjcp-logo.png"
+                    : "public/images/scoresheet-logos/empty.png",
+                  aha_logo: scoresheetData.competition.show_aha_logo
+                    ? "public/images/scoresheet-logos/aha-logo.png"
+                    : "public/images/scoresheet-logos/empty.png",
+                  club_logo: scoresheetData.competition.clubLogo.includes(
+                    ".png"
+                  )
+                    ? scoresheetData.competition.clubLogo
+                    : "public/images/scoresheet-logos/club-logo.png",
+                  comp_logo: scoresheetData.competition.compLogo.includes(
+                    ".png"
+                  )
+                    ? scoresheetData.competition.compLogo
+                    : "public/images/scoresheet-logos/comp-logo.png",
+                };
+
+                return {
+                  scoresheet: scoresheetData.scoresheet,
+                  flight: scoresheetData.flight,
+                  judge: scoresheetData.user,
+                  images: static_image_paths,
+                };
+              }
             );
 
             return pdfService
@@ -528,6 +624,21 @@ scoresheetController.generatePDF = function (req, res) {
         // Each individual scoresheet ID will be mapped to a new PDF
         const sendPromises = Object.values(scoresheetObject).map(
           (scoresheetData, idx) => {
+            const static_image_paths = {
+              bjcp_logo: scoresheetData.competition.show_bjcp_logo
+                ? "public/images/scoresheet-logos/bjcp-logo.png"
+                : "public/images/scoresheet-logos/empty.png",
+              aha_logo: scoresheetData.competition.show_aha_logo
+                ? "public/images/scoresheet-logos/aha-logo.png"
+                : "public/images/scoresheet-logos/empty.png",
+              club_logo: scoresheetData.competition.clubLogo.includes(".png")
+                ? scoresheetData.competition.clubLogo
+                : "public/images/scoresheet-logos/club-logo.png",
+              comp_logo: scoresheetData.competition.compLogo.includes(".png")
+                ? scoresheetData.competition.compLogo
+                : "public/images/scoresheet-logos/comp-logo.png",
+            };
+
             return pdfService
               .generateScoresheet(
                 "views/bjcp_modified.pug",
@@ -584,7 +695,8 @@ scoresheetController.generatePDF = function (req, res) {
       }
     })
     .catch((err) => {
-      jsonErrorProcessor(err, res);
+      // jsonErrorProcessor(err, res);
+      console.log(err);
     });
 };
 

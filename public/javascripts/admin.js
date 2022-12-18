@@ -302,7 +302,73 @@ const closeAllModals = () => {
   $("#entryDataModal").modal("hide");
 };
 
+const fetchCompInfo = async () => {
+  const data = await fetch("/competitions/default-competition").then((res) =>
+    res.json()
+  );
+
+  $("#compName").val(data.name),
+    $("#compClub").val(data.club),
+    $(`#styleguide option[value=${data.styleGuide}]`).prop(
+      "selected",
+      "selected"
+    ),
+    $("#instructions").val(data.instruction),
+    $("#info").val(data.info);
+  $("#showBjcpLogo").prop("checked", data.show_bjcp_logo);
+  $("#showAhaLogo").prop("checked", data.show_aha_logo);
+};
+
+const allowCompInfoEdit = () => {
+  $("#editCompInfoButton").hide();
+  $("#editCompInfoSaveButton").show();
+  $("#editCompInfoCancelButton").show();
+
+  $("#compName").prop("disabled", false);
+  $("#compClub").prop("disabled", false);
+  $("#styleguide").prop("disabled", false);
+  $("#instructions").prop("disabled", false);
+  $("#info").prop("disabled", false);
+};
+
+const cancelEditCompInfo = () => {
+  location.reload();
+};
+
+const saveCompInfo = async () => {
+  $("#editCompInfoButton").show();
+  $("#editCompInfoSaveButton").hide();
+  $("#editCompInfoCancelButton").hide();
+
+  const compData = {
+    name: $("#compName").val(),
+    club: $("#compClub").val(),
+    styleGuide: $("#styleguide").val(),
+    instruction: $("#instructions").val(),
+    info: $("#info").val(),
+    show_bjcp_logo: Boolean($("#showBjcpLogo").prop("checked")),
+    show_aha_logo: Boolean($("#showAhaLogo").prop("checked")),
+  };
+
+  const data = await fetch("/competitions/default-competition", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(compData),
+  }).then((res) => res.json());
+
+  location.reload();
+};
+
 $(() => {
+  fetchCompInfo();
+
+  $("#editCompInfoButton").click(allowCompInfoEdit);
+  $("#editCompInfoCancelButton").click(cancelEditCompInfo);
+  $("#editCompInfoSaveButton").click(saveCompInfo);
+  $("#editLogoInfoSaveButton").click(saveCompInfo);
+
   $("#aboutContestedPopover").popover();
   updateAllTables();
 

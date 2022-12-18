@@ -14,14 +14,15 @@ block content
       hidden,
       value="beer"
     )
+    input#compSlug(type="text", name="compSlug", hidden, value=compSlug)
     input#FlightId(type="text", name="FlightId", hidden, value=flightId)
     .container
       .card
         .card-body
           .row
             .col-md
-              h4.card-title BJCP Digital Soresheet
-              sub.form-text.mb-2.text-subdued Please fill this form to the most comprehensive degree possible.
+              h4#competitionName.card-title BJCP Digital Soresheet
+              sub#competitionInstruction.form-text.mb-2.text-subdued Please fill this form to the most comprehensive degree possible.
             .col-md
               .card-deck
                 .card.border-dark.mb-3.mx-1
@@ -35,7 +36,7 @@ block content
                       option(value=3) 3rd
                 .card.border-dark.mb-3.mx-1
                   .card-header.px-0.py-0
-                    p.small.mb-0.text-center MiniBOS
+                    p.small.mb-0.text-center 2nd Round
                   .card-body.text-dark.px-0.py-1.text-center
                     .btn-group-toggle(data-toggle="buttons")
                       label#mini_boss_advanced_label.btn.btn-outline-success.btn-sm Advance
@@ -195,7 +196,7 @@ block content
               .form-group
                 .form-row.py-1
                   .form-group.col-sm-2.col-form-label
-                    label(for="category") BJCP Style
+                    label#styleGuidelineText(for="category") Style
                   .form-group.col-sm-2
                     select#category.form-control(
                       name="category",
@@ -380,6 +381,7 @@ block content
                       role="button",
                       data-toggle="popover",
                       data-trigger="focus",
+                      data-html="true",
                       title="BJCP Appearance Guidelines",
                       data-content="Please Select a BJCP Category and Subcategory"
                     ) Style Guidelines

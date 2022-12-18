@@ -20,6 +20,22 @@ block content
           li.nav-item
             a.nav-link.px-2(
               data-toggle="tab",
+              href="#logos",
+              role="tab",
+              aria-controls="logos",
+              aria-selected="false"
+            ) Logos
+          li.nav-item
+            a.nav-link.px-2(
+              data-toggle="tab",
+              href="#output",
+              role="tab",
+              aria-controls="output",
+              aria-selected="false"
+            ) Output
+          li.nav-item
+            a.nav-link.px-2(
+              data-toggle="tab",
               href="#entries",
               role="tab",
               aria-controls="entries",
@@ -56,24 +72,126 @@ block content
             aria-labelledby="system-tab"
           )
             .container-fluid
-              .mt-5
-                label(for="download-all-entries-button") Download All Entries as Concatenated PDFs (Caution: May take a while!)
-                br
-                button#download-all-entries-button.btn.btn-primary(
-                  type="button",
-                  onclick=`downloadAllEntries()`
-                ) Download All Scoresheets
-                small Feature disabled due to insufficient memory. Please contact your site administrator.
+              h3 Competition Information
+              .form-row.py-1
+                .form-group.col-sm-2.col-form-label 
+                  label(for="compName") Competition Name
+                .form-group.col-sm-4
+                  input#compName.form-control(type="text", disabled)
+              .form-row.py-1
+                .form-group.col-sm-2.col-form-label 
+                  label(for="compClub") Hosting Club
+                .form-group.col-sm-4
+                  input#compClub.form-control(type="text", disabled)
+              .form-row.py-1
+                .form-group.col-sm-2.col-form-label 
+                  label(for="styleguide") Style Guidelines
+                .form-group.col-sm-4
+                  select#styleguide.form-control(disabled)
+                    option(value="BJCP2015") BJCP 2015
+                    option(value="BJCP2021", selected) BJCP 2021
+              .form-row.py-1
+                .form-group.col-sm-2.col-form-label 
+                  label(for="instructions") Special Instructions
+                  small (Shown on scoresheet form)
+                .form-group.col-sm-8
+                  textarea#instructions.form-control(
+                    rows="6",
+                    type="text",
+                    disabled
+                  )
+              .form-row.py-1
+                .form-group.col-sm-2.col-form-label 
+                  label(for="info") Competition Information
+                  small (Shown on main page)
+                .form-group.col-sm-8
+                  textarea#info.form-control(rows="6", type="text", disabled)
+              .form-row.py-1 
+                .form-group.col-sm-4 
+                  button#editCompInfoButton.btn.mr-3.btn-primary Edit Info
+                  button#editCompInfoSaveButton.btn.mr-3.btn-success(
+                    style="display:none;"
+                  ) Save
+                  button#editCompInfoCancelButton.btn.btn-danger(
+                    style="display:none;"
+                  ) Cancel
 
-              .mt-5
-                label(for="download-all-raw-data-button") Download All Scoresheet Data as CSV
-                br
-                button#download-all-raw-data-button.btn.btn-primary(
-                  type="button",
-                  onclick=`getRawDataDump()`
-                ) Download Raw Data
+          #logos.tab-pane(role="tabpane2", aria-labelledby="logos-tab")
+            .container-fluid
+              h3 Logos
+              .form-row.py-1
+                .form-group.col-sm-2.col-form-label
+                  label(for="compLogo") Competition Logo
+                .form-group.col-sm-4
+                  form(
+                    method="post",
+                    enctype="multipart/form-data",
+                    action="/images/compLogo/default-competition"
+                  )
+                    .input-group
+                      input#compLogo.form-control(
+                        type="file",
+                        name="comp-logo",
+                        accept=".jpg, .png, .svg, .webp, .gif, .apng"
+                      )
+                      .input-group-append
+                        .input-group-append
+                          button#uploadCompLogo.btn.btn-outline-secondary(
+                            type="submit"
+                          ) Upload
+              .form-row.py-1
+                .form-group.col-sm-2.col-form-label 
+                  label(for="clubLogo") Club Logo
+                .form-group.col-sm-4
+                  form(
+                    method="post",
+                    enctype="multipart/form-data",
+                    action="/images/clubLogo/default-competition"
+                  )
+                    .input-group
+                      input#clubLogo.form-control(
+                        type="file",
+                        name="club-logo",
+                        accept=".jpg, .png, .svg, .webp, .gif, .apng"
+                      )
+                      .input-group-append
+                        button#uploadClubLogo.btn.btn-outline-secondary(
+                          type="submit"
+                        ) Upload
+              .form-row.py-1
+                .col-5.pl-3
+                  input#showBjcpLogo.form-check-input(type="checkbox")
+                  label.form-check-label(for="showBjcpLogo") Show BJCP Logo on Scoresheet
+              .form-row.py-1
+                .col-5.pl-3
+                  input#showAhaLogo.form-check-input(type="checkbox")
+                  label.form-check-label(for="showAhaLogo") Show AHA Logo on Scoresheet
+              .form-row.py-1 
+                button#editLogoInfoSaveButton.btn.mr-3.btn-success Update
 
-          #entries.tab-pane(role="tabpane2", aria-labelledby="entries-tab")
+          #output.tab-pane(role="tabpane3", aria-labelledby="output-tab")
+            .container-fluid
+              h3 Scoresheet Output
+              .row
+                .col-4
+                  label(for="download-all-entries-button") Download All Entries as Concatenated PDFs
+                  br
+                  button#download-all-entries-button.btn.btn-primary(
+                    type="button",
+                    onclick=`downloadAllEntries()`
+                  ) Download All Scoresheets
+                  br
+                  small <strong>Caution!</strong> May take a while (or even crash) depending on number of scoresheets and avaiable server resources!
+                .col-1
+                .col-4
+                  label(for="download-all-raw-data-button") Download All Scoresheet Data as CSV
+                  br
+                  button#download-all-raw-data-button.btn.btn-primary(
+                    type="button",
+                    onclick=`getRawDataDump()`
+                  ) Download Raw Data
+
+          #entries.tab-pane(role="tabpane4", aria-labelledby="entries-tab")
             .container-fluid
               .form-check.mb-2
                 .row
@@ -110,7 +228,7 @@ block content
                 tbody
 
           #scoresheets.tab-pane(
-            role="tabpane3",
+            role="tabpane5",
             aria-labelledby="scoresheets-tab"
           )
             .container-fluid
@@ -126,7 +244,7 @@ block content
                     th(scope="col", data-key="place") Place
                     th(scope="col", data-key="mini_boss_advanced") Mini BOS
                 tbody
-          #judges.tab-pane(role="tabpane4", aria-labelledby="judges-tab")
+          #judges.tab-pane(role="tabpane6", aria-labelledby="judges-tab")
             .container-fluid
               table.comp_judges_list.table.table-sm.table-striped.table-bordered.table-hover
                 thead.thead-dark
@@ -138,7 +256,7 @@ block content
                     th(scope="col", data-key="numUserFlights") Judging Sessions
                     th(scope="col", data-key="numUserScoresheets") Entries Judged
                 tbody
-          #flights.tab-pane(role="tabpane5", aria-labelledby="flight-tab")
+          #flights.tab-pane(role="tabpane7", aria-labelledby="flight-tab")
             .container-fluid
               table.comp_flights_list.table.table-sm.table-striped.table-bordered.table-hover
                 thead.thead-dark

@@ -247,8 +247,13 @@ userController.doLogin = function (req, res) {
 
 // logout
 userController.logout = function (req, res) {
-  req.logout();
-  res.redirect("/");
+  req.logout(function (err) {
+    if (err) {
+      // TODO: Handle this better
+      res.redirect("/");
+    }
+    res.redirect("/");
+  });
 };
 
 // Go to profile edit page
@@ -468,8 +473,12 @@ userController.validateEmail = function (req, res) {
           return Promise.resolve(user[1].get());
         });
       } else {
-        req.logout();
-        return Promise.resolve(null);
+        req.logout(function (err) {
+          if (err) {
+            return Promise.reject(err);
+          }
+          return Promise.resolve(null);
+        });
       }
     })
     .then((user) => {
@@ -608,8 +617,12 @@ userController.userResetPassword = async function (req, res) {
           return Promise.resolve(user);
         });
       } else {
-        req.logout();
-        return Promise.resolve(null);
+        req.logout(function (err) {
+          if (err) {
+            return Promise.reject(err);
+          }
+          return Promise.resolve(null);
+        });
       }
     })
     .then((user) => {

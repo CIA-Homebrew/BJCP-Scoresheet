@@ -10,18 +10,97 @@ function validatorHandler(_this) {
   }
 }
 
+function doubleToHex(d) {
+  // Converts decimal in string to hex in string
+  let hexText = d.toString(16);
+  const point = hexText.indexOf(".");
+  if (point != -1) {
+    hexText = hexText.substring(0, point);
+  }
+  while (hexText.length < 2) {
+    hexText = "0" + hexText;
+  }
+  return hexText;
+}
+
+const srm_to_hex = (srm) => {
+  // Returns an RGB value based on SRM
+  let r = 0,
+    g = 0,
+    b = 0;
+
+  if (srm >= 0 && srm <= 1) {
+    r = 240;
+    g = 239;
+    b = 181;
+  } else if (srm > 1 && srm <= 2) {
+    r = 233;
+    g = 215;
+    b = 108;
+  } else if (srm > 2) {
+    // Set red decimal
+    if (srm < 70.6843) {
+      r = 243.8327 - 6.404 * srm + 0.0453 * srm * srm;
+    } else {
+      r = 17.5014;
+    }
+    // Set green decimal
+    if (srm < 35.0674) {
+      g = 230.929 - 12.484 * srm + 0.178 * srm * srm;
+    } else {
+      g = 12.0382;
+    }
+    // Set blue decimal
+    if (srm < 4) {
+      b = -54 * srm + 216;
+    } else if (srm >= 4 && srm < 7) {
+      b = 0;
+    } else if (srm >= 7 && srm < 9) {
+      b = 13 * srm - 91;
+    } else if (srm >= 9 && srm < 13) {
+      b = 2 * srm + 8;
+    } else if (srm >= 13 && srm < 17) {
+      b = -1.5 * srm + 53.5;
+    } else if (srm >= 17 && srm < 22) {
+      b = 0.6 * srm + 17.8;
+    } else if (srm >= 22 && srm < 27) {
+      b = -2.2 * srm + 79.4;
+    } else if (srm >= 27 && srm < 34) {
+      b = -0.4285 * srm + 31.5714;
+    } else {
+      b = 17;
+    }
+  }
+  const red = doubleToHex(r);
+  const green = doubleToHex(g);
+  const blue = doubleToHex(b);
+  return "#" + red + green + blue;
+};
+
 let goHome = () => {};
 let goToTab = () => {};
 let update_tooltips = () => {};
 let update_subcat = () => {};
 let bjcp_data = {};
+let styleguide = "BJCP2021";
 
-$(document).ready(function () {
+$(document).ready(async function () {
+  // Enable style prop on popovers
+  $.fn.tooltip.Constructor.Default.whiteList["*"].push("style");
+
   //- Data validator on event
   $("[data-toggle=popover]").popover();
   $("input.vCheck").on("keyup change", function () {
     validatorHandler(this);
   });
+
+  await fetch(`/competitions/${$("#compSlug").val()}`)
+    .then((res) => res.json())
+    .then((res) => {
+      styleguide = res.styleGuide;
+      $("#competitionName").text(res.name + " Scoresheet");
+      $("#competitionInstruction").text("Instructions: " + res.instruction);
+    });
 
   load_bjcp_data().then((allCategories) => {
     // Populate style selector with category values
@@ -79,7 +158,35 @@ $(document).ready(function () {
     } else {
       popoverIds.forEach((domId) => {
         const section = domId.split("_")[1];
-        $(`#${domId}`).attr("data-content", bjcp_data[category][sub][section]);
+        if (section === "appearance") {
+          const minSrm = bjcp_data[category][sub].stats?.srm.low;
+          const maxSrm = bjcp_data[category][sub].stats?.srm.high;
+          const appearance_content = `
+            <div>
+              <div>${bjcp_data[category][sub][section]}</div>
+              <div style="display: flex; justify-content: space-evenly;">
+                <div style="background-color: ${srm_to_hex(minSrm)}; color: ${
+            minSrm > 20 ? "white" : "black"
+          }; height: 50px; width: 33%; text-align: center;">
+                  <div>Minimum: </div>
+                  <div>${minSrm} SRM</div>
+                </div>
+                <div style="background-color: ${srm_to_hex(maxSrm)}; color: ${
+            minSrm > 20 ? "white" : "black"
+          }; height: 50px; width: 33%; text-align: center;">
+                  <div>Maximum: </div>
+                  <div>${maxSrm} SRM</div>
+                </div>
+              </div>
+            </div>`;
+
+          $(`#${domId}`).attr("data-content", appearance_content);
+        } else {
+          $(`#${domId}`).attr(
+            "data-content",
+            bjcp_data[category][sub][section]
+          );
+        }
       });
     }
   };
@@ -465,62 +572,80 @@ load_scoresheet_data = () => {
 load_bjcp_data = () => {
   const scoresheetType = $("#scoresheetType").val();
 
-  return fetch("/bjcp2015.json")
-    .then((data) => data.json())
-    .then(([beer_data, mead_data, cider_data]) => {
-      const beerCategories =
-        scoresheetType === "beer"
-          ? beer_data.reduce((acc, val) => {
-              acc[val.id] = val.subcategory.reduce((acc, subcatInfo) => {
-                const sub_id = subcatInfo.id.slice(-1);
+  if (scoresheetType === "beer") {
+    const styleGuideText = {
+      BJCP2021: "BJCP 2021 Style",
+      BJCP2015: "BJCP 2015 Style",
+    };
 
-                acc[sub_id] = {
-                  sub_id,
-                  ...subcatInfo,
-                };
+    $("#styleGuidelineText").text(styleGuideText[styleguide] || "Style");
 
+    return fetch(`/${styleguide}.json`)
+      .then((rawdata) => rawdata.json())
+      .then((data) => {
+        return data.beerjson.styles.reduce((acc, style) => {
+          acc[style.category_id] = acc[style.category_id] || {};
+          const substyle = style.style_id.replace(style.category_id, "");
+          acc[style.category_id][substyle] = style;
+          acc[style.category_id][substyle].stats = {
+            ibu: {
+              low: style.international_bitterness_units?.minimum.value || 1,
+              high: style.international_bitterness_units?.maximum.value || 100,
+            },
+            srm: {
+              low: style.color?.minimum.value || 1,
+              high: style.color?.maximum.value || 50,
+            },
+            abv: {
+              low: style.alcohol_by_volume?.minimum.value || 0.1,
+              high: style.alcohol_by_volume?.maximum.value || 20,
+            },
+          };
+
+          return acc;
+        }, {});
+      });
+  } else {
+    return fetch("/mead_bjcp2015.json")
+      .then((data) => data.json())
+      .then(([beer_data, mead_data, cider_data]) => {
+        const ciderCategories =
+          scoresheetType === "cider"
+            ? cider_data.category.reduce((acc, val) => {
+                acc[val.id] = val.subcategory.reduce((acc, subcatInfo) => {
+                  const sub_id = subcatInfo.id.slice(-1);
+
+                  acc[sub_id] = {
+                    sub_id,
+                    ...subcatInfo,
+                  };
+
+                  return acc;
+                }, {});
                 return acc;
-              }, {});
-              return acc;
-            }, {})
-          : {};
+              }, {})
+            : {};
 
-      const ciderCategories =
-        scoresheetType === "cider"
-          ? cider_data.category.reduce((acc, val) => {
-              acc[val.id] = val.subcategory.reduce((acc, subcatInfo) => {
-                const sub_id = subcatInfo.id.slice(-1);
+        const meadCategories =
+          scoresheetType === "mead"
+            ? mead_data.category.reduce((acc, val) => {
+                acc[val.id] = val.subcategory.reduce((acc, subcatInfo) => {
+                  const sub_id = subcatInfo.id.slice(-1);
 
-                acc[sub_id] = {
-                  sub_id,
-                  ...subcatInfo,
-                };
+                  acc[sub_id] = {
+                    sub_id,
+                    ...subcatInfo,
+                  };
 
+                  return acc;
+                }, {});
                 return acc;
-              }, {});
-              return acc;
-            }, {})
-          : {};
+              }, {})
+            : {};
 
-      const meadCategories =
-        scoresheetType === "mead"
-          ? mead_data.category.reduce((acc, val) => {
-              acc[val.id] = val.subcategory.reduce((acc, subcatInfo) => {
-                const sub_id = subcatInfo.id.slice(-1);
-
-                acc[sub_id] = {
-                  sub_id,
-                  ...subcatInfo,
-                };
-
-                return acc;
-              }, {});
-              return acc;
-            }, {})
-          : {};
-
-      return { ...beerCategories, ...ciderCategories, ...meadCategories };
-    });
+        return { ...ciderCategories, ...meadCategories };
+      });
+  }
 };
 
 /*!

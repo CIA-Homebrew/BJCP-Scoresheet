@@ -4,18 +4,22 @@ block content
   if !user
     .container
       .logo_holder.mx-auto.text-center
-        img.img-fluid.d-inline-block(
-          src="/images/page-logos/club-logo.png",
-          alt="Logo",
-          height="400px"
-        )
-        img.img-fluid.d-inline-block(
-          src="/images/page-logos/comp-logo.png",
-          alt="Logo",
-          height="400px"
-        )
-      h1.text-center Welcome!
-      p.text-center Welcome to the BJCP-Scoresheets Digital Scoresheet Manager. Please use the menu above to navigate to your desired action.
+        picture.img-fluid.d-inline-block
+          source(srcset="/images/uploads/default-competition/club-logo.png")
+          img(
+            src="/images/page-logos/club-logo.png",
+            alt="Logo",
+            height="400px"
+          )
+        picture.img-fluid.d-inline-block
+          source(srcset="/images/uploads/default-competition/comp-logo.png")
+          img(
+            src="/images/page-logos/comp-logo.png",
+            alt="Logo",
+            height="400px"
+          )
+      h1#competitionHeader.text-center Welcome!
+      p#competitionInformation.text-center Welcome to the BJCP-Scoresheets Digital Scoresheet Manager. Please use the menu above to navigate to your desired action.
   else if !user.email_verified
     .container.d-flex.flex-column.justify-content-center.mt-5(
       style="width: 450px;"
@@ -97,8 +101,8 @@ block content
                                 th(scope="col") Category
                                 th.text-center(scope="col") Judge Score
                                 th.text-center(scope="col") Consensus Score
-                                th.text-center(scope="col") Place / Advance
-                                th.text-center(scope="col") MiniBOS Advance
+                                th.text-center(scope="col") Place
+                                th.text-center(scope="col") 2nd Round
                                 th(scope="col")
                             tbody.flight-table
                               if flight.scoresheets.length
@@ -218,8 +222,8 @@ block content
                               th(scope="col") Category
                               th.text-center(scope="col") Judge Score
                               th.text-center(scope="col") Consensus Score
-                              th.text-center(scope="col") Placed / Advanced
-                              th.text-center(scope="col") MiniBOS Advanced
+                              th.text-center(scope="col") Placed
+                              th.text-center(scope="col") 2nd Round
                               th(scope="col")
                           tbody
                             each scoresheet in flight.scoresheets
