@@ -70,14 +70,15 @@ block content
       hidden,
       value="mead"
     )
+    input#compSlug(type="text", name="compSlug", hidden, value=compSlug)
     input#FlightId(type="text", name="FlightId", hidden, value=flightId)
     .container
       .card
         .card-body
           .row
             .col-md
-              h4.card-title BJCP Digital Soresheet
-              sub.form-text.mb-2.text-subdued Please fill this form to the most comprehensive degree possible.
+              h4#competitionName.card-title BJCP Digital Soresheet
+              sub#competitionInstruction.form-text.mb-2.text-subdued Please fill this form to the most comprehensive degree possible.
             .col-md
               .card-deck
                 .card.border-dark.mb-3.mx-1
@@ -243,7 +244,7 @@ block content
               .form-group
                 .form-row.py-1
                   .form-group.col-sm-2.col-form-label
-                    label(for="category") BJCP Style
+                    label#styleGuidelineText(for="category") BJCP Style
                   .form-group.col-sm-2
                     select#category.form-control(
                       name="category",
