@@ -136,14 +136,14 @@ module.exports = {
         [
           {
             id: staticCompetitionId,
-            name: "Default Competition",
+            name: "",
             slug: "default-competition",
-            info: "The best competition in the World Wide Web!",
+            info: "Welcome! Please register or login!",
             instruction:
               "Please fill this form to the most comprehensive degree possible.",
-            club: "Default",
-            clubLogo: "/images/page-logos/club-logo.png",
-            compLogo: "/images/page-logos/comp-logo.png",
+            club: "",
+            clubLogo: "",
+            compLogo: "",
             show_bjcp_logo: false,
             show_aha_logo: false,
             styleGuide: "BJCP2015",
