@@ -100,6 +100,10 @@ POSTGRES_CONTAINER_ID=$(docker run \
 
 POSTGRES_CONTAINER_IP=$(docker inspect --format '{{ .NetworkSettings.IPAddress }}' $POSTGRES_CONTAINER_ID)
 
+## Postgres needs about a minute to come online
+echo "Waiting for 60s..."
+sleep 60
+
 ## Install and start BJCP-Scoresheets server
 docker pull ghcr.io/cia-homebrew/bjcp-scoresheets:latest
 docker run \
