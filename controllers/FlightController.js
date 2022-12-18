@@ -1,4 +1,5 @@
 const User = require("../models").User;
+const Competition = require("../models").Competition;
 const Flight = require("../models").Flight;
 const Scoresheet = require("../models").Scoresheet;
 const errorConstants = require("../helpers/errorConstants");
@@ -74,7 +75,10 @@ flightController.addFlight = function (req, res) {
     location: req.body.flightLocation,
     date: req.body.flightDate,
     UserId: req.user.id,
+    CompetitionId: req.body.competitionId,
   };
+
+  console.log(newFlightParams);
 
   Flight.create(newFlightParams)
     .then((newFlight) => {

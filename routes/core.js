@@ -1,14 +1,17 @@
-let express = require("express");
-let router = express.Router();
+const express = require("express");
+const router = express.Router();
+const multer = require("multer");
 
 //* CONTROLLERS *//
-let authController = require("../controllers/AuthController");
-let scoresheetController = require("../controllers/ScoresheetController");
-let adminController = require("../controllers/AdminController");
+const authController = require("../controllers/AuthController");
+const scoresheetController = require("../controllers/ScoresheetController");
+const adminController = require("../controllers/AdminController");
 const flightController = require("../controllers/FlightController");
+const competitionController = require("../controllers/CompetitionController");
 
 //* MIDDELWARE *//
-let authMiddle = require("../middleware/auth");
+const upload = multer({ dest: "tmp/" });
+const authMiddle = require("../middleware/auth");
 
 //* CORE SITE FUNCTIONS *//
 
@@ -116,6 +119,34 @@ router.post(
   "/scoresheet/downloadstatus",
   authMiddle.isAuthenticated,
   scoresheetController.getDownloadStatus
+);
+
+//* COMPETITION FUNCTIONS *//
+router.get(
+  "/competitions/",
+  authMiddle.isAuthenticated,
+  competitionController.getAllCompetitions
+);
+router.get(
+  "/competitions/:competitionSlug",
+  competitionController.getCompetitionData
+);
+router.post(
+  "/competitions/:competitionSlug",
+  authMiddle.isAdmin,
+  competitionController.setCompetitionData
+);
+router.post(
+  "/images/compLogo/:competitionSlug",
+  authMiddle.isAdmin,
+  upload.single("comp-logo"),
+  competitionController.handleCompImageUpload
+);
+router.post(
+  "/images/clubLogo/:competitionSlug",
+  authMiddle.isAdmin,
+  upload.single("club-logo"),
+  competitionController.handleClubImageUpload
 );
 
 //* ADMIN FUNCTIONS *//

@@ -44,10 +44,16 @@ const showDeleteEntryModal = (flightId) => {
   $("#confirm-delete-entry-modal").modal("show");
 };
 
-const addFlight = () => {
+const addFlight = async () => {
   const flightName = $("#flightName").val();
   const flightLocation = $("#flightLocation").val();
   const flightDate = new Date($("#flightDate").val());
+
+  // TODO: Update to get competition data from current competition
+  const competitionData = await fetch(
+    "/competitions/default-competition"
+  ).then((res) => res.json());
+  console.log(competitionData);
 
   fetch("/flight/add", {
     method: "POST",
@@ -55,6 +61,7 @@ const addFlight = () => {
       "Content-Type": "application/json",
     },
     body: JSON.stringify({
+      competitionId: competitionData.id,
       flightName: flightName,
       flightLocation: flightLocation,
       flightDate: flightDate,
@@ -282,6 +289,18 @@ let deleteEntry = () => {};
 let downloadPdf = () => {};
 
 $(document).ready(() => {
+  // Set default competition Information
+  fetch("/competitions/default-competition")
+    .then((res) => res.json())
+    .then((res) => {
+      $("#competitionHeader").text(
+        `Welcome${res.name?.length ? " to " + res.name + " " : "!"}${
+          res.club?.length ? "hosted by " + res.club + "!" : "!"
+        }`
+      );
+      $("#competitionInformation").text(res.info);
+    });
+
   if ($("#info-modal")) {
     $("#info-modal").modal("show");
   }

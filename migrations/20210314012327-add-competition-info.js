@@ -42,6 +42,15 @@ module.exports = {
       compLogo: {
         type: Sequelize.TEXT,
       },
+      show_bjcp_logo: {
+        type: Sequelize.BOOLEAN,
+      },
+      show_aha_logo: {
+        type: Sequelize.BOOLEAN,
+      },
+      styleGuide: {
+        type: Sequelize.TEXT,
+      },
       sponsor: {
         type: Sequelize.JSON,
       },
@@ -127,13 +136,17 @@ module.exports = {
         [
           {
             id: staticCompetitionId,
-            name: "Demo Competition",
-            slug: "demo-competition",
+            name: "Default Competition",
+            slug: "default-competition",
             info: "The best competition in the World Wide Web!",
-            instruction: "Please use the menu above to register or login.",
-            club: "Homebrew Hackers",
+            instruction:
+              "Please fill this form to the most comprehensive degree possible.",
+            club: "Default",
             clubLogo: "/images/page-logos/club-logo.png",
             compLogo: "/images/page-logos/comp-logo.png",
+            show_bjcp_logo: false,
+            show_aha_logo: false,
+            styleGuide: "BJCP2015",
             sponsor: null,
             entryInfo: null,
             judgeInfo: null,

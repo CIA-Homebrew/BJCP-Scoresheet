@@ -8,3 +8,5 @@ node_modules/
 *.sqlite3-journal
 build
 coverage
+public/images/uploads
+tmp

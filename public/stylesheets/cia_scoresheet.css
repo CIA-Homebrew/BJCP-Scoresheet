@@ -376,21 +376,12 @@ div#primary_header {
   padding-right: 1%;
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
+  justify-content: space-evenly;
   align-items: center;
 }
-div.bjcp_badge,
-div.aha_badge {
-  flex-direction: row;
-  align-items: center;
-  justify-content: center;
+img.scoresheet_logo {
   height: 85%;
-}
-div.bjcp_badge img,
-div.aha_badge img {
-  width: 300px;
-  height: 100%;
-  object-fit: contain;
+  max-width: 25%;
 }
 div.header_content {
   width: 62%;
