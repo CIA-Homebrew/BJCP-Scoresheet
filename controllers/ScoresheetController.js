@@ -57,6 +57,7 @@ scoresheetController.initScoresheet = async function (req, res) {
     res.render(template, {
       scoresheetId: scoresheetId,
       title: appConstants.APP_NAME + " - Scoresheet",
+      compSlug: compSlug,
     });
   } else if (req.body.flightId || req.query.flightId) {
     // Create a new scoresheet in a flight
