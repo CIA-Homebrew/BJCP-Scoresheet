@@ -1,3 +1,13 @@
-node_modules
-npm-debug.log
+.idea
+node_modules/
+.vscode/
+.skele
+*.sqlite3
+*.sqlite3.backup
+.env
+*.sqlite3-journal
+build
+coverage
+public/images/uploads
+tmp
 droplet-setup.sh
