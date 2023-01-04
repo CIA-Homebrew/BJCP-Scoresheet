@@ -3,6 +3,9 @@ FROM node:16
 WORKDIR /usr/src/app
 COPY package*.json ./
 
+RUN mkdir -p public/images/uploads
+VOLUME public/images/uploads
+
 ENV PORT=8080
 ENV NODE_ENV=production
 
