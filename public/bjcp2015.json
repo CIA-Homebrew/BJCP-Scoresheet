@@ -7536,272 +7536,114 @@
         "entry_instructions": "The entrant must specify the special nature of the experimental beer, including the special ingredients or processes that make it not fit elsewhere in the guidelines. The entrant must provide vital statistics for the beer, and either a brief sensory description or a list of ingredients used in making the beer. Without this information, judges will have no basis for comparison."
       },
       {
-        "name": "Dry Mead",
-        "category": "Traditional Mead",
-        "category_id": "M1",
-        "style_id": "M1A",
-        "style_letter": "A",
-        "style_guide": "BJCP2015",
-        "type": "mead",
-        "aroma": "Honey aroma may be subtle, although not always identifiable. Sweetness or significant honey aromatics should not be expected. If a honey variety is declared, the variety should be distinctive (if noticeable). Different types of honey have different intensities and characters. Standard description applies for remainder of characteristics.",
-        "appearance": "Standard description applies.",
-        "flavor": "Subtle (if any) honey character, and may feature subtle to noticeable varietal character if a varietal honey is declared (different varieties have different intensities). Residual sweetness levels are minimal to none. Dry finish. May have more noticeable acidity due to low sweetness levels. Tannin levels may make a sweeter mead seem dry. Sulfury, harsh or yeasty fermentation characteristics are undesirable. Standard description applies for remainder of characteristics.",
-        "mouthfeel": "Standard description applies, although the body is generally medium to light (but not watery). Note that stronger meads can have a fuller body. Sensations of body should not be accompanied by noticeable residual sweetness. Ingredients: Standard description applies. Traditional Meads feature the character of a blended honey or a blend of honeys. Varietal meads feature the distinctive character of certain honeys. Show meads feature no additives, but this distinction is usually not obvious to judges.",
-        "profile": "Honey aroma may be subtle, although not always identifiable. Sweetness or significant honey aromatics should not be expected. If a honey variety is declared, the variety should be distinctive (if noticeable). Different types of honey have different intensities and characters. Standard description applies for remainder of characteristics. Standard description applies.Subtle (if any) honey character, and may feature subtle to noticeable varietal character if a varietal honey is declared (different varieties have different intensities). Residual sweetness levels are minimal to none. Dry finish. May have more noticeable acidity due to low sweetness levels. Tannin levels may make a sweeter mead seem dry. Sulfury, harsh or yeasty fermentation characteristics are undesirable. Standard description applies for remainder of characteristics. Standard description applies, although the body is generally medium to light (but not watery). Note that stronger meads can have a fuller body. Sensations of body should not be accompanied by noticeable residual sweetness. Ingredients: Standard description applies. Traditional Meads feature the character of a blended honey or a blend of honeys. Varietal meads feature the distinctive character of certain honeys. Show meads feature no additives, but this distinction is usually not obvious to judges.",
-        "overall_impression": "Similar in balance, body, finish and flavor intensity to a dry white wine, with a pleasant mixture of subtle honey character, soft fruity esters, and clean alcohol. Complexity, harmony, and balance of sensory elements are most desirable, with no inconsistencies in color, aroma, flavor or aftertaste. The proper balance of sweetness, acidity, alcohol, and honey character is the essential final measure of any mead.",
-        "notes": "Similar in balance, body, finish and flavor intensity to a dry white wine, with a pleasant mixture of subtle honey character, soft fruity esters, and clean alcohol. Complexity, harmony, and balance of sensory elements are most desirable, with no inconsistencies in color, aroma, flavor or aftertaste. The proper balance of sweetness, acidity, alcohol, and honey character is the essential final measure of any mead.",
-        "examples": "White Winter Dry Mead, Sky River Dry Mead, Intermiel Bouquet Printanier",
-        "entry_instructions": "See Introduction to Mead Guidelines for entry requirements. Entrants MUST specify carbonation level and strength. Sweetness is assumed to be DRY in this category. Entrants MAY specify honey varieties."
-      },
-      {
-        "name": "Semi-Sweet Mead",
-        "category": "Traditional Mead",
-        "category_id": "M1",
-        "style_id": "M1B",
-        "style_letter": "B",
-        "style_guide": "BJCP2015",
-        "type": "mead",
-        "aroma": "Honey aroma should be noticeable, and can have a light sweetness that may express the aroma of flower nectar. If a variety of honey is declared, the aroma might have a subtle to very noticeable varietal character reflective of the honey (different varieties have different intensities and characters). Standard description applies for remainder of characteristics.",
-        "appearance": "Standard description applies.",
-        "flavor": "Subtle to moderate honey character, and may feature subtle to noticeable varietal character if a varietal honey is declared (different varieties have different intensities). Residual sweetness levels are subtle to moderate. Medium-dry to lightly sweet finish. Tannin levels may make a sweet mead seem medium-dry. Sulfury, harsh or yeasty fermentation characteristics are undesirable. Standard description applies for remainder of characteristics.",
-        "mouthfeel": "Standard description applies, although the body is generally medium-light to medium-full. Note that stronger meads can have a fuller body. Sensations of body should not be accompanied by a residual sweetness that is higher than moderate. Ingredients: Standard description applies. Traditional Meads feature the character of a blended honey or a blend of honeys. Varietal meads feature the distinctive character of certain honeys. Show meads feature no additives, but this distinction is usually not obvious to judges.",
-        "profile": "Honey aroma should be noticeable, and can have a light sweetness that may express the aroma of flower nectar. If a variety of honey is declared, the aroma might have a subtle to very noticeable varietal character reflective of the honey (different varieties have different intensities and characters). Standard description applies for remainder of characteristics. Standard description applies.Subtle to moderate honey character, and may feature subtle to noticeable varietal character if a varietal honey is declared (different varieties have different intensities). Residual sweetness levels are subtle to moderate. Medium-dry to lightly sweet finish. Tannin levels may make a sweet mead seem medium-dry. Sulfury, harsh or yeasty fermentation characteristics are undesirable. Standard description applies for remainder of characteristics. Standard description applies, although the body is generally medium-light to medium-full. Note that stronger meads can have a fuller body. Sensations of body should not be accompanied by a residual sweetness that is higher than moderate. Ingredients: Standard description applies. Traditional Meads feature the character of a blended honey or a blend of honeys. Varietal meads feature the distinctive character of certain honeys. Show meads feature no additives, but this distinction is usually not obvious to judges.",
-        "overall_impression": "Similar in balance, body, finish and flavor intensity to a semi-sweet (or medium-dry) white wine, with a pleasant mixture of honey character, light sweetness, soft fruity esters, and clean alcohol. Complexity, harmony, and balance of sensory elements are most desirable, with no inconsistencies in color, aroma, flavor or aftertaste. The proper balance of sweetness, acidity, alcohol, and honey character is the essential final measure of any mead.",
-        "notes": "Similar in balance, body, finish and flavor intensity to a semi-sweet (or medium-dry) white wine, with a pleasant mixture of honey character, light sweetness, soft fruity esters, and clean alcohol. Complexity, harmony, and balance of sensory elements are most desirable, with no inconsistencies in color, aroma, flavor or aftertaste. The proper balance of sweetness, acidity, alcohol, and honey character is the essential final measure of any mead.",
-        "examples": "Lurgashall English Mead, Redstone Traditional Mountain Honey Wine, Sky River Semi-Sweet Mead, Intermiel Verge d'Or and Mélilot",
-        "entry_instructions": "See Introduction to Mead Guidelines for entry requirements. Entrants MUST specify carbonation level and strength. Sweetness is assumed to be SEMI-SWEET in this category. Entrants MAY specify honey varieties."
-      },
-      {
-        "name": "Sweet Mead",
-        "category": "Traditional Mead",
-        "category_id": "M1",
-        "style_id": "M1C",
-        "style_letter": "C",
-        "style_guide": "BJCP2015",
-        "type": "mead",
-        "aroma": "Honey aroma should dominate, and is often moderately to strongly sweet and usually expresses the aroma of flower nectar. If a variety of honey is declared, the aroma might have a subtle to very noticeable varietal character reflective of the honey (different varieties have different intensities and characters). Standard description applies for remainder of characteristics.",
-        "appearance": "Standard description applies.",
-        "flavor": "Moderate to significant honey character, and may feature moderate to prominent varietal character if a varietal honey is declared (different varieties have different intensities). Residual sweetness levels are moderate to high. Sweet and full (but not cloying) finish. Balanced acidity and/or tannin helps keep the sweetness agreeable to the palate without being overwhelming. Sulfury, harsh or yeasty fermentation characteristics are undesirable. Standard description applies for remainder of characteristics.",
-        "mouthfeel": "Standard description applies, although the body is generally medium-full to full. Note that stronger meads will have a fuller body. Many examples will seem like a dessert wine. Sensations of body should not be accompanied by cloying, raw (unfermented) residual sweetness. Ingredients: Standard description applies. Traditional Meads feature the character of a blended honey or a blend of honeys. Varietal meads feature the distinctive character of certain honeys. Show meads feature no additives, but this distinction is usually not obvious to judges.",
-        "profile": "Honey aroma should dominate, and is often moderately to strongly sweet and usually expresses the aroma of flower nectar. If a variety of honey is declared, the aroma might have a subtle to very noticeable varietal character reflective of the honey (different varieties have different intensities and characters). Standard description applies for remainder of characteristics. Standard description applies.Moderate to significant honey character, and may feature moderate to prominent varietal character if a varietal honey is declared (different varieties have different intensities). Residual sweetness levels are moderate to high. Sweet and full (but not cloying) finish. Balanced acidity and/or tannin helps keep the sweetness agreeable to the palate without being overwhelming. Sulfury, harsh or yeasty fermentation characteristics are undesirable. Standard description applies for remainder of characteristics. Standard description applies, although the body is generally medium-full to full. Note that stronger meads will have a fuller body. Many examples will seem like a dessert wine. Sensations of body should not be accompanied by cloying, raw (unfermented) residual sweetness. Ingredients: Standard description applies. Traditional Meads feature the character of a blended honey or a blend of honeys. Varietal meads feature the distinctive character of certain honeys. Show meads feature no additives, but this distinction is usually not obvious to judges.",
-        "overall_impression": "Similar in balance, body, finish and flavor intensity to a well-made dessert wine (such as Sauternes), with a pleasant mixture of honey character, residual sweetness, soft fruity esters, and clean alcohol. Complexity, harmony, and balance of sensory elements are most desirable, with no inconsistencies in color, aroma, flavor or aftertaste. The proper balance of sweetness, acidity, alcohol, and honey character is the essential final measure of any mead.",
-        "notes": "Similar in balance, body, finish and flavor intensity to a well-made dessert wine (such as Sauternes), with a pleasant mixture of honey character, residual sweetness, soft fruity esters, and clean alcohol. Complexity, harmony, and balance of sensory elements are most desirable, with no inconsistencies in color, aroma, flavor or aftertaste. The proper balance of sweetness, acidity, alcohol, and honey character is the essential final measure of any mead.",
-        "examples": "Moonlight Sensual, Lurgashall Christmas Mead, Chaucer's Mead, Rabbit's Foot Sweet Wildflower Honey Mead, Intermiel Benoîte",
-        "entry_instructions": "See Introduction to Mead Guidelines for entry requirements. Entrants MUST specify carbonation level and strength. Sweetness is assumed to be SWEET in this category. Entrants MAY specify honey varieties."
-      },
-      {
-        "name": "Cyser",
-        "category": "Fruit Mead",
-        "category_id": "M2",
-        "style_id": "M2A",
-        "style_letter": "A",
-        "style_guide": "BJCP2015",
-        "type": "mead",
-        "aroma": "Depending on the sweetness and strength, a subtle to distinctly identifiable honey and apple/cider character (dry and/or hydromel versions will tend to have lower aromatics than sweet and/or sack versions). The apple/cider character should be clean and distinctive; it can express a range of apple-based character ranging from a subtle fruitiness to a single varietal apple character (if declared) to a complex blend of apple aromatics. Some spicy or earthy notes may be present, as may a slightly sulfury character. The honey aroma should be noticeable, and can have a light to significant sweetness that may express the aroma of flower nectar. If a variety of honey is declared, the aroma might have a subtle to very noticeable varietal character reflective of the honey (different varieties have different intensities and characters). The bouquet should show a pleasant fermentation character, with clean and fresh aromatics being preferred. Stronger and/or sweeter versions will have higher alcohol and sweetness in the nose. Slight spicy phenolics from certain apple varieties are acceptable, as is a light diacetyl character from malolactic fermentation (both are optional). Standard description applies for remainder of characteristics.",
-        "appearance": "Standard description applies, except with regard to color. Color may range from pale straw to deep golden amber (most are yellow to gold), depending on the variety of honey and blend of apples or ciders used.",
-        "flavor": "The apple and honey flavor intensity may vary from none to high; the residual sweetness may vary from none to high; and the finish may range from dry to sweet, depending on what sweetness level has been declared (dry to sweet) and strength level has been declared (hydromel to sack). Natural acidity and tannin in apples may give some tartness and astringency to balance the sweetness, honey flavor and alcohol. Tannin levels may make a cyser seem drier than the residual sugar levels might suggest. A cyser may have a subtle to strong honey character, and may feature noticeable to prominent varietal character if a varietal honey is declared (different varieties have different intensities). Slight spicy phenolics from certain apple varieties are acceptable, as are a light diacetyl character from malolactic fermentation and a slight sulfur character (all are optional). Standard description applies for remainder of characteristics.",
-        "mouthfeel": "Standard description applies. Often wine-like. Some natural acidity is usually present (from the blend of apples) and helps balance the overall impression. Some apples can provide natural astringency, but this character should not be excessive. Ingredients: Standard description applies. Cyser is a mead made with the addition of apples or apple juice. Traditionally, cysers are made by the addition of honey to apple juice without additional water.",
-        "profile": "Depending on the sweetness and strength, a subtle to distinctly identifiable honey and apple/cider character (dry and/or hydromel versions will tend to have lower aromatics than sweet and/or sack versions). The apple/cider character should be clean and distinctive; it can express a range of apple-based character ranging from a subtle fruitiness to a single varietal apple character (if declared) to a complex blend of apple aromatics. Some spicy or earthy notes may be present, as may a slightly sulfury character. The honey aroma should be noticeable, and can have a light to significant sweetness that may express the aroma of flower nectar. If a variety of honey is declared, the aroma might have a subtle to very noticeable varietal character reflective of the honey (different varieties have different intensities and characters). The bouquet should show a pleasant fermentation character, with clean and fresh aromatics being preferred. Stronger and/or sweeter versions will have higher alcohol and sweetness in the nose. Slight spicy phenolics from certain apple varieties are acceptable, as is a light diacetyl character from malolactic fermentation (both are optional). Standard description applies for remainder of characteristics. Standard description applies, except with regard to color. Color may range from pale straw to deep golden amber (most are yellow to gold), depending on the variety of honey and blend of apples or ciders used.The apple and honey flavor intensity may vary from none to high; the residual sweetness may vary from none to high; and the finish may range from dry to sweet, depending on what sweetness level has been declared (dry to sweet) and strength level has been declared (hydromel to sack). Natural acidity and tannin in apples may give some tartness and astringency to balance the sweetness, honey flavor and alcohol. Tannin levels may make a cyser seem drier than the residual sugar levels might suggest. A cyser may have a subtle to strong honey character, and may feature noticeable to prominent varietal character if a varietal honey is declared (different varieties have different intensities). Slight spicy phenolics from certain apple varieties are acceptable, as are a light diacetyl character from malolactic fermentation and a slight sulfur character (all are optional). Standard description applies for remainder of characteristics. Standard description applies. Often wine-like. Some natural acidity is usually present (from the blend of apples) and helps balance the overall impression. Some apples can provide natural astringency, but this character should not be excessive. Ingredients: Standard description applies. Cyser is a mead made with the addition of apples or apple juice. Traditionally, cysers are made by the addition of honey to apple juice without additional water.",
-        "overall_impression": "In well-made examples of the style, the fruit is both distinctive and well-incorporated into the honey-sweet-acid-tannin-alcohol balance of the mead. Some of the best strong examples have the taste and aroma of an aged Calvados (apple brandy from northern France), while subtle, dry versions can taste similar to many fine white wines. There should be an appealing blend of the fruit and honey character but not necessarily an even balance. Generally a good tannin-sweetness balance is desired, though very dry and very sweet examples do exist.",
-        "notes": "In well-made examples of the style, the fruit is both distinctive and well-incorporated into the honey-sweet-acid-tannin-alcohol balance of the mead. Some of the best strong examples have the taste and aroma of an aged Calvados (apple brandy from northern France), while subtle, dry versions can taste similar to many fine white wines. There should be an appealing blend of the fruit and honey character but not necessarily an even balance. Generally a good tannin-sweetness balance is desired, though very dry and very sweet examples do exist.",
-        "examples": "Moonlight Blossom, White Winter Cyser, Rabbit's Foot Apple Cyser",
-        "entry_instructions": "See Introduction to Mead Guidelines for entry requirements. Entrants MUST specify carbonation level, strength, and sweetness. Entrants MAY specify honey varieties. Entrants MAY specify the varieties of apple used; if specified, a varietal character will be expected. Products with a relatively low proportion of honey are better entered as a Specialty Cider. A spiced cyser should be entered as a Fruit and Spice Mead. A cyser with other fruit should be entered as a Melomel. A cyser with additional ingredients should be entered as an Experimental Mead."
-      },
-      {
-        "name": "Pyment",
-        "category": "Fruit Mead",
-        "category_id": "M2",
-        "style_id": "M2B",
-        "style_letter": "B",
-        "style_guide": "BJCP2015",
-        "type": "mead",
-        "aroma": "Depending on the sweetness and strength, a subtle to distinctly identifiable honey and grape/wine character (dry and/or hydromel versions will tend to have lower aromatics than sweet and/or sack versions). The grape/wine character should be clean and distinctive; it can express a range of grape-based character ranging from a subtle fruitiness to a single varietal grape character (if declared) to a complex blend of grape or wine aromatics. Some complex, spicy, grassy or earthy notes may be present (as in wine). The honey aroma should be noticeable, and can have a light to significant sweetness that may express the aroma of flower nectar. If a variety of honey is declared, the aroma might have a subtle to very noticeable varietal character reflective of the honey (different varieties have different intensities and characters). The bouquet should show a pleasant fermentation character, with clean and fresh aromatics being preferred. Stronger and/or sweeter versions will have higher alcohol and sweetness in the nose. Slight spicy phenolics from certain red grape varieties are acceptable, as is a light diacetyl character from malolactic fermentation in certain white grape varieties (both are optional). Standard description applies for remainder of characteristics.",
-        "appearance": "Standard description applies, except with regard to color. Color may range from pale straw to deep purple-red, depending on the variety of grapes and honey used. The color should be characteristic of the variety or type of grape used, although white grape varieties may also take on color derived from the honey variety.",
-        "flavor": "The grape/wine and honey flavor intensity may vary from subtle to high; the residual sweetness may vary from none to high; and the finish may range from dry to sweet, depending on what sweetness level has been declared (dry to sweet) and strength level has been declared (hydromel to sack). Natural acidity and tannin in grapes may give some tartness and astringency to balance the sweetness, honey flavor and alcohol. A pyment may have a subtle to strong honey character, and may feature noticeable to prominent varietal character if a varietal honey is declared (different varieties have different intensities). Depending on the grape variety, some fruity, spicy, grassy, buttery, earthy, minerally, and/or floral flavors may be present. Some versions (particularly red pyments) may be oak-aged, with additional flavor complexity. Tannin levels may make the pyment seem drier than residual sugar levels might suggest. Standard description applies for remainder of characteristics.",
-        "mouthfeel": "Standard description applies. Wine-like. Some natural acidity is usually present (from grapes) and helps balance the overall impression. Grape tannin and/or grape skins can add body as well as some astringency, although this character should not be excessive. Use of oak can also add this character. Longer aging can smooth out tannin-based astringency. Ingredients: Standard description applies. A pyment is a mead made with the addition of grapes or grape juices. Alternatively, the pyment may be a homemade grape-based wine sweetened with honey, or a mead mixed with homemade grape-based wine after fermentation.",
-        "profile": "Depending on the sweetness and strength, a subtle to distinctly identifiable honey and grape/wine character (dry and/or hydromel versions will tend to have lower aromatics than sweet and/or sack versions). The grape/wine character should be clean and distinctive; it can express a range of grape-based character ranging from a subtle fruitiness to a single varietal grape character (if declared) to a complex blend of grape or wine aromatics. Some complex, spicy, grassy or earthy notes may be present (as in wine). The honey aroma should be noticeable, and can have a light to significant sweetness that may express the aroma of flower nectar. If a variety of honey is declared, the aroma might have a subtle to very noticeable varietal character reflective of the honey (different varieties have different intensities and characters). The bouquet should show a pleasant fermentation character, with clean and fresh aromatics being preferred. Stronger and/or sweeter versions will have higher alcohol and sweetness in the nose. Slight spicy phenolics from certain red grape varieties are acceptable, as is a light diacetyl character from malolactic fermentation in certain white grape varieties (both are optional). Standard description applies for remainder of characteristics. Standard description applies, except with regard to color. Color may range from pale straw to deep purple-red, depending on the variety of grapes and honey used. The color should be characteristic of the variety or type of grape used, although white grape varieties may also take on color derived from the honey variety.The grape/wine and honey flavor intensity may vary from subtle to high; the residual sweetness may vary from none to high; and the finish may range from dry to sweet, depending on what sweetness level has been declared (dry to sweet) and strength level has been declared (hydromel to sack). Natural acidity and tannin in grapes may give some tartness and astringency to balance the sweetness, honey flavor and alcohol. A pyment may have a subtle to strong honey character, and may feature noticeable to prominent varietal character if a varietal honey is declared (different varieties have different intensities). Depending on the grape variety, some fruity, spicy, grassy, buttery, earthy, minerally, and/or floral flavors may be present. Some versions (particularly red pyments) may be oak-aged, with additional flavor complexity. Tannin levels may make the pyment seem drier than residual sugar levels might suggest. Standard description applies for remainder of characteristics. Standard description applies. Wine-like. Some natural acidity is usually present (from grapes) and helps balance the overall impression. Grape tannin and/or grape skins can add body as well as some astringency, although this character should not be excessive. Use of oak can also add this character. Longer aging can smooth out tannin-based astringency. Ingredients: Standard description applies. A pyment is a mead made with the addition of grapes or grape juices. Alternatively, the pyment may be a homemade grape-based wine sweetened with honey, or a mead mixed with homemade grape-based wine after fermentation.",
-        "overall_impression": "In well-made examples of the style, the grape is both distinctively vinous and well-incorporated into the honey-sweet-acid-tannin-alcohol balance of the mead. White and red versions can be quite different, and the overall impression should be characteristic of the type of grapes used and suggestive of a similar variety wine. There should be an appealing blend of the fruit and honey character but not necessarily an even balance. Generally a good tannin-sweetness balance is desired, though very dry and very sweet examples do exist.",
-        "notes": "In well-made examples of the style, the grape is both distinctively vinous and well-incorporated into the honey-sweet-acid-tannin-alcohol balance of the mead. White and red versions can be quite different, and the overall impression should be characteristic of the type of grapes used and suggestive of a similar variety wine. There should be an appealing blend of the fruit and honey character but not necessarily an even balance. Generally a good tannin-sweetness balance is desired, though very dry and very sweet examples do exist.",
-        "examples": "Celestial Meads Que Syrah, Moonlight Slow Dance, Redstone Pinot Noir and White Pyment Mountain Honey Wines",
-        "entry_instructions": "See Introduction to Mead Guidelines for entry requirements. Entrants MUST specify carbonation level, strength, and sweetness. Entrants MAY specify honey varieties. Entrants MAY specify the varieties of grape used; if specified, a varietal character will be expected. A spiced pyment (hippocras) should be entered as a Fruit and Spice Mead. A pyment made with other fruit should be entered as a Melomel. A pyment with other ingredients should be entered as an Experimental Mead."
-      },
-      {
-        "name": "Berry Mead",
-        "category": "Fruit Mead",
-        "category_id": "M2",
-        "style_id": "M2C",
-        "style_letter": "C",
-        "style_guide": "BJCP2015",
-        "type": "mead",
-        "aroma": "Depending on the sweetness and strength, a subtle to distinctly identifiable honey and fruit character (dry and/or hydromel versions will tend to have lower aromatics than sweet and/or sack versions). The fruit character should display distinctive aromatics associated with the particular fruit(s); however, note that some fruit (e.g., raspberries) have stronger aromas and are more distinctive than others (e.g., blueberries, strawberries) — allow for a range of fruit character and intensity from subtle to aggressive. The fruit character should be pleasant and supportive, not artificial, raw, and/or inappropriately overpowering (considering the character of the fruit). In a blended berry mead, not all fruit may be individually identifiable or of equal intensity. The honey aroma should be noticeable, and can have a light to significant sweetness that may express the aroma of flower nectar. If a variety of honey is declared, the aroma might have a subtle to very noticeable varietal character reflective of the honey (different varieties have different intensities and characters). The bouquet should show a pleasant fermentation character, with clean and fresh aromatics being preferred. Stronger and/or sweeter versions will have higher alcohol and sweetness in the nose. Some tartness may be present if naturally occurring in the particular fruit(s), but should not be inappropriately intense. Standard description applies for remainder of characteristics.",
-        "appearance": "Standard description applies, except with regard to color. Color may take on a very wide range of colors, depending on the variety of fruit and/or honey used. For lighter-colored meads with fruits that exhibit distinctive colors, the color should be noticeable. Note that the color of fruit in mead is often lighter than the flesh of the fruit itself and may take on slightly different shades. Meads made with lighter color fruits can also take on color from varietal honeys. In meads that produce a head, the head can take on some of the fruit color as well.",
-        "flavor": "The fruit and honey flavor intensity may vary from subtle to high; the residual sweetness may vary from none to high; and the finish may range from dry to sweet, depending on what sweetness level has been declared (dry to sweet) and strength level has been declared (hydromel to sack). The natural acidity and tannin levels from fruit and fruit skins will vary, and this character is expected to be present in the mead, although in balance with sweetness, honey flavor, and alcohol. Tannin levels may make some meads seem drier than the residual sweetness might suggest. A berry mead may have a subtle to strong honey character, and may feature noticeable to prominent varietal character if a varietal honey is declared (different varieties have different intensities). The distinctive flavor character associated with the particular fruit(s) should be noticeable, and may range in intensity from subtle to aggressive. The balance of fruit with the underlying mead is vital, and the fruit character should not be artificial, raw (unfermented), and/or inappropriately overpowering. In a blended berry mead, not all fruit may be individually identifiable or of equal intensity. Standard description applies for remainder of characteristics.",
-        "mouthfeel": "Standard description applies. Most will be wine-like. Some natural acidity and/or tannin are sometimes present (from certain fruit and/or fruit skin) and helps balance the overall impression. Fruit tannin can add body as well as some astringency. High levels of astringency are undesirable. The acidity and tannin levels should be somewhat reflective of the fruit used. Ingredients: Standard description applies. A berry mead is a mead made with the addition of other berries or berry juices, including a blend of berries. There should be an appealing blend of the fruit and honey character but not necessarily an even balance.",
-        "comments": "Generally a good tannin-sweetness balance is desired, though very dry and very sweet examples do exist. Some fruits, notably darker ones like blackberries, may contribute a tannin presence similar to a red wine.",
-        "profile": "Depending on the sweetness and strength, a subtle to distinctly identifiable honey and fruit character (dry and/or hydromel versions will tend to have lower aromatics than sweet and/or sack versions). The fruit character should display distinctive aromatics associated with the particular fruit(s); however, note that some fruit (e.g., raspberries) have stronger aromas and are more distinctive than others (e.g., blueberries, strawberries) — allow for a range of fruit character and intensity from subtle to aggressive. The fruit character should be pleasant and supportive, not artificial, raw, and/or inappropriately overpowering (considering the character of the fruit). In a blended berry mead, not all fruit may be individually identifiable or of equal intensity. The honey aroma should be noticeable, and can have a light to significant sweetness that may express the aroma of flower nectar. If a variety of honey is declared, the aroma might have a subtle to very noticeable varietal character reflective of the honey (different varieties have different intensities and characters). The bouquet should show a pleasant fermentation character, with clean and fresh aromatics being preferred. Stronger and/or sweeter versions will have higher alcohol and sweetness in the nose. Some tartness may be present if naturally occurring in the particular fruit(s), but should not be inappropriately intense. Standard description applies for remainder of characteristics. Standard description applies, except with regard to color. Color may take on a very wide range of colors, depending on the variety of fruit and/or honey used. For lighter-colored meads with fruits that exhibit distinctive colors, the color should be noticeable. Note that the color of fruit in mead is often lighter than the flesh of the fruit itself and may take on slightly different shades. Meads made with lighter color fruits can also take on color from varietal honeys. In meads that produce a head, the head can take on some of the fruit color as well.The fruit and honey flavor intensity may vary from subtle to high; the residual sweetness may vary from none to high; and the finish may range from dry to sweet, depending on what sweetness level has been declared (dry to sweet) and strength level has been declared (hydromel to sack). The natural acidity and tannin levels from fruit and fruit skins will vary, and this character is expected to be present in the mead, although in balance with sweetness, honey flavor, and alcohol. Tannin levels may make some meads seem drier than the residual sweetness might suggest. A berry mead may have a subtle to strong honey character, and may feature noticeable to prominent varietal character if a varietal honey is declared (different varieties have different intensities). The distinctive flavor character associated with the particular fruit(s) should be noticeable, and may range in intensity from subtle to aggressive. The balance of fruit with the underlying mead is vital, and the fruit character should not be artificial, raw (unfermented), and/or inappropriately overpowering. In a blended berry mead, not all fruit may be individually identifiable or of equal intensity. Standard description applies for remainder of characteristics. Standard description applies. Most will be wine-like. Some natural acidity and/or tannin are sometimes present (from certain fruit and/or fruit skin) and helps balance the overall impression. Fruit tannin can add body as well as some astringency. High levels of astringency are undesirable. The acidity and tannin levels should be somewhat reflective of the fruit used. Ingredients: Standard description applies. A berry mead is a mead made with the addition of other berries or berry juices, including a blend of berries. There should be an appealing blend of the fruit and honey character but not necessarily an even balance. Generally a good tannin-sweetness balance is desired, though very dry and very sweet examples do exist. Some fruits, notably darker ones like blackberries, may contribute a tannin presence similar to a red wine.",
-        "overall_impression": "In well-made examples of the style, the fruit is both distinctive and well-incorporated into the honey-sweet-acid-tannin-alcohol balance of the mead. Different types of fruit can result in widely different characteristics; allow for a variation in the final product.",
-        "notes": "In well-made examples of the style, the fruit is both distinctive and well-incorporated into the honey-sweet-acid-tannin-alcohol balance of the mead. Different types of fruit can result in widely different characteristics; allow for a variation in the final product.",
-        "examples": "Moonlight Blissful, Wild, Caress, and Mischief, White Winter Blueberry, Raspberry and Strawberry Melomels, Celestial Meads Miel Noir, Redstone Black Raspberry Nectar, Bees Brothers Raspberry Mead, Intermiel Honey Wine and Raspberries, Honey Wine and Blueberries, and Honey Wine and Blackcurrants, Mountain Meadows Cranberry Mead",
-        "entry_instructions": "See Introduction to Mead Guidelines for entry requirements. Entrants MUST specify carbonation level, strength, and sweetness. Entrants MAY specify honey varieties. Entrants MUST specify the varieties of fruit used. A mead made with both berries and non-berry fruit (including apples and grapes) should be entered as a Melomel. A berry mead that is spiced should be entered as a Fruit and Spice Mead. A berry mead containing other ingredients should be entered as an Experimental Mead."
-      },
-      {
-        "name": "Stone Fruit Mead",
-        "category": "Fruit Mead",
-        "category_id": "M2",
-        "style_id": "M2D",
-        "style_letter": "D",
-        "style_guide": "BJCP2015",
-        "type": "mead",
-        "aroma": "Depending on the sweetness and strength, a subtle to distinctly identifiable honey and fruit character (dry and/or hydromel versions will tend to have lower aromatics than sweet and/or sack versions). The fruit character should display distinctive aromatics associated with the particular fruit(s); however, note that some fruit (e.g., cherries) have stronger aromas and are more distinctive than others (e.g., peaches) — allow for a range of fruit character and intensity from subtle to aggressive. The fruit character should be pleasant and supportive, not artificial, raw and/or inappropriately overpowering (considering the character of the fruit). In a blended stone fruit mead, not all the fruits may be individually identifiable or of equal intensity. The honey aroma should be noticeable, and can have a light to significant sweetness that may express the aroma of flower nectar. If a variety of honey is declared, the aroma might have a subtle to very noticeable varietal character reflective of the honey (different varieties have different intensities and characters). The bouquet should show a pleasant fermentation character, with clean and fresh aromatics being preferred. Stronger and/or sweeter versions will have higher alcohol and sweetness in the nose. Some tartness may be present if naturally occurring in the particular fruit(s), but should not be inappropriately intense. Standard description applies for remainder of characteristics.",
-        "appearance": "Standard description applies, except with regard to color. Color may take on a very wide range of colors, depending on the variety of fruit and/or honey used. For lighter-colored meads with fruits that exhibit distinctive colors, the color should be noticeable. Note that the color of fruit in mead is often lighter than the flesh of the fruit itself and may take on slightly different shades. Meads made with lighter color fruits can also take on color from varietal honeys. In meads that produce a head, the head can take on some of the fruit color as well.",
-        "flavor": "The fruit and honey flavor intensity may vary from subtle to high; the residual sweetness may vary from none to high; and the finish may range from dry to sweet, depending on what sweetness level has been declared (dry to sweet) and strength level has been declared (hydromel to sack). The natural acidity and tannin levels from fruit and fruit skins will vary, and this character is expected to be present in the mead, although in balance with sweetness, honey flavor, and alcohol. Tannin levels may make some meads seem drier than the residual sweetness might suggest. A stone fruit mead may have a subtle to strong honey character, and may feature noticeable to prominent varietal character if a varietal honey is declared (different varieties have different intensities). The distinctive flavor character associated with the particular fruit(s) should be noticeable, and may range in intensity from subtle to aggressive. The balance of fruit with the underlying mead is vital, and the fruit character should not be artificial, raw (unfermented), and/or inappropriately overpowering. In a blended stone fruit mead, not all the fruits may be individually identifiable or of equal intensity. Standard description applies for remainder of characteristics.",
-        "mouthfeel": "Standard description applies. Most will be wine-like. Some natural acidity and/or tannin are sometimes present (from certain fruit and/or fruit skin) and helps balance the overall impression. Fruit tannin can add body as well as some astringency. High levels of astringency are undesirable. The acidity and tannin levels should be somewhat reflective of the fruit used. Ingredients: Standard description applies. A stone fruit mead is a mead made with the addition of other stone fruit or stone fruit juices. There should be an appealing blend of the fruit and honey character but not necessarily an even balance. A stone fruit mead can be made with a blend of stone fruits, but not other fruit not allowable in this category.",
-        "comments": "Generally a good tannin-sweetness balance is desired, though very dry and very sweet examples do exist.",
-        "profile": "Depending on the sweetness and strength, a subtle to distinctly identifiable honey and fruit character (dry and/or hydromel versions will tend to have lower aromatics than sweet and/or sack versions). The fruit character should display distinctive aromatics associated with the particular fruit(s); however, note that some fruit (e.g., cherries) have stronger aromas and are more distinctive than others (e.g., peaches) — allow for a range of fruit character and intensity from subtle to aggressive. The fruit character should be pleasant and supportive, not artificial, raw and/or inappropriately overpowering (considering the character of the fruit). In a blended stone fruit mead, not all the fruits may be individually identifiable or of equal intensity. The honey aroma should be noticeable, and can have a light to significant sweetness that may express the aroma of flower nectar. If a variety of honey is declared, the aroma might have a subtle to very noticeable varietal character reflective of the honey (different varieties have different intensities and characters). The bouquet should show a pleasant fermentation character, with clean and fresh aromatics being preferred. Stronger and/or sweeter versions will have higher alcohol and sweetness in the nose. Some tartness may be present if naturally occurring in the particular fruit(s), but should not be inappropriately intense. Standard description applies for remainder of characteristics. Standard description applies, except with regard to color. Color may take on a very wide range of colors, depending on the variety of fruit and/or honey used. For lighter-colored meads with fruits that exhibit distinctive colors, the color should be noticeable. Note that the color of fruit in mead is often lighter than the flesh of the fruit itself and may take on slightly different shades. Meads made with lighter color fruits can also take on color from varietal honeys. In meads that produce a head, the head can take on some of the fruit color as well.The fruit and honey flavor intensity may vary from subtle to high; the residual sweetness may vary from none to high; and the finish may range from dry to sweet, depending on what sweetness level has been declared (dry to sweet) and strength level has been declared (hydromel to sack). The natural acidity and tannin levels from fruit and fruit skins will vary, and this character is expected to be present in the mead, although in balance with sweetness, honey flavor, and alcohol. Tannin levels may make some meads seem drier than the residual sweetness might suggest. A stone fruit mead may have a subtle to strong honey character, and may feature noticeable to prominent varietal character if a varietal honey is declared (different varieties have different intensities). The distinctive flavor character associated with the particular fruit(s) should be noticeable, and may range in intensity from subtle to aggressive. The balance of fruit with the underlying mead is vital, and the fruit character should not be artificial, raw (unfermented), and/or inappropriately overpowering. In a blended stone fruit mead, not all the fruits may be individually identifiable or of equal intensity. Standard description applies for remainder of characteristics. Standard description applies. Most will be wine-like. Some natural acidity and/or tannin are sometimes present (from certain fruit and/or fruit skin) and helps balance the overall impression. Fruit tannin can add body as well as some astringency. High levels of astringency are undesirable. The acidity and tannin levels should be somewhat reflective of the fruit used. Ingredients: Standard description applies. A stone fruit mead is a mead made with the addition of other stone fruit or stone fruit juices. There should be an appealing blend of the fruit and honey character but not necessarily an even balance. A stone fruit mead can be made with a blend of stone fruits, but not other fruit not allowable in this category. Generally a good tannin-sweetness balance is desired, though very dry and very sweet examples do exist.",
-        "overall_impression": "In well-made examples of the style, the fruit is both distinctive and well-incorporated into the honey-sweet-acid-tannin-alcohol balance of the mead. Different types of fruit can result in widely different characteristics; allow for a variation in the final product.",
-        "notes": "In well-made examples of the style, the fruit is both distinctive and well-incorporated into the honey-sweet-acid-tannin-alcohol balance of the mead. Different types of fruit can result in widely different characteristics; allow for a variation in the final product.",
-        "examples": "Mountain Meadows Cherry Mead, Moonlight Entice, Sumptuous, Flirt, and Smitten, Redstone Sunshine Nectar",
-        "entry_instructions": "See Introduction to Mead Guidelines for entry requirements. Entrants MUST specify carbonation level, strength, and sweetness. Entrants MAY specify honey varieties. Entrants MUST specify the varieties of fruit used. A stone fruit mead that is spiced should be entered as a Fruit and Spice Mead. A stone fruit mead that contains non-stone fruit should be entered as a Melomel. A stone fruit mead that contains other ingredients should be entered as an Experimental Mead."
-      },
-      {
-        "name": "Melomel",
-        "category": "Fruit Mead",
-        "category_id": "M2",
-        "style_id": "M2E",
-        "style_letter": "E",
-        "style_guide": "BJCP2015",
-        "type": "mead",
-        "aroma": "Depending on the sweetness and strength, a subtle to distinctly identifiable honey and fruit character (dry and/or hydromel versions will tend to have lower aromatics than sweet and/or sack versions). The fruit character should display distinctive aromatics associated with the particular fruit(s); however, note that some fruit have stronger aromas and are more distinctive than others — allow for a range of fruit character and intensity from subtle to aggressive. The fruit character should be pleasant and supportive, not artificial, raw (unfermented), and/or inappropriately overpowering (considering the character of the fruit). In a blended fruit melomel, not all the fruits may be individually identifiable or of equal intensity. The honey aroma should be noticeable, and can have a light to significant sweetness that may express the aroma of flower nectar. If a variety of honey is declared, the aroma might have a subtle to very noticeable varietal character reflective of the honey (different varieties have different intensities and characters). The bouquet should show a pleasant fermentation character, with clean and fresh aromatics being preferred. Stronger and/or sweeter versions will have higher alcohol and sweetness in the nose. Some tartness may be present if naturally occurring in the particular fruit(s), but should not be inappropriately intense. Standard description applies for remainder of characteristics.",
-        "appearance": "Standard description applies, except with regard to color. Color may take on a very wide range of colors, depending on the variety of fruit and/or honey used. For lighter-colored melomels with fruits that exhibit distinctive colors, the color should be noticeable. Note that the color of fruit in mead is often lighter than the flesh of the fruit itself and may take on slightly different shades. Meads made with lighter color fruits can also take on color from varietal honeys. In meads that produce a head, the head can take on some of the fruit color as well.",
-        "flavor": "The fruit and honey flavor intensity may vary from subtle to high; the residual sweetness may vary from none to high; and the finish may range from dry to sweet, depending on what sweetness level has been declared (dry to sweet) and strength level has been declared (hydromel to sack). The natural acidity and tannin levels from fruit and fruit skins will vary, and this character is expected to be present in the mead, although in balance with sweetness, honey flavor, and alcohol. Tannin levels may make some meads seem drier than the residual sweetness might suggest. A melomel may have a subtle to strong honey character, and may feature noticeable to prominent varietal character if a varietal honey is declared (different varieties have different intensities). The distinctive flavor character associated with the particular fruit(s) should be noticeable, and may range in intensity from subtle to aggressive. The balance of fruit with the underlying mead is vital, and the fruit character should not be artificial, raw (unfermented), and/or inappropriately overpowering. In a melomel made with a combination of fruits, not all the fruits may be individually identifiable or of equal intensity. Standard description applies for remainder of characteristics.",
-        "mouthfeel": "Standard description applies. Most will be wine-like. Some natural acidity and/or tannin are sometimes present (from certain fruit and/or fruit skin) and helps balance the overall impression. Fruit tannin can add body as well as some astringency. High levels of astringency are undesirable. The acidity and tannin levels should be somewhat reflective of the fruit used. Ingredients: Standard description applies. A melomel is a mead made with the addition of other fruit or fruit juices not specifically reserved for other entry subcategories. There should be an appealing blend of the fruit and honey character but not necessarily an even balance. A melomel can be made with a blend of fruits from multiple Fruit Mead subcategories.",
-        "comments": "Generally a good tannin-sweetness balance is desired, though very dry and very sweet examples do exist.",
-        "profile": "Depending on the sweetness and strength, a subtle to distinctly identifiable honey and fruit character (dry and/or hydromel versions will tend to have lower aromatics than sweet and/or sack versions). The fruit character should display distinctive aromatics associated with the particular fruit(s); however, note that some fruit have stronger aromas and are more distinctive than others — allow for a range of fruit character and intensity from subtle to aggressive. The fruit character should be pleasant and supportive, not artificial, raw (unfermented), and/or inappropriately overpowering (considering the character of the fruit). In a blended fruit melomel, not all the fruits may be individually identifiable or of equal intensity. The honey aroma should be noticeable, and can have a light to significant sweetness that may express the aroma of flower nectar. If a variety of honey is declared, the aroma might have a subtle to very noticeable varietal character reflective of the honey (different varieties have different intensities and characters). The bouquet should show a pleasant fermentation character, with clean and fresh aromatics being preferred. Stronger and/or sweeter versions will have higher alcohol and sweetness in the nose. Some tartness may be present if naturally occurring in the particular fruit(s), but should not be inappropriately intense. Standard description applies for remainder of characteristics. Standard description applies, except with regard to color. Color may take on a very wide range of colors, depending on the variety of fruit and/or honey used. For lighter-colored melomels with fruits that exhibit distinctive colors, the color should be noticeable. Note that the color of fruit in mead is often lighter than the flesh of the fruit itself and may take on slightly different shades. Meads made with lighter color fruits can also take on color from varietal honeys. In meads that produce a head, the head can take on some of the fruit color as well.The fruit and honey flavor intensity may vary from subtle to high; the residual sweetness may vary from none to high; and the finish may range from dry to sweet, depending on what sweetness level has been declared (dry to sweet) and strength level has been declared (hydromel to sack). The natural acidity and tannin levels from fruit and fruit skins will vary, and this character is expected to be present in the mead, although in balance with sweetness, honey flavor, and alcohol. Tannin levels may make some meads seem drier than the residual sweetness might suggest. A melomel may have a subtle to strong honey character, and may feature noticeable to prominent varietal character if a varietal honey is declared (different varieties have different intensities). The distinctive flavor character associated with the particular fruit(s) should be noticeable, and may range in intensity from subtle to aggressive. The balance of fruit with the underlying mead is vital, and the fruit character should not be artificial, raw (unfermented), and/or inappropriately overpowering. In a melomel made with a combination of fruits, not all the fruits may be individually identifiable or of equal intensity. Standard description applies for remainder of characteristics. Standard description applies. Most will be wine-like. Some natural acidity and/or tannin are sometimes present (from certain fruit and/or fruit skin) and helps balance the overall impression. Fruit tannin can add body as well as some astringency. High levels of astringency are undesirable. The acidity and tannin levels should be somewhat reflective of the fruit used. Ingredients: Standard description applies. A melomel is a mead made with the addition of other fruit or fruit juices not specifically reserved for other entry subcategories. There should be an appealing blend of the fruit and honey character but not necessarily an even balance. A melomel can be made with a blend of fruits from multiple Fruit Mead subcategories. Generally a good tannin-sweetness balance is desired, though very dry and very sweet examples do exist.",
-        "overall_impression": "In well-made examples of the style, the fruit is both distinctive and well-incorporated into the honey-sweet-acid-tannin-alcohol balance of the mead. Different types of fruit can result in widely different characteristics; allow for a variation in the final product.",
-        "notes": "In well-made examples of the style, the fruit is both distinctive and well-incorporated into the honey-sweet-acid-tannin-alcohol balance of the mead. Different types of fruit can result in widely different characteristics; allow for a variation in the final product.",
-        "examples": "Moonlight Desire, Paramour, and Iniquity",
-        "entry_instructions": "See Introduction to Mead Guidelines for entry requirements. Entrants MUST specify carbonation level, strength, and sweetness. Entrants MAY specify honey varieties. Entrants MUST specify the varieties of fruit used. A melomel that is spiced should be entered as a Fruit and Spice Mead. A melomel containing other ingredients should be entered as an Experimental Mead. Melomels made with either apples or grapes as the only fruit source should be entered as a Cyser or Pyment, respectively. Melomels with apples or grapes, plus other fruit should be entered in this category, not Experimental Mead."
-      },
-      {
-        "name": "Fruit and Spice Mead",
-        "category": "Spiced Mead",
-        "category_id": "M3",
-        "style_id": "M3A",
-        "style_letter": "A",
-        "style_guide": "BJCP2015",
-        "type": "mead",
-        "aroma": "Depending on the sweetness and strength, a subtle to distinctly identifiable honey, fruit, and spice character (dry and/or hydromel versions will tend to have lower aromatics than sweet and/or sack versions). The spice character should display distinctive aromatics associated with the particular spices; however, note that some spices (e.g., ginger, cinnamon) have stronger aromas and are more distinctive than others (e.g., chamomile, lavender) — allow for a range of spice character and intensity from subtle to aggressive. The spice character should be pleasant and supportive, not artificial and inappropriately overpowering (considering the character of the spice). The fruit character should display distinctive aromatics associated with the particular fruit; however, note that some fruits (e.g., raspberry, cherry) have stronger aromas and are more distinctive than others (e.g., peach) — allow for a range of fruit character and intensity from subtle to aggressive. The fruit character should be pleasant and supportive, not artificial, raw (unfermented) and/or inappropriately overpowering (considering the character of the fruit). In a mead with more than one fruit and/or spice, not all fruits and spices may be individually identifiable or of equal intensity. The honey aroma should be noticeable, and can have a light to significant sweetness that may express the aroma of flower nectar. If a variety of honey is declared, the aroma might have a subtle to very noticeable varietal character reflective of the honey (different varieties have different intensities and characters). The bouquet should show a pleasant fermentation character, with clean and fresh aromatics being preferred. Stronger and/or sweeter versions will have higher alcohol and sweetness in the nose. Some spices may produce spicy or peppery phenolics. Standard description applies for remainder of characteristics.",
-        "appearance": "Standard description applies, except perhaps to note that the color usually won't be affected by spices (although flowers, petals and peppers may provide subtle colors; tea blends may provide significant colors). The fruit may provide significant color, and is generally evocative of the fruit used (although it may be of a lighter shade than the fruit skin).",
-        "flavor": "The spice flavor intensity may vary from subtle to high; the fruit flavor intensity may vary from subtle to high; the honey flavor intensity may vary from subtle to high; the residual sweetness may vary from none to high; and the finish may range from dry to sweet, depending on what sweetness level has been declared (dry to sweet) and strength level has been declared (hydromel to sack). The distinctive flavor character associated with the particular spices may range in intensity from subtle to aggressive (although some spices may not be individually recognizable, and can just serve to add a background complexity). Certain spices might add bitter, astringent, phenolic or spicy (hot) flavors; if present, these qualities should be related to the declared ingredients (otherwise, they are faults), and they should balance and blend with the honey, sweetness and alcohol. The distinctive flavor character associated with the particular fruits may range in intensity from subtle to aggressive (although some fruits may not be individually recognizable, and can just serve to add a background complexity). Certain fruits might add acidic, bitter, astringent or flavors; if present, these qualities should be related to the declared ingredients (otherwise, they are faults), and they should balance and blend with the honey, sweetness and alcohol. Meads containing more than one fruit or spice should have a pleasant balance of the different fruits and spices, but this does not mean that all fruits and spices need to be of equal intensity or even individual identifiable. The mead may have a subtle to strong honey character, and may feature noticeable to prominent varietal character if a varietal honey is declared (different varieties have different intensities). Standard description applies for remainder of characteristics.",
-        "mouthfeel": "Standard description applies. Some fruits and spices may contain tannins that add a bit of body and some astringency, but this character should not be excessive. Ingredients: Standard description applies. See the various Fruit Mead descriptions, as well as the Spice, Herb, or Vegetable Mead description for additional details.",
-        "comments": "Often, a blend of fruits and spices may give a character greater than the sum of its parts. The better examples of this style often use spices judiciously; when more than one spice are used, they are carefully selected so that they blend harmoniously with the fruit and with each other.",
-        "profile": "Depending on the sweetness and strength, a subtle to distinctly identifiable honey, fruit, and spice character (dry and/or hydromel versions will tend to have lower aromatics than sweet and/or sack versions). The spice character should display distinctive aromatics associated with the particular spices; however, note that some spices (e.g., ginger, cinnamon) have stronger aromas and are more distinctive than others (e.g., chamomile, lavender) — allow for a range of spice character and intensity from subtle to aggressive. The spice character should be pleasant and supportive, not artificial and inappropriately overpowering (considering the character of the spice). The fruit character should display distinctive aromatics associated with the particular fruit; however, note that some fruits (e.g., raspberry, cherry) have stronger aromas and are more distinctive than others (e.g., peach) — allow for a range of fruit character and intensity from subtle to aggressive. The fruit character should be pleasant and supportive, not artificial, raw (unfermented) and/or inappropriately overpowering (considering the character of the fruit). In a mead with more than one fruit and/or spice, not all fruits and spices may be individually identifiable or of equal intensity. The honey aroma should be noticeable, and can have a light to significant sweetness that may express the aroma of flower nectar. If a variety of honey is declared, the aroma might have a subtle to very noticeable varietal character reflective of the honey (different varieties have different intensities and characters). The bouquet should show a pleasant fermentation character, with clean and fresh aromatics being preferred. Stronger and/or sweeter versions will have higher alcohol and sweetness in the nose. Some spices may produce spicy or peppery phenolics. Standard description applies for remainder of characteristics. Standard description applies, except perhaps to note that the color usually won't be affected by spices (although flowers, petals and peppers may provide subtle colors; tea blends may provide significant colors). The fruit may provide significant color, and is generally evocative of the fruit used (although it may be of a lighter shade than the fruit skin).The spice flavor intensity may vary from subtle to high; the fruit flavor intensity may vary from subtle to high; the honey flavor intensity may vary from subtle to high; the residual sweetness may vary from none to high; and the finish may range from dry to sweet, depending on what sweetness level has been declared (dry to sweet) and strength level has been declared (hydromel to sack). The distinctive flavor character associated with the particular spices may range in intensity from subtle to aggressive (although some spices may not be individually recognizable, and can just serve to add a background complexity). Certain spices might add bitter, astringent, phenolic or spicy (hot) flavors; if present, these qualities should be related to the declared ingredients (otherwise, they are faults), and they should balance and blend with the honey, sweetness and alcohol. The distinctive flavor character associated with the particular fruits may range in intensity from subtle to aggressive (although some fruits may not be individually recognizable, and can just serve to add a background complexity). Certain fruits might add acidic, bitter, astringent or flavors; if present, these qualities should be related to the declared ingredients (otherwise, they are faults), and they should balance and blend with the honey, sweetness and alcohol. Meads containing more than one fruit or spice should have a pleasant balance of the different fruits and spices, but this does not mean that all fruits and spices need to be of equal intensity or even individual identifiable. The mead may have a subtle to strong honey character, and may feature noticeable to prominent varietal character if a varietal honey is declared (different varieties have different intensities). Standard description applies for remainder of characteristics. Standard description applies. Some fruits and spices may contain tannins that add a bit of body and some astringency, but this character should not be excessive. Ingredients: Standard description applies. See the various Fruit Mead descriptions, as well as the Spice, Herb, or Vegetable Mead description for additional details. Often, a blend of fruits and spices may give a character greater than the sum of its parts. The better examples of this style often use spices judiciously; when more than one spice are used, they are carefully selected so that they blend harmoniously with the fruit and with each other.",
-        "overall_impression": "In well-made examples of the style, the fruits and spices are both distinctive and well-incorporated into the honey-sweet-acid-tannin-alcohol balance of the mead. Different types of fruits and spices can result in widely different characteristics; allow for significant variation in the final product.",
-        "notes": "In well-made examples of the style, the fruits and spices are both distinctive and well-incorporated into the honey-sweet-acid-tannin-alcohol balance of the mead. Different types of fruits and spices can result in widely different characteristics; allow for significant variation in the final product.",
-        "examples": "Moonlight Kurt's Apple Pie, Mojo, Flame, Fling, and Deviant, Celestial Meads Scheherazade, Rabbit's Foot Private Reserve Pear Mead, Intermiel Rosée",
-        "entry_instructions": "See Introduction to Mead Guidelines for entry requirements. Entrants MUST specify carbonation level, strength, and sweetness. Entrants MAY specify honey varieties. Entrants MUST specify the types of spices used, (although well-known spice blends may be referred to by common name, such as apple pie spices). Entrants MUST specify the types of fruits used. If only combinations of spices are used, enter as a Spice, Herb, or Vegetable Mead. If only combinations of fruits are used, enter as a Melomel. If other types of ingredients are used, enter as an Experimental Mead."
-      },
-      {
-        "name": "Spice, Herb or Vegetable Mead",
-        "category": "Spiced Mead",
-        "category_id": "M3",
-        "style_id": "M3B",
-        "style_letter": "B",
-        "style_guide": "BJCP2015",
-        "type": "mead",
-        "aroma": "Depending on the sweetness and strength, a subtle to distinctly identifiable honey and spice character (dry and/or hydromel versions will tend to have lower aromatics than sweet and/or sack versions). The spice character should display distinctive aromatics associated with the particular spices; however, note that some spices (e.g., ginger, cinnamon) have stronger aromas and are more distinctive than others (e.g., chamomile, lavender) — allow for a range of spice character and intensity from subtle to aggressive. The spice character should be pleasant and supportive, not artificial and inappropriately overpowering (considering the character of the spice). In a blended spice mead, not all spices may be individually identifiable or of equal intensity. The honey aroma should be noticeable, and can have a light to significant sweetness that may express the aroma of flower nectar. If a variety of honey is declared, the aroma might have a subtle to very noticeable varietal character reflective of the honey (different varieties have different intensities and characters). The bouquet should show a pleasant fermentation character, with clean and fresh aromatics being preferred. Stronger and/or sweeter versions will have higher alcohol and sweetness in the nose. Some herbs and spices may produce spicy or peppery phenolics. Standard description applies for remainder of characteristics.",
-        "appearance": "Standard description applies, except perhaps to note that the color usually won't be affected by spices and herbs (although flowers, petals and peppers may provide subtle colors; tea blends may provide significant colors).",
-        "flavor": "The spice flavor intensity may vary from subtle to high; the honey flavor intensity may vary from subtle to high; the residual sweetness may vary from none to high; and the finish may range from dry to sweet, depending on what sweetness level has been declared (dry to sweet) and strength level has been declared (hydromel to sack). The distinctive flavor character associated with the particular spices may range in intensity from subtle to aggressive (although some spices may not be individually recognizable, and can just serve to add a background complexity). Certain herbs and spices might add bitter, astringent, phenolic or spicy (hot) flavors; if present, these qualities should be related to the declared ingredients (otherwise, they are faults), and they should balance and blend with the honey, sweetness and alcohol. Meads containing more than one spice should have a good balance among the different spices, though some spices will tend to dominate the flavor profile. The mead may have a subtle to strong honey character, and may feature noticeable to prominent varietal character if a varietal honey is declared (different varieties have different intensities). Standard description applies for remainder of characteristics.",
-        "mouthfeel": "Standard description applies. Some herbs or spices may contain tannins that add a bit of body and some astringency, but this character should not be excessive. Warming spices and hot peppers/chiles might impart a warming or numbing impression, but this character should not be extreme or make the mead undrinkable. Ingredients: Standard description applies. If spices are used in conjunction with other ingredients such as fruit, cider, or other fruit-based fermentables, then the mead should be entered as a Fruit and Spice Mead. If spices are used in combination with other ingredients, then the mead should be entered as an Experimental Mead.",
-        "comments": "Often, a blend of spices may give a character greater than the sum of its parts. The better examples of this style use spices subtly; when more than one spice are used, they are carefully selected so that they blend harmoniously. A mead containing only culinary spices or herbs is known as a metheglin.",
-        "profile": "Depending on the sweetness and strength, a subtle to distinctly identifiable honey and spice character (dry and/or hydromel versions will tend to have lower aromatics than sweet and/or sack versions). The spice character should display distinctive aromatics associated with the particular spices; however, note that some spices (e.g., ginger, cinnamon) have stronger aromas and are more distinctive than others (e.g., chamomile, lavender) — allow for a range of spice character and intensity from subtle to aggressive. The spice character should be pleasant and supportive, not artificial and inappropriately overpowering (considering the character of the spice). In a blended spice mead, not all spices may be individually identifiable or of equal intensity. The honey aroma should be noticeable, and can have a light to significant sweetness that may express the aroma of flower nectar. If a variety of honey is declared, the aroma might have a subtle to very noticeable varietal character reflective of the honey (different varieties have different intensities and characters). The bouquet should show a pleasant fermentation character, with clean and fresh aromatics being preferred. Stronger and/or sweeter versions will have higher alcohol and sweetness in the nose. Some herbs and spices may produce spicy or peppery phenolics. Standard description applies for remainder of characteristics. Standard description applies, except perhaps to note that the color usually won't be affected by spices and herbs (although flowers, petals and peppers may provide subtle colors; tea blends may provide significant colors).The spice flavor intensity may vary from subtle to high; the honey flavor intensity may vary from subtle to high; the residual sweetness may vary from none to high; and the finish may range from dry to sweet, depending on what sweetness level has been declared (dry to sweet) and strength level has been declared (hydromel to sack). The distinctive flavor character associated with the particular spices may range in intensity from subtle to aggressive (although some spices may not be individually recognizable, and can just serve to add a background complexity). Certain herbs and spices might add bitter, astringent, phenolic or spicy (hot) flavors; if present, these qualities should be related to the declared ingredients (otherwise, they are faults), and they should balance and blend with the honey, sweetness and alcohol. Meads containing more than one spice should have a good balance among the different spices, though some spices will tend to dominate the flavor profile. The mead may have a subtle to strong honey character, and may feature noticeable to prominent varietal character if a varietal honey is declared (different varieties have different intensities). Standard description applies for remainder of characteristics. Standard description applies. Some herbs or spices may contain tannins that add a bit of body and some astringency, but this character should not be excessive. Warming spices and hot peppers/chiles might impart a warming or numbing impression, but this character should not be extreme or make the mead undrinkable. Ingredients: Standard description applies. If spices are used in conjunction with other ingredients such as fruit, cider, or other fruit-based fermentables, then the mead should be entered as a Fruit and Spice Mead. If spices are used in combination with other ingredients, then the mead should be entered as an Experimental Mead. Often, a blend of spices may give a character greater than the sum of its parts. The better examples of this style use spices subtly; when more than one spice are used, they are carefully selected so that they blend harmoniously. A mead containing only culinary spices or herbs is known as a metheglin.",
-        "overall_impression": "In well-made examples of the style, the spices are both distinctive and well-incorporated into the honey-sweet-acid-tannin-alcohol balance of the mead. Different types of spices can result in widely different characteristics; allow for a variation in the final product.",
-        "notes": "In well-made examples of the style, the spices are both distinctive and well-incorporated into the honey-sweet-acid-tannin-alcohol balance of the mead. Different types of spices can result in widely different characteristics; allow for a variation in the final product.",
-        "examples": "Moonlight Wicked, Breathless, Madagascar, and Seduction, Redstone Vanilla Beans and Cinnamon Sticks Mountain Honey Wine, Bonair Chili Mead, Redstone Juniper Mountain Honey Wine, iQhilika Africa Birds Eye Chili Mead, Mountain Meadows Spice Nectar",
-        "entry_instructions": "See Introduction to Mead Guidelines for entry requirements. Entrants MUST specify carbonation level, strength, and sweetness. Entrants MAY specify honey varieties. Entrants MUST specify the types of spices used (although well-known spice blends may be referred to by common name, such as apple pie spices)."
-      },
-      {
-        "name": "Braggot",
-        "category": "Specialty Mead",
-        "category_id": "M4",
-        "style_id": "M4A",
-        "style_letter": "A",
-        "style_guide": "BJCP2015",
-        "type": "mead",
-        "aroma": "Depending on the sweetness, strength and base style of beer, a subtle to distinctly identifiable honey and beer character (dry and/or hydromel versions will tend to have lower aromatics than sweet and/or sack versions). The honey and beer/malt character should be complementary and balanced, although not always evenly balanced. If a variety of honey is declared, the aroma might have a subtle to very noticeable varietal character reflective of the honey (different varieties have different intensities and characters). If a base style of beer or type of malt is declared, the aroma might have a subtle to very noticeable character reflective of the beer style (different styles and malts have different intensities and characters). A hop aroma (any variety or intensity) is optional; if present, it should blend harmoniously with the other elements. Standard description applies for remainder of characteristics.",
-        "appearance": "Standard description does not apply due to beer-like characteristics. Clarity may be good to brilliant, although many braggots are not as clear as other meads. A light to moderate head with some retention is expected if the mead is carbonated. Color may range from light straw to dark brown or black, depending on the variety of malt and honey used. The color should be characteristic of the declared beer style and/or honey used, if a variety is declared. Stronger versions may show signs of body (e.g., legs).",
-        "flavor": "Displays a balanced character identifiable as both a beer and a mead, although the relative intensity of flavors is greatly affected by the sweetness, strength, base style of beer, and variety of honey used. If a beer style is declared, the braggot should have some character traceable to the style although the flavors will be different due to the presence of honey. If a variety of honey is declared, the braggot should feature a subtle to prominent varietal character (different varieties have different intensities). Stronger and/or sweeter braggots should be expected to have a greater intensity of flavor than drier, lower gravity versions. The finish and aftertaste will vary based on the declared level of sweetness (dry to sweet), and may include both beer and mead components. A wide range of malt characteristics is allowable, from plain base malts to rich caramel and toast flavors to dark chocolate and roast flavors. Hop bitterness and flavor may be present, and may reflect any variety or intensity; however, this optional character should always be both suggestive of the base beer style and well blended with the other flavors. Standard description applies for remainder of characteristics.",
-        "mouthfeel": "Standard description does not apply due to beer-like characteristics. Smooth mouthfeel without astringency. Body may vary from moderately light to full, depending on sweetness, strength, and the base style of beer. Note that stronger meads will have a fuller body. A very thin or watery body is undesirable, as is a cloying, raw sweetness. A warming sense of well-aged alcohol may be present in stronger examples. Carbonation will vary as described in the standard description. A still braggot will usually have some level of carbonation (like a cask bitter) since a completely flat beer is unappetizing. However, just as an aged barleywine may be still, some braggots can be totally still. Ingredients: A braggot is a mead made with both honey and malt providing flavor and fermentable extract. Originally, and alternatively, a mixture of mead and ale. A braggot can be made with any type of honey, and any type of base beer style. The malt component may be derived from grain or malt extracts. The beer may be hopped or not. If any other ingredients than honey and beer are contained in the braggot, it should be entered as an Experimental Mead. Smoked braggots may be entered in this category if using smoked malt or a smoked beer as the base style; braggots made using other smoked ingredients (e.g., liquid smoke, chipotles) should be entered in the Experimental Mead style.",
-        "comments": "Sometimes known as bracket or brackett. The fermentable sugars come from a balance of malt or malt extract and honey, although the specific balance is open to creative interpretation by brewers.",
-        "profile": "Depending on the sweetness, strength and base style of beer, a subtle to distinctly identifiable honey and beer character (dry and/or hydromel versions will tend to have lower aromatics than sweet and/or sack versions). The honey and beer/malt character should be complementary and balanced, although not always evenly balanced. If a variety of honey is declared, the aroma might have a subtle to very noticeable varietal character reflective of the honey (different varieties have different intensities and characters). If a base style of beer or type of malt is declared, the aroma might have a subtle to very noticeable character reflective of the beer style (different styles and malts have different intensities and characters). A hop aroma (any variety or intensity) is optional; if present, it should blend harmoniously with the other elements. Standard description applies for remainder of characteristics. Standard description does not apply due to beer-like characteristics. Clarity may be good to brilliant, although many braggots are not as clear as other meads. A light to moderate head with some retention is expected if the mead is carbonated. Color may range from light straw to dark brown or black, depending on the variety of malt and honey used. The color should be characteristic of the declared beer style and/or honey used, if a variety is declared. Stronger versions may show signs of body (e.g., legs).Displays a balanced character identifiable as both a beer and a mead, although the relative intensity of flavors is greatly affected by the sweetness, strength, base style of beer, and variety of honey used. If a beer style is declared, the braggot should have some character traceable to the style although the flavors will be different due to the presence of honey. If a variety of honey is declared, the braggot should feature a subtle to prominent varietal character (different varieties have different intensities). Stronger and/or sweeter braggots should be expected to have a greater intensity of flavor than drier, lower gravity versions. The finish and aftertaste will vary based on the declared level of sweetness (dry to sweet), and may include both beer and mead components. A wide range of malt characteristics is allowable, from plain base malts to rich caramel and toast flavors to dark chocolate and roast flavors. Hop bitterness and flavor may be present, and may reflect any variety or intensity; however, this optional character should always be both suggestive of the base beer style and well blended with the other flavors. Standard description applies for remainder of characteristics. Standard description does not apply due to beer-like characteristics. Smooth mouthfeel without astringency. Body may vary from moderately light to full, depending on sweetness, strength, and the base style of beer. Note that stronger meads will have a fuller body. A very thin or watery body is undesirable, as is a cloying, raw sweetness. A warming sense of well-aged alcohol may be present in stronger examples. Carbonation will vary as described in the standard description. A still braggot will usually have some level of carbonation (like a cask bitter) since a completely flat beer is unappetizing. However, just as an aged barleywine may be still, some braggots can be totally still. Ingredients: A braggot is a mead made with both honey and malt providing flavor and fermentable extract. Originally, and alternatively, a mixture of mead and ale. A braggot can be made with any type of honey, and any type of base beer style. The malt component may be derived from grain or malt extracts. The beer may be hopped or not. If any other ingredients than honey and beer are contained in the braggot, it should be entered as an Experimental Mead. Smoked braggots may be entered in this category if using smoked malt or a smoked beer as the base style; braggots made using other smoked ingredients (e.g., liquid smoke, chipotles) should be entered in the Experimental Mead style. Sometimes known as bracket or brackett. The fermentable sugars come from a balance of malt or malt extract and honey, although the specific balance is open to creative interpretation by brewers.",
-        "overall_impression": "A harmonious blend of mead and beer, with the distinctive characteristics of both. A wide range of results are possible, depending on the base style of beer, variety of honey and overall sweetness and strength. Beer flavors tend to somewhat mask typical honey flavors found in other meads.",
-        "notes": "A harmonious blend of mead and beer, with the distinctive characteristics of both. A wide range of results are possible, depending on the base style of beer, variety of honey and overall sweetness and strength. Beer flavors tend to somewhat mask typical honey flavors found in other meads.",
-        "examples": "Rabbit's Foot Diabhal and Bière de Miele, Magic Hat Braggot, Brother Adams Braggot Barleywine Ale, White Winter Traditional Brackett",
-        "entry_instructions": "See Introduction to Mead Guidelines for entry requirements. Entrants MUST specify carbonation level, strength, and sweetness. Entrants MAY specify honey varieties. Entrants MAY specify the base style or beer or types of malt used. Products with a relatively low proportion of honey should be entered as an Alternative Sugar Beer."
-      },
-      {
-        "name": "Historical Mead",
-        "category": "Specialty Mead",
-        "category_id": "M4",
-        "style_id": "M4B",
-        "style_letter": "B",
-        "style_guide": "BJCP2015",
-        "type": "mead",
-        "profile": "",
-        "overall_impression": "This mead should exhibit the character of all of the ingredients in varying degrees, and should show a good blending or balance between the various flavor elements. Whatever ingredients are included, the result should be identifiable as a honey-based fermented beverage. Aroma, appearance, flavor, mouthfeel generally follow the standard descriptions, yet note that all the characteristics may vary. Since a wide range of entries are possible, note that the characteristics may reflect combinations of the respective elements of the various sub-categories used in this style. Refer to Category M1 for a detailed description of the character of dry, semi-sweet and sweet mead. If the entered mead is a combination of other existing mead categories, refer to the constituent categories for a detailed description of the character of the component styles.",
-        "notes": "This mead should exhibit the character of all of the ingredients in varying degrees, and should show a good blending or balance between the various flavor elements. Whatever ingredients are included, the result should be identifiable as a honey-based fermented beverage. Aroma, appearance, flavor, mouthfeel generally follow the standard descriptions, yet note that all the characteristics may vary. Since a wide range of entries are possible, note that the characteristics may reflect combinations of the respective elements of the various sub-categories used in this style. Refer to Category M1 for a detailed description of the character of dry, semi-sweet and sweet mead. If the entered mead is a combination of other existing mead categories, refer to the constituent categories for a detailed description of the character of the component styles.",
-        "examples": "Jadwiga, Saba Tej",
-        "entry_instructions": "See Introduction to Mead Guidelines for entry requirements. Entrants MUST specify carbonation level, strength, and sweetness. Entrants MAY specify honey varieties. Entrants MUST specify the special nature of the mead, providing a description of the mead for judges if no such description is available from the BJCP."
-      },
-      {
-        "name": "Experimental Mead",
-        "category": "Specialty Mead",
-        "category_id": "M4",
-        "style_id": "M4C",
-        "style_letter": "C",
-        "style_guide": "BJCP2015",
-        "type": "mead",
-        "profile": "",
-        "overall_impression": "This mead should exhibit the character of all of the ingredients in varying degrees, and should show a good blending or balance between the various flavor elements. Whatever ingredients are included, the result should be identifiable as a honey-based fermented beverage. Aroma, appearance, flavor, mouthfeel generally follow the standard descriptions, yet note that all the characteristics may vary. Since a wide range of entries are possible, note that the characteristics may reflect combinations of the respective elements of the various sub-categories used in this style. Refer to Category M1 for a detailed description of the character of dry, semi-sweet and sweet mead. If the entered mead is a combination of other existing mead categories, refer to the constituent categories for a detailed description of the character of the component styles.",
-        "notes": "This mead should exhibit the character of all of the ingredients in varying degrees, and should show a good blending or balance between the various flavor elements. Whatever ingredients are included, the result should be identifiable as a honey-based fermented beverage. Aroma, appearance, flavor, mouthfeel generally follow the standard descriptions, yet note that all the characteristics may vary. Since a wide range of entries are possible, note that the characteristics may reflect combinations of the respective elements of the various sub-categories used in this style. Refer to Category M1 for a detailed description of the character of dry, semi-sweet and sweet mead. If the entered mead is a combination of other existing mead categories, refer to the constituent categories for a detailed description of the character of the component styles.",
-        "examples": "Moonlight Utopian, Hanssens/Lurgashall Mead the Gueuze, White Winter Cherry Bracket, Mountain Meadows Trickster's Treat Agave Mead",
-        "entry_instructions": "See Introduction to Mead Guidelines for entry requirements. Entrants MUST specify carbonation level, strength, and sweetness. Entrants MAY specify honey varieties. Entrants MUST specify the special nature of the mead, whether it is a combination of existing styles, an experimental mead, or some other creation. Any special ingredients that impart an identifiable character MAY be declared."
-      },
-      {
-        "name": "New World Cider",
-        "category": "Standard Cider And Perry",
-        "category_id": "C1",
-        "style_id": "C1A",
-        "style_letter": "A",
-        "style_guide": "BJCP2015",
-        "type": "cider",
-        "appearance": "Clear to brilliant, pale to medium gold in color.",
-        "flavor": "Sweet or low-alcohol ciders may have apple aroma and flavor. Dry ciders will be more wine-like with some esters. Sugar and acidity should combine to give a refreshing character. Acidity is medium to high, refreshing, but must not be harsh or biting.",
-        "mouthfeel": "Medium body. Some tannin should be present for slight to moderate astringency, but little bitterness.",
-        "comments": "An ideal cider serves well as a \"session\" drink, and suitably accompanies a wide variety of food.",
-        "profile": "Clear to brilliant, pale to medium gold in color.Sweet or low-alcohol ciders may have apple aroma and flavor. Dry ciders will be more wine-like with some esters. Sugar and acidity should combine to give a refreshing character. Acidity is medium to high, refreshing, but must not be harsh or biting. Medium body. Some tannin should be present for slight to moderate astringency, but little bitterness. An ideal cider serves well as a \"session\" drink, and suitably accompanies a wide variety of food.",
-        "overall_impression": "A refreshing drink of some substance – not bland or watery. Sweet ciders must not be cloying. Dry ciders must not be too austere.",
-        "notes": "A refreshing drink of some substance – not bland or watery. Sweet ciders must not be cloying. Dry ciders must not be too austere.",
-        "examples": "[US] Uncle John's Fruit House Winery Apple Hard Cider, Tandem Ciders Pretty Penny (MI), Bellwether Spyglass (NY), West County Pippin (MA), White Winter Hard Apple Cider (WI), Wandering Aengus Ciderworks Bloom (OR), Æppeltreow Appely Brut and Doux (WI).",
-        "entry_instructions": "Entrants MUST specify carbonation level (3 levels). Entrants MUST specify sweetness (5 categories). If OG is substantially above typical range, entrant should explain, e.g., particular variety of apple giving high-gravity juice. Varieties: Common (Winesap, Macintosh, Golden Delicious, Braeburn, Jonathan), multi-use (Northern Spy, Russets, Baldwin), crabapples, any suitable wildings.",
+        "name": "Dorada Pampeana",
+        "category": "Argentine Styles",
+        "category_id": "X",
+        "style_id": "X1",
+        "notes": "Suggested style placement: Category 18 (Pale American Beer)En sus comienzos los cerveceros caseros argentinos estaban muy limitados: no existían los extractos, sólo malta pilsen y lúpulo Cascade. Sólo levaduras secas, comúnmente Nottingham, Windsor o Safale. Con estos ingredientes, los cerveceros argentinos desarrollaron una versión específica de la Blond Ale, llamda Dorada Pampeana.",
+        "impresion_general": "Fácilmente bebible, accesible, con orientación a malta.",
+        "aroma": "aroma dulce maltoso ligero a moderado. Es aceptable el aroma frutal bajo a moderado. Debe tener aroma a lúpulo bajo a medio. Sin diacetilo.",
+        "aspecto": "color amarillo claro a dorado profundo. Claro a brillante. Espuma baja a medio con buena retención.",
+        "sabor": "Dulzor maltoso inicial suave. Típicamente ausentes los flavors a caramelo. Flavor a lúpulo ligero a moderado (usualmente Cascade), pero no debería ser agresivo. Amargor bajo a moderado, pero el balance tiende a la malta. Final medio-seco o algo dulce. Sin diacetilo.",
+        "sensacion_en_boca": "Cuerpo mediano ligero a medio. Carbonatación media a alta. Sensación suave sin amargor áspero o astringencia.",
+        "comentarios": "es dificultoso lograr el balance.",
+        "historia": "los primeros cerveceros argentinos sólo accedían a malta pilsen y lúpulo cascade y con ellos desarrollaron esta variante de Blond Ale.",
+        "ingredientes": "usualmente solo malta pálida o pilsen, aunque puede incluir bajas proporciones de malta caramelizadas. Comúnmente lúpulo Cascade. Levaduras americanas limpias, británicas levemente frutadas o Kölsch, usualmente acondicionada en frío.",
         "original_gravity": {
           "minimum": {
             "unit": "sg",
-            "value": 1.045
+            "value": 1.042
           },
           "maximum": {
             "unit": "sg",
-            "value": 1.065
+            "value": 1.054
+          }
+        },
+        "international_bitterness_units": {
+          "minimum": {
+            "unit": "IBUs",
+            "value": 15
+          },
+          "maximum": {
+            "unit": "IBUs",
+            "value": 22
           }
         },
         "final_gravity": {
           "minimum": {
             "unit": "sg",
-            "value": 0.995
+            "value": 1.009
           },
           "maximum": {
             "unit": "sg",
-            "value": 1.02
+            "value": 1.013
+          }
+        },
+        "alcohol_by_volume": {
+          "minimum": {
+            "unit": "%",
+            "value": 4.3
+          },
+          "maximum": {
+            "unit": "%",
+            "value": 5.5
+          }
+        },
+        "color": {
+          "minimum": {
+            "unit": "SRM",
+            "value": 3
+          },
+          "maximum": {
+            "unit": "SRM",
+            "value": 5
+          }
+        },
+        "style_guide": "BJCP2021",
+        "type": "beer"
+      },
+      {
+        "name": "IPA Argenta",
+        "category": "Argentine Styles",
+        "category_id": "X",
+        "style_id": "X2",
+        "notes": "Suggested style placement: Category 21 (IPA)IPA Especialidad: IPA ARGENTA",
+        "impresion_general": "Una Pale Ale Argentina decididamente amarga y lupulada, refrescante y moderadamente fuerte. La clave del estilo está en la tomabilidad sin asperezas y con un buen balance.",
+        "aroma": "Intenso aroma a lúpulo con carácter floral y cítrico, derivado de los lúpulos argentinos. Muchas versiones tienen dry-hopping, lo que otorga un carácter a hierba adicional, aunque esto no es requerido. Puede hallarse dulzura límpida a malta e inclusive algo de caramelo, pero con menor tenor que en las Ipas inglesas. Un carácter frutal leve de los ésteres es aceptable, al igual que toques fenólicos producto de la fermentación del trigo, que nunca deben ser dominantes y solo deben agregar complejidad. De todos modos, el carácter relativmente neutro de la fermentación es lo más usual. Puede notarse algo de alcohol en las versiones más fuertes. Sin DMS. El diacetil es un demérito importante en esta cerveza ya que apaga el lúpulo, por lo que nunca debe estar presente.",
+        "aspecto": "El color varía de dorado medio a cobre rojizo medio. Algunas versiones pueden tener un tinte anaranjado. Debe ser clara, aunque las versiones con dry-hopping o que contienen trigo no malteado pueden tener una leve turbiedad. Buena espuma persistente.",
+        "sabor": "A lúpulo medio a alto, debiendo reflejar el carácter del lúpulo argentino, con aspectos prominentemente cítricos a pomelo rosado y cáscara de mandarina, que deben dominar. Puede tener también tonos florales como flores de azhar o también herbal y/o resinoso aunque es menos habitual y solo debe agregar complejidad. Amargor medio a medio alto, soportado por una maltosidad limpia que proporciona un balance adecuado.Sabor a malta bajo a medio, límpido, aunque son aceptables bajos niveles acaramelados o picantes por el uso de trigo, sea o no malteado. Sin diacetil. Un bajo carácter frutal es aceptable, pero no requerido. El amargor debe permanecer en el retrogusto pero nunca debe ser áspero. Finish medio seco a seco y refrescante. Puede percibirse algún sabor a alcohol en las versiones más fuertes.",
+        "sensacion_en_boca": "cuerpo medio liviano a medio, suave, sin astringencias derivadas del lúpulo, aunque la moderada a moderada alta carbonatación puede combinarse con el trigo para dar una sensación seca, aún en presencia de la dulzura de la malta. Suave tibieza a alcohol en las versiones más fuertes (no en todas). Menor cuerpo que la IPA inglesa, y más seca que la IPA Americana.",
+        "historia": "La versión Argentina del histórico estilo inglés desarrollada en el marco de una serie de encuentros de la Asociación Civil Somos Cerveceros en 2013, donde se fueron definiendo sus características distintivas. Se diferencia de la IPA Americana por agregado de trigo a la receta de granos y el uso de lúpulos Argentinos que tienen características únicas de sabor y aroma. Se busca que las caracterísiticas cítricas del lúpulo Argentino armonicen con el trigo, como sucede en la Witbier. El agregado de bajas cantidades de trigo puede recordar al grist de la Kölsch, donde también hay un frutado producto de la fermentación.",
+        "ingredientes": "malta pálida (bien modificada y disponible para maceración simple) y una cantidad de trigo como complemento que no debe superar el 15%; El trigo puede ser malteado o sin maltear. EN el caso de agregar caramelos, deben ser limitados y preferentemente utilizando trigo caramelo. Los lúpulos Argentinos como el Cascade, Mapuche y Nugget son los usuales, aunque puede tener Spalt, Victoria y Bullion para agregar complejidad. Levadura americana que da un perfil límpido o levemente frutal. El agua varía de blanda a moderadamente sulfatada.",
+        "ejemplos_comerciales": "Antares Ipa Argenta, Kerze Ipa Argenta.",
+        "original_gravity": {
+          "minimum": {
+            "unit": "sg",
+            "value": 1055
+          },
+          "maximum": {
+            "unit": "sg",
+            "value": 1065
+          }
+        },
+        "international_bitterness_units": {
+          "minimum": {
+            "unit": "IBUs",
+            "value": 35
+          },
+          "maximum": {
+            "unit": "IBUs",
+            "value": 60
+          }
+        },
+        "final_gravity": {
+          "minimum": {
+            "unit": "sg",
+            "value": 1008
+          },
+          "maximum": {
+            "unit": "sg",
+            "value": 1015
           }
         },
         "alcohol_by_volume": {
@@ -7811,41 +7653,61 @@
           },
           "maximum": {
             "unit": "%",
-            "value": 8
+            "value": 6.5
           }
-        }
+        },
+        "color": {
+          "minimum": {
+            "unit": "SRM",
+            "value": 6
+          },
+          "maximum": {
+            "unit": "SRM",
+            "value": 15
+          }
+        },
+        "style_guide": "BJCP2021",
+        "type": "beer"
       },
       {
-        "name": "English Cider",
-        "category": "Standard Cider And Perry",
-        "category_id": "C1",
-        "style_id": "C1B",
-        "style_letter": "B",
-        "style_guide": "BJCP2015",
-        "type": "cider",
-        "appearance": "Barely cloudy to brilliant. Medium yellow to amber color.",
-        "flavor": "No overt apple character, but various flavors and esters that suggest apples, particularly tannic varieties. English-style ciders commonly go through MLF (see Introduction/Aroma-and-Flavor) which produces desirable spicy/smoky, phenolic, and farmyard/old-horse characters. These flavor notes are positive but not required. If present, they must not dominate; in particular, the phenolic and farmyard notes should not be heavy. A strong farmyard character without spicy/smoky or phenolic suggests a Brettanomyces contamination, which is a fault. Mousiness is a serious fault.",
-        "mouthfeel": "Full. Moderate to high tannin, perceived as astringency and some bitterness. Carbonation still to moderate. Bottle-fermented or -conditioned ciders may have high carbonation, up to champagne levels, but not gushing or foaming.",
-        "comments": "Sweet examples exist, but dry is most traditional, particularly when considering the drying contributions of tannin.",
-        "profile": "Barely cloudy to brilliant. Medium yellow to amber color.No overt apple character, but various flavors and esters that suggest apples, particularly tannic varieties. English-style ciders commonly go through MLF (see Introduction/Aroma-and-Flavor) which produces desirable spicy/smoky, phenolic, and farmyard/old-horse characters. These flavor notes are positive but not required. If present, they must not dominate; in particular, the phenolic and farmyard notes should not be heavy. A strong farmyard character without spicy/smoky or phenolic suggests a Brettanomyces contamination, which is a fault. Mousiness is a serious fault. Full. Moderate to high tannin, perceived as astringency and some bitterness. Carbonation still to moderate. Bottle-fermented or -conditioned ciders may have high carbonation, up to champagne levels, but not gushing or foaming. Sweet examples exist, but dry is most traditional, particularly when considering the drying contributions of tannin.",
-        "overall_impression": "Generally dry, full-bodied, austere. Complex flavor profile, long finish.",
-        "notes": "Generally dry, full-bodied, austere. Complex flavor profile, long finish.",
-        "examples": "[US] Westcott Bay Traditional Very Dry, Dry and Medium Sweet (WA), Farnum Hill Extra-Dry, Dry, and Farmhouse (NH), Wandering Aengus Oaked Dry (OR), Montana CiderWorks North Fork (MT), Bellwether Heritage (NY). [UK] Oliver's Traditional Dry, Hogan's Dry and Medium Dry, Henney's Dry and Vintage Still, Burrow Hill Medium, Aspall English Imperial.",
-        "entry_instructions": "Entrants MUST specify carbonation level (3 levels). Entrants MUST specify sweetness (dry through medium-sweet, 4 levels). Entrants MAY specify variety of apple for a single varietal cider; if specified, varietal character will be expected. Varieties: Kingston Black, Stoke Red, Dabinett, Porter's Perfection, Nehou, Yarlington Mill, Major, various Jerseys, etc.",
+        "name": "Italian Grape Ale",
+        "category": "Italian Styles",
+        "category_id": "X",
+        "style_id": "X3",
+        "notes": "For uses outside Italy, see 29D Grape Ale.",
+        "aroma": "Aromatic characteristics of a particular grape have to be noticeable but do should not overpower the other aromas. The grape character should be pleasant and should not have defects such as oxidation. Malt character is usually restrained and should not exhibit a roasty, stout like, profile. Hop aroma (floral, earthy) can range from medium-low to absent. Some examples can have a low wild character described as barnyard, earthy, goaty but should not be as intense as in a lambic/fruit lambic. No diacetyl.",
+        "appearance": "Color can range from light gold to copper but some examples can be brown. Reddish/ruby color is usually due to the use of red grape varieties. White to reddish head with generally a medium low retention. Clarity is generally good but some cloudiness may be present.",
+        "flavor": "As with aroma, grape character (must or wine-like) must be present and may range from medium-low to medium-high intensity. Varieties of grape can contribute differently on the flavor profile: in general stone/tropical fruit flavors (peach, pear, apricot, pineapple) can come from white grapes and red fruit flavors (e.g., cherry, strawberry) from red grape varieties. Further fruity character of fermentative origin is also common. Different kinds of special malts can be used but should be supportive and balanced, not so prominent as to overshadow the base beer. Strong roasted and/or chocolate character is inappropriate. Light sour notes, due to the use of grape, are common and may help to improve the drinkability but should not be prominent as in Sour ale/Lambic or similar. Oak flavors, along with some barnyard, earthy, goaty notes can be present but should not be predominant.  Bitterness and hop flavors are low. Diacetyl is absent",
+        "mouthfeel": "Medium-high carbonation improves the perception of aroma. Body is generally from low to medium and some acidity can contribute to increase the perception of dryness. Strong examples can show some warming but without being hot or solventy.",
+        "impression": "A sometimes refreshing, sometimes more complex Italian ale characterized by different varieties of grapes.",
+        "history": "Initially brewed at Birrificio Montegioco and Birrificio Barley in 2006-2007, Italian Grape Ale (IGA) is now produced by many Italian craft breweries. It’s also becoming popular in US and other wine countries. It represents a communion between beer and wine promoted to the large local availability of different varieties of grapes across the country. They can be an expression of territory, biodiversity and creativity of the brewer. Normally seen as a specialty beer in the range of products of the brewery. Breweries call “Wild IGA” or “Sour IGA” any wild/sour version of the style.",
+        "ingredients": "Pils in most of cases or pale base malt with some special malts (if any). Grape content can represent up to 40% of whole grist. Grape or grape must, sometimes extensively boiled before use, can be used at different stages: during boiling or more commonly during primary/secondary fermentation. Yeast can show a neutral character (more common) or a fruity/spicy profile (English and Belgian strains). Wine yeast can be used also in conjunction with other yeasts. Continental hop varieties, mainly German or English, are used in low quantities in order not to excessively characterize the beer.",
+        "style_comparison": "Similar to Fruit Beer but evolved as a standalone style due to the abundance of grapes varieties in Italy.",
+        "tags": "Specialty-beer, FruitBrazilian Styles",
         "original_gravity": {
           "minimum": {
             "unit": "sg",
-            "value": 1.05
+            "value": 1.045
           },
           "maximum": {
             "unit": "sg",
-            "value": 1.075
+            "value": 1.1
+          }
+        },
+        "international_bitterness_units": {
+          "minimum": {
+            "unit": "IBUs",
+            "value": 6
+          },
+          "maximum": {
+            "unit": "IBUs",
+            "value": 30
           }
         },
         "final_gravity": {
           "minimum": {
             "unit": "sg",
-            "value": 0.995
+            "value": 1.005
           },
           "maximum": {
             "unit": "sg",
@@ -7855,437 +7717,166 @@
         "alcohol_by_volume": {
           "minimum": {
             "unit": "%",
-            "value": 6
-          },
-          "maximum": {
-            "unit": "%",
-            "value": 9
-          }
-        }
-      },
-      {
-        "name": "French Cider",
-        "category": "Standard Cider And Perry",
-        "category_id": "C1",
-        "style_id": "C1C",
-        "style_letter": "C",
-        "style_guide": "BJCP2015",
-        "type": "cider",
-        "appearance": "Clear to brilliant, medium yellow to amber color.",
-        "flavor": "Fruity character/aroma. This may come from slow or arrested fermentation (in the French technique of défécation) or approximated by back-sweetening with juice. Tends to a rich fullness. MLF notes of spicy-smoky, phenolic, and farmyard are common but not required (just as with English style), and must not be pronounced. The French expect more subtle MLF character than do the English.",
-        "mouthfeel": "Medium to full, mouth-filling. Moderate tannin, perceived mainly as astringency. Carbonation moderate to champagne-like, but at higher levels it must not gush or foam.",
-        "comments": "Typically made sweet to balance the tannin levels from the traditional apple varieties.",
-        "profile": "Clear to brilliant, medium yellow to amber color.Fruity character/aroma. This may come from slow or arrested fermentation (in the French technique of défécation) or approximated by back-sweetening with juice. Tends to a rich fullness. MLF notes of spicy-smoky, phenolic, and farmyard are common but not required (just as with English style), and must not be pronounced. The French expect more subtle MLF character than do the English. Medium to full, mouth-filling. Moderate tannin, perceived mainly as astringency. Carbonation moderate to champagne-like, but at higher levels it must not gush or foam. Typically made sweet to balance the tannin levels from the traditional apple varieties.",
-        "overall_impression": "Medium to sweet, full-bodied, rich.",
-        "notes": "Medium to sweet, full-bodied, rich.",
-        "examples": "[US] West County Reine de Pomme (MA), [France] Eric Bordelet (various), Etienne Dupont, Etienne Dupont Organic, Bellot",
-        "entry_instructions": "Entrants MUST specify carbonation level (3 levels). Entrants MUST specify sweetness (medium to sweet only, 3 levels). Entrants MAY specify variety of apple for a single varietal cider; if specified, varietal character will be expected. Varieties: Nehou, Muscadet de Dieppe, Reine des Pommes, Michelin, etc.",
-        "original_gravity": {
-          "minimum": {
-            "unit": "sg",
-            "value": 1.05
-          },
-          "maximum": {
-            "unit": "sg",
-            "value": 1.065
-          }
-        },
-        "final_gravity": {
-          "minimum": {
-            "unit": "sg",
-            "value": 1.01
-          },
-          "maximum": {
-            "unit": "sg",
-            "value": 1.02
-          }
-        },
-        "alcohol_by_volume": {
-          "minimum": {
-            "unit": "%",
-            "value": 3
-          },
-          "maximum": {
-            "unit": "%",
-            "value": 6
-          }
-        }
-      },
-      {
-        "name": "New World Perry",
-        "category": "Standard Cider And Perry",
-        "category_id": "C1",
-        "style_id": "C1D",
-        "style_letter": "D",
-        "style_guide": "BJCP2015",
-        "type": "cider",
-        "appearance": "Slightly cloudy to clear. Generally quite pale.",
-        "flavor": "There is a pear character, but not obviously fruity. It tends toward that of a young white wine. No bitterness.",
-        "mouthfeel": "Relatively full, low to moderate tannin apparent as astringency.",
-        "comments": "Some table pears may contain significant amounts of sorbitol, in which case a dry perry may give an impression of sweetness due to sorbitol in the pears. Perception of sorbitol as sweet is highly variable from one person to the next. Hence, entrants should specify sweetness according to actual residual sugar amount, and judges must be aware that they might perceive more sweetness than how the perry was entered.",
-        "profile": "Slightly cloudy to clear. Generally quite pale.There is a pear character, but not obviously fruity. It tends toward that of a young white wine. No bitterness. Relatively full, low to moderate tannin apparent as astringency. Some table pears may contain significant amounts of sorbitol, in which case a dry perry may give an impression of sweetness due to sorbitol in the pears. Perception of sorbitol as sweet is highly variable from one person to the next. Hence, entrants should specify sweetness according to actual residual sugar amount, and judges must be aware that they might perceive more sweetness than how the perry was entered.",
-        "overall_impression": "Mild. Medium to medium-sweet. Still to lightly sparkling. Only very slight acetification is acceptable. Mousiness, ropy/oily characters are serious faults.",
-        "notes": "Mild. Medium to medium-sweet. Still to lightly sparkling. Only very slight acetification is acceptable. Mousiness, ropy/oily characters are serious faults.",
-        "examples": "[US] White Winter Paarynat (WI), Uncle John's Fruit House Winery Perry (MI)",
-        "entry_instructions": "Entrants MUST specify carbonation level (3 levels). Entrants MUST specify sweetness (5 categories). Varieties: Bartlett, Kiefer, Comice, Conference, etc.",
-        "original_gravity": {
-          "minimum": {
-            "unit": "sg",
-            "value": 1.05
-          },
-          "maximum": {
-            "unit": "sg",
-            "value": 1.06
-          }
-        },
-        "final_gravity": {
-          "minimum": {
-            "unit": "sg",
-            "value": 1
-          },
-          "maximum": {
-            "unit": "sg",
-            "value": 1.02
-          }
-        },
-        "alcohol_by_volume": {
-          "minimum": {
-            "unit": "%",
-            "value": 5
-          },
-          "maximum": {
-            "unit": "%",
-            "value": 7
-          }
-        }
-      },
-      {
-        "name": "Traditional Perry",
-        "category": "Standard Cider And Perry",
-        "category_id": "C1",
-        "style_id": "C1E",
-        "style_letter": "E",
-        "style_guide": "BJCP2015",
-        "type": "cider",
-        "appearance": "Slightly cloudy to clear. Generally quite pale.",
-        "flavor": "There is a pear character, but not obviously fruity. It tends toward that of a young white wine. Some slight bitterness.",
-        "mouthfeel": "Relatively full, moderate to high tannin apparent as astringency.",
-        "comments": "Note that a dry perry may give an impression of sweetness due to sorbitol in the pears, and perception of sorbitol as sweet is highly variable from one person to the next. Hence entrants should specify sweetness according to actual residual sugar amount, and judges must be aware that they might perceive more sweetness than how the perry was entered.",
-        "profile": "Slightly cloudy to clear. Generally quite pale.There is a pear character, but not obviously fruity. It tends toward that of a young white wine. Some slight bitterness. Relatively full, moderate to high tannin apparent as astringency. Note that a dry perry may give an impression of sweetness due to sorbitol in the pears, and perception of sorbitol as sweet is highly variable from one person to the next. Hence entrants should specify sweetness according to actual residual sugar amount, and judges must be aware that they might perceive more sweetness than how the perry was entered.",
-        "overall_impression": "Tannic. Medium to medium-sweet. Still to lightly sparkling. Only very slight acetification is acceptable. Mousiness and ropy/oily characters are serious faults.",
-        "notes": "Tannic. Medium to medium-sweet. Still to lightly sparkling. Only very slight acetification is acceptable. Mousiness and ropy/oily characters are serious faults.",
-        "examples": "[US] Æppeltreow Orchard Oriole Perry (WI); [France] Bordelet Poire Authentique and Poire Granit, Christian Drouin Poire, [UK] Oliver's Classic, Blakeney Red, and Herefordshire Dry; Hogan's Vintage Perry.",
-        "entry_instructions": "Entrants MUST specify carbonation level (3 levels). Entrants MUST specify sweetness (5 categories). Entrants MUST state variety of pear(s) used. Varieties: Butt, Gin, Brandy, Barland, Blakeney Red, Thorn, Moorcroft, etc.",
-        "original_gravity": {
-          "minimum": {
-            "unit": "sg",
-            "value": 1.05
-          },
-          "maximum": {
-            "unit": "sg",
-            "value": 1.07
-          }
-        },
-        "final_gravity": {
-          "minimum": {
-            "unit": "sg",
-            "value": 1
-          },
-          "maximum": {
-            "unit": "sg",
-            "value": 1.02
-          }
-        },
-        "alcohol_by_volume": {
-          "minimum": {
-            "unit": "%",
-            "value": 5
-          },
-          "maximum": {
-            "unit": "%",
-            "value": 9
-          }
-        }
-      },
-      {
-        "name": "New England Cider",
-        "category": "Specialty Cider And Perry",
-        "category_id": "C2",
-        "style_id": "C2A",
-        "style_letter": "A",
-        "style_guide": "BJCP2015",
-        "type": "cider",
-        "appearance": "Clear to brilliant, pale to medium yellow.",
-        "flavor": "A flavorful cider with robust apple character, strong alcohol, and derivative flavors from sugar additives; traditionally dry.",
-        "mouthfeel": "Substantial, alcoholic. Moderate tannin.",
-        "comments": "Additives may include white and brown sugars, molasses, small amounts of honey, and raisins. Additives are intended to raise OG well above that which would be achieved by apples alone. This style is sometimes barrel-aged, in which case there will be oak character as with a barrel-aged wine. If the barrel was formerly used to age spirits, some flavor notes from the spirit (e.g., whisky or rum) may also be present, but must be subtle.",
-        "profile": "Clear to brilliant, pale to medium yellow.A flavorful cider with robust apple character, strong alcohol, and derivative flavors from sugar additives; traditionally dry. Substantial, alcoholic. Moderate tannin. Additives may include white and brown sugars, molasses, small amounts of honey, and raisins. Additives are intended to raise OG well above that which would be achieved by apples alone. This style is sometimes barrel-aged, in which case there will be oak character as with a barrel-aged wine. If the barrel was formerly used to age spirits, some flavor notes from the spirit (e.g., whisky or rum) may also be present, but must be subtle.",
-        "notes": "",
-        "examples": "[US] Snowdrift Semi-Dry (WA), Blackbird Cider Works New England Style (NY).",
-        "entry_instructions": "Entrants MUST specify if the cider was barrel-fermented or aged. Entrants MUST specify carbonation level (3 levels). Entrants MUST specify sweetness (5 levels). Varieties: Northern Spy, Roxbury Russet, Golden Russet, Baldwin, etc.; many traditional New England apples.",
-        "original_gravity": {
-          "minimum": {
-            "unit": "sg",
-            "value": 1.06
-          },
-          "maximum": {
-            "unit": "sg",
-            "value": 1.1
-          }
-        },
-        "final_gravity": {
-          "minimum": {
-            "unit": "sg",
-            "value": 0.995
-          },
-          "maximum": {
-            "unit": "sg",
-            "value": 1.02
-          }
-        },
-        "alcohol_by_volume": {
-          "minimum": {
-            "unit": "%",
-            "value": 7
-          },
-          "maximum": {
-            "unit": "%",
-            "value": 13
-          }
-        }
-      },
-      {
-        "name": "Cider with Other Fruit",
-        "category": "Specialty Cider And Perry",
-        "category_id": "C2",
-        "style_id": "C2B",
-        "style_letter": "B",
-        "style_guide": "BJCP2015",
-        "type": "cider",
-        "appearance": "Clear to brilliant. Color appropriate to added fruit, but should not show oxidation characteristics. (For example, red berries should give red-to-purple color, not orange.)",
-        "flavor": "The cider character must be present and must fit with the other fruits. It is a fault if the added fruit(s) completely dominate; a judge might ask, Would this be different if neutral spirits replaced the cider? A fruit cider should not be like an alco-pop. Oxidation is a fault.",
-        "mouthfeel": "Substantial. May be significantly tannic, depending on fruit added.",
-        "profile": "Clear to brilliant. Color appropriate to added fruit, but should not show oxidation characteristics. (For example, red berries should give red-to-purple color, not orange.)The cider character must be present and must fit with the other fruits. It is a fault if the added fruit(s) completely dominate; a judge might ask, Would this be different if neutral spirits replaced the cider? A fruit cider should not be like an alco-pop. Oxidation is a fault. Substantial. May be significantly tannic, depending on fruit added.",
-        "overall_impression": "Like a white wine with complex flavors. The apple character must marry with the added fruit so that neither one dominates the other.",
-        "notes": "Like a white wine with complex flavors. The apple character must marry with the added fruit so that neither one dominates the other.",
-        "examples": "[US] West County Blueberry-Apple Wine (MA), Bellwether Cherry Street (NY), Uncle John's Fruit Farm Winery Apple Cherry, Apple Blueberry, and Apricot Apple Hard Cider (MI)",
-        "entry_instructions": "Entrants MUST specify carbonation level (3 levels). Entrants MUST specify sweetness (5 categories). Entrants MUST specify all fruit(s) and/or fruit juice(s) added.",
-        "original_gravity": {
-          "minimum": {
-            "unit": "sg",
-            "value": 1.045
-          },
-          "maximum": {
-            "unit": "sg",
-            "value": 1.07
-          }
-        },
-        "final_gravity": {
-          "minimum": {
-            "unit": "sg",
-            "value": 0.995
-          },
-          "maximum": {
-            "unit": "sg",
-            "value": 1.01
-          }
-        },
-        "alcohol_by_volume": {
-          "minimum": {
-            "unit": "%",
-            "value": 5
-          },
-          "maximum": {
-            "unit": "%",
-            "value": 9
-          }
-        }
-      },
-      {
-        "name": "Applewine",
-        "category": "Specialty Cider And Perry",
-        "category_id": "C2",
-        "style_id": "C2C",
-        "style_letter": "C",
-        "style_guide": "BJCP2015",
-        "type": "cider",
-        "appearance": "Clear to brilliant, pale to medium-gold. Cloudiness or hazes are inappropriate.",
-        "flavor": "Comparable to a New World Cider. Cider character must be distinctive. Very dry to sweet, although often dry.",
-        "mouthfeel": "Lighter than other ciders, because higher alcohol is derived from addition of sugar rather than juice. Carbonation may range from still to champagne-like.",
-        "profile": "Clear to brilliant, pale to medium-gold. Cloudiness or hazes are inappropriate.Comparable to a New World Cider. Cider character must be distinctive. Very dry to sweet, although often dry. Lighter than other ciders, because higher alcohol is derived from addition of sugar rather than juice. Carbonation may range from still to champagne-like.",
-        "overall_impression": "Typically like a dry white wine, balanced, and with low astringency and bitterness.",
-        "notes": "Typically like a dry white wine, balanced, and with low astringency and bitterness.",
-        "examples": "[US] Uncle John's Fruit House Winery Fruit House Apple (MI), McClure's Sweet Apple Wine (IN).",
-        "entry_instructions": "Entrants MUST specify carbonation level (3 levels). Entrants MUST specify sweetness (5 levels).",
-        "original_gravity": {
-          "minimum": {
-            "unit": "sg",
-            "value": 1.07
-          },
-          "maximum": {
-            "unit": "sg",
-            "value": 1.1
-          }
-        },
-        "final_gravity": {
-          "minimum": {
-            "unit": "sg",
-            "value": 0.995
-          },
-          "maximum": {
-            "unit": "sg",
-            "value": 1.02
-          }
-        },
-        "alcohol_by_volume": {
-          "minimum": {
-            "unit": "%",
-            "value": 9
+            "value": 4.5
           },
           "maximum": {
             "unit": "%",
             "value": 12
           }
-        }
+        },
+        "color": {
+          "minimum": {
+            "unit": "SRM",
+            "value": 14
+          },
+          "maximum": {
+            "unit": "SRM",
+            "value": 25
+          }
+        },
+        "examples": "Montegioco Open Mind, Birrificio Barley BB5-10, Birrificio del Forte Il Tralcio, Viess Beer al mosto di gewurtztraminer, CRAK IGA Cabernet, Birrificio Apuano Ninkasi, Luppolajo Mons Rubus",
+        "style_guide": "BJCP2021",
+        "type": "beer"
       },
       {
-        "name": "Ice Cider",
-        "category": "Specialty Cider And Perry",
-        "category_id": "C2",
-        "style_id": "C2D",
-        "style_letter": "D",
-        "style_guide": "BJCP2015",
-        "type": "cider",
-        "appearance": "Brilliant. Color is deeper than a standard cider, gold to amber.",
-        "flavor": "Fruity, smooth, sweet-tart. Acidity must be enough to prevent it being cloying.",
-        "mouthfeel": "Full body. May be tannic (astringent and/or bitter) but this should be slight, to moderate at most.",
-        "profile": "Brilliant. Color is deeper than a standard cider, gold to amber.Fruity, smooth, sweet-tart. Acidity must be enough to prevent it being cloying. Full body. May be tannic (astringent and/or bitter) but this should be slight, to moderate at most.",
-        "notes": "",
-        "examples": "[US] various from Eden Ice Cider Company and Champlain Orchards. [Canada] Domaine Pinnacle, Les Vergers de la Colline, and Cidrerie St-Nicolas (Quebec).",
-        "entry_instructions": "Entrants MUST specify starting gravity, final gravity or residual sugar, and alcohol level. Entrants MUST specify carbonation level (3 levels). Varieties: Usually North American classic table fruit such as McIntosh or Cortland.",
+        "name": "Catharina Sour",
+        "category": "Brazilian Styles",
+        "category_id": "X",
+        "style_id": "X4",
+        "notes": "Estilo sugerido para inscrição: Categoria 29 (Fruit Beer)",
+        "impressao_geral": "Uma cerveja refrescante de trigo, ácida e com frutas, possui um caráter de frutas vivida e uma acidez lática limpa. A graduação alcoólica contida, o corpo leve, a carbonatação elevada, e amargor abaixo da percepção fazem com que a fruta fresca seja o destaque. A fruta não precisa ser de caráter tropical, mas normalmente apresenta este perfil.",
+        "aroma": "Médio à alto caráter de fruta, reconhecível e identificável de forma imediata. Uma acidez lática limpa de intensidade baixa à media que complementa a fruta. Malte tipicamente neutro, mas pode apresentar notas de pão e grãos em caráter de apoio. Fermentação limpa sem caráter de levedura selvagem ou funky. Sem aroma de lúpulo. Sem álcool agressivo. Especiarias, ervas e vegetais devem complementar a fruta se estiverem presentes.",
+        "aparencia": "Coloração tipicamente bastante clara – amarela-palha até dourada. Espuma branca de média à alta formação e média à boa retenção. A coloração da espuma e da cerveja podem ser alteradas e ficar com a coloração da fruta. Claridade pode ser bastante límpida até turva. Efervescente.",
+        "sabor": "Sabor de fruta fresca dominante em intensidade média à alta, com uma acidez lática limpa de intensidade baixa à média-alta de forma complementar mas notável. A fruta deve ter um caráter fresco, sem parecer cozida, parecida com geléia ou artificial. O malte é normalmente ausente, se presente pode ter um caráter baixo de grãos ou pão, mas não deve nunca competir com a fruta ou a acidez. Amargor do lúpulo abaixo do limiar de percepção. Final seco com um retrogosto limpo, ácido e frutado. Sem sabor de lúpulo, notas acéticas, diacetil, ou sabores funk oriundos de Brett. Especiarias, ervas e vegetais são opcionais e em caráter complementar à fruta.",
+        "sensacao_de_boca": "Corpo baixo à médio-baixo. Carbonatação média à alta. Sem aquecimento alcoólico. Acidez baixa à média-baixa sem ser agressivamente ácida ou adstringente.",
+        "comentarios": "Melhor servida fresca. A acidez pode fazer com que a cerveja pareça mais seca e com um corpo menor do que a gravidade final sugere. Uma Berliner Weisse com adição de frutas deve ser inscrita na categoria 29A Fruit Beer.",
+        "historia": "Os exemplos individuais existiam com nomes diferentes anteriormente no Brasil, mas o estilo se tornou popular com esse nome depois que foi definido formalmente em 2021 durante uma reunião entre cervejeiros profissionais e caseiros em Santa Catarina. Utilizando ingredientes locais adequados para um clima quente, o estilo se espalhou para outros estados do Brasil e além, sendo um estilo muito popular na América do Sul – tanto em competições comerciais como caseiras.",
+        "ingredientes": "Malte Pilsen com malte de trigo ou trigo não maltado. A técnica de Kettle Sour com o uso de Lacto é a mais comum de ser utilizada, seguida por uma fermentação com uma levedura ale neutra. A fruta é tipicamente adicionada nos estágios finais da fermentação. Frutas da estação frescas, comumente tropicais. Especiarias, ervas e vegetais são opcionais, mas devem sempre estar em caráter de apoio e elevar a percepção da fruta.",
+        "comparacoes_de_estilo": "Como uma Berliner Weisse mais forte, mas com fruta fresca e sem Brett. Menos ácida do que Lambic e Gueuze e sem o caráter da Brett. A partir do guia de estilos 2021, cervejas semelhantes podem ser inscritas no estilo mais amplo 28C Wild Specialty Beer Style.",
+        "exemplos_comerciais": "Armada Daenerys, Blumenau Catharina Sour Pêssego, Istepô Goiabêra, Itajahy Catharina Araçá Sour, Liffey Coroa Real, UNIKA Tangerina Clemenules",
+        "marcacoes": "estilo-craft, fruta, ácida, cerveja-specialty",
         "original_gravity": {
           "minimum": {
             "unit": "sg",
-            "value": 1.13
+            "value": 1.039
           },
           "maximum": {
             "unit": "sg",
-            "value": 1.18
+            "value": 1.048
+          }
+        },
+        "international_bitterness_units": {
+          "minimum": {
+            "unit": "IBUs",
+            "value": 2
+          },
+          "maximum": {
+            "unit": "IBUs",
+            "value": 8
           }
         },
         "final_gravity": {
           "minimum": {
             "unit": "sg",
-            "value": 1.06
+            "value": 1.004
           },
           "maximum": {
             "unit": "sg",
-            "value": 1.085
+            "value": 1.012
           }
         },
         "alcohol_by_volume": {
           "minimum": {
             "unit": "%",
-            "value": 7
+            "value": 4
           },
           "maximum": {
             "unit": "%",
-            "value": 13
+            "value": 5.5
           }
-        }
+        },
+        "color": {
+          "minimum": {
+            "unit": "SRM",
+            "value": 2
+          },
+          "maximum": {
+            "unit": "SRM",
+            "value": 6
+          }
+        },
+        "style_guide": "BJCP2021",
+        "type": "beer"
       },
       {
-        "name": "Cider with Herbs/Spices",
-        "category": "Specialty Cider And Perry",
-        "category_id": "C2",
-        "style_id": "C2E",
-        "style_letter": "E",
-        "style_guide": "BJCP2015",
-        "type": "cider",
-        "appearance": "Clear to brilliant. Color appropriate to added botanicals.",
-        "flavor": "The cider character must be present and must fit with the botanicals. As with a fruit cider, it is a fault if the botanicals dominate; a judge might ask, Would this be different if neutral spirits replaced the cider? Oxidation of either the base cider or the additions is a fault.",
-        "mouthfeel": "Average or more. Cider may be tannic from effect of botanicals but must not be bitter from over-extraction.",
-        "profile": "Clear to brilliant. Color appropriate to added botanicals.The cider character must be present and must fit with the botanicals. As with a fruit cider, it is a fault if the botanicals dominate; a judge might ask, Would this be different if neutral spirits replaced the cider? Oxidation of either the base cider or the additions is a fault. Average or more. Cider may be tannic from effect of botanicals but must not be bitter from over-extraction.",
-        "overall_impression": "Like a white wine with complex flavors. The apple character must marry with the botanicals and give a balanced result.",
-        "notes": "Like a white wine with complex flavors. The apple character must marry with the botanicals and give a balanced result.",
-        "examples": "[US] Colorado Cider Grasshop-ah (CO), Wandering Aengus Anthem Hops (OR).",
-        "entry_instructions": "Entrants MUST specify carbonation level (3 levels). Entrants MUST specify sweetness (5 categories). Entrants MUST specify all botanicals added. If hops are used, entrant must specify variety/varieties used.",
+        "name": "New Zealand Pilsner",
+        "category": "New Zealand Styles",
+        "category_id": "X",
+        "style_id": "X5",
+        "notes": "Suggested style placement: Category 12 (Pale Commonwealth Beer)",
+        "impression": "A pale, dry, golden-colored, cleanly-fermented beer showcasing the characteristic tropical, citrusy, fruity, grassy New Zealand-type hops. Medium body, soft mouthfeel, and smooth palate and finish, with a neutral to bready malt base provide the support for this very drinkable, refreshing, hop-forward beer.",
+        "aroma": "Medium to high hop aroma reflective of modern New World hop varieties, often showcasing tropical fruit, citrus (lime, white grapefruit), gooseberry, honeydew melon, with a light green bell pepper or grassy aspect. Medium-low to medium malt in support, with a neutral to bready-crackery quality. Very low DMS acceptable but not required. Neutral, clean yeast character, optionally with a very light sulfury quality. The hop character should be most prominent in the balance, but some malt character must be evident.",
+        "appearance": "Straw to deep gold in color, but most examples are yellow-gold. Generally quite clear to brilliant clarity; haziness is a fault. Creamy, long-lasting white head.",
+        "flavor": "Medium to high hop bitterness, cleanly bitter not harsh, most prominent in the balance and lasting into the aftertaste. Medium to high hop flavor with similar characteristics as the aroma (tropical, citrus, gooseberry, melon, grass). Medium to medium-low malt flavor, grainy-sweet, bready, or crackery. Clean fermentation profile (fermentation esters are a fault). Dry to off-dry with a clean, smooth finish and bitter but not harsh aftertaste. The malt may suggest an impression of sweetness but the beer should not be literally sweet. The finish may be dry but not seem crisp or biting. The balance should always be bitter, but the malt flavor must be noticeable.",
+        "mouthfeel": "Medium to medium-light body. Medium to medium-high carbonation. Smoothness is the most prominent impression. Never harsh nor astringent.",
+        "comments": "The hop aromatics often have a similar quality as many New Zealand Sauvignon Blanc wines, with tropical fruit, grassy, melon, and lime aromatics. Often brewed as a hybrid style in New Zealand using a neutral ale yeast at cool temperatures. Limiting the sulfur content of the finished product is important since it can clash with the hop character.",
+        "history": "Largely defined by the original created at Emerson’s Brewery in the mid-1990s, New Zealand Pilsner has expanded in character as the varieties of New Zealand hops have expanded in number and popularity.",
+        "ingredients": "New Zealand hop varieties, such as Motueka, Riwake, Nelson Sauvin, often with Pacific Jade for bittering. Other new world varieties from Australia or the US may be used, if they have similar characteristics. Pale base malts, Pilsner or pale types, perhaps with a small percentage of wheat malt. Fairly low-mineral water, typically with more chloride than sulfate. Clean lager yeast or very neutral ale yeast.",
+        "style_comparison": "Compared to a German Pils, not as crisp and dry in the finish with a softer, maltier presentation and a fuller body. Compared to a Czech Premium Pale Lager, less malt complexity, a cleaner fermentation. Similar in balance to a Kolsch or British Golden Ale, but with a hoppier aroma. Compared to any of these German styles, showcasing New Zealand hop varieties with tropical, citrusy, fruity, grassy characteristics, often with a white wine-like character. Should not be as hoppy or bitter in balance as an IPA.",
+        "tags": "bitter, pale-color, standard-strength, bottom-fermented, hoppy, pilsner-family, lagered, craft-style, pacific",
         "original_gravity": {
           "minimum": {
             "unit": "sg",
-            "value": 1.045
+            "value": 1.044
           },
           "maximum": {
             "unit": "sg",
-            "value": 1.07
+            "value": 1.056
+          }
+        },
+        "international_bitterness_units": {
+          "minimum": {
+            "unit": "IBUs",
+            "value": 25
+          },
+          "maximum": {
+            "unit": "IBUs",
+            "value": 45
           }
         },
         "final_gravity": {
           "minimum": {
             "unit": "sg",
-            "value": 0.995
+            "value": 1.009
           },
           "maximum": {
             "unit": "sg",
-            "value": 1.01
+            "value": 1.014
           }
         },
         "alcohol_by_volume": {
           "minimum": {
             "unit": "%",
-            "value": 5
+            "value": 4.5
           },
           "maximum": {
             "unit": "%",
-            "value": 9
-          }
-        }
-      },
-      {
-        "name": "Specialty Cider/Perry",
-        "category": "Specialty Cider And Perry",
-        "category_id": "C2",
-        "style_id": "C2F",
-        "style_letter": "F",
-        "style_guide": "BJCP2015",
-        "type": "cider",
-        "appearance": "Clear to brilliant. Color should be that of a standard cider unless other ingredients are expected to contribute color.",
-        "flavor": "The cider character must always be present, and must fit with added ingredients. If a spirit barrel was used, the character of the spirit (rum, whiskey, etc.) must be no more than just recognizable; it must not be a substantial element of the flavor.",
-        "mouthfeel": "Average body, may show tannic (astringent) or heavy body as determined by other ingredients.",
-        "profile": "Clear to brilliant. Color should be that of a standard cider unless other ingredients are expected to contribute color.The cider character must always be present, and must fit with added ingredients. If a spirit barrel was used, the character of the spirit (rum, whiskey, etc.) must be no more than just recognizable; it must not be a substantial element of the flavor. Average body, may show tannic (astringent) or heavy body as determined by other ingredients.",
-        "notes": "",
-        "examples": "[US] Finn River Fire Barrel (WA)",
-        "entry_instructions": "Entrants MUST specify all ingredients. Entrants MUST specify carbonation level (3 levels). Entrants MUST specify sweetness (5 categories).",
-        "original_gravity": {
-          "minimum": {
-            "unit": "sg",
-            "value": 1.045
-          },
-          "maximum": {
-            "unit": "sg",
-            "value": 1.1
+            "value": 5.8
           }
         },
-        "final_gravity": {
+        "color": {
           "minimum": {
-            "unit": "sg",
-            "value": 0.995
+            "unit": "SRM",
+            "value": 2
           },
           "maximum": {
-            "unit": "sg",
-            "value": 1.02
+            "unit": "SRM",
+            "value": 6
           }
         },
-        "alcohol_by_volume": {
-          "minimum": {
-            "unit": "%",
-            "value": 5
-          },
-          "maximum": {
-            "unit": "%",
-            "value": 12
-          }
-        }
+        "examples": "Croucher New Zealand Pilsner, Emerson’s Pilsner, Liberty Halo Pilsner, Panhead Port Road Pilsner, Sawmill Pilsner, Tuatara Mot Eureka",
+        "style_guide": "BJCP2021",
+        "type": "beer"
       }
     ]
   }
