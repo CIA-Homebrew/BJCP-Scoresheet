@@ -219,6 +219,26 @@ block content
                       name="subcategory",
                       placeholder="Subcategory Name (please spell out)"
                     )
+                #baseStyle.form-row.py-1(style="display:none;")
+                  .form-group.col-sm-2.col-form-label
+                    label(for="baseStyleCategory") Base Style
+                  .form-group.col-sm-2
+                    select#baseStyleCategory.form-control(
+                      name="baseStyleCategory",
+                      onchange="update_tooltips()"
+                    )
+                      option(hidden, disabled, selected, value)
+                      each val in [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34]
+                        option= val
+                  .form-group.col-sm-2
+                    select#baseStyleSub.form-control(
+                      name="baseStyleSub",
+                      onchange="update_tooltips()"
+                    )
+                      option(hidden, disabled, selected, value)
+                      each val in ['A','B','C','D','E','F']
+                        option= val
+                  #baseStyleName.form-group.col.ml-2
               .form-group
                 .form-row.py-1
                   .form-group.col-3.col-form-label
@@ -260,6 +280,7 @@ block content
                       role="button",
                       data-toggle="popover",
                       data-trigger="focus",
+                      data-html="true",
                       title="BJCP Aroma Guidelines",
                       data-content="Please Select a BJCP Category and Subcategory"
                     ) Style Guidelines
@@ -524,6 +545,7 @@ block content
                       role="button",
                       data-toggle="popover",
                       data-trigger="focus",
+                      data-html="true",
                       title="BJCP Flavor Guidelines",
                       data-content="Please Select a BJCP Category and Subcategory"
                     ) Style Guidelines
@@ -732,6 +754,7 @@ block content
                       role="button",
                       data-toggle="popover",
                       data-trigger="focus",
+                      data-html="true",
                       title="BJCP Mouthfeel Guidelines",
                       data-content="Please Select a BJCP Category and Subcategory"
                     ) Style Guidelines

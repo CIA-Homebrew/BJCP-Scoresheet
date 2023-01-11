@@ -105,8 +105,14 @@ $(document).ready(async function () {
   load_bjcp_data().then((allCategories) => {
     // Populate style selector with category values
     $("#category option:gt(0)").remove();
+    $("#baseStyleCategory option:gt(0)").remove();
+
     Object.keys(allCategories).forEach((category) => {
       $("#category").append(
+        $(`<option>${category}</option>`).attr("value", category)
+      );
+
+      $("#baseStyleCategory").append(
         $(`<option>${category}</option>`).attr("value", category)
       );
     });
@@ -133,6 +139,42 @@ $(document).ready(async function () {
     return [category, sub];
   };
 
+  update_basestyle_subcat = () => {
+    const baseStyleCategory = $("#baseStyleCategory").val();
+    let baseStyleSub = $("#baseStyleSub").val();
+
+    if (baseStyleCategory) {
+      $("#baseStyleSub option:gt(0)").remove();
+      Object.keys(bjcp_data[baseStyleCategory]).forEach((subcat) => {
+        $("#baseStyleSub").append(
+          $(`<option>${subcat}</option>`).attr("value", subcat)
+        );
+      });
+      $("#baseStyleSub").val(baseStyleSub);
+    } else {
+      $("#baseStyleSub option:gt(0)").remove();
+    }
+  };
+
+  generateAppearanceTooltip = (text, maxSrm, minSrm) =>
+    `<div>
+        <div>${text}</div>
+        <div style="display: flex; justify-content: space-evenly;">
+          <div style="background-color: ${srm_to_hex(minSrm)}; color: ${
+      minSrm > 20 ? "white" : "black"
+    }; height: 50px; width: 33%; text-align: center;">
+            <div>Minimum: </div>
+            <div>${minSrm} SRM</div>
+          </div>
+          <div style="background-color: ${srm_to_hex(maxSrm)}; color: ${
+      minSrm > 20 ? "white" : "black"
+    }; height: 50px; width: 33%; text-align: center;">
+            <div>Maximum: </div>
+            <div>${maxSrm} SRM</div>
+          </div>
+        </div>
+      </div>`;
+
   update_tooltips = () => {
     const popoverIds = [
       "bjcp_aroma",
@@ -145,8 +187,72 @@ $(document).ready(async function () {
       "bjcp_comparison",
       "bjcp_examples",
     ];
+    let categoriesWithBaseStyles = [];
+
+    switch (styleguide) {
+      case "BJCP2015":
+        categoriesWithBaseStyles = [
+          "28A",
+          "28B",
+          "28C",
+          "29A",
+          "29B",
+          "29C",
+          "30A",
+          "30D",
+          "31A",
+          "31B",
+          "32A",
+          "32B",
+          "33A",
+          "33B",
+          "34A",
+          "34B",
+        ];
+        break;
+      case "BJCP2021":
+      default:
+        categoriesWithBaseStyles = [
+          "28A",
+          "28B",
+          "28C",
+          "29A",
+          "29B",
+          "29C",
+          "30A",
+          "30D",
+          "31A",
+          "31B",
+          "32A",
+          "32B",
+          "33A",
+          "33B",
+          "34A",
+          "34B",
+        ];
+        break;
+    }
+
     const [category, sub] = update_subcat();
+
+    const baseStyleCategoryEnabled = categoriesWithBaseStyles.includes(
+      category + sub
+    );
+    let baseStyleCategory, baseStyleSub;
+
     $("#subcategory").val(bjcp_data[category]?.[sub]?.name);
+
+    if (baseStyleCategoryEnabled) {
+      $("#baseStyle").show();
+      update_basestyle_subcat();
+      baseStyleCategory = $("#baseStyleCategory").val();
+      baseStyleSub = $("#baseStyleSub").val();
+      $("#baseStyleName").text(
+        bjcp_data[baseStyleCategory]?.[baseStyleSub]?.name
+      );
+    } else {
+      $("#baseStyle").hide()[(baseStyleCategory, baseStyleSub)] = null;
+    }
 
     if (!bjcp_data?.[category]?.[sub]) {
       popoverIds.forEach((domId) => {
@@ -161,30 +267,36 @@ $(document).ready(async function () {
         if (section === "appearance") {
           const minSrm = bjcp_data[category][sub].stats?.srm.low;
           const maxSrm = bjcp_data[category][sub].stats?.srm.high;
-          const appearance_content = `
-            <div>
-              <div>${bjcp_data[category][sub][section]}</div>
-              <div style="display: flex; justify-content: space-evenly;">
-                <div style="background-color: ${srm_to_hex(minSrm)}; color: ${
-            minSrm > 20 ? "white" : "black"
-          }; height: 50px; width: 33%; text-align: center;">
-                  <div>Minimum: </div>
-                  <div>${minSrm} SRM</div>
-                </div>
-                <div style="background-color: ${srm_to_hex(maxSrm)}; color: ${
-            minSrm > 20 ? "white" : "black"
-          }; height: 50px; width: 33%; text-align: center;">
-                  <div>Maximum: </div>
-                  <div>${maxSrm} SRM</div>
-                </div>
-              </div>
-            </div>`;
+          let appearance_content = generateAppearanceTooltip(
+            bjcp_data[category][sub][section],
+            maxSrm,
+            minSrm
+          );
+          if (baseStyleCategoryEnabled && baseStyleCategory && baseStyleSub) {
+            const baseMinSrm =
+              bjcp_data[baseStyleCategory][baseStyleSub].stats?.srm.low;
+            const baseMaxSrm =
+              bjcp_data[baseStyleCategory][baseStyleSub].stats?.srm.high;
+            appearance_content +=
+              "<br><strong>Base Style Guidelines:</strong><br>" +
+              generateAppearanceTooltip(
+                bjcp_data[baseStyleCategory][baseStyleSub][section],
+                baseMaxSrm,
+                baseMinSrm
+              );
+          }
 
           $(`#${domId}`).attr("data-content", appearance_content);
         } else {
           $(`#${domId}`).attr(
             "data-content",
-            bjcp_data[category][sub][section]
+            baseStyleCategoryEnabled && baseStyleCategory && baseStyleSub
+              ? `<div>
+                <div>${bjcp_data[category][sub][section]}</div>
+                <br><strong>Base Style Guidelines:</strong><br>
+                <div>${bjcp_data[baseStyleCategory][baseStyleSub][section]}</div>
+              </div>`
+              : bjcp_data[category][sub][section]
           );
         }
       });

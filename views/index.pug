@@ -5,16 +5,16 @@ block content
     .container
       .logo_holder.mx-auto.text-center
         picture.img-fluid.d-inline-block
-          source(srcset="/images/uploads/default-competition/club-logo.png")
           img(
-            src="/images/page-logos/club-logo.png",
+            src="/images/uploads/default-competition/club-logo.png",
+            onerror="this.onerror=null; this.width='1px'; this.src='/images/page-logos/empty-logo.png'",
             alt="Logo",
             height="400px"
           )
         picture.img-fluid.d-inline-block
-          source(srcset="/images/uploads/default-competition/comp-logo.png")
           img(
-            src="/images/page-logos/comp-logo.png",
+            src="/images/uploads/default-competition/comp-logo.png",
+            onerror="this.onerror=null; this.src='/images/page-logos/bjcp-scoresheets-logo.png'",
             alt="Logo",
             height="400px"
           )
@@ -108,7 +108,7 @@ block content
                               if flight.scoresheets.length
                                 - var hasPlacesSet = flight.scoresheets.filter((scoresheet) => Number(scoresheet.place > 0)).length > 0;
                                 - var hasAdvancesSet = flight.scoresheets.filter((scoresheet) => Boolean(scoresheet.mini_boss_advanced)).length > 0;
-                                each scoresheet in flight.scoresheets
+                                each scoresheet in flight.scoresheets.sort((a,b) => a.flight_position - b.flight_position)
                                   tr(id=`${scoresheet.id}_row`)
                                     td(scope="row") #{scoresheet.entry_number}
                                     td #{scoresheet.category + scoresheet.sub} - #{scoresheet.subcategory}
@@ -159,7 +159,7 @@ block content
                                           )
                                     td.text-center.d-flex.justify-content-between
                                       button.btn.btn-primary.btn-sm.px-1.py-1.mr-2(
-                                        onclick=`editEntry('${scoresheet.id}', '${scoresheet.category.includes('M') ? 'mead' : 'beer'}')`,
+                                        onclick=`editEntry('${scoresheet.id}', '${scoresheet.category && scoresheet.category.includes('M') ? 'mead' : 'beer'}')`,
                                         title="Edit Scoresheet"
                                       ) <span class="material-icons align-middle" style="font-size: 18px">create</span>
                                       button.btn.btn-danger.btn-sm.px-1.py-1.m-0(
