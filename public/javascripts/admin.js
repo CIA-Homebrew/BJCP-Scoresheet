@@ -777,7 +777,7 @@ $(() => {
 				<select class="form-control form-control-sm flight-modal-place"  ${
           flight.submitted ? "disabled" : ""
         }>
-					<option>-</option>
+					<option value="-1">-</option>
 					<option value="0" ${scoresheet.place === 0 ? "selected" : ""}>Advance</option>
 					<option value="1" ${scoresheet.place === 1 ? "selected" : ""}>1st</option>
 					<option value="2" ${scoresheet.place === 2 ? "selected" : ""}>2nd</option>
@@ -843,7 +843,7 @@ $(() => {
 				<select class="form-control form-control-sm entry-modal-place"  ${
           flight.submitted ? "disabled" : ""
         }>
-					<option>-</option>
+					<option value="-1">-</option>
 					<option value="0" ${scoresheet.place === 0 ? "selected" : ""}>Advance</option>
 					<option value="1" ${scoresheet.place === 1 ? "selected" : ""}>1st</option>
 					<option value="2" ${scoresheet.place === 2 ? "selected" : ""}>2nd</option>
