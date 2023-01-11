@@ -1,16 +1,73 @@
 #!/bin/bash
+### Uncomment and set these environmental variables in your droplet
 
-## Uncomment and set these environmental variables in your droplet
 
+### (REQUIRED) This email address will have admin access by default in the scoresheets app
+### ------------------------------------------------------------------------------------------------------
 # export ADMIN_EMAIL=your.email@example.com
-# export PG_USER=admin
-# export PG_PASSWORD=password
-# export DOMAIN=your.scoresheets.domain.com
-# export EMAIL_HOST=email.server.host.com
+### ------------------------------------------------------------------------------------------------------
+
+
+
+### (REQUIRED) Domain scoresheets app will be deployed to. This is used for email validation and password reset links 
+### ------------------------------------------------------------------------------------------------------
+# export DOMAIN=scoresheets.your_domain.com
+### ------------------------------------------------------------------------------------------------------
+
+
+
+### (REQUIRED) Email setup variables. These are used for email validation and self-service password resets.
+### ------------------------------------------------------------------------------------------------------
+# export EMAIL_HOST=email_server.host.com
 # export EMAIL_USER=email_username
 # export EMAIL_PASSWORD=email_password
 # export EMAIL_PORT=465
 # export EMAIL_SECURE=true
+### ------------------------------------------------------------------------------------------------------
+
+
+
+### (Optional) Postgres user credentials override for db access. 
+### If not set, the script will create postgres user "admin" with a random password
+### ------------------------------------------------------------------------------------------------------
+# export PG_USER=admin
+# export PG_PASSWORD=password
+### ------------------------------------------------------------------------------------------------------
+
+
+
+### (Optional, but highly recommended) SSL Setup
+### Enable HTTPS on host domain through nginx. 
+### If not enabled, most web browsers will show a security error when you try to navigate to the page
+### ------------------------------------------------------------------------------------------------------
+
+# export SSL_ENABLED=true
+
+# cat > /etc/ssl/$DOMAIN.crt << EOF
+# -----BEGIN CERTIFICATE-----
+# PASTE
+# YOUR
+# SSL 
+# CERT
+# TEXT
+# HERE
+# -----END CERTIFICATE-----
+# EOF
+
+# cat > /etc/ssl/$DOMAIN.key << EOF
+# -----BEGIN RSA PRIVATE KEY-----
+# PASTE
+# YOUR
+# SSL
+# RSA
+# PRIVATE
+# KEY
+# HERE
+# -----END RSA PRIVATE KEY-----
+# EOF
+
+### ------------------------------------------------------------------------------------------------------
+
 
 if [ -z ${DOMAIN+x} ]; then echo "Please uncomment and set the variables above before proceeding" && exit 1; fi;
 
@@ -23,29 +80,8 @@ sudo apt-get update
 ## Install and set up NGINX
 sudo apt install nginx -y
 
-cat > /etc/ssl/$DOMAIN.crt << EOF
------BEGIN CERTIFICATE-----
-PASTE
-YOUR
-SSL 
-CERT
-TEXT
-HERE
------END CERTIFICATE-----
-EOF
-
-cat > /etc/ssl/$DOMAIN.key << EOF
------BEGIN RSA PRIVATE KEY-----
-PASTE
-YOUR
-SSL
-RSA
-PRIVATE
-KEY
-HERE
------END RSA PRIVATE KEY-----
-EOF
-
+if [ "$SSL_ENABLED" = true ]
+then
 cat > /etc/nginx/sites-available/default << EOF
 server {
   listen 80;
@@ -64,10 +100,26 @@ server {
   ssl_ciphers         HIGH:!aNULL:!MD5;
 
   location / {
-   proxy_pass http://127.0.0.1:8080;
+  proxy_pass http://127.0.0.1:8080;
   }
 }
 EOF
+
+else 
+
+cat > /etc/nginx/sites-available/default << EOF
+server {
+  listen 80;
+  server_name $DOMAIN;
+  keepalive_timeout   70;
+
+  location / {
+  proxy_pass http://127.0.0.1:8080;
+  }
+}
+EOF
+
+fi
 
 ## Install Docker (via https://docs.docker.com/engine/install/ubuntu/)
 sudo apt-get install -y \
@@ -105,9 +157,9 @@ echo "Waiting for 60s..."
 sleep 60
 
 ## Install and start BJCP-Scoresheets server
-docker pull ghcr.io/cia-homebrew/bjcp-scoresheets:latest
+docker pull ghcr.io/cia-homebrew/bjcp-scoresheet:latest
 docker run \
-  --name bjcp-scoresheets \
+  --name bjcp-scoresheet \
   -e DOMAIN=$DOMAIN \
   -e ADMIN_EMAIL=$ADMIN_EMAIL \
   -e EMAIL_HOST=$EMAIL_HOST \
@@ -117,7 +169,7 @@ docker run \
   -e EMAIL_USER=$EMAIL_USER \
   -e DATABASE_URL="postgres://$PG_USER:$PG_PASSWORD@$POSTGRES_CONTAINER_IP:5432/postgres" \
   -p 8080:8080 \
-  -d ghcr.io/cia-homebrew/bjcp-scoresheets
+  -d ghcr.io/cia-homebrew/bjcp-scoresheet
 
 ## Start NGINX
 sudo systemctl start nginx
