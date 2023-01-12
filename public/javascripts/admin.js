@@ -615,7 +615,8 @@ $(() => {
         place: $(flightScoresheetRow).find(".flight-modal-place").val(),
         mini_boss_advanced: $(flightScoresheetRow)
           .find(".flight-modal-bos-advance")
-          .val(),
+          .first()
+          .is(":checked"),
         scoresheet_submitted: submitted,
       };
 

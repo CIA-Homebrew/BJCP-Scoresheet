@@ -157,7 +157,7 @@ echo "Waiting for 60s..."
 sleep 60
 
 ## Install and start BJCP-Scoresheets server
-docker pull ghcr.io/cia-homebrew/bjcp-scoresheet:latest
+docker pull ghcr.io/cia-homebrew/bjcp-scoresheet:master
 docker run \
   --name bjcp-scoresheet \
   -e DOMAIN=$DOMAIN \
@@ -169,7 +169,7 @@ docker run \
   -e EMAIL_USER=$EMAIL_USER \
   -e DATABASE_URL="postgres://$PG_USER:$PG_PASSWORD@$POSTGRES_CONTAINER_IP:5432/postgres" \
   -p 8080:8080 \
-  -d ghcr.io/cia-homebrew/bjcp-scoresheet
+  -d ghcr.io/cia-homebrew/bjcp-scoresheet:master
 
 ## Start NGINX
 sudo systemctl start nginx
