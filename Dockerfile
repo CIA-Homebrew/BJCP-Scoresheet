@@ -1,4 +1,4 @@
-FROM node:16
+FROM node:14
 
 WORKDIR /usr/src/app
 COPY package*.json ./
@@ -18,5 +18,4 @@ RUN npm install
 COPY . .
 
 EXPOSE 8080
-CMD ["npx", "sequelize" "db:migrate"]
-CMD ["node", "./bin/www"]
+CMD npx sequelize db:migrate && node ./bin/www
