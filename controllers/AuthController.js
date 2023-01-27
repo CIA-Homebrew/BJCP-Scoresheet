@@ -523,13 +523,19 @@ userController.userRequestPasswordReset = function (req, res) {
         email: userEmail,
       },
     }
-  ).then(() => {
-    emailService.sendPasswordResetEmail(userEmail, passwordResetCode);
+  ).then((user) => {
+    // If we cannot find an existing user
+    if (!user[1]) {
+      req.flash("error", `Could not find a user with that email address.`);
+    } else {
+      emailService.sendPasswordResetEmail(userEmail, passwordResetCode);
 
-    req.flash(
-      "warning",
-      `An email with a link to reset your password has been sent. The link expires in ${NUM_MINUTES_EXPIRE} minues. If you cannot find it, please check your spam folder.`
-    );
+      req.flash(
+        "warning",
+        `An email with a link to reset your password has been sent. The link expires in ${NUM_MINUTES_EXPIRE} minues. If you cannot find it, please check your spam folder.`
+      );
+    }
+
     res.redirect("/");
   });
 

@@ -2,11 +2,12 @@
   "development": {
     "dialect": "sqlite",
     "storage": "./database.sqlite3",
-    "logging": false
+    "logging": true
   },
   "test": {
     "dialect": "sqlite",
-    "storage": "./database.sqlite3"
+    "storage": "./database.sqlite3",
+    "logging": true
   },
   "staging": {
     "use_env_variable": "DATABASE_URL",
@@ -16,7 +17,8 @@
       "min": 0,
       "acquire": 30000,
       "idle": 10000
-    }
+    },
+    "logging": true
   },
   "production": {
     "use_env_variable": "DATABASE_URL",
@@ -26,6 +28,7 @@
       "min": 0,
       "acquire": 30000,
       "idle": 10000
-    }
+    },
+    "logging": false
   }
 }

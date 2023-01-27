@@ -15,7 +15,7 @@
     "migrate:staging": "npx sequelize-cli db:migrate --url postgres://user:password@localhost:5432/bjcp-scoresheet",
     "migrate": "npm run migrage:dev && npm run migrate:staging",
     "seed": "npx sequelize-cli db:seed",
-    "staging": "npm start"
+    "staging": "NODE_ENV=staging && npm start"
   },
   "dependencies": {
     "archiver": "^5.0.2",

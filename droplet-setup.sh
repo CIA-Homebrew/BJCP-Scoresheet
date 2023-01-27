@@ -147,6 +147,7 @@ POSTGRES_CONTAINER_ID=$(docker run \
   -e POSTGRES_PASSWORD=${PG_PASSWORD:=$RANDOM_PW} \
   -p 5432:5432 \
   -v /data:/var/lib/postgresql/data \
+  --restart unless-stopped \
   -d postgres \
 )
 
@@ -169,6 +170,8 @@ docker run \
   -e EMAIL_USER=$EMAIL_USER \
   -e DATABASE_URL="postgres://$PG_USER:$PG_PASSWORD@$POSTGRES_CONTAINER_IP:5432/postgres" \
   -p 8080:8080 \
+  --memory-swap -1 \
+  --restart unless-stopped \
   -d ghcr.io/cia-homebrew/bjcp-scoresheet:master
 
 ## Start NGINX
