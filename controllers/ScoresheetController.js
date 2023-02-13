@@ -372,6 +372,9 @@ scoresheetController.generatePDF = function (req, res) {
 
       const flightTotalPromises = scoresheets.map((scoresheet) => {
         let flight = scoresheet.Flight;
+        if (!flight) {
+          return null;
+        }
         return Scoresheet.findAndCountAll({
           where: { FlightId: scoresheet.Flight.id },
         }).then((result) => {
@@ -388,6 +391,8 @@ scoresheetController.generatePDF = function (req, res) {
 
       return Promise.all(flightTotalPromises).then((scoresheetObjectsArray) => {
         return scoresheetObjectsArray.reduce((acc, scoresheetObject) => {
+          if (!scoresheetObject) return acc;
+
           acc[scoresheetObject.scoresheet.id] = scoresheetObject;
           return acc;
         }, {});

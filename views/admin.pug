@@ -500,8 +500,8 @@ block content
               .col-2
                 label(for="entryModalCategory") Category
                 select#entryModalCategory.form-control
-                  each category in [...Array(34).keys()]
-                    option #{category + 1}
+                  each category in [...[...Array(34).keys()].map(val => val+1), "M1", "M2", "M3", "M4"]
+                    option #{category}
               .col-2
                 label(for="entryModalSub") Subcat
                 select#entryModalSub.form-control
