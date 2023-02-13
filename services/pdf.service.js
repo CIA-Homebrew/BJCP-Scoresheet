@@ -64,10 +64,13 @@ class PdfService {
           .then((base64ImageBlobs) => {
             // Hackish workaround for meads - override template if category includes "M".
             // Def need a more elegant solution later :shrug:
-            template = data.scoresheet.category.includes("M")
-              ? `${template.slice(0, -4)}_mead.pug`
-              : template;
+            template =
+              data.scoresheet.category.includes("M") &&
+              !template.includes("_mead")
+                ? `${template.slice(0, -4)}_mead.pug`
+                : template;
 
+            console.log("Rendering ", data.scoresheet.entry_number);
             return pug.renderFile(template, {
               ...data,
               images: base64ImageBlobs,
